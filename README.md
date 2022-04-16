@@ -30,4 +30,4 @@
 
 ### 项目笔记
 
-- [项目笔记.md]()
+- [项目笔记.md](https://gitee.com/LiuJaNing/logistics/blob/master/%E9%A1%B9%E7%9B%AE%E7%AC%94%E8%AE%B0.md)
