@@ -7,9 +7,21 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class TestController {
 
-    @RequestMapping("/test.do")
+    @RequestMapping("/test1.do")
     @ResponseBody
-    public String test(){
+    public String test1(){
         return "hello vue this is springMVC";
+    }
+
+    @RequestMapping("/test2.do")
+    @ResponseBody
+    public String test2(){
+        return "hello2 vue this is springMVC";
+    }
+
+    @RequestMapping("/login.do")
+    @ResponseBody
+    public String testLogin(){
+        return "little bitch has you login ? ";
     }
 }
