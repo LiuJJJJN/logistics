@@ -3,13 +3,17 @@ package com.djtu.config;
 import com.djtu.shiro.filter.JwtFilter;
 import com.djtu.shiro.matchers.MyHashedCredentialsMatcher;
 import com.djtu.shiro.realms.CustomerRealm;
-import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.realm.Realm;
+import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.spring.LifecycleBeanPostProcessor;
+import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 
 import javax.servlet.Filter;
 import java.util.HashMap;
@@ -17,6 +21,11 @@ import java.util.Map;
 
 @Configuration
 public class ShiroConfig {
+
+    @Autowired
+    private CustomerRealm realm;
+    @Autowired
+    private MyHashedCredentialsMatcher matcher;
 
     //1.创建 ShiroFilter 负责拦截所有请求
         //将 name 设为与 web.xml 中 filter-name 一致, 让过滤器自动找到这个 bean
@@ -31,12 +40,12 @@ public class ShiroConfig {
         filterMap.put("jwt", jwtFilter);
 
         Map<String, String> map = new HashMap<>();
-        /*
+/*
         //配置系统的受限资源
         map.put("/test2.do", "authc");
         //配置系统的公共资源
         map.put("/test1.do", "anon");
-         */
+*/
 
         //让所有的请求进 jwt 拦截器
         map.put("/", "jwt");
@@ -52,23 +61,19 @@ public class ShiroConfig {
     }
 
     //2.创建安全管理器
-    @Bean
-    public DefaultWebSecurityManager getDefaultWebSecurityManager(Realm realm){
-        //向下转型 realm 这样才可以设置密码验证器
-        CustomerRealm customerRealm = (CustomerRealm) realm;
+    @Bean(name = "securityManager")
+    public DefaultWebSecurityManager getDefaultWebSecurityManager(){
         //设置密码验证器
-        //1. 创建 Shiro 提供的 CredentialsMatcher 密码验证器
-        MyHashedCredentialsMatcher matcher = new MyHashedCredentialsMatcher();
-        //2. 设置其加密方式
+        //1. 设置密码验证器加密方式
         matcher.setHashAlgorithmName("md5");
-        //3. 设置散列次数
+        //2. 设置散列次数
         matcher.setHashIterations(1024);
-        //4. 为自定义的 Realm 设置 CredentialsMatcher
-        customerRealm.setCredentialsMatcher(matcher);
+        //3. 为自定义的 Realm 设置 CredentialsMatcher
+        realm.setCredentialsMatcher(matcher);
 
-        DefaultWebSecurityManager defaultWebSecurityManager = new DefaultWebSecurityManager();
-        defaultWebSecurityManager.setRealm(customerRealm);
-        return defaultWebSecurityManager;
+        DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
+        securityManager.setRealm(realm);
+        return securityManager;
     }
 
     //3.创建自定义 Realm
@@ -80,6 +85,14 @@ public class ShiroConfig {
     @Bean
     public JwtFilter getJwtFilter(){
         return new JwtFilter();
+    }
+
+    // 开启 @RequiresPermissions 注解代理
+    @Bean
+    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager) {
+        AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
+        authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
+        return authorizationAttributeSourceAdvisor;
     }
 
 }

@@ -10,6 +10,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,9 +27,11 @@ public class TestController {
         return "hello vue this is springMVC";
     }
 
+    @RequiresPermissions("course:choose") //标注必须有这个权限才能访问（此注解无效果 2022-04-18 21:25:24）
     @RequestMapping("/test2.do")
     @ResponseBody
     public String test2(){
+        System.out.println(SecurityUtils.getSubject().hasRole("course:choose"));
         return "hello2 vue this is springMVC";
     }
 
@@ -38,7 +41,7 @@ public class TestController {
         Subject subject = SecurityUtils.getSubject();
         //                                  用户名                问题             主体         过期时间 30分钟
         String jwt = JwtUtil.createJWT(user.getUsername(), "back", "user", 1000*60*30);
-        JwtToken jwtToken = new JwtToken(jwt);
+        JwtToken jwtToken = new JwtToken(jwt, user.getPassword());
         try {
             subject.login(jwtToken);
         } catch (UnknownAccountException e) {
