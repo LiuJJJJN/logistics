@@ -34,7 +34,7 @@ public class TestController {
 
     @RequestMapping(value = "/login.do")
     @ResponseBody
-    public String testLogin(@RequestBody User user) throws JsonProcessingException {
+    public Result testLogin(@RequestBody User user) throws JsonProcessingException {
         Subject subject = SecurityUtils.getSubject();
         //                                  用户名                问题             主体         过期时间 30分钟
         String jwt = JwtUtil.createJWT(user.getUsername(), "back", "user", 1000*60*30);
@@ -42,12 +42,12 @@ public class TestController {
         try {
             subject.login(jwtToken);
         } catch (UnknownAccountException e) {
-            return new ObjectMapper().writeValueAsString(new Result().setCode(401).setMessage("账号不存在"));
+            return new Result().setCode(401).setMessage("账号不存在");
         } catch (IncorrectCredentialsException e) {
-            return new ObjectMapper().writeValueAsString(new Result().setCode(401).setMessage("密码错误"));
+            return new Result().setCode(401).setMessage("密码错误");
         }
 
-        return new ObjectMapper().writeValueAsString(new Result().setCode(200).setMessage("登录成功"));
+        return new Result().setCode(200).setMessage("登录成功");
     }
 
 }

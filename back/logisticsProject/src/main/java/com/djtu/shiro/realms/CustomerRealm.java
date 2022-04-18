@@ -51,6 +51,7 @@ public class CustomerRealm extends AuthorizingRealm {
         Claims claims = JwtUtil.parseJWT(jwt);
         //获取解析后的用户名
         String username = claims.getId();
+        System.out.println(username);
 
         User user = userService.getUserByUsername(username);
         if (user == null){

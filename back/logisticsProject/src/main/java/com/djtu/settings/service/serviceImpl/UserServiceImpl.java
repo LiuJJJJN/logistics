@@ -9,7 +9,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByUsername(String username) {
-        return new User("001","mike", "123456", "");
+        if ("mike".equals(username)) {
+            return new User("001","mike", "123456", "");
+        }
+        return null;
     }
 
 }
