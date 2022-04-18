@@ -13,7 +13,7 @@ export default {
   },
   methods:{
     testMethods(){
-      this.$axios.get("http://localhost:8081/logisticsProject/test.do")
+      this.$axios.get("http://localhost:8080/logisticsProject/test1.do")
           .then(resp=>{
             this.test = resp.data;
           })
