@@ -37,7 +37,7 @@ public class TestController {
         Subject subject = SecurityUtils.getSubject();
         //                                  用户名                问题             主体         过期时间 30分钟
         String jwt = JwtUtil.createJWT(user.getUsername(), "back", "user", 1000*60*30);
-        JwtToken jwtToken = new JwtToken(jwt);
+        JwtToken jwtToken = new JwtToken(jwt, user.getPassword());
         try {
             subject.login(jwtToken);
         } catch (UnknownAccountException e) {

@@ -6,6 +6,8 @@ import org.apache.shiro.authc.HostAuthenticationToken;
 import org.apache.shiro.authc.RememberMeAuthenticationToken;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
+
 /**
  * 自定义 token 类, 使用 jwt 传来的 token 进行身份验证
  * 具体实现仿照了 UsernamePasswordToken 类
@@ -73,16 +75,27 @@ public class JwtToken implements HostAuthenticationToken, RememberMeAuthenticati
         this(username, password != null ? password.toCharArray() : null, rememberMe, host);
     }
 
+//    @Override
+//    public String toString() {
+//        StringBuilder sb = new StringBuilder();
+//        sb.append(this.getClass().getName());
+//        sb.append(" - ");
+//        sb.append(JwtUtil.parseJWT(this.token).getId());
+//        sb.append(", rememberMe=").append(this.rememberMe);
+//        if (this.host != null) {
+//            sb.append(" (").append(this.host).append(")");
+//        }
+//        return sb.toString();
+//    }
+
+
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(this.getClass().getName());
-        sb.append(" - ");
-        sb.append(JwtUtil.parseJWT(this.token).getId());
-        sb.append(", rememberMe=").append(this.rememberMe);
-        if (this.host != null) {
-            sb.append(" (").append(this.host).append(")");
-        }
-        return sb.toString();
+        return "JwtToken{" +
+                "token='" + token.substring(0, 5) + '\'' +
+                ", password=" + Arrays.toString(password) +
+                ", rememberMe=" + rememberMe +
+                ", host='" + host + '\'' +
+                '}';
     }
 }
