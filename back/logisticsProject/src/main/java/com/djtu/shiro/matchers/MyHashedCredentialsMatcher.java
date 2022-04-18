@@ -4,7 +4,9 @@ import com.djtu.token.JwtToken;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.springframework.stereotype.Component;
 
+@Component
 public class MyHashedCredentialsMatcher extends HashedCredentialsMatcher {
 
     @Override

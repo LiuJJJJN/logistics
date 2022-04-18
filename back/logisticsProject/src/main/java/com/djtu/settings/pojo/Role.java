@@ -5,14 +5,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 用户表
+ * 角色表
  */
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class User {
+@NoArgsConstructor
+public class Role {
     private String id;
-    private String username;
-    private String password;
-    private String salt;
+    private String name;
 }

@@ -1,6 +1,9 @@
 package com.djtu.shiro.realms;
 
+import com.djtu.settings.pojo.Role;
 import com.djtu.settings.pojo.User;
+import com.djtu.settings.service.PermissionService;
+import com.djtu.settings.service.RoleService;
 import com.djtu.settings.service.UserService;
 import com.djtu.token.JwtToken;
 import com.djtu.utils.JwtUtil;
@@ -17,14 +20,17 @@ import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Set;
+
+@Component
 public class CustomerRealm extends AuthorizingRealm {
 
-    /**
-     * 这里为何能用 @Autowired ?
-     * 因为这个类是由 Spring 容器管理的, 在 com.djtu.config.ShiroConfig 中配置
-     */
     @Autowired
     private UserService userService;
+    @Autowired
+    private RoleService roleService;
+    @Autowired
+    private PermissionService permissionService;
 
     //验证是否使用的是自定义 token
     @Override
@@ -35,7 +41,18 @@ public class CustomerRealm extends AuthorizingRealm {
     //授权
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principal) {
-        return null;
+        String username = (String) principal.iterator().next();
+        Set<String> roles = roleService.getRoleByUsername(username);
+        Set<String> permissions = permissionService.getPermissionByUsername(username);
+
+        //这里的输出只有在登录之后才会执行
+        System.out.println(roles);
+        System.out.println(permissions);
+
+        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+        info.addRoles(roles);
+        info.addStringPermissions(permissions);
+        return info;
     }
 
     //认证
