@@ -1,6 +1,5 @@
 package com.djtu.settings.service.serviceImpl;
 
-import com.djtu.settings.pojo.Role;
 import com.djtu.settings.service.RoleService;
 import org.springframework.stereotype.Service;
 

@@ -2,21 +2,28 @@ package com.djtu.settings.web.controller;
 
 import com.djtu.response.Result;
 import com.djtu.settings.pojo.User;
+import com.djtu.settings.service.UserService;
 import com.djtu.token.JwtToken;
 import com.djtu.utils.JwtUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Controller
 public class TestController {
+
+    @Autowired
+    private UserService userService;
 
     @RequestMapping("/test1.do")
     @ResponseBody
@@ -36,6 +43,9 @@ public class TestController {
     @RequestMapping(value = "/login.do")
     @ResponseBody
     public Result testLogin(@RequestBody User user) {
+        if (user.getUsername() == null || user.getPassword() == null){
+            return new Result().setCode(500).setMessage("运行错误,用户名密码为空");
+        }
         Subject subject = SecurityUtils.getSubject();
         //                                  用户名                问题             主体         过期时间 30分钟
         String jwt = JwtUtil.createJWT(user.getUsername(), "back", "user", 1000*60*30);
@@ -48,7 +58,16 @@ public class TestController {
             return new Result().setCode(401).setMessage("密码错误");
         }
 
-        return new Result().setCode(200).setMessage("登录成功");
+        User backUser = userService.getUserByUsername("mike");
+        //将隐私信息设为空
+        backUser.setPassword(null);
+        backUser.setSalt(null);
+        //配置返回 data 内容
+        Map<String, Object> map = new HashMap<>();
+        map.put("user", backUser);
+        map.put("token", jwt);
+
+        return new Result().setCode(200).setMessage("登录成功").setData(map);
     }
 
 }

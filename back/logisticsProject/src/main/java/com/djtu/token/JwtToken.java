@@ -1,6 +1,5 @@
 package com.djtu.token;
 
-import com.djtu.utils.JwtUtil;
 import lombok.Data;
 import org.apache.shiro.authc.HostAuthenticationToken;
 import org.apache.shiro.authc.RememberMeAuthenticationToken;
