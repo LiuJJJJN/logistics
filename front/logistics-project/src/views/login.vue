@@ -1,16 +1,20 @@
 <template>
-  <el-form ref="form" :model="form" :rules="rules" label-width="80px" class="login-ruleForm">
-    <el-form-item label="账号" prop="username">
-      <el-input v-model="form.username"></el-input>
-    </el-form-item>
-    <el-form-item label="密码" prop="password">
-      <el-input v-model="form.password" type="password"></el-input>
-    </el-form-item>
-    <el-form-item>
-      <el-button type="primary" @click="onSubmit">登录</el-button>
-      <el-button>取消</el-button>
-    </el-form-item>
-  </el-form>
+  <div>
+    <el-form ref="form" :model="form" :rules="rules" label-width="80px" class="login-ruleForm">
+      <el-form-item label="账号" prop="username">
+        <el-input v-model="form.username"></el-input>
+      </el-form-item>
+      <el-form-item label="密码" prop="password">
+        <el-input v-model="form.password" type="password"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="onSubmit">登录</el-button>
+        <el-tooltip class="item" effect="dark" content="取消是个无用的按钮" placement="bottom-start">
+          <el-button>取消</el-button>
+        </el-tooltip>
+      </el-form-item>
+    </el-form>
+  </div>
 </template>
 
 <script>
@@ -64,4 +68,5 @@ export default {
   margin: 0 auto;
   text-align: center;
 }
+
 </style>
