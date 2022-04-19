@@ -2,7 +2,6 @@ package com.djtu.utils;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.crypto.hash.Md5Hash;
-import org.springframework.util.DigestUtils;
 
 import java.util.UUID;
 
