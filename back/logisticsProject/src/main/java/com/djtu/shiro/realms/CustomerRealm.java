@@ -1,6 +1,5 @@
 package com.djtu.shiro.realms;
 
-import com.djtu.settings.pojo.Role;
 import com.djtu.settings.pojo.User;
 import com.djtu.settings.service.PermissionService;
 import com.djtu.settings.service.RoleService;
