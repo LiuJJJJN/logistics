@@ -28,9 +28,9 @@ public class ShiroConfig {
     private MyHashedCredentialsMatcher matcher;
 
     //1.创建 ShiroFilter 负责拦截所有请求
-        //将 name 设为与 web.xml 中 filter-name 一致, 让过滤器自动找到这个 bean
+    //将 name 设为与 web.xml 中 filter-name 一致, 让过滤器自动找到这个 bean
     @Bean(name = "shiroFilter")
-    public ShiroFilterFactoryBean getShiroFilterFactoryBean(DefaultWebSecurityManager defaultWebSecurityManager, JwtFilter jwtFilter){
+    public ShiroFilterFactoryBean getShiroFilterFactoryBean(DefaultWebSecurityManager defaultWebSecurityManager, JwtFilter jwtFilter) {
 
         //创建过滤工厂实例, 设置默认安全管理器
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
@@ -54,7 +54,7 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setFilters(filterMap);
         //添加过滤map
         shiroFilterFactoryBean.setFilterChainDefinitionMap(map);
-            //设置被拦截时跳转的地址
+        //设置被拦截时跳转的地址
         shiroFilterFactoryBean.setLoginUrl("/login.do");
 
         return shiroFilterFactoryBean;
@@ -62,7 +62,7 @@ public class ShiroConfig {
 
     //2.创建安全管理器
     @Bean(name = "securityManager")
-    public DefaultWebSecurityManager getDefaultWebSecurityManager(){
+    public DefaultWebSecurityManager getDefaultWebSecurityManager() {
         //设置密码验证器
         //1. 设置密码验证器加密方式
         matcher.setHashAlgorithmName("md5");
@@ -78,16 +78,22 @@ public class ShiroConfig {
 
     //3.创建自定义 Realm
     @Bean
-    public Realm getRealm(){
+    public Realm getRealm() {
         return new CustomerRealm();
     }
 
     @Bean
-    public JwtFilter getJwtFilter(){
+    public JwtFilter getJwtFilter() {
         return new JwtFilter();
     }
 
-    // 开启 @RequiresPermissions 注解代理
+    // 开启 @RequiresRoles、@RequiresPermissions 注解代理
+    @Bean
+    public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
+        DefaultAdvisorAutoProxyCreator app = new DefaultAdvisorAutoProxyCreator();
+        app.setProxyTargetClass(true);
+        return app;
+    }
     @Bean
     public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager) {
         AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
