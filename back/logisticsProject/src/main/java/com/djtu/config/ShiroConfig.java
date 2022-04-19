@@ -7,7 +7,9 @@ import org.apache.shiro.realm.Realm;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.servlet.SimpleCookie;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -60,7 +62,7 @@ public class ShiroConfig {
 
     //2.创建安全管理器
     @Bean(name = "securityManager")
-    public DefaultWebSecurityManager getDefaultWebSecurityManager() {
+    public DefaultWebSecurityManager getDefaultWebSecurityManager(CookieRememberMeManager cookieRememberMeManager) {
         //设置密码验证器
         //1. 设置密码验证器加密方式
         matcher.setHashAlgorithmName("md5");
@@ -71,6 +73,7 @@ public class ShiroConfig {
 
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(realm);
+        securityManager.setRememberMeManager(cookieRememberMeManager); //为 shiro 指定 cookie 管理器
         return securityManager;
     }
 
@@ -92,11 +95,21 @@ public class ShiroConfig {
         app.setProxyTargetClass(true);
         return app;
     }
+
     @Bean
     public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager) {
         AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
         authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
         return authorizationAttributeSourceAdvisor;
+    }
+
+    @Bean
+    public CookieRememberMeManager getCookieRememberMeManager(){
+        CookieRememberMeManager rememberMeManager=new CookieRememberMeManager();
+        SimpleCookie simpleCookie=new SimpleCookie("rememberMe");
+        simpleCookie.setMaxAge(7*24*60*60);
+        rememberMeManager.setCookie(simpleCookie);
+        return rememberMeManager;
     }
 
 }

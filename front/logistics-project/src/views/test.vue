@@ -13,14 +13,8 @@ export default {
   },
   methods:{
     testMethods(){
-      this.$axios.get("http://localhost:8080/logisticsProject/login.do",
-          {
-            username:"mike",
-            password:"123456"
-          })
-          .then(resp=>{
-            this.test = resp.data;
-          })
+      this.$store.commit("REMOVE_INFO");
+      alert(this.$store.getters.getToken);
     }
   },
   created() {
