@@ -44,10 +44,6 @@ public class CustomerRealm extends AuthorizingRealm {
         Set<String> roles = roleService.getRoleByUsername(username);
         Set<String> permissions = permissionService.getPermissionByUsername(username);
 
-        //这里的输出只有在登录之后才会执行
-        System.out.println(roles);
-        System.out.println(permissions);
-
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         info.addRoles(roles);
         info.addStringPermissions(permissions);

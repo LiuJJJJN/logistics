@@ -9,7 +9,6 @@ import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSource
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
-import org.apache.shiro.web.servlet.SimpleCookie;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -62,7 +61,7 @@ public class ShiroConfig {
 
     //2.创建安全管理器
     @Bean(name = "securityManager")
-    public DefaultWebSecurityManager getDefaultWebSecurityManager(CookieRememberMeManager cookieRememberMeManager) {
+    public DefaultWebSecurityManager getDefaultWebSecurityManager() {
         //设置密码验证器
         //1. 设置密码验证器加密方式
         matcher.setHashAlgorithmName("md5");
@@ -73,7 +72,6 @@ public class ShiroConfig {
 
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(realm);
-        securityManager.setRememberMeManager(cookieRememberMeManager); //为 shiro 指定 cookie 管理器
         return securityManager;
     }
 
@@ -101,16 +99,6 @@ public class ShiroConfig {
         AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
         authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
         return authorizationAttributeSourceAdvisor;
-    }
-
-    //配置启用 Shiro 自带的 rememberMe 并将 cookie 设置为 7 天有效期
-    @Bean
-    public CookieRememberMeManager getCookieRememberMeManager(){
-        CookieRememberMeManager rememberMeManager=new CookieRememberMeManager();
-        SimpleCookie simpleCookie=new SimpleCookie("rememberMe");
-        simpleCookie.setMaxAge(7*24*60*60); //设置 cookie 在前端留存的时间为七天
-        rememberMeManager.setCookie(simpleCookie);
-        return rememberMeManager;
     }
 
 }
