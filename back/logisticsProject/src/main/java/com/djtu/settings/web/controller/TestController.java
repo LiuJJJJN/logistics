@@ -35,7 +35,7 @@ public class TestController {
     }
 
 //    @RequiresPermissions("course:choose") //标注必须有"xxx"权限才能访问
-    @RequiresRoles("stu") //标注必须是"xxx"才能访问
+    @RequiresRoles("stu2") //标注必须是"xxx"才能访问
     @RequestMapping("/test2.do")
     @ResponseBody
     public String test2(){

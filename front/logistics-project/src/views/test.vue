@@ -13,8 +13,12 @@ export default {
   },
   methods:{
     testMethods(){
-      this.$store.commit("REMOVE_INFO");
-      alert(this.$store.getters.getToken);
+      this.$axios.post("http://localhost:8080/logisticsProject/test2.do")
+          .then(resp=>{
+            alert(resp);
+          }, err=>{
+            alert(err);
+          })
     }
   },
   created() {

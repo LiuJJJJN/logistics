@@ -103,11 +103,12 @@ public class ShiroConfig {
         return authorizationAttributeSourceAdvisor;
     }
 
+    //配置启用 Shiro 自带的 rememberMe 并将 cookie 设置为 7 天有效期
     @Bean
     public CookieRememberMeManager getCookieRememberMeManager(){
         CookieRememberMeManager rememberMeManager=new CookieRememberMeManager();
         SimpleCookie simpleCookie=new SimpleCookie("rememberMe");
-        simpleCookie.setMaxAge(7*24*60*60);
+        simpleCookie.setMaxAge(7*24*60*60); //设置 cookie 在前端留存的时间为七天
         rememberMeManager.setCookie(simpleCookie);
         return rememberMeManager;
     }

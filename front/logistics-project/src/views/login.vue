@@ -68,7 +68,7 @@ export default {
 
 <style scoped>
 .login-ruleForm{
-  padding-top: 200px;
+  padding-top: 130px;
   width: 300px;
   margin: 0 auto;
   text-align: center;
