@@ -4,7 +4,9 @@ import VueRouter from 'vue-router'
 import login from "@/views/login";
 import index from "@/views/index";
 import test from "@/views/test";
-// import container from "@/views/container";
+import test2 from "@/views/test2";
+import tutorClass from "@/views/tutorClass";
+import register from "@/views/register";
 
 Vue.use(VueRouter)
 
@@ -17,7 +19,24 @@ const routes = [
   {
     path:"/index",
     name:"index",
-    component: index
+    component: index,
+    children:[
+      {
+        path:"/test1",
+        name:"test1",
+        component: test
+      },
+      {
+        path:"/test2",
+        name:"test2",
+        component: test2
+      },
+      {
+        path:"/tutor/class",
+        name:"tutorClass",
+        component: tutorClass
+      }
+    ]
   },
   {
     path:"/login",
@@ -25,9 +44,9 @@ const routes = [
     component: login
   },
   {
-    path:"/test",
-    name:"test",
-    component: test
+    path:"/register",
+    name:"register",
+    component: register
   }
 ]
 
