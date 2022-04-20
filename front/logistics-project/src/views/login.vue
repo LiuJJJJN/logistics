@@ -1,11 +1,15 @@
 <template>
   <div>
     <el-form ref="form" :model="form" :rules="rules" label-width="80px" class="login-ruleForm">
+      <h1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Login</h1>
       <el-form-item label="账号" prop="username">
         <el-input v-model="form.username"></el-input>
       </el-form-item>
       <el-form-item label="密码" prop="password">
         <el-input v-model="form.password" type="password"></el-input>
+      </el-form-item>
+      <el-form-item prop="rememberMe" id="rememberMe">
+        <el-checkbox v-model="form.rememberMe">7天免登录</el-checkbox>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit">登录</el-button>
@@ -25,7 +29,8 @@ export default {
     return {
       form: {
         username: '',
-        password: ''
+        password: '',
+        rememberMe: false
       },
       rules:{
         username:[
@@ -63,10 +68,12 @@ export default {
 
 <style scoped>
 .login-ruleForm{
-  padding-top: 200px;
+  padding-top: 130px;
   width: 300px;
   margin: 0 auto;
   text-align: center;
 }
-
+#rememberMe{
+  margin-left: -120px;
+}
 </style>

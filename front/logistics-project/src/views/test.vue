@@ -70,13 +70,11 @@ export default {
   },
   methods:{
     testMethods(){
-      this.$axios.get("http://localhost:8080/logisticsProject/login.do",
-          {
-            username:"mike",
-            password:"123456"
-          })
+      this.$axios.post("http://localhost:8080/logisticsProject/test2.do")
           .then(resp=>{
-            this.test = resp.data;
+            alert(resp);
+          }, err=>{
+            alert(err);
           })
     }
   },
