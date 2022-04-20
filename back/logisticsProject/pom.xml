@@ -100,6 +100,51 @@
             <version>4.2.2</version>
         </dependency>
 
+        <!--littleHan-->
+       <!-- &lt;!&ndash;IOC核心&ndash;&gt;
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>5.2.6.RELEASE</version>
+        </dependency>
+        &lt;!&ndash;事务&ndash;&gt;
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <version>5.2.6.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>5.2.6.RELEASE</version>
+        </dependency>
+        &lt;!&ndash;mybatis依赖&ndash;&gt;
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>3.5.1</version>
+        </dependency>
+        &lt;!&ndash;mybatis和spring集成依赖&ndash;&gt;
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis-spring</artifactId>
+            <version>2.0.6</version>
+        </dependency>
+        &lt;!&ndash;mysql驱动&ndash;&gt;
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.24</version>
+        </dependency>
+        &lt;!&ndash;阿里公司的数据库连接池&ndash;&gt;
+        &lt;!&ndash;来替代mybatis自己的连接池&ndash;&gt;
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>1.1.12</version>
+        </dependency>-->
+        <!--/littleHan-->
+
     </dependencies>
 
     <build>
@@ -122,5 +167,18 @@
                 <filtering>false</filtering>
             </resource>
         </resources>
+        <!--littleHan-->
+        <!--指定jdk的版本-->
+        <!--<plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>-->
+        <!--/littleHan-->
     </build>
 </project>
