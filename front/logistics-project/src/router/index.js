@@ -4,7 +4,7 @@ import VueRouter from 'vue-router'
 import login from "@/views/login";
 import index from "@/views/index";
 import test from "@/views/test";
-// import container from "@/views/container";
+import container from "@/views/container";
 
 Vue.use(VueRouter)
 
@@ -28,6 +28,11 @@ const routes = [
     path:"/test",
     name:"test",
     component: test
+  },
+  {
+    path:"/container",
+    name:"container",
+    component: container
   }
 ]
 

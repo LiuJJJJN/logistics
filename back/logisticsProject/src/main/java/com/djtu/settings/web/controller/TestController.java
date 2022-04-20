@@ -49,9 +49,7 @@ public class TestController {
         User user = new User();
         user.setUsername((String) reqMap.get("username"));
         user.setPassword((String) reqMap.get("password"));
-        System.out.println(user);
         Boolean rememberMe = (Boolean) reqMap.get("rememberMe");
-        System.out.println(rememberMe);
 
         if (user.getUsername() == null || user.getPassword() == null){
             return new Result().setCode(500).setMessage("运行错误,用户名密码为空");
