@@ -7,6 +7,9 @@ import test from "@/views/test";
 import test2 from "@/views/test2";
 import tutorClass from "@/views/tutorClass";
 import register from "@/views/register";
+import tutorFeedback from "@/views/tutorFeedback";
+import userIndex from "@/views/userIndex";
+import userFeedback from "@/views/userFeedback";
 
 Vue.use(VueRouter)
 
@@ -22,6 +25,20 @@ const routes = [
     component: index,
     children:[
       {
+        path:"/",
+        name:"userIndex",
+        component: userIndex
+      },{
+        path:"/user",
+        name:"userIndex",
+        component: userIndex
+      },
+      {
+        path:"/user/feedback",
+        name:"userFeedback",
+        component: userFeedback
+      },
+      {
         path:"/test1",
         name:"test1",
         component: test
@@ -35,6 +52,11 @@ const routes = [
         path:"/tutor/class",
         name:"tutorClass",
         component: tutorClass
+      },
+      {
+        path:"/tutor/feedback",
+        name:"feedback",
+        component: tutorFeedback
       }
     ]
   },

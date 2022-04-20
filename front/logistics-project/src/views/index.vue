@@ -42,7 +42,7 @@
               <el-menu-item index="1-3">图书馆占座</el-menu-item>
             </el-menu-item-group>
             <el-menu-item-group title="我要反馈">
-              <el-menu-item index="1-4">我要反馈</el-menu-item>
+              <router-link :to="'/user/feedback'"><el-menu-item index="1-4">我要反馈</el-menu-item></router-link>
             </el-menu-item-group>
           </el-submenu>
           <el-submenu index="2">
@@ -55,7 +55,7 @@
               <el-menu-item index="2-2">管理学生</el-menu-item>
             </el-menu-item-group>
             <el-menu-item-group title="学生反馈">
-              <el-menu-item index="2-3">学生反馈</el-menu-item>
+              <router-link :to="'/tutor/feedback'"><el-menu-item index="2-3">学生反馈</el-menu-item></router-link>
             </el-menu-item-group>
             <el-menu-item-group title="处理申请">
               <el-menu-item index="2-4">处理申请</el-menu-item>
