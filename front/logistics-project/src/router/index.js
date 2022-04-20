@@ -5,6 +5,8 @@ import login from "@/views/login";
 import index from "@/views/index";
 import test from "@/views/test";
 import test2 from "@/views/test2";
+import tutorClass from "@/views/tutorClass";
+import register from "@/views/register";
 
 Vue.use(VueRouter)
 
@@ -28,6 +30,11 @@ const routes = [
         path:"/test2",
         name:"test2",
         component: test2
+      },
+      {
+        path:"/tutor/class",
+        name:"tutorClass",
+        component: tutorClass
       }
     ]
   },
@@ -35,6 +42,11 @@ const routes = [
     path:"/login",
     name:"login",
     component: login
+  },
+  {
+    path:"/register",
+    name:"register",
+    component: register
   }
 ]
 

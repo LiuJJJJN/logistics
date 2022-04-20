@@ -15,7 +15,7 @@
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item disabled>用户 : {{ username }}</el-dropdown-item>
                 <el-dropdown-item>个人信息</el-dropdown-item>
-                <el-dropdown-item>退出登录</el-dropdown-item>
+                <el-dropdown-item @click.native="exitLogin">退出登录</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </div>
@@ -25,7 +25,7 @@
     <el-container>
 
       <el-aside width="200px">
-        <el-menu :default-openeds="['1', '2', '3']"> <!--哪个功能不折叠-->
+        <el-menu :default-openeds="['2']"> <!--哪个功能不折叠-->
           <el-submenu index="1">
             <template slot="title"><i class="el-icon-menu"></i>学生功能</template>
             <el-menu-item-group>
@@ -35,7 +35,7 @@
             </el-menu-item-group>
             <el-menu-item-group>
               <template slot="title">寝室信息</template>
-             <el-menu-item index="1-1">我的寝室</el-menu-item>
+              <el-menu-item index="1-1">我的寝室</el-menu-item>
             </el-menu-item-group>
             <el-menu-item-group title="我要自习">
               <el-menu-item index="1-2">教室占座</el-menu-item>
@@ -49,7 +49,7 @@
             <template slot="title"><i class="el-icon-menu"></i>导员功能</template>
             <el-menu-item-group>
               <template slot="title">我的班级</template>
-              <el-menu-item index="2-1">管理班级</el-menu-item>
+              <router-link :to="'/tutor/class'"><el-menu-item index="2-1">管理班级</el-menu-item></router-link>
             </el-menu-item-group>
             <el-menu-item-group title="我的学生">
               <el-menu-item index="2-2">管理学生</el-menu-item>
@@ -74,7 +74,6 @@
 
       <el-container>
         <el-main>
-          Main
           <router-view></router-view>
         </el-main>
       </el-container>
@@ -92,6 +91,16 @@ export default {
       username: this.$store.getters.getUser.username,
       size: "large",
       circleUrl: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
+    }
+  },
+  methods:{
+    exitLogin:function (){
+      this.$store.commit("REMOVE_INFO");
+      this.$notify.info({
+        title: '注意',
+        message: '您已退出登录'
+      });
+      this.$router.replace("/login");
     }
   }
 }
@@ -158,4 +167,7 @@ body > .el-container {
   margin-bottom: 20px;
 }
 
+a {
+  text-decoration: none;
+}
 </style>

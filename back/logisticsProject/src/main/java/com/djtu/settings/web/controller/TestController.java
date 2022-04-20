@@ -45,11 +45,7 @@ public class TestController {
 
     @RequestMapping(value = "/login.do")
     @ResponseBody
-    public Result testLogin(@RequestBody Map<String, Object> reqMap) {
-        User user = new User();
-        user.setUsername((String) reqMap.get("username"));
-        user.setPassword((String) reqMap.get("password"));
-        Boolean rememberMe = (Boolean) reqMap.get("rememberMe");
+    public Result testLogin(@RequestBody User user) {
 
         if (user.getUsername() == null || user.getPassword() == null){
             return new Result().setCode(500).setMessage("运行错误,用户名密码为空");
@@ -58,7 +54,7 @@ public class TestController {
         //                                  用户名                问题             主体         过期时间 30分钟
         String jwt = JwtUtil.createJWT(user.getUsername(), "back", "user", 1000*60*30);
         JwtToken jwtToken = new JwtToken(jwt, user.getPassword());
-        jwtToken.setRememberMe(rememberMe);
+
         try {
             subject.login(jwtToken);
         } catch (UnknownAccountException e) {

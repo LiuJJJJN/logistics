@@ -13,12 +13,7 @@ export default {
   },
   methods:{
     testMethods(){
-      // this.$axios.post("http://localhost:8080/logisticsProject/test2.do")
-      //     .then(resp=>{
-      //       alert(resp);
-      //     }, err=>{
-      //       alert(err);
-      // })
+      this.$axios.post("http://localhost:8080/logisticsProject/test2.do");
     }
   },
   created() {

@@ -8,13 +8,10 @@
       <el-form-item label="密码" prop="password">
         <el-input v-model="form.password" type="password"></el-input>
       </el-form-item>
-      <el-form-item prop="rememberMe" id="rememberMe">
-        <el-checkbox v-model="form.rememberMe">7天免登录</el-checkbox>
-      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit">登录</el-button>
-        <el-tooltip class="item" effect="dark" content="取消是个无用的按钮" placement="bottom-start">
-          <el-button>取消</el-button>
+        <el-tooltip class="item" effect="dark" content="还没有账号? 立马去注册!" placement="bottom-start">
+          <el-button @click="toRegister">注册</el-button>
         </el-tooltip>
       </el-form-item>
     </el-form>
@@ -29,8 +26,7 @@ export default {
     return {
       form: {
         username: '',
-        password: '',
-        rememberMe: false
+        password: ''
       },
       rules:{
         username:[
@@ -58,9 +54,11 @@ export default {
             });
             this.$router.replace("/index"); //使用路由跳转
           }, err => {
-            // alert(err);
             console.log(err)
           })
+    },
+    toRegister:function () {
+      this.$router.replace("/register");
     }
   }
 }
