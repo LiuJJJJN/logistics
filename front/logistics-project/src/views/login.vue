@@ -48,6 +48,7 @@ export default {
             // console.log(resp.data);
             this.$store.commit("SET_TOKEN", resp.data.data.token); //向全局存储中中存值
             this.$store.commit("SET_USERINFO", resp.data.data.user); //向全局存储中中存值
+            this.$store.commit("SET_TIME_STAMP", resp.data.data.timestamp); //向全局存储中中存值
             this.$message({
               message: resp.data.message,
               type: 'success'

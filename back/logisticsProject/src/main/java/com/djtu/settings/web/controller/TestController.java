@@ -73,8 +73,10 @@ public class TestController {
         backUser.setSalt(null);
         //配置返回 data 内容
         Map<String, Object> map = new HashMap<>();
-        map.put("user", backUser);
-        map.put("token", jwt);
+        map.put("user", backUser); //传递用户信息
+        map.put("token", jwt); //传递token
+//        map.put("timestamp", System.currentTimeMillis()+1000*60*60*24*7); //传递过期时间戳为七天后
+        map.put("timestamp", System.currentTimeMillis()+1000*60); //传递过期时间戳为七天后
 
         return new Result().setCode(200).setMessage("登录成功").setData(map);
     }
