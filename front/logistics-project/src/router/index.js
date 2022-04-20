@@ -7,6 +7,7 @@ import test from "@/views/test";
 import test2 from "@/views/test2";
 import tutorClass from "@/views/tutorClass";
 import register from "@/views/register";
+import tutorStudent from "@/views/tutorStudent";
 
 Vue.use(VueRouter)
 
@@ -17,15 +18,15 @@ const routes = [
     component: login
   },
   {
+    path:"/test1",
+    name:"test1",
+    component: test
+  },
+  {
     path:"/index",
     name:"index",
     component: index,
     children:[
-      {
-        path:"/test1",
-        name:"test1",
-        component: test
-      },
       {
         path:"/test2",
         name:"test2",
@@ -35,6 +36,11 @@ const routes = [
         path:"/tutor/class",
         name:"tutorClass",
         component: tutorClass
+      },
+      {
+        path:"/tutor/student",
+        name:"tutorStudent",
+        component: tutorStudent
       }
     ]
   },
