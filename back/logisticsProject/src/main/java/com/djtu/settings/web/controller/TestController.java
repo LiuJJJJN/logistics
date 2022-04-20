@@ -2,6 +2,7 @@ package com.djtu.settings.web.controller;
 
 import com.djtu.response.Result;
 import com.djtu.settings.pojo.User;
+import com.djtu.settings.pojo.Users;
 import com.djtu.settings.service.UserService;
 import com.djtu.token.JwtToken;
 import com.djtu.utils.JwtUtil;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -31,6 +33,8 @@ public class TestController {
     @RequestMapping("/test1.do")
     @ResponseBody
     public String test1(){
+        List<Users> list= userService.getAllUsers();
+        System.out.println(list);
         return "hello vue this is springMVC";
     }
 

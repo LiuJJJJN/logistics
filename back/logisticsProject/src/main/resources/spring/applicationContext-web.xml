@@ -20,4 +20,6 @@
                      allow-credentials="true"/>
     </mvc:cors>
 
+    <!--导入spring配置文件-->
+    <import resource="applicationContext-server.xml"/>
 </beans>
