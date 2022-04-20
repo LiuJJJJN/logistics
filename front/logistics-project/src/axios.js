@@ -4,6 +4,8 @@ import ElementUI from 'element-ui';
 
 //配置 axios 每个链接的公共字符
 axios.defaults.baseURL = "http://localhost:8080/logisticsProject";
+//配置 axios 可以带 cookie 存储到浏览器
+axios.defaults.withCredentials = true;
 
 //前置拦截
 axios.interceptors.request.use(config => {
