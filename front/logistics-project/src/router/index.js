@@ -10,6 +10,7 @@ import register from "@/views/register";
 import tutorFeedback from "@/views/tutorFeedback";
 import userIndex from "@/views/userIndex";
 import userFeedback from "@/views/userFeedback";
+import tutorStudent from "@/views/tutorStudent";
 
 Vue.use(VueRouter)
 
@@ -18,6 +19,11 @@ const routes = [
     path:"/",
     name:"login",
     component: login
+  },
+  {
+    path:"/test1",
+    name:"test1",
+    component: test
   },
   {
     path:"/index",
@@ -57,6 +63,11 @@ const routes = [
         path:"/tutor/feedback",
         name:"feedback",
         component: tutorFeedback
+      },
+      {
+        path:"/tutor/student",
+        name:"tutorStudent",
+        component: tutorStudent
       }
     ]
   },
