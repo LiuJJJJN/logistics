@@ -12,9 +12,11 @@ import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
+
     @Autowired
     @Qualifier(value = "usersDao")
-    UsersDao usersDao;
+    private UsersDao usersDao;
+
     @Override
     public User getUserByUsername(String username) {
         if ("mike".equals(username)) {

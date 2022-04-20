@@ -33,8 +33,8 @@ public class TestController {
     @RequestMapping("/test1.do")
     @ResponseBody
     public String test1(){
-       /* List<Users> list= userService.getAllUsers();
-        System.out.println(list);*/
+        List<Users> list= userService.getAllUsers();
+        System.out.println(list);
         return "hello vue this is springMVC";
     }
 
