@@ -1,5 +1,10 @@
 <template>
 <div class="mainDiv">
+  <h2>反馈:
+    <el-checkbox-group v-model="checkboxGroup1" style="float: right">
+      <el-checkbox-button v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox-button>
+    </el-checkbox-group>
+  </h2>
   <el-input
       type="text"
       placeholder="请输入标题"
@@ -12,23 +17,24 @@
       :autosize="{ minRows: 10, maxRows: 90}"
       placeholder="请输入内容"
       v-model="textarea"
-      style="display: inline-block; line-height: 500px;">
+      style="display: inline-block; padding-top: 20px; padding-bottom: 20px; line-height: 500px;">
   </el-input>
   <div>
     <el-button type="primary" plain>上传反馈</el-button>
-    <el-button type="info" plain>取消</el-button>
   </div>
 </div>
 </template>
 
 <script>
+const cityOptions = ['导员', '管理员'];
 export default {
   name: "userFeedback",
   data(){
     return{
       text:'',
       textarea:'',
-      fileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}]
+      checkboxGroup1: ['导员'],
+      cities: cityOptions
     }
   },
   methods: {
@@ -44,7 +50,8 @@ export default {
 
 <style scoped>
 .mainDiv{
-  width: 900px;
+  width: 700px;
   margin: 0 auto;
 }
+
 </style>
