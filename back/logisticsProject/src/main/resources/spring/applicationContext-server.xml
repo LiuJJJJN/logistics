@@ -6,6 +6,5 @@
 
     <!--加载持久层环境资源-->
     <import resource="classpath:spring/applicationContext-dao.xml"/>
-    <!--<context:component-scan base-package="com.djtu.settings.dao"/>-->
 
 </beans>

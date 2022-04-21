@@ -22,4 +22,5 @@
 
     <!--导入spring配置文件-->
     <import resource="applicationContext-server.xml"/>
+
 </beans>
