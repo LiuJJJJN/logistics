@@ -12,9 +12,6 @@ public class Student {
   private String sno;
   private String stuClass;
   private String enterDate;
-  private String idcard;
-  private String address;
-  private String email;
   private String schoolSys;
   private String remark;
   private String dormId;

@@ -7,13 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Permission {
-  private String id;
-  private String code;
-  private String name;
-  private String fatherId;
-  private String path;
-  private String isMenu;
+public class UserRole {
   private String roleId;
+  private String userId;
+  private String id;
 
 }

@@ -27,11 +27,10 @@ public class UserController {
 
     @RequestMapping(value = "/login.do")
     @ResponseBody
-    public Result testLogin(@RequestBody Map<String, Object> map) {
+    public Result login(@RequestBody Map<String, Object> map) {
         User user = new User();
         user.setUsername((String) map.get("username"));
         user.setPassword((String) map.get("password"));
-
         Boolean rememberMe = (Boolean) map.get("rememberMe");
 
         if (user.getUsername() == null || user.getPassword() == null){
@@ -50,7 +49,7 @@ public class UserController {
             return new Result().setCode(401).setMessage("密码错误");
         }
 
-        User backUser = userService.getUserByUsername("mike");
+        User backUser = userService.getUserByUsername(user.getUsername());
         //将隐私信息设为空
         backUser.setPassword(null);
         backUser.setSalt(null);

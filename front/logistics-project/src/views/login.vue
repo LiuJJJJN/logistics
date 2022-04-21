@@ -6,16 +6,16 @@
         <el-input v-model="form.username"></el-input>
       </el-form-item>
       <el-form-item label="密码" prop="password">
-        <el-input v-model="form.password" type="password"></el-input>
+        <el-input v-model="form.password" show-password></el-input>
       </el-form-item>
       <el-form-item label="" prop="rememberMe" class="rememberMe">
       <el-checkbox v-model="form.rememberMe">七天免登录</el-checkbox>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit">登录</el-button>
-        <el-tooltip class="item" effect="dark" content="还没有账号? 立马去注册!" placement="bottom-start">
-          <el-button @click="toRegister">注册</el-button>
-        </el-tooltip>
+          <el-tooltip class="item" effect="dark" content="还没有账号?立马去注册!" placement="bottom">
+            <el-button @click="toRegister">注册</el-button>
+          </el-tooltip>
       </el-form-item>
     </el-form>
   </div>
@@ -35,18 +35,24 @@ export default {
       rules:{
         username:[
           {required: true, message: "账号必填", trigger: 'blur'},
-          {min: 3, max: 30, message: "账号长度不能小于6位或超过30位"}
+          {min: 6, max: 18, message: "账号长度不能小于 6 位或超过 18 位"}
         ],
         password:[
           {required: true, message: "密码必填", trigger: 'blur'},
-          {min: 3, max: 30, message: "密码长度不能小于6位或超过30位"}
+          {min: 6, max: 18, message: "密码长度不能小于 6 位或超过 18 位"}
         ]
       }
     }
   },
   methods: {
     onSubmit() {
-      this.$axios.post("/login.do", this.form)
+      if (this.form.username === '' || this.form.password === ''){
+        this.$alert('用户名或密码为空!', '警告', {
+          confirmButtonText: '确定'
+        });
+        return;
+      }
+      this.$axios.post("/user/login.do", this.form)
           .then(resp => {
             // alert(resp.data.message);
             console.log(resp.data);
@@ -63,7 +69,7 @@ export default {
             console.log(err)
           })
     },
-    toRegister:function () {
+    toRegister: function () {
       this.$router.replace("/register");
     }
   },
@@ -87,7 +93,9 @@ export default {
   margin: 0 auto;
   text-align: center;
 }
+
 .rememberMe{
   margin-left: -120px;
 }
+
 </style>

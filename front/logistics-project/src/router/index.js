@@ -4,11 +4,11 @@ import VueRouter from 'vue-router'
 import login from "@/views/login";
 import index from "@/views/index";
 import tutorClass from "@/views/tutorClass";
-import register from "@/views/register";
 import tutorFeedback from "@/views/tutorFeedback";
 import userIndex from "@/views/userIndex";
 import userFeedback from "@/views/userFeedback";
 import tutorStudent from "@/views/tutorStudent";
+import register from "@/views/register";
 
 Vue.use(VueRouter)
 
