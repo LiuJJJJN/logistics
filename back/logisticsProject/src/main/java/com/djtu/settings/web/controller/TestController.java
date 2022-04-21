@@ -49,7 +49,12 @@ public class TestController {
 
     @RequestMapping(value = "/login.do")
     @ResponseBody
-    public Result testLogin(@RequestBody User user) {
+    public Result testLogin(@RequestBody Map<String, Object> map) {
+        User user = new User();
+        user.setUsername((String) map.get("username"));
+        user.setPassword((String) map.get("password"));
+
+        Boolean rememberMe = (Boolean) map.get("rememberMe");
 
         if (user.getUsername() == null || user.getPassword() == null){
             return new Result().setCode(500).setMessage("运行错误,用户名密码为空");
@@ -72,11 +77,17 @@ public class TestController {
         backUser.setPassword(null);
         backUser.setSalt(null);
         //配置返回 data 内容
-        Map<String, Object> map = new HashMap<>();
-        map.put("user", backUser);
-        map.put("token", jwt);
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("user", backUser); //传递用户信息
+        resultMap.put("token", jwt); //传递token
+        long timeStamp = System.currentTimeMillis()+1000*60*60*24*7; //设置过期时间为 7 天
+        if (!rememberMe) {
+            timeStamp = System.currentTimeMillis()+1000*60*30; //如果没选七天免登录的话, 过期时间为 30 分钟
+        }
+        resultMap.put("rememberMe", rememberMe); //传递是否七天免登录的标记
+        resultMap.put("timestamp", timeStamp); //传递过期时间戳
 
-        return new Result().setCode(200).setMessage("登录成功").setData(map);
+        return new Result().setCode(200).setMessage("登录成功").setData(resultMap);
     }
 
 }

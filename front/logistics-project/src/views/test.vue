@@ -55,7 +55,6 @@ export default {
       console.log(row);
     }
   },
-
   data() {
     return {
       tableData: [{

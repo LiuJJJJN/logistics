@@ -110,11 +110,7 @@ export default {
 .index {
   padding: 0px;
   margin: 0px;
-  height: 100%;
-}
-
-.el-container {
-  height: 100%;
+  /*height: 100%;*/
 }
 
 .el-header, .el-footer {

@@ -5,7 +5,21 @@
 <script>
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
-  name: "test2"
+  name: "test2",
+  data(){
+    return{
+
+    }
+  },
+  methods:{
+    test:function (){
+      var nowTimestamp = new Date().getTime();
+      alert(nowTimestamp);
+    }
+  },
+  created() {
+    this.test();
+  }
 }
 </script>
 

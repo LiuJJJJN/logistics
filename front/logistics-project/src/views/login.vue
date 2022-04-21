@@ -8,6 +8,9 @@
       <el-form-item label="密码" prop="password">
         <el-input v-model="form.password" type="password"></el-input>
       </el-form-item>
+      <el-form-item label="" prop="rememberMe" class="rememberMe">
+      <el-checkbox v-model="form.rememberMe">七天免登录</el-checkbox>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit">登录</el-button>
         <el-tooltip class="item" effect="dark" content="还没有账号? 立马去注册!" placement="bottom-start">
@@ -26,7 +29,8 @@ export default {
     return {
       form: {
         username: '',
-        password: ''
+        password: '',
+        rememberMe: false
       },
       rules:{
         username:[
@@ -45,9 +49,11 @@ export default {
       this.$axios.post("/login.do", this.form)
           .then(resp => {
             // alert(resp.data.message);
-            // console.log(resp.data);
+            console.log(resp.data);
             this.$store.commit("SET_TOKEN", resp.data.data.token); //向全局存储中中存值
             this.$store.commit("SET_USERINFO", resp.data.data.user); //向全局存储中中存值
+            this.$store.commit("SET_REMEMBER_ME", resp.data.data.rememberMe); //向全局存储中中存值
+            this.$store.commit("SET_TIME_STAMP", resp.data.data.timestamp); //向全局存储中中存值
             this.$message({
               message: resp.data.message,
               type: 'success'
@@ -60,6 +66,16 @@ export default {
     toRegister:function () {
       this.$router.replace("/register");
     }
+  },
+  created() {
+    if (this.$store.getters.getTimeStamp > 0){ //页面打开时判断是否需要登录
+      this.$router.replace("/index");
+      this.$notify({
+        title: '成功',
+        message: '通过免登录验证, 进入主页',
+        type: 'success'
+      });
+    }
   }
 }
 </script>
@@ -71,7 +87,7 @@ export default {
   margin: 0 auto;
   text-align: center;
 }
-#rememberMe{
+.rememberMe{
   margin-left: -120px;
 }
 </style>
