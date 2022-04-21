@@ -1,18 +1,36 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2022/4/20 17:19:27                           */
+/* Created on:     2022/4/21 8:59:13                            */
 /*==============================================================*/
 
-/*==============================================================*/
-/* Table: "tbl_ middle"                                         */
-/*==============================================================*/
-create table "tbl_ middle"
-(
-   id                   char(32),
-   stu_id               char(32),
-   dorm_id              char(32),
-   primary key (id)
-);
+
+drop table if exists tbl_classUse;
+
+drop table if exists tbl_classroom;
+
+drop table if exists tbl_di_value;
+
+drop table if exists tbl_dic_type;
+
+drop table if exists tbl_dorm;
+
+drop table if exists tbl_libSeat;
+
+drop table if exists tbl_libUse;
+
+drop table if exists tbl_library;
+
+drop table if exists tbl_middle_stu_dorm;
+
+drop table if exists tbl_permission;
+
+drop table if exists tbl_role;
+
+drop table if exists tbl_student;
+
+drop table if exists tbl_tutor;
+
+drop table if exists tbl_user;
 
 /*==============================================================*/
 /* Table: tbl_classUse                                          */
@@ -116,6 +134,17 @@ create table tbl_library
    close                char(19),
    is_clean             varchar(6),
    is_open              varchar(8),
+   primary key (id)
+);
+
+/*==============================================================*/
+/* Table: tbl_middle_stu_dorm                                   */
+/*==============================================================*/
+create table tbl_middle_stu_dorm
+(
+   id                   char(32) not null,
+   stu_id               char(32),
+   dorm_id              char(32),
    primary key (id)
 );
 

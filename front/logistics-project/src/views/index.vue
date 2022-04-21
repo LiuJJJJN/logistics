@@ -52,7 +52,7 @@
               <router-link :to="'/tutor/class'"><el-menu-item index="2-1">管理班级</el-menu-item></router-link>
             </el-menu-item-group>
             <el-menu-item-group title="我的学生">
-              <el-menu-item index="2-2">管理学生</el-menu-item>
+              <router-link :to="'/tutor/student'"><el-menu-item index="2-2">管理学生</el-menu-item></router-link>
             </el-menu-item-group>
             <el-menu-item-group title="学生反馈">
               <router-link :to="'/tutor/feedback'"><el-menu-item index="2-3">学生反馈</el-menu-item></router-link>
