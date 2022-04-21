@@ -1,15 +1,11 @@
 package com.djtu.settings.service.serviceImpl;
 
 import com.djtu.settings.dao.UserDao;
-import com.djtu.settings.dao.UsersDao;
 import com.djtu.settings.pojo.User;
-import com.djtu.settings.pojo.Users;
 import com.djtu.settings.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -22,12 +18,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserByUsername(String username) {
         if ("mike".equals(username)) {
-            return new User("001","mike", "fc1709d0a95a6be30bc5926fdb7f22f4", "","","","","","","");
+            return new User("001","mike", "fc1709d0a95a6be30bc5926fdb7f22f4", "","","",null,"","","");
 
         }
         return null;
     }
-
 
     /**
      * 用户登录查询
@@ -39,4 +34,5 @@ public class UserServiceImpl implements UserService {
         User user=userDao.getUserByName(username);
         return user;
     }
+
 }
