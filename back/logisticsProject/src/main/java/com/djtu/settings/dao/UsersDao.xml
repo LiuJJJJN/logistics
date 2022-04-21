@@ -6,4 +6,6 @@
     <select id="getUsers" resultType="com.djtu.settings.pojo.Users">
     SELECT * FROM tbl_user
     </select>
+
+
 </mapper>
