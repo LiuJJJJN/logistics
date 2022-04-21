@@ -179,7 +179,7 @@ create table tbl_student
 (
    id                   char(32) not null,
    sno                  char(10),
-   class                varchar(255),
+   stu_class            varchar(255),
    enter_date           char(19),
    idcard               char(18),
    address              varchar(255),
