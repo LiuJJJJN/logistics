@@ -13,7 +13,7 @@ public class DicValue {
   private String id;
   private String value;
   private String text;
-  private long orderNo;
+  private Long orderNo;
   private String typeCode;
 
 }
