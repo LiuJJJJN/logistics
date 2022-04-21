@@ -25,14 +25,9 @@
     <el-container>
 
       <el-aside width="200px">
-        <el-menu :default-openeds="['2']"> <!--哪个功能不折叠-->
+        <el-menu :default-openeds="['1']"> <!--哪个功能不折叠-->
           <el-submenu index="1">
             <template slot="title"><i class="el-icon-menu"></i>学生功能</template>
-            <el-menu-item-group>
-              <template slot="title">测试</template>
-              <router-link :to="'/test1'"><el-menu-item index="1-10">测试1</el-menu-item></router-link>
-              <router-link :to="'/test2'"><el-menu-item index="1-11">测试2</el-menu-item></router-link>
-            </el-menu-item-group>
             <el-menu-item-group>
               <template slot="title">寝室信息</template>
               <el-menu-item index="1-1">我的寝室</el-menu-item>
@@ -110,10 +105,9 @@ export default {
 .index {
   padding: 0px;
   margin: 0px;
-  /*height: 100%;*/
 }
 
-.el-header, .el-footer {
+.el-header {
   background-color: #B3C0D1;
   color: #333;
   text-align: center;
@@ -124,14 +118,11 @@ export default {
   background-color: #D3DCE6;
   color: #333;
   text-align: center;
-  line-height: 200px;
 }
 
 .el-main {
   background-color: #E9EEF3;
   color: #333;
-  text-align: center;
-  line-height: 160px;
 }
 
 body > .el-container {

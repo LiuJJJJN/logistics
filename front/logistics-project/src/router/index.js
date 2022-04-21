@@ -3,8 +3,6 @@ import VueRouter from 'vue-router'
 
 import login from "@/views/login";
 import index from "@/views/index";
-import test from "@/views/test";
-import test2 from "@/views/test2";
 import tutorClass from "@/views/tutorClass";
 import register from "@/views/register";
 import tutorFeedback from "@/views/tutorFeedback";
@@ -19,11 +17,6 @@ const routes = [
     path:"/",
     name:"login",
     component: login
-  },
-  {
-    path:"/test1",
-    name:"test1",
-    component: test
   },
   {
     path:"/index",
@@ -43,16 +36,6 @@ const routes = [
         path:"/user/feedback",
         name:"userFeedback",
         component: userFeedback
-      },
-      {
-        path:"/test1",
-        name:"test1",
-        component: test
-      },
-      {
-        path:"/test2",
-        name:"test2",
-        component: test2
       },
       {
         path:"/tutor/class",
