@@ -5,14 +5,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-/**
- * 角色表
- */
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @ToString
-public class Role {
-    private String id;
-    private String name;
+public class DicType {
+  private String code;
+  private String name;
+  private String description;
+
 }

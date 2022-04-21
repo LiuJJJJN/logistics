@@ -1,15 +1,11 @@
 package com.djtu.settings.service.serviceImpl;
 
 import com.djtu.settings.dao.UserDao;
-import com.djtu.settings.dao.UsersDao;
 import com.djtu.settings.pojo.User;
-import com.djtu.settings.pojo.Users;
 import com.djtu.settings.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
