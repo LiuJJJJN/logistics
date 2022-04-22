@@ -26,6 +26,12 @@ public class TestController {
     @Autowired
     private UserService userService;
 
+    @RequestMapping("/")
+    @ResponseBody
+    public String none(){
+        return "see vue this is springMVC";
+    }
+
     @RequestMapping("/test1.do")
     @ResponseBody
     public String test1(){
