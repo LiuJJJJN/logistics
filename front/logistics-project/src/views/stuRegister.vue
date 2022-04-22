@@ -1,42 +1,42 @@
 <template>
-  <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+  <el-form :model="submitForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
     <el-form-item label="用户名" prop="username">
-      <el-input v-model="ruleForm.username"></el-input>
+      <el-input v-model="submitForm.username"></el-input>
     </el-form-item>
     <el-form-item label="密码" prop="password">
-      <el-input v-model="ruleForm.password" show-password></el-input>
+      <el-input v-model="submitForm.password" show-password></el-input>
     </el-form-item>
     <el-form-item label="确认密码" prop="checkPassword">
-      <el-input v-model="ruleForm.checkPassword" show-password></el-input>
+      <el-input v-model="submitForm.checkPassword" show-password></el-input>
     </el-form-item>
     <el-form-item label="姓名" prop="name">
-      <el-input v-model="ruleForm.name"></el-input>
+      <el-input v-model="submitForm.name"></el-input>
     </el-form-item>
     <el-form-item label="性别" prop="sex">
-      <el-radio-group v-model="ruleForm.sex">
+      <el-radio-group v-model="submitForm.sex">
         <el-radio label="男"></el-radio>
         <el-radio label="女"></el-radio>
       </el-radio-group>
     </el-form-item>
     <el-form-item label="所属学院" prop="college">
       <el-autocomplete
-          v-model="ruleForm.college"
+          v-model="submitForm.college"
           :fetch-suggestions="querySearchAsync"
           placeholder="请输入内容"
           @select="handleSelect"
       ></el-autocomplete>
     </el-form-item>
     <el-form-item label="所属班级" prop="stuClass">
-      <el-input v-model="ruleForm.stuClass"></el-input>
+      <el-input v-model="submitForm.stuClass"></el-input>
     </el-form-item>
     <el-form-item label="学制" prop="schoolSys">
-      <el-input-number v-model="ruleForm.schoolSys" controls-position="right" :min="4"
+      <el-input-number v-model="submitForm.schoolSys" controls-position="right" :min="4"
                        :max="8"></el-input-number>
     </el-form-item>
     <el-form-item label="入学日期" prop="enterDate">
       <div class="block">
         <el-date-picker
-            v-model="ruleForm.enterDate"
+            v-model="submitForm.enterDate"
             align="right"
             type="date"
             placeholder="选择日期"
@@ -46,31 +46,32 @@
     </el-form-item>
     <el-form class="sub-res-button">
       <br>
-      <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
+      <el-button type="primary" @click="toRegister('ruleForm')">立即创建</el-button>
       <el-button @click="resetForm('ruleForm')">重置</el-button>
     </el-form>
   </el-form>
 </template>
 
 <script>
+import ElementUI from "element-ui";
+
 export default {
   name: "stuRegister",
   data (){
     return{
-      ruleForm: {
+      restaurants: [],
+      submitForm: {
         username: '',
         password: '',
         checkPassword: '',
         name: '',
         sex: '男',
-        restaurants: [],
         college: '',
-        timeout: null,
         stuClass: '',
-        address: '',
-        email: '',
         schoolSys: '',
         enterDate: '',
+      },
+      ruleForm: {
         pickerOptions: {
           disabledDate(time) {
             return time.getTime() > Date.now();
@@ -118,7 +119,8 @@ export default {
           {min: 2, max: 30, message: '长度在 2 到 30 个字符', trigger: 'blur'}
         ],
         college: [
-          {required: true, message: '请输入学院', trigger: 'blur'}
+          {required: true, message: '请输入学院', trigger: 'blur'},
+          {type:'enum', enum: ['23', '34'], message: '学院必须为学院列表中的值'}
         ],
         stuClass: [
           {required: true, message: '请输入班级', trigger: 'blur'}
@@ -133,10 +135,16 @@ export default {
     }
   },
   methods:{
-    submitForm(formName) {
+    toRegister(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.$axios.post("/user/registerStudent.do",this.ruleForm)
+          if (this.submitForm.password !== this.submitForm.checkPassword) {
+            ElementUI.Message.error("两次输入的密码不一致!", {duration:3*1000});
+            this.submitForm.password = '';
+            this.submitForm.checkPassword = '';
+            return false;
+          }
+          this.$axios.post("/user/registerStudent.do",this.submitForm)
               .then((resp)=>{
                 console.log(resp);
               }, (err)=>{
