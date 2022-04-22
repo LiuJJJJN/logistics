@@ -5,8 +5,15 @@
 <mapper namespace="com.djtu.settings.dao.UserDao">
     <!--登录查询-->
     <select id="getUserByName" resultType="com.djtu.settings.pojo.User">
-        SELECT id,username,password,salt,name,sex,age,tel,ident,ident_id
+        SELECT id,
+               username,
+               password,
+               salt,
+               name,
+               sex,
+               ident,
+               ident_id
         from tbl_user
-        where username=#{username}
+        where username = #{username}
     </select>
 </mapper>
