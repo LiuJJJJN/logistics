@@ -97,7 +97,8 @@ export default {
           {min: 2, max: 30, message: '长度在 2 到 30 个字符', trigger: 'blur'}
         ],
         college: [
-          {required: true, message: '请输入学院', trigger: 'blur'}
+          {required: true, message: '请输入学院', trigger: 'blur'},
+          {type:'enum', enum: ['23', '34'], message: '学院必须为学院列表中的值'}
         ]
       }
     }
@@ -117,6 +118,8 @@ export default {
       this.$refs[formName].resetFields();
     },
     loadAll() {
+      //todo  查询学院
+
       return [
         {"value": "三全鲜食（北新泾店）", "address": "长宁区新渔路144号"},
         {"value": "Hot honey 首尔炸鸡（仙霞路）", "address": "上海市长宁区淞虹路661号"},
@@ -143,6 +146,9 @@ export default {
   },
   mounted() {
     this.restaurants = this.loadAll();
+  },
+  created() {
+
   }
 }
 </script>
