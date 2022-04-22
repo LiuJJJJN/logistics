@@ -4,17 +4,24 @@ import VueRouter from 'vue-router'
 import login from "@/views/login";
 import index from "@/views/index";
 import tutorClass from "@/views/tutorClass";
-import register from "@/views/register";
 import tutorFeedback from "@/views/tutorFeedback";
 import userIndex from "@/views/userIndex";
 import userFeedback from "@/views/userFeedback";
 import tutorStudent from "@/views/tutorStudent";
+import register from "@/views/register";
+import stuRegister from "@/views/stuRegister";
+import tutorRegister from "@/views/tutorRegister";
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path:"/",
+    name:"login",
+    component: login
+  },
+  {
+    path:"/login",
     name:"login",
     component: login
   },
@@ -55,14 +62,21 @@ const routes = [
     ]
   },
   {
-    path:"/login",
-    name:"login",
-    component: login
-  },
-  {
     path:"/register",
     name:"register",
-    component: register
+    component: register,
+    children: [
+      {
+        path:"/register/stuRegister",
+        name:"stuRegister",
+        component: stuRegister,
+      },
+      {
+        path:"/register/tutorRegister",
+        name:"tutorRegister",
+        component: tutorRegister,
+      }
+    ]
   }
 ]
 

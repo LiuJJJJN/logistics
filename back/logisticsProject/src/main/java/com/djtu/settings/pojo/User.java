@@ -14,8 +14,6 @@ public class User {
   private String salt;
   private String name;
   private String sex;
-  private Long age;
-  private String tel;
   private String ident;
   private String identId;
 

@@ -7,10 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DicValue {
+public class UserRole {
+  private String roleId;
+  private String userId;
   private String id;
-  private String value;
-  private Long orderNo;
-  private String typeCode;
 
 }

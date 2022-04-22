@@ -1,5 +1,6 @@
 package com.djtu.utils;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.crypto.hash.Md5Hash;
 
@@ -29,4 +30,9 @@ public class StringUtil {
             return null;
         }
     }
+
+    public static String rand4Str(){
+        return RandomStringUtils.randomAscii(4);
+    }
+
 }
