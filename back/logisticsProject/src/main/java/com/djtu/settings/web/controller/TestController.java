@@ -44,7 +44,7 @@ public class TestController {
     @RequestMapping("/test.do")
     public void test1(@RequestParam(value="name") String name){
         System.out.println(name);
-        User user=userService.userLogin(name);
+        User user=userService.getUserByUsername(name);
         System.out.println(user);
     }
 

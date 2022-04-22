@@ -14,12 +14,12 @@ public class StringUtil {
     }
 
     // md5 加密
-    public static String md5(String password, String salt, int hashIterations){
+    public static String md5(String password, String salt){
         // 校验 密码、盐 是否为空: null、“”、" "、制表符、换行符、换页符、回车
         if (StringUtils.isBlank(password) || StringUtils.isBlank(salt)){
             return null;
         }
-        Md5Hash md5Hash = new Md5Hash(password, salt, hashIterations); //默认盐加在明文前
+        Md5Hash md5Hash = new Md5Hash(password, salt, 1024); //默认盐加在明文前
         return md5Hash.toHex();
     }
 
