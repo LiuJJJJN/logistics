@@ -67,12 +67,12 @@ const routes = [
     component: register,
     children: [
       {
-        path:"/register/stuRegister",
+        path:"stuRegister",
         name:"stuRegister",
         component: stuRegister,
       },
       {
-        path:"/register/tutorRegister",
+        path:"tutorRegister",
         name:"tutorRegister",
         component: tutorRegister,
       }

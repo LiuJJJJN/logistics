@@ -1,8 +1,11 @@
 package com.djtu.settings.web.controller;
 
 import com.djtu.response.Result;
+import com.djtu.settings.pojo.Student;
 import com.djtu.settings.pojo.User;
 import com.djtu.settings.service.UserService;
+import com.djtu.settings.vo.UserStuVo;
+import com.djtu.settings.vo.Vot;
 import com.djtu.token.JwtToken;
 import com.djtu.utils.JwtUtil;
 import org.apache.shiro.SecurityUtils;
@@ -69,8 +72,8 @@ public class UserController {
 
     @RequestMapping("/registerStudent.do")
     @ResponseBody
-    public Result registerStudent(@RequestBody Map<String, Object> map){
-        System.out.println(map);
+    public Result registerStudent(@RequestBody UserStuVo vo){
+        System.out.println(vo);
         return new Result();
     }
 
