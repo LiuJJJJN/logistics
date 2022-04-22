@@ -11,8 +11,6 @@
                salt,
                name,
                sex,
-               age,
-               tel,
                ident,
                ident_id
         from tbl_user

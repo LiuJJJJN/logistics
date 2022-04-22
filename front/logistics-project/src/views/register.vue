@@ -3,113 +3,16 @@
     <el-page-header @back="goBack" content="注册页面" class="page-header"></el-page-header>
     <el-divider></el-divider>
     <div class="reg-main">
-      <el-tabs type="card">
-        <el-tab-pane label="注册学生">
-          <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-            <el-form-item label="用户名" prop="username">
-              <el-input v-model="ruleForm.username"></el-input>
-            </el-form-item>
-            <el-form-item label="密码" prop="password">
-              <el-input v-model="ruleForm.password" show-password></el-input>
-            </el-form-item>
-            <el-form-item label="确认密码" prop="checkPassword">
-              <el-input v-model="ruleForm.checkPassword" show-password></el-input>
-            </el-form-item>
-            <el-form-item label="姓名" prop="name">
-              <el-input v-model="ruleForm.name"></el-input>
-            </el-form-item>
-            <el-form-item label="性别" prop="sex">
-              <el-radio-group v-model="ruleForm.sex">
-                <el-radio label="男"></el-radio>
-                <el-radio label="女"></el-radio>
-              </el-radio-group>
-            </el-form-item>
-            <el-form-item label="所属学院" prop="college">
-              <el-autocomplete
-                  v-model="ruleForm.college"
-                  :fetch-suggestions="querySearchAsync"
-                  placeholder="请输入内容"
-                  @select="handleSelect"
-              ></el-autocomplete>
-            </el-form-item>
-            <el-form-item label="所属班级" prop="stuClass">
-              <el-input v-model="ruleForm.stuClass"></el-input>
-            </el-form-item>
-            <el-form-item label="学制" prop="schoolSys">
-              <el-input-number v-model="ruleForm.schoolSys" controls-position="right" :min="4"
-                               :max="8"></el-input-number>
-            </el-form-item>
-            <el-form-item label="入学日期" prop="enterDate">
-              <div class="block">
-                <el-date-picker
-                    v-model="ruleForm.enterDate"
-                    align="right"
-                    type="date"
-                    placeholder="选择日期"
-                    :picker-options="ruleForm.pickerOptions">
-                </el-date-picker>
-              </div>
-            </el-form-item>
-            <el-form>
-              <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
-              <el-button @click="resetForm('ruleForm')">重置</el-button>
-            </el-form>
-          </el-form>
-        </el-tab-pane>
-        <el-tab-pane label="注册其他身份">
-          <!--          <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">-->
-          <!--            <el-form-item label="活动名称" prop="name">-->
-          <!--              <el-input v-model="ruleForm.name"></el-input>-->
-          <!--            </el-form-item>-->
-          <!--            <el-form-item label="活动区域" prop="region">-->
-          <!--              <el-select v-model="ruleForm.region" placeholder="请选择活动区域">-->
-          <!--                <el-option label="区域一" value="shanghai"></el-option>-->
-          <!--                <el-option label="区域二" value="beijing"></el-option>-->
-          <!--              </el-select>-->
-          <!--            </el-form-item>-->
-          <!--            <el-form-item label="活动时间" required>-->
-          <!--              <el-col :span="11">-->
-          <!--                <el-form-item prop="date1">-->
-          <!--                  <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.date1" style="width: 100%;"></el-date-picker>-->
-          <!--                </el-form-item>-->
-          <!--              </el-col>-->
-          <!--              <el-col class="line" :span="2">-</el-col>-->
-          <!--              <el-col :span="11">-->
-          <!--                <el-form-item prop="date2">-->
-          <!--                  <el-time-picker placeholder="选择时间" v-model="ruleForm.date2" style="width: 100%;"></el-time-picker>-->
-          <!--                </el-form-item>-->
-          <!--              </el-col>-->
-          <!--            </el-form-item>-->
-          <!--            <el-form-item label="即时配送" prop="delivery">-->
-          <!--              <el-switch v-model="ruleForm.delivery"></el-switch>-->
-          <!--            </el-form-item>-->
-          <!--            <el-form-item label="活动性质" prop="type">-->
-          <!--              <el-checkbox-group v-model="ruleForm.type">-->
-          <!--                <el-checkbox label="美食/餐厅线上活动" name="type"></el-checkbox>-->
-          <!--                <el-checkbox label="地推活动" name="type"></el-checkbox>-->
-          <!--                <el-checkbox label="线下主题活动" name="type"></el-checkbox>-->
-          <!--                <el-checkbox label="单纯品牌曝光" name="type"></el-checkbox>-->
-          <!--              </el-checkbox-group>-->
-          <!--            </el-form-item>-->
-          <!--            <el-form-item label="特殊资源" prop="resource">-->
-          <!--              <el-radio-group v-model="ruleForm.resource">-->
-          <!--                <el-radio label="线上品牌商赞助"></el-radio>-->
-          <!--                <el-radio label="线下场地免费"></el-radio>-->
-          <!--              </el-radio-group>-->
-          <!--            </el-form-item>-->
-          <!--            <el-form-item label="活动形式" prop="desc">-->
-          <!--              <el-input type="textarea" v-model="ruleForm.desc"></el-input>-->
-          <!--            </el-form-item>-->
-          <!--            <el-form-item>-->
-          <!--              <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>-->
-          <!--              <el-button @click="resetForm('ruleForm')">重置</el-button>-->
-          <!--            </el-form-item>-->
-          <!--          </el-form>-->
-        </el-tab-pane>
-      </el-tabs>
-
-      <br>
-      <br>
+      <el-radio-group v-model="ident">
+        <router-link :to="'/register/stuRegister'" style="color: black">
+          <el-radio-button label="注册学生"></el-radio-button>
+        </router-link>
+        <div style="padding: 10px; display: inline-block"></div>
+        <router-link :to="'/register/tutorRegister'">
+          <el-radio-button label="注册教职工"></el-radio-button>
+        </router-link>
+      </el-radio-group>
+      <router-view></router-view>
     </div>
   </div>
 </template>
@@ -120,133 +23,20 @@ export default {
   name: "register",
   data() {
     return {
-      ruleForm: {
-        username: '',
-        password: '',
-        checkPassword: '',
-        name: '',
-        sex: '男',
-        restaurants: [],
-        college: '',
-        timeout: null,
-        stuClass: '',
-        address: '',
-        email: '',
-        schoolSys: '',
-        pickerOptions: {
-          disabledDate(time) {
-            return time.getTime() > Date.now();
-          },
-          shortcuts: [{
-            text: '今天',
-            onClick(picker) {
-              picker.$emit('pick', new Date());
-            }
-          }, {
-            text: '昨天',
-            onClick(picker) {
-              const date = new Date();
-              date.setTime(date.getTime() - 3600 * 1000 * 24);
-              picker.$emit('pick', date);
-            }
-          }, {
-            text: '一周前',
-            onClick(picker) {
-              const date = new Date();
-              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit('pick', date);
-            }
-          }]
-        },
-        enterDate: '',
-        idcard: ''
-      },
-      rules: {
-        username: [
-          {required: true, message: '请输入用户名', trigger: 'blur'},
-          {min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur'}
-        ],
-        password: [
-          {required: true, message: '请输入密码', trigger: 'blur'},
-          {min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur'}
-        ],
-        sex: [
-          {required: true, message: '请输入性别', trigger: 'blur'}
-        ],
-        checkPassword: [
-          {required: true, message: '请输入密码确认', trigger: 'blur'},
-          {min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur'}
-        ],
-        name: [
-          {required: true, message: '请输入姓名', trigger: 'blur'},
-          {min: 2, max: 30, message: '长度在 2 到 30 个字符', trigger: 'blur'}
-        ],
-        college: [
-          {required: true, message: '请输入学院', trigger: 'blur'}
-        ],
-        stuClass: [
-          {required: true, message: '请输入班级', trigger: 'blur'}
-        ],
-        schoolSys: [
-          {required: true, message: '请输入学制', trigger: 'blur'}
-        ],
-        enterDate: [
-          {required: true, message: '请输入入学日期', trigger: 'blur'}
-        ]
-      }
+      ident:'',
     };
   },
   methods: {
     goBack: function () {
       this.$router.replace('/login');
     },
-    submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          alert('submit!');
-        } else {
-          console.log('error submit!!');
-          return false;
-        }
-      });
-    },
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
-    },
-    loadAll() {
-      return [
-        {"value": "三全鲜食（北新泾店）", "address": "长宁区新渔路144号"},
-        {"value": "Hot honey 首尔炸鸡（仙霞路）", "address": "上海市长宁区淞虹路661号"},
-        {"value": "新旺角茶餐厅", "address": "上海市普陀区真北路988号创邑金沙谷6号楼113"}
-      ];
-    },
-    querySearchAsync(queryString, cb) {
-      var restaurants = this.restaurants;
-      var results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;
-
-      clearTimeout(this.timeout);
-      this.timeout = setTimeout(() => {
-        cb(results);
-      }, 300);
-    },
-    createStateFilter(queryString) {
-      return (college) => {
-        return (college.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
-      };
-    },
-    handleSelect(item) {
-      console.log(item);
-    }
-  },
-  mounted() {
-    this.restaurants = this.loadAll();
   }
 }
 </script>
 
 <style scoped>
 .demo-ruleForm {
-  padding-top: 50px;
+  padding-top: 30px;
   width: 500px;
   margin: 0 auto;
 }
@@ -262,4 +52,5 @@ export default {
   width: 500px;
   margin: 0 auto;
 }
+
 </style>

@@ -67,4 +67,11 @@ public class UserController {
         return new Result().setCode(200).setMessage("登录成功").setData(resultMap);
     }
 
+    @RequestMapping("/registerStudent.do")
+    @ResponseBody
+    public Result registerStudent(@RequestBody Map<String, Object> map){
+        System.out.println(map);
+        return new Result();
+    }
+
 }

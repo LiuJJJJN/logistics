@@ -26,7 +26,10 @@ router.beforeEach((to, from, next)=> {
   var rememberMe = store.getters.getRememberMe;
   var timeStamp = store.getters.getTimeStamp;
   var nowTimeStamp = new Date().getTime();
-  if (to.fullPath === '/login' || to.fullPath === '/register') { //如果访问的是 登录 / 注册 页面则 放行
+  if (to.fullPath === '/login' ||
+      to.fullPath === '/register' ||
+      to.fullPath === '/register/stuRegister' ||
+      to.fullPath === '/register/tutorRegister') { //如果访问的是 登录 / 注册 页面则 放行
     next();
   } else if (rememberMe == null) { // localStorage 为空
     ElementUI.Message.error('您已退出登录, 请重新登录', {duration:3*1000});
