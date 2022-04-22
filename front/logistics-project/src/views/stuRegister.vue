@@ -29,6 +29,9 @@
     <el-form-item label="所属班级" prop="stuClass">
       <el-input v-model="submitForm.stuClass"></el-input>
     </el-form-item>
+    <el-form-item label="学号" prop="sno">
+      <el-input v-model="submitForm.sno" ></el-input>
+    </el-form-item>
     <el-form-item label="学制" prop="schoolSys">
       <el-input-number v-model="submitForm.schoolSys" controls-position="right" :min="4"
                        :max="8"></el-input-number>
@@ -68,6 +71,7 @@ export default {
         sex: '男',
         college: '',
         stuClass: '',
+        sno: '',
         schoolSys: '',
         enterDate: '',
       },
@@ -124,6 +128,10 @@ export default {
         ],
         stuClass: [
           {required: true, message: '请输入班级', trigger: 'blur'}
+        ],
+        sno: [
+          {required: true, message: '请输入学号', trigger: 'blur'},
+          {pattern: /^-?\d*$/, message: '请输入全数字学号', trigger: 'blur'}
         ],
         schoolSys: [
           {required: true, message: '请输入学制', trigger: 'blur'}

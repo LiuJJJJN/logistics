@@ -8,6 +8,7 @@ import com.djtu.settings.vo.UserStuVo;
 import com.djtu.settings.vo.Vot;
 import com.djtu.token.JwtToken;
 import com.djtu.utils.JwtUtil;
+import com.djtu.utils.StringUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
@@ -73,8 +74,13 @@ public class UserController {
     @RequestMapping("/registerStudent.do")
     @ResponseBody
     public Result registerStudent(@RequestBody UserStuVo vo){
-        System.out.println(vo);
-        return new Result();
+        String salt = StringUtil.rand4Str();
+        vo.setPassword(StringUtil.md5(vo.getPassword(), salt));
+        boolean regSuccess = userService.addUserStudent(vo);
+        if (regSuccess) {
+            return new Result().setCode(200).setMessage("注册成功");
+        }
+        return  new Result().setCode(500).setMessage("注册失败");
     }
 
 }
