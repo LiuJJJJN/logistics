@@ -2,12 +2,10 @@ package com.djtu.settings.web.controller;
 
 import com.djtu.exception.RegisterException;
 import com.djtu.response.Result;
+import com.djtu.settings.pojo.DicValue;
 import com.djtu.settings.pojo.Student;
 import com.djtu.settings.pojo.Tutor;
-import com.djtu.settings.service.AdminService;
-import com.djtu.settings.service.StudentService;
-import com.djtu.settings.service.TutorService;
-import com.djtu.settings.service.UserService;
+import com.djtu.settings.service.*;
 import com.djtu.settings.vo.UserVo;
 import com.djtu.token.JwtToken;
 import com.djtu.utils.JwtUtil;
@@ -23,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -36,6 +35,8 @@ public class UserController {
     private AdminService adminService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private DicValueService dicValueService;
 
     @RequestMapping(value = "/login.do")
     @ResponseBody
@@ -125,5 +126,12 @@ public class UserController {
         //调用注册的业务方法
         userService.registerTutor(tutor);
         return new Result().setCode(200).setMessage("注册成功");
+    }
+
+    @RequestMapping("/getCollegeList.do")
+    @ResponseBody
+    public Result getCollegeList(){
+        List<DicValue> list=dicValueService.getCollegeList();
+        return new Result().setCode(200).setMessage("获取成功").setData(list);
     }
 }
