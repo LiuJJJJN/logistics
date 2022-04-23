@@ -22,7 +22,7 @@ axios.interceptors.response.use(resp =>{
         router.push("/login");
         return Promise.reject(res.message);
     }else { // 失败 显示失败信息
-        ElementUI.Message.error("其他错误，后端相应内容:"+res.message, {duration:3*1000});
-        return Promise.reject("其他错误，后端相应内容:"+res.message);
+        ElementUI.Message.error("其他错误，后端响应内容:"+res.message, {duration:3*1000});
+        return Promise.reject(res.message);
     }
 })

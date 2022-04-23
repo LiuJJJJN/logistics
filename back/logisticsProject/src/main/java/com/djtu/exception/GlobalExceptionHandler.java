@@ -2,6 +2,7 @@ package com.djtu.exception;
 
 import com.djtu.response.Result;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.ExpiredCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authz.UnauthenticatedException;
@@ -29,6 +30,12 @@ public class GlobalExceptionHandler {
     public Result handler(UnauthenticatedException e) {
         log.error("运行时异常----------------{}", e.getMessage());
         return new Result().setCode(401).setMessage("未登录");
+    }
+
+    @ExceptionHandler(value = AuthenticationException.class)
+    public Result handler(AuthenticationException e) {
+        log.error("运行时异常----------------{}", e.getMessage());
+        return new Result().setCode(401).setMessage("未找到此用户");
     }
 
     @ExceptionHandler(value=RegisterException.class)
