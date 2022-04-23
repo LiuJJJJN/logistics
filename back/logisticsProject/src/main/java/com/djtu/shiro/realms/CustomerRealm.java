@@ -1,9 +1,11 @@
 package com.djtu.shiro.realms;
 
+import com.djtu.response.Result;
+import com.djtu.settings.dao.StudentDao;
+import com.djtu.settings.pojo.Student;
 import com.djtu.settings.pojo.User;
-import com.djtu.settings.service.PermissionService;
-import com.djtu.settings.service.RoleService;
-import com.djtu.settings.service.UserService;
+import com.djtu.settings.service.*;
+import com.djtu.settings.vo.UserVo;
 import com.djtu.token.JwtToken;
 import com.djtu.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
@@ -25,7 +27,11 @@ import java.util.Set;
 public class CustomerRealm extends AuthorizingRealm {
 
     @Autowired
-    private UserService userService;
+    private StudentService studentService;
+    @Autowired
+    private TutorService tutorService;
+    @Autowired
+    private AdminService adminService;
     @Autowired
     private RoleService roleService;
     @Autowired
@@ -63,15 +69,24 @@ public class CustomerRealm extends AuthorizingRealm {
         Claims claims = JwtUtil.parseJWT(jwt);
         //获取解析后的用户名
         String username = claims.getId();
+        String ident = claims.getSubject();
 
-        User user = userService.getUserByUsername(username);
-        if (user == null){
+        UserVo userVo = null;
+        if ("学生".equals(ident)) {
+            userVo = studentService.getUserVoByUsername(username);
+        }else if ("导员".equals(ident)) {
+            userVo = tutorService.getUserVoByUsername(username);
+        }else if ("管理员".equals(ident)) {
+            userVo = adminService.getUserVoByUsername(username);
+        }
+
+        if (userVo == null){
             return null;
         }
         return new SimpleAuthenticationInfo(
                 username, //用户名
-                user.getPassword(), //密码
-                ByteSource.Util.bytes(user.getSalt()), //盐
+                userVo.getPassword(), //密码
+                ByteSource.Util.bytes(userVo.getSalt()), //盐
                 this.getName());
     }
 

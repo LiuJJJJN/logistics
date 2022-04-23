@@ -4,4 +4,15 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.djtu.settings.dao.PermissionDao">
 
+    <insert id="addPermList" parameterType="com.djtu.settings.pojo.Permission">
+        insert into tbl_permission values (
+                                            #{id},
+                                            #{code},
+                                            #{name},
+                                            #{fatherId},
+                                            #{path},
+                                            #{isMenu},
+                                            #{roleId}
+                                          )
+    </insert>
 </mapper>

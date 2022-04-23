@@ -9,4 +9,10 @@ public class StringUtilsTest {
     public void testRand4Str(){
         System.out.println(StringUtil.rand4Str());
     }
+
+    @Test
+    public void testUUID(){
+        System.out.println(StringUtil.generateUUID());
+    }
+
 }
