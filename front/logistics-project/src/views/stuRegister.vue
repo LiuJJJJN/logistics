@@ -18,14 +18,13 @@
         <el-radio label="女"></el-radio>
       </el-radio-group>
     </el-form-item>
+
     <el-form-item label="所属学院" prop="college">
-      <el-autocomplete
-          v-model="submitForm.college"
-          :fetch-suggestions="querySearchAsync"
-          placeholder="请输入内容"
-          @select="handleSelect"
-      ></el-autocomplete>
+      <el-select v-model="submitForm.college" placeholder="请选择所属学院" >
+        <el-option class="one" v-for="item in this.collegeEnum" :key="item" :label="item" :value="item"></el-option>
+      </el-select>
     </el-form-item>
+
     <el-form-item label="所属班级" prop="stuClass">
       <el-input v-model="submitForm.stuClass"></el-input>
     </el-form-item>
@@ -62,6 +61,7 @@ export default {
   name: "stuRegister",
   data (){
     return{
+      collegeEnum:[],
       restaurants: [],
       submitForm: {
         username: '',
@@ -124,7 +124,7 @@ export default {
         ],
         college: [
           {required: true, message: '请输入学院', trigger: 'blur'},
-          {type:'enum', enum: ['23', '34'], message: '学院必须为学院列表中的值'}
+          // {type:'enum', enum: this.college, message: '学院必须为学院列表中的值'}
         ],
         stuClass: [
           {required: true, message: '请输入班级', trigger: 'blur'}
@@ -142,20 +142,27 @@ export default {
       }
     }
   },
-  methods:{
+  watch:{
+    collegeEnum:function (){
+      this.$nextTick(()=>{
+        let curDom=document.getElementsByClassName("one")[0];
+      })
+    }
+  },
+  methods: {
     toRegister(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           if (this.submitForm.password !== this.submitForm.checkPassword) {
-            ElementUI.Message.error("两次输入的密码不一致!", {duration:3*1000});
+            ElementUI.Message.error("两次输入的密码不一致!", {duration: 3 * 1000});
             this.submitForm.password = '';
             this.submitForm.checkPassword = '';
             return false;
           }
-          this.$axios.post("/user/registerStudent.do",this.submitForm)
-              .then((resp)=>{
+          this.$axios.post("/user/registerStudent.do", this.submitForm)
+              .then((resp) => {
                 console.log(resp);
-              }, (err)=>{
+              }, (err) => {
                 console.log(err);
               })
         } else {
@@ -164,39 +171,19 @@ export default {
         }
       });
     },
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
-    },
-    loadAll() {
+    loadCollege:function (){
       this.$axios.get("/user/getCollegeList.do").then(resp=>{
-        console.log(resp.data.data);
-        return [
-          {'value':'23623123'}
-        ]
+        for(let i=0; i<resp.data.data.length;i++){
+          this.collegeEnum[i] = resp.data.data[i].value;
+        }
+        console.log(this.collegeEnum);
       }, err=>{
         console.log(err)
       })
-    },
-    querySearchAsync(queryString, cb) {
-      var restaurants = this.restaurants;
-      var results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;
-
-      clearTimeout(this.timeout);
-      this.timeout = setTimeout(() => {
-        cb(results);
-      }, 300);
-    },
-    createStateFilter(queryString) {
-      return (college) => {
-        return (college.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
-      };
-    },
-    handleSelect(item) {
-      console.log(item);
     }
   },
   mounted() {
-    this.restaurants = this.loadAll();
+      this.loadCollege();
   }
 }
 </script>
