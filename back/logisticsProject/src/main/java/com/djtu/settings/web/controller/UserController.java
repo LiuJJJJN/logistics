@@ -100,6 +100,7 @@ public class UserController {
         student.setSalt(salt);
         //uuid
         student.setId(StringUtil.generateUUID());
+        student.setEnterDate(student.getEnterDate().substring(0, 10));
         //密码通过盐与md5加密
         student.setPassword(StringUtil.md5(student.getPassword(),salt));
         //调用注册的业务方法
