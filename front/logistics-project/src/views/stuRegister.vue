@@ -18,13 +18,13 @@
         <el-radio label="女"></el-radio>
       </el-radio-group>
     </el-form-item>
-
     <el-form-item label="所属学院" prop="college">
       <el-select v-model="submitForm.college" placeholder="请选择所属学院" >
-        <el-option class="one" v-for="item in this.collegeEnum" :key="item" :label="item" :value="item"></el-option>
+        <div v-for="item in collegeEnum" :key="item">
+          <el-option :label="item" :value="item"></el-option>
+        </div>
       </el-select>
     </el-form-item>
-
     <el-form-item label="所属班级" prop="stuClass">
       <el-input v-model="submitForm.stuClass"></el-input>
     </el-form-item>
@@ -142,13 +142,6 @@ export default {
       }
     }
   },
-  watch:{
-    collegeEnum:function (){
-      this.$nextTick(()=>{
-        let curDom=document.getElementsByClassName("one")[0];
-      })
-    }
-  },
   methods: {
     toRegister(formName) {
       this.$refs[formName].validate((valid) => {
@@ -171,18 +164,23 @@ export default {
         }
       });
     },
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+    },
     loadCollege:function (){
       this.$axios.get("/user/getCollegeList.do").then(resp=>{
+        var list = [];
         for(let i=0; i<resp.data.data.length;i++){
-          this.collegeEnum[i] = resp.data.data[i].value;
+          list[i] = resp.data.data[i].value;
         }
+        this.collegeEnum = list;
         console.log(this.collegeEnum);
       }, err=>{
         console.log(err)
       })
     }
   },
-  mounted() {
+  created() {
       this.loadCollege();
   }
 }

@@ -134,4 +134,5 @@ public class UserController {
         List<DicValue> list=dicValueService.getCollegeList();
         return new Result().setCode(200).setMessage("获取成功").setData(list);
     }
+
 }
