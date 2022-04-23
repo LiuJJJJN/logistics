@@ -19,12 +19,11 @@
       </el-radio-group>
     </el-form-item>
     <el-form-item label="所属学院" prop="college">
-      <el-autocomplete
-          v-model="ruleForm.college"
-          :fetch-suggestions="querySearchAsync"
-          placeholder="请输入内容"
-          @select="handleSelect"
-      ></el-autocomplete>
+      <el-select v-model="submitForm.college" placeholder="请选择所属学院" >
+        <div v-for="item in collegeEnum" :key="item">
+          <el-option :label="item" :value="item"></el-option>
+        </div>
+      </el-select>
     </el-form-item>
     <br>
     <el-form class="sub-res-button">
@@ -39,6 +38,7 @@ export default {
   name: "tutorRegister",
   data (){
     return{
+      collegeEnum: [],
       ruleForm: {
         username: '',
         password: '',
@@ -103,7 +103,7 @@ export default {
       }
     }
   },
-  methods:{
+  methods: {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -117,38 +117,21 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
-    loadAll() {
-      //todo  查询学院
-
-      return [
-        {"value": "三全鲜食（北新泾店）", "address": "长宁区新渔路144号"},
-        {"value": "Hot honey 首尔炸鸡（仙霞路）", "address": "上海市长宁区淞虹路661号"},
-        {"value": "新旺角茶餐厅", "address": "上海市普陀区真北路988号创邑金沙谷6号楼113"}
-      ];
-    },
-    querySearchAsync(queryString, cb) {
-      var restaurants = this.restaurants;
-      var results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;
-
-      clearTimeout(this.timeout);
-      this.timeout = setTimeout(() => {
-        cb(results);
-      }, 300);
-    },
-    createStateFilter(queryString) {
-      return (college) => {
-        return (college.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
-      };
-    },
-    handleSelect(item) {
-      console.log(item);
+    loadCollege:function (){
+      this.$axios.get("/user/getCollegeList.do").then(resp=>{
+        var list = [];
+        for(let i=0; i<resp.data.data.length;i++){
+          list[i] = resp.data.data[i].value;
+        }
+        this.collegeEnum = list;
+        console.log(this.collegeEnum);
+      }, err=>{
+        console.log(err)
+      })
     }
   },
-  mounted() {
-    this.restaurants = this.loadAll();
-  },
   created() {
-
+    this.loadCollege();
   }
 }
 </script>
