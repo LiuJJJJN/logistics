@@ -96,6 +96,7 @@ public class UserController {
     public Result registerStudent(@RequestBody Student student) throws RegisterException {
         //随机产生-盐
         String salt = StringUtil.rand4Str();
+        student.setSalt(salt);
         //uuid
         student.setId(StringUtil.generateUUID());
         //密码通过盐与md5加密
@@ -111,8 +112,18 @@ public class UserController {
      * @return
      * @throws RegisterException
      */
+    @RequestMapping("/registerTutor.do")
+    @ResponseBody
     public Result registerTutor(@RequestBody Tutor tutor) throws RegisterException {
-
+        //随机产生-盐
+        String salt = StringUtil.rand4Str();
+        tutor.setSalt(salt);
+        //uuid
+        tutor.setId(StringUtil.generateUUID());
+        //密码通过盐与md5加密
+        tutor.setPassword(StringUtil.md5(tutor.getPassword(),salt));
+        //调用注册的业务方法
+        userService.registerTutor(tutor);
         return new Result().setCode(200).setMessage("注册成功");
     }
 }
