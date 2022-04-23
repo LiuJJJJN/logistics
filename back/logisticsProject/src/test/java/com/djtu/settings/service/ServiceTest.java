@@ -11,11 +11,6 @@ public class ServiceTest {
     UserService userService;
 
     @Test
-    public void testGetUserByUsername(){
-        System.out.println(new UserServiceImpl().getUserByUsername("mike"));
-    }
-
-    @Test
     public void testMd5(){
         Md5Hash md5Hash = new Md5Hash("123456", "", 1024);
         System.out.println(md5Hash.toHex());

@@ -41,6 +41,9 @@ export default {
         rememberMe: false
       },
       rules: {
+        ident: [
+          {required: true},
+        ],
         username: [
           {required: true, message: "账号必填", trigger: 'blur'},
           {min: 3, max: 18, message: "账号长度不能小于 3 位或超过 18 位"}
@@ -81,19 +84,35 @@ export default {
       });
     },
     toRegister: function () {
-      this.$router.replace("/register");
+      this.$router.replace("/register/stuRegister");
+    },
+    checkLogin:function (){
+      if (this.$store.getters.getTimeStamp > 0) { //页面打开时判断是否需要登录
+        this.$router.replace("/index");
+        this.$notify({
+          title: '成功',
+          message: '通过免登录验证, 进入主页',
+          type: 'success'
+        });
+      }
     }
   },
   created() {
-    if (this.$store.getters.getTimeStamp > 0) { //页面打开时判断是否需要登录
-      this.$router.replace("/index");
-      this.$notify({
-        title: '成功',
-        message: '通过免登录验证, 进入主页',
-        type: 'success'
-      });
-    }
+    this.checkLogin();
+
+    this.$notify({
+      title: '提示',
+      message: '项目登录注册功能黑盒测试中.<br/><br/>' +
+          '现有学生<br/>账户:stu1,密码:stu1<br/><br/>' +
+          '现有学生同时拥有导员权限<br/>账户:stu2,密码:stu2<br/><br/>' +
+          '现有导员<br/>账户:tutor1,密码:tutor1<br/><br/>' +
+          '现有导员同时拥有管理员权限<br/>账户:tutor2,密码:tutor2<br/><br/>' +
+          '现有管理员<br/>账户:admin1,密码:admin1<br/><br/>',
+      duration: 0,
+      dangerouslyUseHTMLString: true
+    });
   }
+
 }
 </script>
 

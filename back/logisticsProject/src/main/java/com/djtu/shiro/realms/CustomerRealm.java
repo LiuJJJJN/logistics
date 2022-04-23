@@ -47,12 +47,12 @@ public class CustomerRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principal) {
         String username = (String) principal.iterator().next();
-        Set<String> roles = roleService.getRoleByUsername(username);
-        Set<String> permissions = permissionService.getPermissionByUsername(username);
+//        Set<String> roles = roleService.getRoleByUsername(username);
+//        Set<String> permissions = permissionService.getPermissionByUsername(username);
 
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-        info.addRoles(roles);
-        info.addStringPermissions(permissions);
+//        info.addRoles(roles);
+//        info.addStringPermissions(permissions);
         return info;
     }
 

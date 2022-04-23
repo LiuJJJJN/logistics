@@ -25,45 +25,21 @@
     <el-container>
 
       <el-aside width="200px">
-        <el-menu :default-openeds="['1']"> <!--哪个功能不折叠-->
-          <el-submenu index="1">
-            <template slot="title"><i class="el-icon-menu"></i>学生功能</template>
-            <el-menu-item-group>
-              <template slot="title">寝室信息</template>
-              <el-menu-item index="1-1">我的寝室</el-menu-item>
-            </el-menu-item-group>
-            <el-menu-item-group title="我要自习">
-              <el-menu-item index="1-2">教室占座</el-menu-item>
-              <el-menu-item index="1-3">图书馆占座</el-menu-item>
-            </el-menu-item-group>
-            <el-menu-item-group title="我要反馈">
-              <router-link :to="'/user/feedback'"><el-menu-item index="1-4">我要反馈</el-menu-item></router-link>
-            </el-menu-item-group>
-          </el-submenu>
-          <el-submenu index="2">
-            <template slot="title"><i class="el-icon-menu"></i>导员功能</template>
-            <el-menu-item-group>
-              <template slot="title">我的班级</template>
-              <router-link :to="'/tutor/class'"><el-menu-item index="2-1">管理班级</el-menu-item></router-link>
-            </el-menu-item-group>
-            <el-menu-item-group title="我的学生">
-              <router-link :to="'/tutor/student'"><el-menu-item index="2-2">管理学生</el-menu-item></router-link>
-            </el-menu-item-group>
-            <el-menu-item-group title="学生反馈">
-              <router-link :to="'/tutor/feedback'"><el-menu-item index="2-3">学生反馈</el-menu-item></router-link>
-            </el-menu-item-group>
-            <el-menu-item-group title="处理申请">
-              <el-menu-item index="2-4">处理申请</el-menu-item>
-            </el-menu-item-group>
-          </el-submenu>
-          <el-submenu index="3">
-            <template slot="title"><i class="el-icon-menu"></i>管理员功能</template>
-            <el-menu-item index="2-1">用户管理</el-menu-item>
-            <el-menu-item index="2-2">寝室管理</el-menu-item>
-            <el-menu-item index="2-2">教室管理</el-menu-item>
-            <el-menu-item index="2-2">图书馆管理</el-menu-item>
-            <el-menu-item index="2-2">权限管理</el-menu-item>
-          </el-submenu>
+        <el-menu :default-openeds="items"> <!--哪个功能不折叠-->
+          <div v-for="(item, index) in itemList" :key="index">
+            <el-submenu :index="index">
+              <template slot="title"><i class="el-icon-menu"></i>{{ item.role }}</template>
+              <div v-for="(x, y) in item.fatherMenu" :key="x">
+                <el-menu-item-group :title="item.fatherMenu[y].name">
+                  <div v-for="a in x.subMenu" :key="a">
+                    <router-link :to="a.path">
+                      <el-menu-item :index="a">{{ a.name }}</el-menu-item>
+                    </router-link>
+                  </div>
+                </el-menu-item-group>
+              </div>
+            </el-submenu>
+          </div>
         </el-menu>
       </el-aside>
 
@@ -72,7 +48,6 @@
           <router-view></router-view>
         </el-main>
       </el-container>
-
     </el-container>
   </el-container>
 </template>
@@ -85,17 +60,61 @@ export default {
     return {
       username: this.$store.getters.getUser.username,
       size: "large",
-      circleUrl: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
+      circleUrl: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
+      items: [],
+      itemList: [
+        {
+          role: "loading",
+          fatherMenu: [
+            {
+              name: "loading",
+              subMenu: [
+                {
+                  "id": "loading",
+                  "code": "loading",
+                  "name": "loading",
+                  "fatherId": "loading",
+                  "path": "loading",
+                  "isMenu": "loading",
+                  "roleId": "loading"
+                }
+              ]
+            }
+          ]
+        }
+      ]
     }
   },
-  methods:{
-    exitLogin:function (){
+  methods: {
+    exitLogin: function () {
       this.$store.commit("REMOVE_INFO");
       this.$notify.info({
         title: '注意',
         message: '您已退出登录'
       });
       this.$router.replace("/login");
+    },
+    getMenuList: function () {
+      //获取功能列表
+      this.$axios.post("/permission/getPermissionMap.do", {
+        userId: this.$store.getters.getUser.userId
+      })
+          .then(resp => {
+            //渲染功能列表
+            this.itemList = resp.data.data;
+            console.log(resp.data.data);
+            console.log(this.itemList);
+          }, err => {
+            console.log(err)
+          })
+    }
+  },
+  created() {
+    this.getMenuList();
+
+    //展开所有功能列表
+    for (let i = 0; i < 3; i++) {
+      this.items.push(i);
     }
   }
 }
