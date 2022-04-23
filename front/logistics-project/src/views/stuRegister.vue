@@ -168,14 +168,16 @@ export default {
       this.$refs[formName].resetFields();
     },
     loadAll() {
+      var list = [];
       this.$axios.get("/user/getCollegeList.do").then(resp=>{
-        console.log(resp.data.data);
-        return [
-          {'value':'23623123'}
-        ]
+        for (let i = 0; i < resp.data.data.length; i++) {
+          list[i] = resp.data.data[i];
+        }
       }, err=>{
         console.log(err)
       })
+      console.log(list);
+      return list;
     },
     querySearchAsync(queryString, cb) {
       var restaurants = this.restaurants;
