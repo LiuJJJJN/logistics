@@ -3,10 +3,11 @@ package com.djtu.settings.dao;
 import com.djtu.settings.pojo.Tutor;
 
 public interface TutorDao {
+
     /**
-     * 根据教职工的用户名查询
-     * @param username
-     * @return
+     * 根据导员用户名查找导员信息
+     * @param username 导员用户名
+     * @return 导员实例
      */
     Tutor getTutorByUsername(String username);
 

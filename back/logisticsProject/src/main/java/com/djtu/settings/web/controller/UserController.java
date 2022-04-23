@@ -67,8 +67,6 @@ public class UserController {
             backUser = tutorService.getUserVoByUsername(username);
         }else if ("管理员".equals(ident)) {
             backUser = adminService.getUserVoByUsername(username);
-        }else {
-            return new Result().setCode(500).setMessage("身份选择异常");
         }
 
         //配置返回 data 内容
