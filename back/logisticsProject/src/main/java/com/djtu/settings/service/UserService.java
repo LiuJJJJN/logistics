@@ -1,7 +1,8 @@
 package com.djtu.settings.service;
 
+import com.djtu.exception.RegisterException;
+import com.djtu.settings.pojo.Student;
 import com.djtu.settings.pojo.User;
-import com.djtu.settings.vo.UserStuVo;
 
 public interface UserService {
 
@@ -13,9 +14,8 @@ public interface UserService {
     User getUserByUsername(String username);
 
     /**
-     * 在 user 表和 student 表中插入学生数据
-     * @param vo User 和 Student 表中的数据
-     * @return 是否添加成功
+     * 学生注册
+     * @param
      */
-    boolean addUserStudent(UserStuVo vo);
+    void registerStudent(Student student) throws RegisterException;
 }

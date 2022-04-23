@@ -2,6 +2,13 @@
   <div>
     <el-form ref="form" :model="form" :rules="rules" label-width="80px" class="login-ruleForm">
       <h1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Login</h1>
+      <el-form-item label="角色" prop="ident">
+        <el-radio-group v-model="form.ident" size="small">
+          <el-radio-button label="学生"></el-radio-button>
+          <el-radio-button label="导员"></el-radio-button>
+          <el-radio-button label="管理员"></el-radio-button>
+        </el-radio-group>
+      </el-form-item>
       <el-form-item label="账号" prop="username">
         <el-input v-model="form.username"></el-input>
       </el-form-item>
@@ -30,6 +37,7 @@ export default {
       form: {
         username: '',
         password: '',
+        ident: '学生',
         rememberMe: false
       },
       rules: {

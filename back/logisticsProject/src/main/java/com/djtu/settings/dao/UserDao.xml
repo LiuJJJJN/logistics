@@ -4,26 +4,23 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.djtu.settings.dao.UserDao">
 
-    <insert id="addUser">
-        insert into tbl_user value (
-            #{username},
-            #{password},
-            #{name},
-
-            )
-    </insert>
-
-    <select id="getUserByName" resultType="com.djtu.settings.pojo.User">
-        SELECT id,
-               username,
-               password,
-               salt,
-               name,
-               sex,
-               ident,
-               ident_id
-        from tbl_user
-        where username = #{username}
+    <select id="getUserIdByStudentId" resultType="java.lang.String">
+        select id from tbl_user where student_id = #{id};
+    </select>
+    <select id="getUserIdByTutorId" resultType="java.lang.String">
+        select id from tbl_user where tutor_id = #{id};
+    </select>
+    <select id="getUserIdByAdminId" resultType="java.lang.String">
+        select id from tbl_user where admin_id = #{id};
     </select>
 
+    <insert id="setUser">
+        insert into tbl_user (
+                              id,
+                              student_id)
+        values(
+                #{id},
+                #{studentId}
+              )
+    </insert>
 </mapper>

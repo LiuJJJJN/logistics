@@ -1,11 +1,16 @@
 package com.djtu.settings.service.serviceImpl;
 
+import com.djtu.exception.RegisterException;
 import com.djtu.settings.dao.StudentDao;
 import com.djtu.settings.dao.UserDao;
+import com.djtu.settings.dao.UserRoleDao;
+import com.djtu.settings.pojo.Student;
 import com.djtu.settings.pojo.User;
+import com.djtu.settings.pojo.UserRole;
 import com.djtu.settings.service.UserService;
-import com.djtu.settings.vo.UserStuVo;
+import com.djtu.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,18 +21,53 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
     @Autowired
     private StudentDao studentDao;
-
+    @Autowired
+    private UserRoleDao userRoleDao;
+    //影响条数标准
+    private static final Integer INSERT_SUCCESS_NUM=1;
     @Override
     public User getUserByUsername(String username) {
-        return userDao.getUserByName(username);
+        //return userDao.getUserByName(username);
+        return null;
     }
 
+    /**
+     * 学生注册添加事务-异常进行回滚
+     * @param student
+     * @throws RegisterException
+     */
     @Override
     @Transactional
-    public boolean addUserStudent(UserStuVo vo) {
-//        studentDao.addStudent();
-        userDao.addUser();
-        return false;
+    public void registerStudent(Student student) throws RegisterException {
+        //先进行重名检测
+        Student stu=studentDao.getStudentByUsername(student.getUsername());
+        if(stu!=null){
+            throw new RegisterException("用户名已被注册");
+        }
+        //进行学号绑定检测
+        stu=studentDao.getStudentBySno(student.getSno());
+        if(stu!=null){
+            throw new RegisterException("学号被绑定过");
+        }
+        //设置user的属性
+        User user=new User();
+        user.setId(StringUtil.generateUUID());
+        user.setStudentId(student.getId());
+        //设置UserRole的属性
+        UserRole userRole=new UserRole();
+        userRole.setId(StringUtil.generateUUID());
+        userRole.setUserId(user.getId());
+        userRole.setRoleId("1");
+        //用户表注入信息
+        Integer userFlag=userDao.setUser(user);
+        //学生表出入注册信息
+        Integer studentFlag=studentDao.setStudent(student);
+        //用户角色表注入信息
+        Integer userRoleFlag=userRoleDao.setUserRole(userRole);
+        //判断表中数据是否插入成功  NUM=1
+        if(userFlag<INSERT_SUCCESS_NUM || studentFlag<INSERT_SUCCESS_NUM  || userRoleFlag<INSERT_SUCCESS_NUM ){
+            throw new RegisterException("注册失败");
+        }
     }
 
 }
