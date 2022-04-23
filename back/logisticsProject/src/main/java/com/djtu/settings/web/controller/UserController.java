@@ -83,4 +83,13 @@ public class UserController {
         return  new Result().setCode(500).setMessage("注册失败");
     }
 
+    /**
+     *
+     */
+    @RequestMapping("/registerTutor.do")
+    @ResponseBody
+    public Result registerTutor(){
+        String salt=StringUtil.rand4Str();
+        return null;
+    }
 }
