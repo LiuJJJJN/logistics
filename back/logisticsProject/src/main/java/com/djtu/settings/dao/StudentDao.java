@@ -11,4 +11,18 @@ public interface StudentDao {
      * @return 学生实例
      */
     Student getStudentByUsername(String username);
+
+    /**
+     * 根据学生的学号查询
+     * @param sno
+     * @return
+     */
+    Student getStudentBySno(String sno);
+
+    /**
+     * 注册学生
+     * @param student
+     * @return
+     */
+    Integer setStudent(Student student);
 }

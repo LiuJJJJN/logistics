@@ -1,13 +1,17 @@
 package com.djtu.settings.web.controller;
 
+import com.djtu.exception.RegisterException;
 import com.djtu.settings.dao.PermissionDao;
 import com.djtu.settings.pojo.Permission;
+import com.djtu.settings.pojo.Student;
 import com.djtu.settings.pojo.User;
 import com.djtu.settings.service.UserService;
+import com.djtu.utils.StringUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -32,7 +36,14 @@ public class TestController {
 
     @RequestMapping("/test1.do")
     @ResponseBody
-    public String test1(){
+    public String test1(@RequestBody Student student) throws RegisterException {
+        //随机产生-盐
+        String salt = StringUtil.rand4Str();
+        //uuid
+        student.setId(StringUtil.generateUUID());
+        //密码通过盐与md5加密
+        student.setPassword(StringUtil.md5(student.getPassword(),salt));
+        userService.registerStudent(student);
         return "hello vue this is springMVC";
     }
 
@@ -80,7 +91,7 @@ public class TestController {
         list.add(new Permission("30","dicType:*", "管理数据字典类型", "29", "/admin/dicType", "1", "3"));
         list.add(new Permission("31","dicValue:*", "管理数据字典值", "29", "/admin/dicValue", "1", "3"));
         for (Permission permission : list) {
-            permissionDao.addPermList(permission);
+            //permissionDao.addPermList(permission);
         }
     }
 

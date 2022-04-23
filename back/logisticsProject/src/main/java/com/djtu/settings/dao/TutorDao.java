@@ -10,4 +10,12 @@ public interface TutorDao {
      * @return 导员实例
      */
     Tutor getTutorByUsername(String username);
+
+    /**
+     * 注册教职工
+     * @param tutor
+     * @return
+     */
+    Integer setTutor(Tutor tutor);
+
 }

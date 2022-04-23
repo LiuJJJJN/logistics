@@ -1,12 +1,17 @@
 package com.djtu.settings.web.controller;
 
+import com.djtu.exception.RegisterException;
 import com.djtu.response.Result;
+import com.djtu.settings.pojo.Student;
+import com.djtu.settings.pojo.Tutor;
 import com.djtu.settings.service.AdminService;
 import com.djtu.settings.service.StudentService;
 import com.djtu.settings.service.TutorService;
+import com.djtu.settings.service.UserService;
 import com.djtu.settings.vo.UserVo;
 import com.djtu.token.JwtToken;
 import com.djtu.utils.JwtUtil;
+import com.djtu.utils.StringUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
@@ -29,6 +34,8 @@ public class UserController {
     private TutorService tutorService;
     @Autowired
     private AdminService adminService;
+    @Autowired
+    private UserService userService;
 
     @RequestMapping(value = "/login.do")
     @ResponseBody
@@ -78,4 +85,34 @@ public class UserController {
         return new Result().setCode(200).setMessage("登录成功").setData(resultMap);
     }
 
+    /**
+     * 学生注册
+     * @param student
+     * @return
+     * @throws RegisterException
+     */
+    @RequestMapping("/registerStudent.do")
+    @ResponseBody
+    public Result registerStudent(@RequestBody Student student) throws RegisterException {
+        //随机产生-盐
+        String salt = StringUtil.rand4Str();
+        //uuid
+        student.setId(StringUtil.generateUUID());
+        //密码通过盐与md5加密
+        student.setPassword(StringUtil.md5(student.getPassword(),salt));
+        //调用注册的业务方法
+        userService.registerStudent(student);
+        return new Result().setCode(200).setMessage("注册成功");
+    }
+
+    /**
+     * 教职工注册
+     * @param tutor
+     * @return
+     * @throws RegisterException
+     */
+    public Result registerTutor(@RequestBody Tutor tutor) throws RegisterException {
+
+        return new Result().setCode(200).setMessage("注册成功");
+    }
 }

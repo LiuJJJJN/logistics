@@ -20,6 +20,55 @@
                dorm_id,
                tutor_id,
                avatar_path
-        from tbl_student;
+        from tbl_student
+        where username=#{username}
     </select>
+    <select id="getStudentBySno" resultType="com.djtu.settings.pojo.Student">
+        select id,
+               username,
+               password,
+               school_sys,
+               salt,
+               name,
+               sex,
+               enter_date,
+               college,
+               stu_class,
+               remark,
+               sno,
+               dorm_id,
+               tutor_id,
+               avatar_path
+        from tbl_student
+        where sno=#{sno}
+    </select>
+
+    <insert id="setStudent">
+        insert into tbl_student(
+                                id,
+                                username,
+                                password,
+                                salt,
+                                name,
+                                sex,
+                                enter_date,
+                                school_sys,
+                                college,
+                                stu_class,
+                                remark,
+                                sno)
+        values(
+               #{id},
+               #{username},
+               #{password},
+               #{salt},
+               #{name},
+               #{sex},
+               #{enterDate},
+               #{schoolSys},
+               #{college},
+               #{stuClass},
+               #{remark},
+               #{sno})
+    </insert>
 </mapper>

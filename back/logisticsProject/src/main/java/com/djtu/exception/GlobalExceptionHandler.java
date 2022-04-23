@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Slf4j //lombok 提供的日志输出
 @RestControllerAdvice
-public class GlobalException {
+public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = UnauthorizedException.class)
     public Result handler(UnauthorizedException e){
@@ -29,6 +29,12 @@ public class GlobalException {
     public Result handler(UnauthenticatedException e) {
         log.error("运行时异常----------------{}", e.getMessage());
         return new Result().setCode(401).setMessage("未登录");
+    }
+
+    @ExceptionHandler(value=RegisterException.class)
+    public Result handler(RegisterException e){
+        log.error("运行时异常----------------{}",e.getMessage());
+        return new Result().setCode(500).setMessage(e.getMessage());
     }
 
 }
