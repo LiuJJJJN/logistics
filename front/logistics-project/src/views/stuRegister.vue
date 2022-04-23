@@ -154,7 +154,11 @@ export default {
           }
           this.$axios.post("/user/registerStudent.do", this.submitForm)
               .then((resp) => {
-                console.log(resp);
+                this.$router.replace("/login");
+                this.$message({
+                  message: resp.data.message,
+                  type: 'success'
+                });
               }, (err) => {
                 console.log(err);
               })
