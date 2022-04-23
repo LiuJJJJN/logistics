@@ -11,6 +11,7 @@ import tutorStudent from "@/views/tutorStudent";
 import register from "@/views/register";
 import stuRegister from "@/views/stuRegister";
 import tutorRegister from "@/views/tutorRegister";
+import notFoundPage from "@/views/notFoundPage";
 
 Vue.use(VueRouter)
 
@@ -77,6 +78,11 @@ const routes = [
         component: tutorRegister,
       }
     ]
+  },
+  {
+    path: "*",
+    name: "NotFound",
+    component: notFoundPage
   }
 ]
 

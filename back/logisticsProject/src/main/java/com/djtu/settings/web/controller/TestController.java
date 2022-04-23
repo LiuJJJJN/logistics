@@ -45,13 +45,6 @@ public class TestController {
         return "hello2 vue this is springMVC";
     }
 
-    @RequestMapping("/test.do")
-    public void test1(@RequestParam(value="name") String name){
-        System.out.println(name);
-        User user=userService.getUserByUsername(name);
-        System.out.println(user);
-    }
-
     @RequestMapping("/addPerm.do")
     public void addPerm(){
         List<Permission> list = new ArrayList<>();
