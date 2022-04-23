@@ -20,5 +20,10 @@ public interface UserService {
      */
     void registerStudent(Student student) throws RegisterException;
 
+    /**
+     * 教职工注册
+     * @param tutor
+     * @throws RegisterException
+     */
     void registerTutor(Tutor tutor) throws RegisterException;
 }
