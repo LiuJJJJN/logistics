@@ -3,6 +3,7 @@ package com.djtu.settings.web.controller;
 import com.djtu.exception.RegisterException;
 import com.djtu.response.Result;
 import com.djtu.settings.pojo.Student;
+import com.djtu.settings.pojo.Tutor;
 import com.djtu.settings.service.AdminService;
 import com.djtu.settings.service.StudentService;
 import com.djtu.settings.service.TutorService;
@@ -106,15 +107,14 @@ public class UserController {
         return new Result().setCode(200).setMessage("注册成功");
     }
 
-/*    *//**
-     *
-     *//*
-    @RequestMapping("/registerTutor.do")
-    @ResponseBody
-    public Result registerTutor(){
-        String salt=StringUtil.rand4Str();
-        return null;
+    /**
+     * 教职工注册
+     * @param tutor
+     * @return
+     * @throws RegisterException
+     */
+    public Result registerTutor(@RequestBody Tutor tutor) throws RegisterException {
+
+        return new Result().setCode(200).setMessage("注册成功");
     }
-=======
->>>>>>> f4dae1d5980d00db23c51dcac80dfe56756fc07d*/
 }

@@ -2,6 +2,7 @@ package com.djtu.settings.service;
 
 import com.djtu.exception.RegisterException;
 import com.djtu.settings.pojo.Student;
+import com.djtu.settings.pojo.Tutor;
 import com.djtu.settings.pojo.User;
 
 public interface UserService {
@@ -18,4 +19,6 @@ public interface UserService {
      * @param
      */
     void registerStudent(Student student) throws RegisterException;
+
+    void registerTutor(Tutor tutor) throws RegisterException;
 }

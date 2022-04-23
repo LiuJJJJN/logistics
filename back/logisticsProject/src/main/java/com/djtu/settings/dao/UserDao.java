@@ -13,5 +13,12 @@ public interface UserDao {
     /**
      * 学生注册向用户表插入数据
      */
-    Integer setUser(User user);
+    Integer setStudentUser(User user);
+
+    /**
+     * 教职工注册向用户表插入数据
+     * @param user
+     * @return
+     */
+    Integer setTutorUser(User user);
 }

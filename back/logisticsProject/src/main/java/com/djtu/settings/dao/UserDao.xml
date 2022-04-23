@@ -14,13 +14,23 @@
         select id from tbl_user where admin_id = #{id};
     </select>
 
-    <insert id="setUser">
+    <insert id="setStudentUser">
         insert into tbl_user (
                               id,
                               student_id)
         values(
                 #{id},
                 #{studentId}
+              )
+    </insert>
+
+    <insert id="setTutorUser">
+        insert into tbl_user (
+            id,
+            tutor_id)
+        values(
+                  #{id},
+                  #{tutorId}
               )
     </insert>
 </mapper>

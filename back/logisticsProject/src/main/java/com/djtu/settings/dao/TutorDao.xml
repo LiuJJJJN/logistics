@@ -16,6 +16,31 @@
             dorm_id,
             remark,
             avatar_path
-            from tbl_tutor;
+            from tbl_tutor
+            where username=#{username}
     </select>
+
+    <insert id="setTutor">
+        insert into tbl_tutor (
+                               id,
+                               username,
+                               password,
+                               salt,
+                               name,
+                               sex,
+                               college,
+                               dorm_id,
+                               remark)
+        values(
+               #{id},
+               #{username},
+               #{password},
+               #{salt},
+               #{name},
+               #{sex},
+               #{college},
+               #{dormId},
+               #{remark})
+
+    </insert>
 </mapper>

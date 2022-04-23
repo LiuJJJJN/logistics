@@ -5,6 +5,7 @@ import com.djtu.settings.dao.StudentDao;
 import com.djtu.settings.dao.UserDao;
 import com.djtu.settings.dao.UserRoleDao;
 import com.djtu.settings.pojo.Student;
+import com.djtu.settings.pojo.Tutor;
 import com.djtu.settings.pojo.User;
 import com.djtu.settings.pojo.UserRole;
 import com.djtu.settings.service.UserService;
@@ -59,7 +60,7 @@ public class UserServiceImpl implements UserService {
         userRole.setUserId(user.getId());
         userRole.setRoleId("1");
         //用户表注入信息
-        Integer userFlag=userDao.setUser(user);
+        Integer userFlag=userDao.setStudentUser(user);
         //学生表出入注册信息
         Integer studentFlag=studentDao.setStudent(student);
         //用户角色表注入信息
@@ -70,4 +71,8 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public void registerTutor(Tutor tutor) throws RegisterException {
+
+    }
 }
