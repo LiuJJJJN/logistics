@@ -12,6 +12,7 @@ import register from "@/views/register";
 import stuRegister from "@/views/stuRegister";
 import tutorRegister from "@/views/tutorRegister";
 import notFoundPage from "@/views/notFoundPage";
+import welcomePage from "@/views/welcomePage";
 
 Vue.use(VueRouter)
 
@@ -27,15 +28,38 @@ const routes = [
     component: login
   },
   {
+    path:"/register",
+    name:"register",
+    component: register,
+    children: [
+      {
+        path:"stuRegister",
+        name:"stuRegister",
+        component: stuRegister,
+      },
+      {
+        path:"tutorRegister",
+        name:"tutorRegister",
+        component: tutorRegister,
+      }
+    ]
+  },
+  {
     path:"/index",
     name:"index",
     component: index,
     children:[
       {
         path:"/",
-        name:"userIndex",
-        component: userIndex
-      },{
+        name:"welcomePage",
+        component: welcomePage
+      },
+      {
+        path:"/welcomePage",
+        name:"welcomePage",
+        component: welcomePage
+      },
+      {
         path:"/user",
         name:"userIndex",
         component: userIndex
@@ -59,30 +83,13 @@ const routes = [
         path:"/tutor/student",
         name:"tutorStudent",
         component: tutorStudent
-      }
-    ]
-  },
-  {
-    path:"/register",
-    name:"register",
-    component: register,
-    children: [
-      {
-        path:"stuRegister",
-        name:"stuRegister",
-        component: stuRegister,
       },
       {
-        path:"tutorRegister",
-        name:"tutorRegister",
-        component: tutorRegister,
+        path: "/*",
+        name: "notFoundPage",
+        component: notFoundPage
       }
     ]
-  },
-  {
-    path: "*",
-    name: "NotFound",
-    component: notFoundPage
   }
 ]
 
