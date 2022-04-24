@@ -1,7 +1,7 @@
 <template>
   <el-form :model="submitForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
     <el-form-item label="用户名" prop="username">
-      <el-input v-model="submitForm.username"></el-input>
+      <el-input v-model="submitForm.username" @blur="blurUserName"></el-input>
     </el-form-item>
     <el-form-item label="密码" prop="password">
       <el-input v-model="submitForm.password" show-password></el-input>
@@ -111,6 +111,19 @@ export default {
     }
   },
   methods: {
+    blurUserName(){
+      console.log("事件触发");
+      // this.$axios.get("/user/.do").then(resp=>{
+      //   var list = [];
+      //   for(let i=0; i<resp.data.data.length;i++){
+      //     list[i] = resp.data.data[i].value;
+      //   }
+      //   this.collegeEnum = list;
+      //   console.log(this.collegeEnum);
+      // }, err=>{
+      //   console.log(err)
+      // })
+    },
     toRegister(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
