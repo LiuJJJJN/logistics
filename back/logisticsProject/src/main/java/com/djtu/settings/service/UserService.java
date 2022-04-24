@@ -3,6 +3,9 @@ package com.djtu.settings.service;
 import com.djtu.exception.RegisterException;
 import com.djtu.settings.pojo.Student;
 import com.djtu.settings.pojo.Tutor;
+import com.djtu.settings.pojo.vo.UserRoleVo;
+
+import java.util.List;
 
 public interface UserService {
 
@@ -18,6 +21,14 @@ public interface UserService {
      * @throws RegisterException
      */
     void registerTutor(Tutor tutor) throws RegisterException;
+
+    /**
+     * 分页查询学生用户角色相关信息
+     * @param pageCount 起始页
+     * @param pageSize 数据量
+     * @return 学生用户角色信息列表
+     */
+    List<UserRoleVo> getStudentUserRoleVoList(int pageCount, int pageSize);
 
     /**
      * 教职工注册重名查询

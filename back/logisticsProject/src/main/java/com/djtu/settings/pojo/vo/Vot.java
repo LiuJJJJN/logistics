@@ -1,6 +1,4 @@
-package com.djtu.settings.vo;
-
-import java.util.List;
+package com.djtu.settings.pojo.vo;
 
 public class Vot<T,K> {
      private T t;

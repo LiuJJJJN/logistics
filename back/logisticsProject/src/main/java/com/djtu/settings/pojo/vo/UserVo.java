@@ -1,4 +1,4 @@
-package com.djtu.settings.vo;
+package com.djtu.settings.pojo.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

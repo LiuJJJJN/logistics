@@ -1,7 +1,7 @@
 package com.djtu.settings.dao;
 
 import com.djtu.settings.pojo.Student;
-import com.djtu.settings.vo.UserVo;
+import com.djtu.settings.pojo.vo.UserVo;
 
 public interface StudentDao {
 
