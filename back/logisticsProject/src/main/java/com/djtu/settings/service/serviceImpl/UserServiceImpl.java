@@ -107,6 +107,7 @@ public class UserServiceImpl implements UserService {
         return studentUserRoleVoList;
     }
 
+    @Override
     public void registerTutorUserNameVerify(String username) throws RegisterException{
         Tutor tutor=tutorDao.getTutorByUsername(username);
         if(tutor!=null){
