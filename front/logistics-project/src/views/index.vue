@@ -2,7 +2,7 @@
   <el-container class="index">
     <el-header>
       <el-row type="flex" class="row-bg" justify="space-between">
-        <el-col :span="4">
+        <el-col :span="4" @click.native="toIndex" style="cursor: pointer">
           <div class="grid-content bg-purple"><span style="font-size: 25px;font-weight: bolder">DJTU后勤管理系统</span>
           </div>
         </el-col>
@@ -25,7 +25,7 @@
     <el-container>
 
       <el-aside width="200px">
-        <el-menu :default-openeds="items"> <!--哪个功能不折叠-->
+        <el-menu :default-openeds="items" :default-active="$route.path"> <!--哪个功能不折叠-->
           <div v-for="(item, index) in itemList" :key="index">
             <el-submenu :index="index">
               <template slot="title"><i class="el-icon-menu"></i>{{ item.role }}</template>
@@ -33,7 +33,7 @@
                 <el-menu-item-group :title="item.fatherMenu[y].name">
                   <div v-for="a in x.subMenu" :key="a">
                     <router-link :to="a.path">
-                      <el-menu-item :index="a">{{ a.name }}</el-menu-item>
+                      <el-menu-item :index="a" :class="$route.path==a.path?'is-active':''">{{ a.name }}</el-menu-item>
                     </router-link>
                   </div>
                 </el-menu-item-group>
@@ -96,17 +96,19 @@ export default {
     },
     getMenuList: function () {
       //获取功能列表
-      this.$axios.post("/permission/getPermissionMap.do", {
+      this.$axios.post("/permission/getPermissionList.do", {
         userId: this.$store.getters.getUser.userId
       })
           .then(resp => {
             //渲染功能列表
             this.itemList = resp.data.data;
-            console.log(resp.data.data);
-            console.log(this.itemList);
+            // console.log(this.itemList);
           }, err => {
             console.log(err)
           })
+    },
+    toIndex:function (){
+      this.$router.replace("/index");
     }
   },
   created() {
@@ -176,4 +178,9 @@ body > .el-container {
 a {
   text-decoration: none;
 }
+
+.grid-content:hover{
+  color: #606266;
+}
+
 </style>

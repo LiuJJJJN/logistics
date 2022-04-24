@@ -13,7 +13,7 @@
         <el-input v-model="form.username"></el-input>
       </el-form-item>
       <el-form-item label="密码" prop="password">
-        <el-input v-model="form.password" show-password></el-input>
+        <el-input @keyup.enter.native="onSubmit('form')" v-model="form.password" show-password></el-input>
       </el-form-item>
       <el-form-item label="" prop="rememberMe" class="rememberMe">
         <el-checkbox v-model="form.rememberMe">七天免登录</el-checkbox>
@@ -61,8 +61,7 @@ export default {
         if (valid) {
           this.$axios.post("/user/login.do", this.form)
               .then(resp => {
-                // alert(resp.data.message);
-                console.log(resp.data);
+                // console.log(resp.data);
                 this.$store.commit("SET_TOKEN", resp.data.data.token); //向全局存储中中存值
                 this.$store.commit("SET_USERINFO", resp.data.data.user); //向全局存储中中存值
                 this.$store.commit("SET_REMEMBER_ME", resp.data.data.rememberMe); //向全局存储中中存值

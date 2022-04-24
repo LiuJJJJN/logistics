@@ -136,16 +136,6 @@ export default {
         }
       });
     },
-   /* submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          alert('submit!');
-        } else {
-          console.log('error submit!!');
-          return false;
-        }
-      });
-    },*/
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
@@ -156,7 +146,7 @@ export default {
           list[i] = resp.data.data[i].value;
         }
         this.collegeEnum = list;
-        console.log(this.collegeEnum);
+        // console.log(this.collegeEnum);
       }, err=>{
         console.log(err)
       })

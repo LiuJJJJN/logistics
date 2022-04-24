@@ -23,7 +23,7 @@ public class PermissionController {
     @Autowired
     private RoleService roleService;
 
-    @RequestMapping("/getPermissionMap.do")
+    @RequestMapping("/getPermissionList.do")
     @ResponseBody
     public Result getPermissionList(@RequestBody Map<String, String> map){
         String userId = map.get("userId");

@@ -178,7 +178,7 @@ export default {
           list[i] = resp.data.data[i].value;
         }
         this.collegeEnum = list;
-        console.log(this.collegeEnum);
+        // console.log(this.collegeEnum);
       }, err=>{
         console.log(err)
       })
