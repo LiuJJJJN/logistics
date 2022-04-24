@@ -100,18 +100,18 @@ export default {
   created() {
     this.checkLogin();
 
-    this.$notify({
-      title: '提示',
-      message: '项目仅实现 登录、注册、根据账户权限动态加载功能列表 等功能.<br/><br/>' +
-          '现有学生<br/>账户:stu1,密码:stu1<br/><br/>' +
-          '现有学生同时拥有导员权限<br/>账户:stu2,密码:stu2<br/><br/>' +
-          '现有导员<br/>账户:tutor1,密码:tutor1<br/><br/>' +
-          '现有导员同时拥有管理员权限<br/>账户:tutor2,密码:tutor2<br/><br/>' +
-          '现有管理员<br/>账户:admin1,密码:admin1<br/><br/>' +
-          '项目 gitee 地址:<br/> <a href="https://gitee.com/LiuJaNing/logistics/tree/dev/">https://gitee.com/...</a>',
-      duration: 0,
-      dangerouslyUseHTMLString: true
-    });
+    // this.$notify({
+    //   title: '提示',
+    //   message: '项目仅实现 登录、注册、根据账户权限动态加载功能列表 等功能.<br/><br/>' +
+    //       '现有学生<br/>账户:stu1,密码:stu1<br/><br/>' +
+    //       '现有学生同时拥有导员权限<br/>账户:stu2,密码:stu2<br/><br/>' +
+    //       '现有导员<br/>账户:tutor1,密码:tutor1<br/><br/>' +
+    //       '现有导员同时拥有管理员权限<br/>账户:tutor2,密码:tutor2<br/><br/>' +
+    //       '现有管理员<br/>账户:admin1,密码:admin1<br/><br/>' +
+    //       '项目 gitee 地址:<br/> <a href="https://gitee.com/LiuJaNing/logistics/tree/dev/">https://gitee.com/...</a>',
+    //   duration: 0,
+    //   dangerouslyUseHTMLString: true
+    // });
   }
 
 }

@@ -88,8 +88,8 @@ const routes = [
 
 const router = new VueRouter({
   mode: 'history',
-  base: process.env.BASE_URL,
-  // base: 'djtu-logistics',
+  // base: process.env.BASE_URL,
+  base: 'DJTULogistics',
   routes
 })
 

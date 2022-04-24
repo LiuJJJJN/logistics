@@ -29,11 +29,6 @@ public class UserServiceImpl implements UserService {
     private TutorDao tutorDao;
     //影响条数标准
     private static final Integer INSERT_SUCCESS_NUM=1;
-    @Override
-    public User getUserByUsername(String username) {
-        //return userDao.getUserByName(username);
-        return null;
-    }
 
     /**
      * 学生注册添加事务-异常进行回滚
