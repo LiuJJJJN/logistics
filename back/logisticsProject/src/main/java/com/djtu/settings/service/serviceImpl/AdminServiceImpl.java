@@ -4,7 +4,7 @@ import com.djtu.settings.dao.AdminDao;
 import com.djtu.settings.dao.UserDao;
 import com.djtu.settings.pojo.Admin;
 import com.djtu.settings.service.AdminService;
-import com.djtu.settings.vo.UserVo;
+import com.djtu.settings.pojo.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,4 +26,10 @@ public class AdminServiceImpl implements AdminService {
         return new UserVo(userId, admin.getUsername(), admin.getPassword(), admin.getSalt(), admin.getName(),
                 "", "", "");
     }
+
+    @Override
+    public String getUserIdByAdminId(String id) {
+        return userDao.getUserIdByAdminId(id);
+    }
+
 }

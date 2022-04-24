@@ -4,7 +4,7 @@ import com.djtu.settings.dao.TutorDao;
 import com.djtu.settings.dao.UserDao;
 import com.djtu.settings.pojo.Tutor;
 import com.djtu.settings.service.TutorService;
-import com.djtu.settings.vo.UserVo;
+import com.djtu.settings.pojo.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +25,11 @@ public class TutorServiceImpl implements TutorService {
         }
         return new UserVo(userId, tutor.getUsername(), tutor.getPassword(), tutor.getSalt(), tutor.getName(),
                 tutor.getSex(), tutor.getRemark(), tutor.getAvatarPath());
+    }
+
+    @Override
+    public String getUserIdByTutorId(String id) {
+        return userDao.getUserIdByTutorId(id);
     }
 
 }

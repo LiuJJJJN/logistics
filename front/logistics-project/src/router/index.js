@@ -5,7 +5,6 @@ import login from "@/views/login";
 import index from "@/views/index";
 import tutorClass from "@/views/tutorClass";
 import tutorFeedback from "@/views/tutorFeedback";
-import userIndex from "@/views/userIndex";
 import userFeedback from "@/views/userFeedback";
 import tutorStudent from "@/views/tutorStudent";
 import register from "@/views/register";
@@ -13,6 +12,7 @@ import stuRegister from "@/views/stuRegister";
 import tutorRegister from "@/views/tutorRegister";
 import notFoundPage from "@/views/notFoundPage";
 import welcomePage from "@/views/welcomePage";
+import adminStudentRole from "@/views/adminStudentRole";
 
 Vue.use(VueRouter)
 
@@ -55,16 +55,6 @@ const routes = [
         component: welcomePage
       },
       {
-        path:"/welcomePage",
-        name:"welcomePage",
-        component: welcomePage
-      },
-      {
-        path:"/user",
-        name:"userIndex",
-        component: userIndex
-      },
-      {
         path:"/user/feedback",
         name:"userFeedback",
         component: userFeedback
@@ -83,6 +73,11 @@ const routes = [
         path:"/tutor/student",
         name:"tutorStudent",
         component: tutorStudent
+      },
+      {
+        path:"/admin/studentRole",
+        name:"adminStudentRole",
+        component: adminStudentRole
       },
       {
         path: "/*",

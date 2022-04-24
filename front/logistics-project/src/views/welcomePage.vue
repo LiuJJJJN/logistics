@@ -39,8 +39,6 @@ export default {
               }
             }
             this.itemList = itemList;
-            // console.log(this.itemList);
-            this.$router.replace("/welcomePage");
           }, err => {
             console.log(err)
           })

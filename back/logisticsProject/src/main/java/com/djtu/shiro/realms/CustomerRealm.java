@@ -1,11 +1,7 @@
 package com.djtu.shiro.realms;
 
-import com.djtu.response.Result;
-import com.djtu.settings.dao.StudentDao;
-import com.djtu.settings.pojo.Student;
-import com.djtu.settings.pojo.User;
 import com.djtu.settings.service.*;
-import com.djtu.settings.vo.UserVo;
+import com.djtu.settings.pojo.vo.UserVo;
 import com.djtu.token.JwtToken;
 import com.djtu.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
