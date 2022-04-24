@@ -18,4 +18,18 @@ public interface UserService {
      * @throws RegisterException
      */
     void registerTutor(Tutor tutor) throws RegisterException;
+
+    /**
+     * 教职工注册重名查询
+     * @param username
+     * @throws RegisterException
+     */
+    void registerTutorUserNameVerify(String username) throws RegisterException;
+
+    /**
+     * 学生注册重名查询
+     * @param username
+     * @throws RegisterException
+     */
+    void registerStudentUserNameVerify(String username) throws RegisterException;
 }
