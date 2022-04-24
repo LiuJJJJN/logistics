@@ -111,18 +111,21 @@ export default {
     }
   },
   methods: {
-    blurUserName(){
+    blurUserName(){//验证用户名是否重复
+      if(this.submitForm.username==''){//如果用户名为空不进行axios
+        return false;
+      }
       console.log("事件触发");
-      // this.$axios.get("/user/.do").then(resp=>{
-      //   var list = [];
-      //   for(let i=0; i<resp.data.data.length;i++){
-      //     list[i] = resp.data.data[i].value;
-      //   }
-      //   this.collegeEnum = list;
-      //   console.log(this.collegeEnum);
-      // }, err=>{
-      //   console.log(err)
-      // })
+      this.$axios.get("/user/registerTutorUV.do",{ params: { username:this.submitForm.username} }).then(resp=>{
+        this.$message({
+          message: resp.data.message,
+          type: 'success'
+        });
+      }, err=>{
+        this.submitForm.username = '';//用户名设置空
+        console.log(err)
+      })
+
     },
     toRegister(formName) {
       this.$refs[formName].validate((valid) => {

@@ -1,7 +1,7 @@
 <template>
   <el-form :model="submitForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
     <el-form-item label="用户名" prop="username">
-      <el-input v-model="submitForm.username"></el-input>
+      <el-input v-model="submitForm.username" @blur="blurUserName"></el-input>
     </el-form-item>
     <el-form-item label="密码" prop="password">
       <el-input v-model="submitForm.password" show-password></el-input>
@@ -143,6 +143,22 @@ export default {
     }
   },
   methods: {
+    blurUserName(){//验证用户名是否重复
+      if(this.submitForm.username==''){//如果用户名为空不进行axios
+        return false;
+      }
+      console.log("事件触发");
+      this.$axios.get("/user/registerStudentUV.do",{ params: { username:this.submitForm.username} }).then(resp=>{
+        this.$message({
+          message: resp.data.message,
+          type: 'success'
+        });
+      }, err=>{
+        this.submitForm.username = '';//用户名设置空
+        console.log(err)
+      })
+
+    },
     toRegister(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {

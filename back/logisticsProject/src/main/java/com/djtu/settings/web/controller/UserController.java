@@ -129,6 +129,32 @@ public class UserController {
         return new Result().setCode(200).setMessage("注册成功");
     }
 
+    /**
+     * 教职工注册用户名查重验证
+     * @return
+     */
+    @RequestMapping("/registerTutorUV.do")
+    @ResponseBody
+    public Result registerTutorUserNameVerify(String username) throws RegisterException{
+        System.out.println("+---+"+username);
+        userService.registerTutorUserNameVerify(username);
+        return new Result().setCode(200).setMessage("没有重名");
+    }
+
+    /**
+     * 学生注册用户名查重验证
+     * @param username
+     * @return
+     * @throws RegisterException
+     */
+    @RequestMapping("/registerStudentUV.do")
+    @ResponseBody
+    public Result registerStudentUserNameVerify(String username) throws RegisterException{
+        userService.registerStudentUserNameVerify(username);
+        return new Result().setCode(200).setMessage("没有重名");
+    }
+
+
     @RequestMapping("/getCollegeList.do")
     @ResponseBody
     public Result getCollegeList(){

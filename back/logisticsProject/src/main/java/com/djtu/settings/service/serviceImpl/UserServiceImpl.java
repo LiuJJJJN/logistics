@@ -13,7 +13,6 @@ import com.djtu.settings.service.UserService;
 import com.djtu.settings.pojo.vo.UserRoleVo;
 import com.djtu.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -108,4 +107,18 @@ public class UserServiceImpl implements UserService {
         return studentUserRoleVoList;
     }
 
+    public void registerTutorUserNameVerify(String username) throws RegisterException{
+        Tutor tutor=tutorDao.getTutorByUsername(username);
+        if(tutor!=null){
+            throw new RegisterException("用户名已被注册");
+        }
+    }
+
+    @Override
+    public void registerStudentUserNameVerify(String username) throws RegisterException {
+        Student student=studentDao.getStudentByUsername(username);
+        if(student!=null){
+            throw new RegisterException("用户名已被注册");
+        }
+    }
 }
