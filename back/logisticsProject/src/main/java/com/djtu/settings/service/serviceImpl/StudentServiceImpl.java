@@ -4,9 +4,11 @@ import com.djtu.settings.dao.StudentDao;
 import com.djtu.settings.dao.UserDao;
 import com.djtu.settings.pojo.Student;
 import com.djtu.settings.service.StudentService;
-import com.djtu.settings.vo.UserVo;
+import com.djtu.settings.pojo.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -25,6 +27,11 @@ public class StudentServiceImpl implements StudentService {
         }
         return new UserVo(userId, student.getUsername(), student.getPassword(), student.getSalt(), student.getName(),
                 student.getSex(), student.getRemark(), student.getAvatarPath());
+    }
+
+    @Override
+    public String getUserIdByStudentId(String id) {
+        return userDao.getUserIdByStudentId(id);
     }
 
 }

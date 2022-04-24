@@ -6,7 +6,7 @@ import com.djtu.settings.pojo.DicValue;
 import com.djtu.settings.pojo.Student;
 import com.djtu.settings.pojo.Tutor;
 import com.djtu.settings.service.*;
-import com.djtu.settings.vo.UserVo;
+import com.djtu.settings.pojo.vo.UserVo;
 import com.djtu.token.JwtToken;
 import com.djtu.utils.JwtUtil;
 import com.djtu.utils.StringUtil;

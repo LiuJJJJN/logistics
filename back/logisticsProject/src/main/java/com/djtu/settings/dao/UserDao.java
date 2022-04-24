@@ -1,6 +1,9 @@
 package com.djtu.settings.dao;
 
 import com.djtu.settings.pojo.User;
+import com.djtu.settings.pojo.vo.UserRoleVo;
+
+import java.util.List;
 
 public interface UserDao {
 
@@ -36,4 +39,12 @@ public interface UserDao {
      * @return
      */
     Integer setTutorUser(User user);
+
+    /**
+     * 分页查询学生用户角色相关信息
+     * @param pageCount 起始页
+     * @param pageSize 数据量
+     * @return 学生用户角色信息列表
+     */
+    List<UserRoleVo> getStudentUserRoleVoList(int pageCount, int pageSize);
 }

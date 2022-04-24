@@ -10,11 +10,14 @@ import com.djtu.settings.pojo.Tutor;
 import com.djtu.settings.pojo.User;
 import com.djtu.settings.pojo.UserRole;
 import com.djtu.settings.service.UserService;
+import com.djtu.settings.pojo.vo.UserRoleVo;
 import com.djtu.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -96,6 +99,13 @@ public class UserServiceImpl implements UserService {
         if(userFlag<INSERT_SUCCESS_NUM || tutorFlag<INSERT_SUCCESS_NUM  || tutorRoleFlag<INSERT_SUCCESS_NUM ){
             throw new RegisterException("注册失败");
         }
+    }
+
+    @Override
+    public List<UserRoleVo> getStudentUserRoleVoList(int pageCount, int pageSize) {
+
+        List<UserRoleVo> studentUserRoleVoList = userDao.getStudentUserRoleVoList(pageCount, pageSize);
+        return studentUserRoleVoList;
     }
 
 }
