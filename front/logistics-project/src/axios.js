@@ -3,6 +3,7 @@ import router from './router';
 import ElementUI from 'element-ui';
 
 //配置 axios 每个链接的公共字符
+// axios.defaults.baseURL = "http://47.111.84.87:8080/logisticsProject";
 axios.defaults.baseURL = "http://localhost:8080/logisticsProject";
 //配置 axios 可以带 cookie 存储到浏览器
 axios.defaults.withCredentials = true;

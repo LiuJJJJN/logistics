@@ -10,7 +10,7 @@ import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@Slf4j //lombok 提供的日志输出
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
