@@ -41,7 +41,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value=RegisterException.class)
     public Result handler(RegisterException e){
         log.error("运行时异常----------------{}",e.getMessage());
-        return new Result().setCode(500).setMessage(e.getMessage());
+        return new Result().setCode(402).setMessage(e.getMessage());
     }
 
 }

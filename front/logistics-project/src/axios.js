@@ -22,8 +22,12 @@ axios.interceptors.response.use(resp =>{
         ElementUI.Message.error(res.message, {duration:3*1000});
         router.push("/login");
         return Promise.reject(res.message);
+    }else if(res.code == 402){ //402 注册用户名重复
+        ElementUI.Message.error(res.message, {duration:3*1000});
+        return Promise.reject(res.message);
     }else { // 失败 显示失败信息
         ElementUI.Message.error("其他错误，后端响应内容:"+res.message, {duration:3*1000});
         return Promise.reject(res.message);
     }
+
 })
