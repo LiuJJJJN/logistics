@@ -85,6 +85,10 @@ export default {
   name: "adminStudentRole",
   data(){
     return{
+      currentPage1: 5,
+      currentPage2: 5,
+      currentPage3: 5,
+      currentPage4: 4,
       submitForm:{
         id:'',
         username:'mike',
@@ -125,6 +129,14 @@ export default {
     }
   },
   methods:{
+    //分页
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+    },
+    //
     showDialog (index, row) {
       this.dialogFormVisible = true
       this.submitForm.id = row.id;
