@@ -141,7 +141,7 @@ public class UserController {
     @ResponseBody
     public Result registerTutorUserNameVerify(String username) throws RegisterException {
         tutorService.registerTutorUserNameVerify(username);
-        return new Result().setCode(200).setMessage("没有重名");
+        return new Result().setCode(200).setMessage("用户名可用");
     }
 
     /**
@@ -154,7 +154,7 @@ public class UserController {
     @ResponseBody
     public Result registerStudentUserNameVerify(String username) throws RegisterException {
         studentService.registerStudentUserNameVerify(username);
-        return new Result().setCode(200).setMessage("没有重名");
+        return new Result().setCode(200).setMessage("用户名可用");
     }
 
 }

@@ -21,8 +21,14 @@ public interface StudentDao {
 
     /**
      * 注册学生
-     * @param student
-     * @return
+     * @param student 学生信息
+     * @return 插入成功数量
      */
     Integer setStudent(Student student);
+
+    /**
+     * 获取学生总数
+     * @return 学生数量
+     */
+    Integer getStudentTotal();
 }

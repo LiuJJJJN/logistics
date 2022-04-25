@@ -4,17 +4,18 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
+/**
+ * 学生搜索vo
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserRoleVo {
-    String id;
-    String username;
+public class StudentSearchVo {
     String name;
-    List<String> perms;
-    String sex;
-    String remark;
+    String sno;
+    String college;
+    String stuClass;
+    String startDate;
+    String endDate;
 
 }
