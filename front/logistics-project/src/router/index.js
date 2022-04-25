@@ -12,7 +12,8 @@ import stuRegister from "@/views/stuRegister";
 import tutorRegister from "@/views/tutorRegister";
 import notFoundPage from "@/views/notFoundPage";
 import welcomePage from "@/views/welcomePage";
-import adminStudentRole from "@/views/adminStudentRole";
+import stuRole from "@/views/stuRole";
+import tutorRole from "@/views/tutorRole";
 import dicType from "@/views/dicType";
 import dicValue from "@/views/dicValue";
 
@@ -78,8 +79,13 @@ const routes = [
       },
       {
         path:"/admin/studentRole",
-        name:"adminStudentRole",
-        component: adminStudentRole
+        name:"studentRole",
+        component: stuRole
+      },
+      {
+        path:"/admin/tutorRole",
+        name:"tutorRole",
+        component: tutorRole
       },
       {
         path:"/admin/dicType",

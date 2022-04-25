@@ -246,6 +246,14 @@ export default {
             start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
             picker.$emit('pick', [start, end]);
           }
+        }, {
+          text: '最近一年',
+          onClick(picker) {
+            const end = new Date();
+            const start = new Date();
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30 * 12);
+            picker.$emit('pick', [start, end]);
+          }
         }]
       },
       form: {
@@ -265,14 +273,6 @@ export default {
     }
   },
   methods:{
-    //分页
-    handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
-    },
-    handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
-    },
-    //
     showDialog (index, row) {
       this.dialogFormVisible = true
       this.submitForm.id = row.id;
