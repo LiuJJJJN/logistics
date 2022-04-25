@@ -4,23 +4,25 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 /**
- * 教职工vo类
+ * 学生权限管理功能中的学生和对应角色的vo
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserTutorVo {
-    String userId;
+public class StudentRoleVo {
+    String id;
     String username;
-    String password;
-    String salt;
     String name;
     String sex;
-    String ident = "1";
-    String studentId;
-    String schoolSys;
+    String sno;
     String enterDate;
     String college;
+    String stuClass;
+    String schoolSys;
+    List<String> perms;
+    String remark;
 
 }

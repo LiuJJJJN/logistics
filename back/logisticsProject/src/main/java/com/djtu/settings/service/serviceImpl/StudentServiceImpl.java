@@ -21,4 +21,9 @@ public class StudentServiceImpl implements StudentService {
         }
     }
 
+    @Override
+    public Integer getStudentTotal() {
+        return studentDao.getStudentTotal();
+    }
+
 }

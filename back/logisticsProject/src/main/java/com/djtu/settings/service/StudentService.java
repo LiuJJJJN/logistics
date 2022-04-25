@@ -11,4 +11,9 @@ public interface StudentService {
      */
     void registerStudentUserNameVerify(String username) throws RegisterException;
 
+    /**
+     * 获取学生总数
+     * @return 学生总数
+     */
+    Integer getStudentTotal();
 }

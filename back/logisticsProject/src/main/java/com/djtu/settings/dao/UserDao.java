@@ -1,7 +1,9 @@
 package com.djtu.settings.dao;
 
 import com.djtu.settings.pojo.User;
-import com.djtu.settings.pojo.vo.UserRoleVo;
+import com.djtu.settings.pojo.vo.StudentRoleVo;
+import com.djtu.settings.pojo.vo.StudentSearchVo;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -46,5 +48,11 @@ public interface UserDao {
      * @param pageSize 数据量
      * @return 学生用户角色信息列表
      */
-    List<UserRoleVo> getStudentUserRoleVoList(int pageCount, int pageSize);
+    List<StudentRoleVo> getStudentUserRoleVoList(@Param("vo") StudentSearchVo studentSearchVo, @Param("pageNo") int pageCount, @Param("pageSize") int pageSize);
+
+    /**
+     * 获取学生角色列表总数
+     * @return 总数
+     */
+    Integer getStudentUserRoleVoListTotal(@Param("vo") StudentSearchVo vo);
 }

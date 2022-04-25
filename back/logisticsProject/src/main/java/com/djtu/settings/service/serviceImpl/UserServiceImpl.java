@@ -3,9 +3,10 @@ package com.djtu.settings.service.serviceImpl;
 import com.djtu.exception.RegisterException;
 import com.djtu.settings.dao.*;
 import com.djtu.settings.pojo.*;
+import com.djtu.settings.pojo.vo.StudentSearchVo;
 import com.djtu.settings.pojo.vo.UserVo;
 import com.djtu.settings.service.UserService;
-import com.djtu.settings.pojo.vo.UserRoleVo;
+import com.djtu.settings.pojo.vo.StudentRoleVo;
 import com.djtu.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -100,15 +101,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserVo getUserVoByStudentUsername(String username) {
         Student student = studentDao.getStudentByUsername(username);
+        if (student == null) {
+            return null;
+        }
         String userId = userDao.getUserIdByStudentId(student.getId());
         return new UserVo(userId, student.getUsername(), student.getPassword(), student.getSalt(), student.getName(),
                 student.getSex(), student.getRemark(), student.getAvatarPath());
     }
 
     @Override
-    public List<UserRoleVo> getStudentUserRoleVoList(int pageCount, int pageSize) {
+    public List<StudentRoleVo> getStudentUserRoleVoList(StudentSearchVo studentSearchVo, int pageCount, int pageSize) {
 
-        return userDao.getStudentUserRoleVoList(pageCount, pageSize);
+        return userDao.getStudentUserRoleVoList(studentSearchVo, pageCount, pageSize);
     }
 
     @Override
@@ -119,14 +123,25 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserVo getUserVoByAdminUsername(String username) {
         Admin admin = adminDao.getAdminByUsername(username);
+        if (admin == null){
+            return null;
+        }
         String userId = userDao.getUserIdByAdminId(admin.getId());
         return new UserVo(userId, admin.getUsername(), admin.getPassword(), admin.getSalt(), admin.getName(),
                 "", "", "");
     }
 
     @Override
+    public Integer getStudentRoleListTotal(StudentSearchVo studentSearchVo) {
+        return userDao.getStudentUserRoleVoListTotal(studentSearchVo);
+    }
+
+    @Override
     public UserVo getUserVoByTutorUsername(String username) {
         Tutor tutor = tutorDao.getTutorByUsername(username);
+        if (tutor == null) {
+            return null;
+        }
         String userId = userDao.getUserIdByTutorId(tutor.getId());
         return new UserVo(userId, tutor.getUsername(), tutor.getPassword(), tutor.getSalt(), tutor.getName(),
                 tutor.getSex(), tutor.getRemark(), tutor.getAvatarPath());
