@@ -1,45 +1,26 @@
 <template>
   <div>
     <el-row :gutter="20" style="margin-bottom: 20px">
-      <el-col :span="3">
+      <el-col :span="4">
+        <el-input
+            placeholder="请输入用户名"
+            v-model="searchForm.username"
+            clearable>
+        </el-input>
+      </el-col>
+      <el-col :span="4">
         <el-input
             placeholder="请输入姓名"
             v-model="searchForm.name"
             clearable>
         </el-input>
       </el-col>
-      <el-col :span="3">
-        <el-input
-            placeholder="请输入学号"
-            v-model="searchForm.sno"
-            clearable>
-        </el-input>
-      </el-col>
-      <el-col :span="3">
+      <el-col :span="5">
         <el-select v-model="searchForm.college" placeholder="请选择所属学院" >
           <div v-for="item in collegeEnum" :key="item">
             <el-option :label="item" :value="item"></el-option>
           </div>
         </el-select>
-      </el-col>
-      <el-col :span="3">
-        <el-input
-            placeholder="请输入班级"
-            v-model="searchForm.stuClass"
-            clearable>
-        </el-input>
-      </el-col>
-      <el-col :span="7">
-        <el-date-picker
-            v-model="searchForm.date"
-            type="daterange"
-            align="right"
-            unlink-panels
-            range-separator="至"
-            start-placeholder="入学时间开始日期"
-            end-placeholder="入学时间结束日期"
-            :picker-options="pickerOptions">
-        </el-date-picker>
       </el-col>
       <el-col :span="2">
         <el-button icon="el-icon-search" circle @click="getUserRoleList"></el-button>
@@ -54,58 +35,30 @@
       </el-table-column>
       <el-table-column
           label="用户名"
-          width="100">
+          width="150">
         <template slot-scope="scope">
           <span>{{ scope.row.username }}</span>
         </template>
       </el-table-column>
       <el-table-column
           label="姓名"
-          width="100">
+          width="150">
         <template slot-scope="scope">
           <span>{{ scope.row.name }}</span>
         </template>
       </el-table-column>
       <el-table-column
           label="性别"
-          width="50">
+          width="100">
         <template slot-scope="scope">
           <span>{{ scope.row.sex }}</span>
         </template>
       </el-table-column>
       <el-table-column
-          label="学号"
-          width="120">
-        <template slot-scope="scope">
-          <span>{{ scope.row.sno }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-          label="注册时间"
-          width="100">
-        <template slot-scope="scope">
-          <span>{{ scope.row.enterDate }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
           label="学院"
-          width="130">
+          width="150">
         <template slot-scope="scope">
           <span>{{ scope.row.college }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-          label="班级"
-          width="100">
-        <template slot-scope="scope">
-          <span>{{ scope.row.stuClass }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-          label="学制"
-          width="50">
-        <template slot-scope="scope">
-          <span>{{ scope.row.schoolSys }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -165,6 +118,7 @@
         <el-form-item label="权限" :label-width="formLabelWidth">
           <el-checkbox-group v-model="submitForm.perms" size="small">
             <el-checkbox-button disabled>学生</el-checkbox-button>
+            <el-checkbox-button disabled>导员</el-checkbox-button>
             <el-checkbox-button v-for="perm in perms" :label="perm" :key="perm">{{perm}}</el-checkbox-button>
           </el-checkbox-group>
         </el-form-item>
@@ -179,18 +133,16 @@
 </template>
 
 <script>
-const permOptions = ['导员', '管理员'];
+const permOptions = ['管理员'];
 export default {
   name: "tutorRole",
   data(){
     return{
       collegeEnum:[],
       searchForm:{
+        username:'',
         name:'',
-        sno:'',
-        college:'',
-        stuClass:'',
-        date:[]
+        college:''
       },
       submitForm:{
         id:'loading',
@@ -205,11 +157,7 @@ export default {
         name: 'loading',
         perms: [],
         sex: 'loading',
-        sno:'loading',
-        enterDate: '',
         college:'',
-        stuClass:'',
-        schoolSys:'',
         remark: 'loading',
       }],
       perms: permOptions,
@@ -276,7 +224,7 @@ export default {
       this.submitForm.username = row.username;
     },
     getUserRoleList(){
-      this.$axios.post("/permission/getStudentRoleListTotal.do",
+      this.$axios.post("/permission/getTutorRoleListTotal.do",
           {
             name:this.searchForm.name,
             sno:this.searchForm.sno,
@@ -290,13 +238,12 @@ export default {
           },err=>{
             console.log(err);
           });
-      this.$axios.post("/permission/getStudentRoleList.do",
+      this.$axios.post("/permission/getTutorRoleList.do",
           {
+            username:this.searchForm.username,
             name:this.searchForm.name,
             sno:this.searchForm.sno,
             college:this.searchForm.college,
-            stuClass:this.searchForm.stuClass,
-            date:this.searchForm.date,
             pageNo:(this.pageNo-1)*this.pageSize,
             pageSize:this.pageSize
           })
