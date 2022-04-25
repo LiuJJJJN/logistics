@@ -17,7 +17,7 @@ public class StringUtilsTest {
 
     @Test
     public void testMd5(){
-        System.out.println(StringUtil.md5("stu2", "<|IS"));
+        System.out.println(StringUtil.md5("123123", "<|IS"));
     }
 
 }

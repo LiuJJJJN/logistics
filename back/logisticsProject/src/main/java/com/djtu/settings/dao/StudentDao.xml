@@ -42,6 +42,9 @@
         from tbl_student
         where sno=#{sno}
     </select>
+    <select id="getStudentTotal" resultType="java.lang.Integer">
+        select count(*) from tbl_student;
+    </select>
 
     <insert id="setStudent">
         insert into tbl_student(

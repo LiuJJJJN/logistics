@@ -3,7 +3,8 @@ package com.djtu.settings.service;
 import com.djtu.exception.RegisterException;
 import com.djtu.settings.pojo.Student;
 import com.djtu.settings.pojo.Tutor;
-import com.djtu.settings.pojo.vo.UserRoleVo;
+import com.djtu.settings.pojo.vo.StudentRoleVo;
+import com.djtu.settings.pojo.vo.StudentSearchVo;
 import com.djtu.settings.pojo.vo.UserVo;
 
 import java.util.List;
@@ -37,7 +38,7 @@ public interface UserService {
      * @param pageSize 数据量
      * @return 学生用户角色信息列表
      */
-    List<UserRoleVo> getStudentUserRoleVoList(int pageCount, int pageSize);
+    List<StudentRoleVo> getStudentUserRoleVoList(StudentSearchVo studentSearchVo, int pageCount, int pageSize);
 
     /**
      * 根据管理员 id 获取 user id
@@ -60,4 +61,9 @@ public interface UserService {
      */
     UserVo getUserVoByAdminUsername(String username);
 
+    /**
+     * 学生用户角色相关信息列表总数
+     * @return 学生用户角色信息列表数量
+     */
+    Integer getStudentRoleListTotal(StudentSearchVo studentSearchVo);
 }

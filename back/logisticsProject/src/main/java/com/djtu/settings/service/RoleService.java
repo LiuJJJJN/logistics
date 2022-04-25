@@ -1,6 +1,7 @@
 package com.djtu.settings.service;
 
 import com.djtu.settings.pojo.Role;
+import com.djtu.utils.StringUtil;
 
 import java.util.List;
 import java.util.Set;
@@ -14,4 +15,20 @@ public interface RoleService {
      */
     List<Role> getRoleListByUserId(String userId);
 
+    /**
+     * 向用户角色中间表中添加内容
+     * @param userId 用户id
+     * @param integer 角色id
+     * @param id 主键
+     * @return 添加成功的条数
+     */
+    int addUserRole(String userId, Integer integer, String id);
+
+    /**
+     * 删除用户角色中间表中内容
+     * @param userId 用户id
+     * @param integer 角色id
+     * @return 操作影响条数
+     */
+    int removeUserRole(String userId, Integer integer);
 }
