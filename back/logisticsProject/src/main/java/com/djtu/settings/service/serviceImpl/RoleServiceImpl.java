@@ -16,9 +16,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public List<Role> getRoleListByUserId(String userId) {
-        List<Role> roleList = roleDao.getRoleListByUserId(userId);
-        System.out.println("roleList"+roleList);
-        return roleList;
+        return roleDao.getRoleListByUserId(userId);
     }
 
 }

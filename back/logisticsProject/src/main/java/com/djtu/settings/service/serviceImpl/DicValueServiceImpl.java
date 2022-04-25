@@ -13,12 +13,9 @@ public class DicValueServiceImpl implements DicValueService {
 
     @Autowired
     private DicTypeDao dicTypeDao;
-    @Autowired
-    private DicValueDao dicValueDao;
 
     @Override
     public List<DicValue> getCollegeList() {
-        List<DicValue> list=dicTypeDao.getCollegeList();
-        return list;
+        return dicTypeDao.getCollegeList();
     }
 }

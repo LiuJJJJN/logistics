@@ -1,14 +1,9 @@
 package com.djtu.settings.service.serviceImpl;
 
 import com.djtu.exception.RegisterException;
-import com.djtu.settings.dao.StudentDao;
-import com.djtu.settings.dao.TutorDao;
-import com.djtu.settings.dao.UserDao;
-import com.djtu.settings.dao.UserRoleDao;
-import com.djtu.settings.pojo.Student;
-import com.djtu.settings.pojo.Tutor;
-import com.djtu.settings.pojo.User;
-import com.djtu.settings.pojo.UserRole;
+import com.djtu.settings.dao.*;
+import com.djtu.settings.pojo.*;
+import com.djtu.settings.pojo.vo.UserVo;
 import com.djtu.settings.service.UserService;
 import com.djtu.settings.pojo.vo.UserRoleVo;
 import com.djtu.utils.StringUtil;
@@ -21,52 +16,54 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
+    //影响条数标准
+    private static final Integer INSERT_SUCCESS_NUM = 1;
+    //学生默认角色id
+    private static final String STUDENT_DEFAULT_ROLE_ID = "1";
+    //导员默认角色id
+    private static final String TUTOR_DEFAULT_ROLE_ID = "2";
+
     @Autowired
     private UserDao userDao;
     @Autowired
     private StudentDao studentDao;
     @Autowired
-    private UserRoleDao userRoleDao;
-    @Autowired
     private TutorDao tutorDao;
-    //影响条数标准
-    private static final Integer INSERT_SUCCESS_NUM=1;
+    @Autowired
+    private AdminDao adminDao;
+    @Autowired
+    private UserRoleDao userRoleDao;
 
-    /**
-     * 学生注册添加事务-异常进行回滚
-     * @param student
-     * @throws RegisterException
-     */
     @Override
     @Transactional
     public void registerStudent(Student student) throws RegisterException {
         //先进行重名检测
-        Student stu=studentDao.getStudentByUsername(student.getUsername());
-        if(stu!=null){
+        Student stu = studentDao.getStudentByUsername(student.getUsername());
+        if (stu != null) {
             throw new RegisterException("用户名已被注册");
         }
         //进行学号绑定检测
-        stu=studentDao.getStudentBySno(student.getSno());
-        if(stu!=null){
+        stu = studentDao.getStudentBySno(student.getSno());
+        if (stu != null) {
             throw new RegisterException("学号被绑定过");
         }
         //设置user的属性
-        User user=new User();
+        User user = new User();
         user.setId(StringUtil.generateUUID());
         user.setStudentId(student.getId());
         //设置UserRole的属性
-        UserRole userRole=new UserRole();
+        UserRole userRole = new UserRole();
         userRole.setId(StringUtil.generateUUID());
         userRole.setUserId(user.getId());
-        userRole.setRoleId("1");
+        userRole.setRoleId(STUDENT_DEFAULT_ROLE_ID);
         //用户表注入信息
-        Integer userFlag=userDao.setStudentUser(user);
+        Integer userFlag = userDao.setStudentUser(user);
         //学生表注入注册信息
-        Integer studentFlag=studentDao.setStudent(student);
+        Integer studentFlag = studentDao.setStudent(student);
         //用户角色表注入信息
-        Integer userRoleFlag=userRoleDao.setUserRole(userRole);
+        Integer userRoleFlag = userRoleDao.setUserRole(userRole);
         //判断表中数据是否插入成功  NUM=1
-        if(userFlag<INSERT_SUCCESS_NUM || studentFlag<INSERT_SUCCESS_NUM  || userRoleFlag<INSERT_SUCCESS_NUM ){
+        if (userFlag < INSERT_SUCCESS_NUM || studentFlag < INSERT_SUCCESS_NUM || userRoleFlag < INSERT_SUCCESS_NUM) {
             throw new RegisterException("注册失败");
         }
     }
@@ -75,51 +72,64 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void registerTutor(Tutor tutor) throws RegisterException {
         //先进行重名检测
-        Tutor tutor1=tutorDao .getTutorByUsername(tutor.getUsername());
-        if(tutor1!=null){
+        Tutor tutor1 = tutorDao.getTutorByUsername(tutor.getUsername());
+        if (tutor1 != null) {
             throw new RegisterException("用户名已被注册");
         }
         //设置user的属性
-        User user=new User();
+        User user = new User();
         user.setId(StringUtil.generateUUID());
         user.setTutorId(tutor.getId());
         //设置UserRole的属性
-        UserRole userRole=new UserRole();
+        UserRole userRole = new UserRole();
         userRole.setId(StringUtil.generateUUID());
         userRole.setUserId(user.getId());
-        userRole.setRoleId("2");
+        userRole.setRoleId(TUTOR_DEFAULT_ROLE_ID);
         //用户表注入信息
-        Integer userFlag=userDao.setTutorUser(user);
+        Integer userFlag = userDao.setTutorUser(user);
         //教职工表注入注册信息
-        Integer tutorFlag=tutorDao.setTutor(tutor);
+        Integer tutorFlag = tutorDao.setTutor(tutor);
         //用户角色表注入信息
-        Integer tutorRoleFlag=userRoleDao.setUserRole(userRole);
+        Integer tutorRoleFlag = userRoleDao.setUserRole(userRole);
         //判断表中数据是否插入成功  NUM=1
-        if(userFlag<INSERT_SUCCESS_NUM || tutorFlag<INSERT_SUCCESS_NUM  || tutorRoleFlag<INSERT_SUCCESS_NUM ){
+        if (userFlag < INSERT_SUCCESS_NUM || tutorFlag < INSERT_SUCCESS_NUM || tutorRoleFlag < INSERT_SUCCESS_NUM) {
             throw new RegisterException("注册失败");
         }
     }
 
     @Override
+    public UserVo getUserVoByStudentUsername(String username) {
+        Student student = studentDao.getStudentByUsername(username);
+        String userId = userDao.getUserIdByStudentId(student.getId());
+        return new UserVo(userId, student.getUsername(), student.getPassword(), student.getSalt(), student.getName(),
+                student.getSex(), student.getRemark(), student.getAvatarPath());
+    }
+
+    @Override
     public List<UserRoleVo> getStudentUserRoleVoList(int pageCount, int pageSize) {
 
-        List<UserRoleVo> studentUserRoleVoList = userDao.getStudentUserRoleVoList(pageCount, pageSize);
-        return studentUserRoleVoList;
+        return userDao.getStudentUserRoleVoList(pageCount, pageSize);
     }
 
     @Override
-    public void registerTutorUserNameVerify(String username) throws RegisterException{
-        Tutor tutor=tutorDao.getTutorByUsername(username);
-        if(tutor!=null){
-            throw new RegisterException("用户名已被注册");
-        }
+    public String getUserIdByAdminId(String id) {
+        return userDao.getUserIdByAdminId(id);
     }
 
     @Override
-    public void registerStudentUserNameVerify(String username) throws RegisterException {
-        Student student=studentDao.getStudentByUsername(username);
-        if(student!=null){
-            throw new RegisterException("用户名已被注册");
-        }
+    public UserVo getUserVoByAdminUsername(String username) {
+        Admin admin = adminDao.getAdminByUsername(username);
+        String userId = userDao.getUserIdByAdminId(admin.getId());
+        return new UserVo(userId, admin.getUsername(), admin.getPassword(), admin.getSalt(), admin.getName(),
+                "", "", "");
     }
+
+    @Override
+    public UserVo getUserVoByTutorUsername(String username) {
+        Tutor tutor = tutorDao.getTutorByUsername(username);
+        String userId = userDao.getUserIdByTutorId(tutor.getId());
+        return new UserVo(userId, tutor.getUsername(), tutor.getPassword(), tutor.getSalt(), tutor.getName(),
+                tutor.getSex(), tutor.getRemark(), tutor.getAvatarPath());
+    }
+
 }
