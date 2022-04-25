@@ -3,10 +3,8 @@ package com.djtu.settings.service.serviceImpl;
 import com.djtu.exception.RegisterException;
 import com.djtu.settings.dao.*;
 import com.djtu.settings.pojo.*;
-import com.djtu.settings.pojo.vo.StudentSearchVo;
-import com.djtu.settings.pojo.vo.UserVo;
+import com.djtu.settings.pojo.vo.*;
 import com.djtu.settings.service.UserService;
-import com.djtu.settings.pojo.vo.StudentRoleVo;
 import com.djtu.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -134,6 +132,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public Integer getStudentRoleListTotal(StudentSearchVo studentSearchVo) {
         return userDao.getStudentUserRoleVoListTotal(studentSearchVo);
+    }
+
+    @Override
+    public List<TutorRoleVo> getTutorUserRoleVoList(TutorSearchVo tutorSearchVo, Integer pageNo, Integer pageSize) {
+        return userDao.getTutorUserRoleVoList(tutorSearchVo, pageNo, pageSize);
+    }
+
+    @Override
+    public Integer getTutorRoleListTotal(TutorSearchVo tutorSearchVo) {
+        return userDao.getTutorUserRoleVoListTotal(tutorSearchVo);
     }
 
     @Override

@@ -3,6 +3,8 @@ package com.djtu.settings.web.controller;
 import com.djtu.response.Result;
 import com.djtu.settings.pojo.*;
 import com.djtu.settings.pojo.vo.StudentSearchVo;
+import com.djtu.settings.pojo.vo.TutorRoleVo;
+import com.djtu.settings.pojo.vo.TutorSearchVo;
 import com.djtu.settings.service.*;
 import com.djtu.settings.pojo.vo.StudentRoleVo;
 import com.djtu.utils.StringUtil;
@@ -77,6 +79,28 @@ public class PermissionController {
     }
 
     /**
+     * 获取所有导员以及相对应的角色列表
+     * @return 所有导员以及相对应的角色列表
+     */
+    @RequestMapping("/getTutorRoleList.do")
+    @ResponseBody
+    public Result getTutorRoleList(@RequestBody Map map) {
+        Integer pageNo = (Integer) map.get("pageNo");
+        Integer pageSize = (Integer) map.get("pageSize");
+        String username = (String) map.get("username");
+        String name = (String) map.get("name");
+        String college = (String) map.get("college");
+        TutorSearchVo tutorSearchVo = new TutorSearchVo(username, name, college);
+
+        List<TutorRoleVo> studentRoleVoList = userService.getTutorUserRoleVoList(tutorSearchVo, pageNo, pageSize);
+
+        if (studentRoleVoList == null) {
+            return new Result().setCode(402).setMessage("获取导员角色列表失败");
+        }
+        return new Result().setCode(200).setMessage("获取导员角色列表成功").setData(studentRoleVoList);
+    }
+
+    /**
      * 获取所有学生列表的总数
      * @return 所有学生列表的总数
      */
@@ -102,6 +126,26 @@ public class PermissionController {
             return new Result().setCode(402).setMessage("获取学生列表总数失败");
         }
         return new Result().setCode(200).setMessage("获取学生列表总数成功").setData(total);
+    }
+
+    /**
+     * 获取所有导员列表的总数
+     * @return 所有导员列表的总数
+     */
+    @RequestMapping("/getTutorRoleListTotal.do")
+    @ResponseBody
+    public Result getTutorRoleListTotal(@RequestBody Map map) {
+        String username = (String) map.get("username");
+        String name = (String) map.get("name");
+        String college = (String) map.get("college");
+        TutorSearchVo tutorSearchVo = new TutorSearchVo(username, name, college);
+
+        Integer total = userService.getTutorRoleListTotal(tutorSearchVo);
+
+        if (total == null) {
+            return new Result().setCode(402).setMessage("获取导员列表总数失败");
+        }
+        return new Result().setCode(200).setMessage("获取导员列表总数成功").setData(total);
     }
 
     /**
@@ -135,7 +179,7 @@ public class PermissionController {
         for (String r : roles) {
             boolean flag = true;
             for (Role role : roleList) {
-                if (r.equals(role.getName()) && !r.equals("学生")) {
+                if (r.equals(role.getName())) {
                     flag = false;
                 }
             }
@@ -143,9 +187,7 @@ public class PermissionController {
                 roleService.addUserRole(userId, roleMap.get(r), StringUtil.generateUUID());
             }
         }
-
         return new Result().setCode(200).setMessage("修改权限成功");
-
     }
 
 }
