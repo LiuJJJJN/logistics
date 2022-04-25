@@ -188,7 +188,7 @@ export default {
       this.$refs[formName].resetFields();
     },
     loadCollege:function (){
-      this.$axios.get("/user/getCollegeList.do").then(resp=>{
+      this.$axios.get("/getCollegeList.do").then(resp=>{
         var list = [];
         for(let i=0; i<resp.data.data.length;i++){
           list[i] = resp.data.data[i].value;

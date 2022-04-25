@@ -136,7 +136,7 @@ export default {
       console.log(index, row);
     },
     getUserRoleList(){
-      this.$axios.post("http://localhost:8080/logisticsProject/permission/getUserRoleList.do")
+      this.$axios.post("http://localhost:8080/logisticsProject/permission/getStudentRoleList.do")
           .then(resp=>{
             this.tableData = resp.data.data;
             console.log(resp.data.data);

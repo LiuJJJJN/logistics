@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -24,17 +23,16 @@ public class PermissionController {
     @Autowired
     private RoleService roleService;
     @Autowired
-    private StudentService studentService;
-    @Autowired
-    private TutorService tutorService;
-    @Autowired
-    private AdminService adminService;
-    @Autowired
     private UserService userService;
 
+    /**
+     * 根据userId获取当前角色的所有功能列表
+     * @param map 前端发过来的 suerId
+     * @return 功能列表
+     */
     @RequestMapping("/getPermissionList.do")
     @ResponseBody
-    public Result getPermissionList(@RequestBody Map<String, String> map){
+    public Result getPermissionList(@RequestBody Map<String, String> map) {
         String userId = map.get("userId");
         List<Role> roleList = roleService.getRoleListByUserId(userId);
         List<Object> permList = permissionService.getPermissionListByRoleList(roleList);
@@ -44,16 +42,20 @@ public class PermissionController {
         return new Result().setCode(200).setMessage("获取权限列表成功").setData(permList);
     }
 
-    @RequestMapping("/getUserRoleList.do")
+    /**
+     * 获取所有学生以及相对应的角色列表
+     * @return 所有学生以及相对应的角色列表
+     */
+    @RequestMapping("/getStudentRoleList.do")
     @ResponseBody
-    public Result getUserPermissionList(){
+    public Result getUserPermissionList() {
 
         List<UserRoleVo> userRoleVoList = userService.getStudentUserRoleVoList(1, 3);
 
         if (userRoleVoList == null) {
-            return new Result().setCode(402).setMessage("获取用户角色列表失败");
+            return new Result().setCode(402).setMessage("获取学生角色列表失败");
         }
-        return new Result().setCode(200).setMessage("获取用户角色列表成功").setData(userRoleVoList);
+        return new Result().setCode(200).setMessage("获取学生角色列表成功").setData(userRoleVoList);
     }
 
 }

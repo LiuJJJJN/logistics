@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -32,12 +31,15 @@ public class UserController {
     @Autowired
     private TutorService tutorService;
     @Autowired
-    private AdminService adminService;
-    @Autowired
     private UserService userService;
     @Autowired
     private DicValueService dicValueService;
 
+    /**
+     * 登录功能
+     * @param map 前端传来的用户信息、角色信息、是否七天免登录
+     * @return 登录成功时返回token、时间戳、免登录标记、用户信息
+     */
     @RequestMapping(value = "/login.do")
     @ResponseBody
     public Result<Map> login(@RequestBody Map<String, Object> map) {
@@ -49,7 +51,7 @@ public class UserController {
         //使用安全管理器创建 subject 对象
         Subject subject = SecurityUtils.getSubject();
         //创建 token                     用户名           公司     身份        过期时间 30分钟
-        String jwt = JwtUtil.createJWT(username, "back", ident, 1000*60*30);
+        String jwt = JwtUtil.createJWT(username, "back", ident, 1000 * 60 * 30);
         //封装 token 为自定义 UsernamePasswordToken 类
         JwtToken jwtToken = new JwtToken(jwt, password);
 
@@ -63,11 +65,11 @@ public class UserController {
 
         UserVo backUser = null;
         if ("学生".equals(ident)) {
-            backUser = studentService.getUserVoByUsername(username);
-        }else if ("导员".equals(ident)) {
-            backUser = tutorService.getUserVoByUsername(username);
-        }else if ("管理员".equals(ident)) {
-            backUser = adminService.getUserVoByUsername(username);
+            backUser = userService.getUserVoByStudentUsername(username);
+        } else if ("导员".equals(ident)) {
+            backUser = userService.getUserVoByTutorUsername(username);
+        } else if ("管理员".equals(ident)) {
+            backUser = userService.getUserVoByAdminUsername(username);
         }
 
         //配置返回 data 内容
@@ -76,9 +78,9 @@ public class UserController {
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("user", backUser); //传递用户信息
         resultMap.put("token", jwt); //传递token
-        long timeStamp = System.currentTimeMillis()+1000*60*60*24*7; //设置过期时间为 7 天
+        long timeStamp = System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 7; //设置过期时间为 7 天
         if (!rememberMe) {
-            timeStamp = System.currentTimeMillis()+1000*60*30; //如果没选七天免登录的话, 过期时间为 30 分钟
+            timeStamp = System.currentTimeMillis() + 1000 * 60 * 30; //如果没选七天免登录的话, 过期时间为 30 分钟
         }
         resultMap.put("rememberMe", rememberMe); //传递是否七天免登录的标记
         resultMap.put("timestamp", timeStamp); //传递过期时间戳
@@ -88,9 +90,9 @@ public class UserController {
 
     /**
      * 学生注册
-     * @param student
-     * @return
-     * @throws RegisterException
+     * @param student 学生信息
+     * @return 注册成功的返回信息
+     * @throws RegisterException 注册异常
      */
     @RequestMapping("/registerStudent.do")
     @ResponseBody
@@ -102,17 +104,17 @@ public class UserController {
         student.setId(StringUtil.generateUUID());
         student.setEnterDate(student.getEnterDate().substring(0, 10));
         //密码通过盐与md5加密
-        student.setPassword(StringUtil.md5(student.getPassword(),salt));
+        student.setPassword(StringUtil.md5(student.getPassword(), salt));
         //调用注册的业务方法
         userService.registerStudent(student);
         return new Result().setCode(200).setMessage("注册成功");
     }
 
     /**
-     * 教职工注册
-     * @param tutor
-     * @return
-     * @throws RegisterException
+     * 导员注册
+     * @param tutor 导员
+     * @return 是否重名的返回信息
+     * @throws RegisterException 注册异常
      */
     @RequestMapping("/registerTutor.do")
     @ResponseBody
@@ -123,43 +125,37 @@ public class UserController {
         //uuid
         tutor.setId(StringUtil.generateUUID());
         //密码通过盐与md5加密
-        tutor.setPassword(StringUtil.md5(tutor.getPassword(),salt));
+        tutor.setPassword(StringUtil.md5(tutor.getPassword(), salt));
         //调用注册的业务方法
         userService.registerTutor(tutor);
         return new Result().setCode(200).setMessage("注册成功");
     }
 
     /**
-     * 教职工注册用户名查重验证
-     * @return
+     * 导员注册用户名查重验证
+     * @param username 导员用户名
+     * @return 是否重名的返回信息
+     * @throws RegisterException 注册异常
      */
     @RequestMapping("/registerTutorUV.do")
     @ResponseBody
-    public Result registerTutorUserNameVerify(String username) throws RegisterException{
-        System.out.println("+---+"+username);
-        userService.registerTutorUserNameVerify(username);
+    public Result registerTutorUserNameVerify(String username) throws RegisterException {
+        System.out.println("+---+" + username);
+        tutorService.registerTutorUserNameVerify(username);
         return new Result().setCode(200).setMessage("没有重名");
     }
 
     /**
      * 学生注册用户名查重验证
-     * @param username
-     * @return
-     * @throws RegisterException
+     * @param username 学生用户名
+     * @return 是否重名的返回信息
+     * @throws RegisterException 注册异常
      */
     @RequestMapping("/registerStudentUV.do")
     @ResponseBody
-    public Result registerStudentUserNameVerify(String username) throws RegisterException{
-        userService.registerStudentUserNameVerify(username);
+    public Result registerStudentUserNameVerify(String username) throws RegisterException {
+        studentService.registerStudentUserNameVerify(username);
         return new Result().setCode(200).setMessage("没有重名");
-    }
-
-
-    @RequestMapping("/getCollegeList.do")
-    @ResponseBody
-    public Result getCollegeList(){
-        List<DicValue> list=dicValueService.getCollegeList();
-        return new Result().setCode(200).setMessage("获取成功").setData(list);
     }
 
 }
