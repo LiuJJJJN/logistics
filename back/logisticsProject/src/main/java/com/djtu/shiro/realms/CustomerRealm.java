@@ -23,7 +23,7 @@ import java.util.Set;
 public class CustomerRealm extends AuthorizingRealm {
 
     @Autowired
-    private StudentService studentService;
+    private UserService userService;
     @Autowired
     private TutorService tutorService;
     @Autowired
@@ -69,11 +69,11 @@ public class CustomerRealm extends AuthorizingRealm {
 
         UserVo userVo = null;
         if ("学生".equals(ident)) {
-            userVo = studentService.getUserVoByUsername(username);
+            userVo = userService.getUserVoByStudentUsername(username);
         }else if ("导员".equals(ident)) {
-            userVo = tutorService.getUserVoByUsername(username);
+            userVo = userService.getUserVoByTutorUsername(username);
         }else if ("管理员".equals(ident)) {
-            userVo = adminService.getUserVoByUsername(username);
+            userVo = userService.getUserVoByAdminUsername(username);
         }
 
         if (userVo == null){
