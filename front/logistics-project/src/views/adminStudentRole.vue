@@ -184,6 +184,12 @@ export default {
   name: "adminStudentRole",
   data(){
     return{
+/*<<<<<<< HEAD
+      currentPage1: 5,
+      currentPage2: 5,
+      currentPage3: 5,
+      currentPage4: 4,
+=======*/
       collegeEnum:[],
       searchForm:{
         name:'',
@@ -192,6 +198,7 @@ export default {
         stuClass:'',
         date:[]
       },
+/*>>>>>>> cb5718aef3d8eb876f6622e52150ec7da92a0909*/
       submitForm:{
         id:'loading',
         username:'loading',
@@ -258,6 +265,14 @@ export default {
     }
   },
   methods:{
+    //分页
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+    },
+    //
     showDialog (index, row) {
       this.dialogFormVisible = true
       this.submitForm.id = row.id;

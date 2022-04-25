@@ -44,4 +44,9 @@ public class GlobalExceptionHandler {
         return new Result().setCode(402).setMessage(e.getMessage());
     }
 
+    @ExceptionHandler(value = DictionaryException.class)
+    public Result handler(DictionaryException e){
+        log.error("运行时异常----------------{}",e.getMessage());
+        return new Result().setCode(402).setMessage(e.getMessage());
+    }
 }

@@ -140,7 +140,6 @@ public class UserController {
     @RequestMapping("/registerTutorUV.do")
     @ResponseBody
     public Result registerTutorUserNameVerify(String username) throws RegisterException {
-        System.out.println("+---+" + username);
         tutorService.registerTutorUserNameVerify(username);
         return new Result().setCode(200).setMessage("用户名可用");
     }
