@@ -2,13 +2,17 @@ package com.djtu.settings.web.controller;
 
 import com.djtu.exception.DictionaryException;
 import com.djtu.response.Result;
+import com.djtu.settings.pojo.DicType;
 import com.djtu.settings.pojo.DicValue;
+import com.djtu.settings.pojo.vo.DicTypeVo;
+import com.djtu.settings.service.DicTypeService;
 import com.djtu.settings.service.DicValueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/admin")
@@ -16,7 +20,8 @@ public class DictionaryController {
 
     @Autowired
     private DicValueService dicValueService;
-
+    @Autowired
+    private DicTypeService dicTypeService;
     /**
      *管理员-加载所有数据字典信息
      * @return 返回数据字典列表信息
@@ -63,5 +68,37 @@ public class DictionaryController {
     public Result updateDicValues(@RequestParam(value="value")String value,@RequestParam(value="id")String id)throws DictionaryException{
         dicValueService.updateDicValues(value,id);
         return new Result().setCode(200).setMessage("修改成功");
+    }
+
+    /**
+     * 查询所有数据字典类型
+     * @return 数据字典类型列表
+     */
+    @RequestMapping("/getDicTL.do")
+    @ResponseBody
+    public Result getDicTypeList() throws DictionaryException{
+        List<DicType> list=dicTypeService.getDicTypeList();
+        return new Result().setCode(200).setMessage("查询成功");
+    }
+
+    @RequestMapping("/setDicTL.do")
+    @ResponseBody
+    public Result setDicType(DicType dicType) throws DictionaryException{
+        dicTypeService.setDicType(dicType);
+        return new Result().setCode(200).setMessage("插入成功");
+    }
+
+    @RequestMapping("/delDicTL.do")
+    @ResponseBody
+    public Result delDicType(String code) throws DictionaryException{
+        dicTypeService.delDicType(code);
+        return new Result().setCode(200).setMessage("删除成功");
+    }
+
+    @RequestMapping(value = "/updateDicTL.do")
+    @ResponseBody
+    public Result updateDicType(@RequestBody DicType dicType) throws DictionaryException{
+        dicTypeService.updateDicType(dicType);
+        return new Result().setCode(200).setMessage("更新成功");
     }
 }

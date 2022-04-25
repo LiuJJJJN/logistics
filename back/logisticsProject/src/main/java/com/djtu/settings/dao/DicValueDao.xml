@@ -43,4 +43,10 @@
                type_code
         from tbl_dic_value
     </select>
+
+    <update id="updateDicValueOfCode">
+        update tbl_dic_value
+        set type_code=#{newCode}
+        where type_code=#{oldCode}
+    </update>
 </mapper>

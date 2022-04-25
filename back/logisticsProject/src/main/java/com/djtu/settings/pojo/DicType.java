@@ -11,5 +11,6 @@ public class DicType {
   private String code;
   private String name;
   private String description;
+  private String id;
 
 }

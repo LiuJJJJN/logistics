@@ -39,4 +39,12 @@ public interface DicValueDao {
      * @return
      */
     List<DicValue> getDicValueList();
+
+    /**
+     * 更新DicValue表里的code
+     * @param oldCode
+     * @param newCode
+     * @return
+     */
+    Integer updateDicValueOfCode(@Param("oldCode")String oldCode, @Param("newCode")String newCode);
 }
