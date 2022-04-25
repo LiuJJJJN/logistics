@@ -144,7 +144,7 @@ export default {
   },
   methods: {
     blurUserName(){//验证用户名是否重复
-      if(this.submitForm.username==''){//如果用户名为空不进行axios
+      if(this.submitForm.username==''|| this.submitForm.username.length<6 || this.submitForm.username.length>18){//如果用户名为空不进行axios
         return false;
       }
       console.log("事件触发");

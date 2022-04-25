@@ -14,6 +14,8 @@ import notFoundPage from "@/views/notFoundPage";
 import welcomePage from "@/views/welcomePage";
 import stuRole from "@/views/stuRole";
 import tutorRole from "@/views/tutorRole";
+import dicType from "@/views/dicType";
+import dicValue from "@/views/dicValue";
 
 Vue.use(VueRouter)
 
@@ -84,6 +86,16 @@ const routes = [
         path:"/admin/tutorRole",
         name:"tutorRole",
         component: tutorRole
+      },
+      {
+        path:"/admin/dicType",
+        name:"dicType",
+        component: dicType
+      },
+      {
+        path:"/admin/dicValue",
+        name:"dicValue",
+        component: dicValue
       },
       {
         path: "/*",

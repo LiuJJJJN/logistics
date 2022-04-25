@@ -3,14 +3,39 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.djtu.settings.dao.DicTypeDao">
+    <select id="getDicTypeList" resultType="com.djtu.settings.pojo.DicType">
+        select code,
+               name,
+               description
+        from tbl_dic_type
+    </select>
 
+    <insert id="setDicType">
+        insert into tbl_dic_type (code,
+                                  name,
+                                  description)
+        values (#{code},
+                #{name},
+                #{description})
 
-    <select id="getCollegeList" resultType="com.djtu.settings.pojo.DicValue">
-        select id,
-               value,
-               order_no,
-               type_code
-        from tbl_dic_value
-        where type_code='college'
+    </insert>
+
+    <delete id="delDicType">
+        delete from tbl_dic_type
+        where code=#{code}
+    </delete>
+
+    <update id="updateDicType">
+        update tbl_dic_type
+        set code=#{code},
+            name=#{name},
+            description=#{description}
+            where id=#{id}
+    </update>
+
+    <select id="getCodeById" resultType="String">
+        select code
+        from tbl_dic_type
+        where id=#{id}
     </select>
 </mapper>
