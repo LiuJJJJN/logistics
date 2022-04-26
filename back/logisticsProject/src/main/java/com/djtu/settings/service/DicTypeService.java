@@ -12,7 +12,7 @@ public interface DicTypeService {
      * 查询所有数据字典类型
      * @return 数据字典类型列表
      */
-    List<DicType> getDicTypeList() throws DictionaryException;
+    Integer getDicTypeList() throws DictionaryException;
 
     /**
      * 根据code或name查询数据字典类型

@@ -76,18 +76,18 @@ public class DictionaryController {
      * 查询所有数据字典类型
      * @return 数据字典类型列表
      */
-    @RequestMapping("/getDicTL.do")
+    /*@RequestMapping("/getDicTL.do")
     @ResponseBody
     public Result getDicTypeList() throws DictionaryException{
         List<DicType> list=dicTypeService.getDicTypeList();
         return new Result().setCode(200).setMessage("查询成功").setData(list);
-    }
+    }*/
 
     @RequestMapping("/getDicTByCN.do")
     @ResponseBody
-    public Result getDicTypeListByCodeOrName(@RequestBody DicTypeVo dicTypeVo){
+    public Result getDicTypeListByCodeOrName(@RequestBody DicTypeVo dicTypeVo) throws DictionaryException{
         List<DicType> list=dicTypeService.getDicTypeListByCodeOrName(dicTypeVo);
-        Integer total=list.size();
+        Integer total=dicTypeService.getDicTypeList();
         Map<String,Object> map=new Hashtable<>();
         map.put("list",list);
         map.put("total",total);

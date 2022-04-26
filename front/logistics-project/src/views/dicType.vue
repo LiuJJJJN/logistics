@@ -6,7 +6,7 @@
     <br>
     <el-button
         size="mini"
-        @click="open" >删 除</el-button>
+        @click="delBtn" >删 除</el-button>
     <el-button
         size="mini"
         @click="addDicTypeBtn" >添 加</el-button>
@@ -15,7 +15,7 @@
         :data="tableData"
         stripe
         style="width: 100%"
-        @selection-change="handleSelectionChange">
+        @selection-change="selection">
       <el-table-column
           type="selection"
           width="55">
@@ -78,9 +78,10 @@
       </el-table-column>
     </el-table>
 
-    <div class="my-pagination">
+<!-- 分页 -->
+    <div class="block">
+      <span class="demonstration">完整功能</span>
       <el-pagination
-          background
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :current-page="pageNo"
@@ -90,7 +91,6 @@
           :total="total">
       </el-pagination>
     </div>
-
     <!--  修改模态窗口-->
 <!--    <el-button type="text" @click="dialogFormVisible = true">打开嵌套表单的 Dialog</el-button>-->
 
@@ -151,12 +151,8 @@ export default {
   name: "dicType",
   data() {
     return {
-      /*searchDicTypeList: [{
-        code:'',
-        name: '',
-        description: '',
-
-      }],*/
+      //多选
+      multipleSelection: [],
       tableData: [{
         id:'',
         code:'',
@@ -164,7 +160,6 @@ export default {
         description: '',
       }],
       //模态窗口
-      //dialogTableVisible: false,
       dialogFormAddDicValue: false,
       dialogFormVisible: false,
       form: {
@@ -217,7 +212,7 @@ export default {
     },
     //搜索
     searchBtn(){
-      //alert(this.input.inputCode+","+this.input.inputName+","+this.pageNo+","+this.pageSize);
+      alert(this.pageNo+","+this.pageSize);
       this.$axios.post("/admin/getDicTByCN.do",
           {
             pageNo:(this.pageNo-1)*this.pageSize,
@@ -234,6 +229,8 @@ export default {
     },
     //加载表格数据
     getDicTypeList(){
+      //pageNo第几页
+      //pageSize 多少条一页
       this.$axios.post("/admin/getDicTByCN.do",
           {
             pageNo:(this.pageNo-1)*this.pageSize,
@@ -241,27 +238,24 @@ export default {
           })
           .then(resp=>{
             console.log(resp.data);
+            //alert(this.pageSize);
             this.total=resp.data.data.total;
             this.tableData = resp.data.data.list;
-
           },err=>{
             console.log(err);
           });
+
     },
     //显示几条
     handleSizeChange(val) {
       this.pageSize = val;
-      //alert("size"+this.pageSize);
-      this.searchBtn();
-      // console.log(`每页 ${val} 条`);
+      this.getDicTypeList();
     },
     //当前页数
     handleCurrentChange(val) {
       this.pageNo = val;
-
       alert("no"+this.pageNo);
-      this.searchBtn();
-      // console.log(`当前页: ${val}`);
+      this.getDicTypeList();
     },
     //模态窗口
     updateBtn(index,row){
@@ -273,7 +267,6 @@ export default {
     },
     //修改按钮
     updateSureBtn(){
-      alert(this.form.id);
       this.$axios.post("/admin/updateDicTL.do",
           {
                   code:this.form.code,
@@ -283,12 +276,13 @@ export default {
           })
           .then(resp=>{
             console.log(resp.data);
-            this.tableData=resp.data.data;
-
+            //this.tableData=resp.data.data;
+            this.getDicTypeList();
           },err=>{
             console.log(err);
           });
       this.dialogFormVisible = false
+
     },
     //添加按钮
     addDicTypeBtn(){
@@ -306,11 +300,31 @@ export default {
           .then(resp=>{
             console.log(resp.data);
             this.tableData=resp.data.data;
-
+            this.getDicTypeList();
           },err=>{
             console.log(err);
           });
       this.dialogFormAddDicValue = false;
+    },
+    //删除
+    selection(val){
+      this.multipleSelection = val;
+      console.log(val);
+      /*alert(val[0].code+","+val[0].name+","+val[0].description+","+val[0].id);*/
+    },
+    delBtn(){
+      alert(this.multipleSelection);
+      this.$axios.post("/admin/delDicTL.do",
+          {
+            array:this.dialogFormAddDicValue
+          })
+          .then(resp=>{
+            console.log(resp.data);
+            this.tableData=resp.data.data;
+            this.getDicTypeList();
+          },err=>{
+            console.log(err);
+          });
     }
   },
   created() {
