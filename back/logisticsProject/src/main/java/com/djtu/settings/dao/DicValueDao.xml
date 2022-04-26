@@ -44,6 +44,12 @@
         from tbl_dic_value
     </select>
 
+    <select id="getDicValueByCode" resultType="Integer">
+        select count(type_code)
+        from tbl_dic_value
+        where type_code=#{code}
+    </select>
+
     <update id="updateDicValueOfCode">
         update tbl_dic_value
         set type_code=#{newCode}

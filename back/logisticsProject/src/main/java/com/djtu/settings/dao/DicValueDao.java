@@ -41,6 +41,13 @@ public interface DicValueDao {
     List<DicValue> getDicValueList();
 
     /**
+     * 根据type_code=code的个数
+     * @param code code值
+     * @return 个数
+     */
+    Integer getDicValueByCode(String code);
+
+    /**
      * 更新DicValue表里的code
      * @param oldCode
      * @param newCode
