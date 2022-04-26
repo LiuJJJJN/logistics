@@ -4,6 +4,7 @@ import com.djtu.exception.DictionaryException;
 import com.djtu.settings.dao.DicTypeDao;
 import com.djtu.settings.dao.DicValueDao;
 import com.djtu.settings.pojo.DicType;
+import com.djtu.settings.pojo.vo.DicTypeVo;
 import com.djtu.settings.service.DicTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,12 @@ public class DicTypeServiceImpl implements DicTypeService {
     }
 
     @Override
+    public List<DicType> getDicTypeListByCodeOrName(DicTypeVo dicTypeVo) {
+        List<DicType> list=dicTypeDao.getDicTypeListByCodeOrName(dicTypeVo);
+        return list;
+    }
+
+    @Override
     public void setDicType(DicType dicType) throws DictionaryException{
         Integer i=dicTypeDao.setDicType(dicType);
         if(i<Flag_NUM){
@@ -45,7 +52,7 @@ public class DicTypeServiceImpl implements DicTypeService {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor={DictionaryException.class,Exception.class})
     public void updateDicType(DicType dicType) throws DictionaryException{
         //uuid
         String newCode=dicType.getCode();
@@ -53,10 +60,19 @@ public class DicTypeServiceImpl implements DicTypeService {
         String oldCode=dicTypeDao.getCodeById(dicType.getId());
         //更新DicType的code
         Integer i=dicTypeDao.updateDicType(dicType);
-        //更新DicValue表的type_code
-        Integer flag=dicValueDao.updateDicValueOfCode(oldCode,newCode);
-        if(i<Flag_NUM || flag<Flag_NUM){
+        if(i<Flag_NUM){
             throw new DictionaryException("更新失败");
         }
+        //查询DicValue表中有无oldCode
+        Integer num=dicValueDao.getDicValueByCode(oldCode);
+        if(num>0){
+            //更新DicValue表的type_code
+            Integer flag=dicValueDao.updateDicValueOfCode(oldCode,newCode);
+            if(flag<Flag_NUM ){
+                throw new DictionaryException("更新失败");
+            }
+        }
+
+
     }
 }

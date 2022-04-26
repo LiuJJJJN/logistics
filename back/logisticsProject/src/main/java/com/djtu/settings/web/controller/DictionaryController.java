@@ -7,10 +7,12 @@ import com.djtu.settings.pojo.DicValue;
 import com.djtu.settings.pojo.vo.DicTypeVo;
 import com.djtu.settings.service.DicTypeService;
 import com.djtu.settings.service.DicValueService;
+import com.djtu.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
@@ -78,12 +80,24 @@ public class DictionaryController {
     @ResponseBody
     public Result getDicTypeList() throws DictionaryException{
         List<DicType> list=dicTypeService.getDicTypeList();
-        return new Result().setCode(200).setMessage("查询成功");
+        return new Result().setCode(200).setMessage("查询成功").setData(list);
+    }
+
+    @RequestMapping("/getDicTByCN.do")
+    @ResponseBody
+    public Result getDicTypeListByCodeOrName(@RequestBody DicTypeVo dicTypeVo){
+        List<DicType> list=dicTypeService.getDicTypeListByCodeOrName(dicTypeVo);
+        Integer total=list.size();
+        Map<String,Object> map=new Hashtable<>();
+        map.put("list",list);
+        map.put("total",total);
+        return new Result().setCode(200).setMessage("条件查询成功").setData(map);
     }
 
     @RequestMapping("/setDicTL.do")
     @ResponseBody
-    public Result setDicType(DicType dicType) throws DictionaryException{
+    public Result setDicType(@RequestBody DicType dicType) throws DictionaryException{
+        dicType.setId(StringUtil.generateUUID());
         dicTypeService.setDicType(dicType);
         return new Result().setCode(200).setMessage("插入成功");
     }
