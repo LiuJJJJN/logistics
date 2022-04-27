@@ -32,8 +32,6 @@ public class UserController {
     private TutorService tutorService;
     @Autowired
     private UserService userService;
-    @Autowired
-    private DicValueService dicValueService;
 
     /**
      * 登录功能
@@ -75,7 +73,10 @@ public class UserController {
         //配置返回 data 内容
         backUser.setPassword("");
         backUser.setSalt("");
+        backUser.setPrimaryRole(ident);
         Map<String, Object> resultMap = new HashMap<>();
+        String sessionId = (String) subject.getSession().getId();
+        resultMap.put("sessionId", sessionId);
         resultMap.put("user", backUser); //传递用户信息
         resultMap.put("token", jwt); //传递token
         long timeStamp = System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 7; //设置过期时间为 7 天

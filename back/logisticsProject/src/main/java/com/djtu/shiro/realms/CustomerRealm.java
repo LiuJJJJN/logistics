@@ -5,6 +5,7 @@ import com.djtu.settings.pojo.vo.UserVo;
 import com.djtu.token.JwtToken;
 import com.djtu.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -17,6 +18,7 @@ import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Component
@@ -46,9 +48,16 @@ public class CustomerRealm extends AuthorizingRealm {
 //        Set<String> roles = roleService.getRoleByUsername(username);
 //        Set<String> permissions = permissionService.getPermissionByUsername(username);
 
+        Set<String> roles = new HashSet<>();
+        roles.add("导员");
+
+        System.out.println("============================================");
+        System.out.println(username);
+        System.out.println(SecurityUtils.getSubject());
+
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-//        info.addRoles(roles);
-//        info.addStringPermissions(permissions);
+        info.addRoles(roles);
+//        info.addStringPermissions(null);
         return info;
     }
 

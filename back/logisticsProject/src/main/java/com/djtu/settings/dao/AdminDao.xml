@@ -12,6 +12,7 @@
             password,
             salt,
             name
-            from tbl_admin;
+            from tbl_admin
+            where username = #{username}
     </select>
 </mapper>

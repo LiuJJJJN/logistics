@@ -3,11 +3,13 @@ package com.djtu.config;
 import com.djtu.shiro.filter.JwtFilter;
 import com.djtu.shiro.matchers.MyHashedCredentialsMatcher;
 import com.djtu.shiro.realms.CustomerRealm;
+import com.djtu.shiro.session.ShiroSession;
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.session.mgt.SessionManager;
+import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
-import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,8 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setSecurityManager(defaultWebSecurityManager);
 
         Map<String, Filter> filterMap = new HashMap<>();
+        //添加过滤器
+        shiroFilterFactoryBean.setFilters(filterMap);
         filterMap.put("jwt", jwtFilter);
 
         Map<String, String> map = new HashMap<>();
@@ -47,21 +51,18 @@ public class ShiroConfig {
 */
 
         //让所有的请求进 jwt 拦截器
-        map.put("/", "jwt");
+        map.put("/**", "jwt");
 
-        //添加过滤器
-        shiroFilterFactoryBean.setFilters(filterMap);
         //添加过滤map
         shiroFilterFactoryBean.setFilterChainDefinitionMap(map);
         //设置被拦截时跳转的地址
-        shiroFilterFactoryBean.setLoginUrl("/login.do");
-
+        //shiroFilterFactoryBean.setLoginUrl("/login.do");
         return shiroFilterFactoryBean;
     }
 
     //2.创建安全管理器
     @Bean(name = "securityManager")
-    public DefaultWebSecurityManager getDefaultWebSecurityManager() {
+    public DefaultWebSecurityManager getDefaultWebSecurityManager(SessionManager sessionManager) {
         //设置密码验证器
         //1. 设置密码验证器加密方式
         matcher.setHashAlgorithmName("md5");
@@ -72,6 +73,7 @@ public class ShiroConfig {
 
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(realm);
+        securityManager.setSessionManager(sessionManager);
         return securityManager;
     }
 
@@ -93,12 +95,21 @@ public class ShiroConfig {
         app.setProxyTargetClass(true);
         return app;
     }
-
     @Bean
     public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager) {
         AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
         authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
         return authorizationAttributeSourceAdvisor;
+    }
+
+    // 必须使用session管理器，才能够解决前后端分离shiro的subject未认证的问题
+    @Bean
+    public SessionManager sessionManager(){
+        //将我们继承后重写的shiro session 注册
+        ShiroSession shiroSession = new ShiroSession();
+        //如果后续考虑多tomcat部署应用，可以使用shiro-redis开源插件来做session 的控制，或者nginx 的负载均衡
+        shiroSession.setSessionDAO(new EnterpriseCacheSessionDAO());
+        return shiroSession;
     }
 
 }

@@ -8,6 +8,8 @@ import com.djtu.settings.pojo.vo.TutorSearchVo;
 import com.djtu.settings.service.*;
 import com.djtu.settings.pojo.vo.StudentRoleVo;
 import com.djtu.utils.StringUtil;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -132,6 +134,7 @@ public class PermissionController {
      * 获取所有导员列表的总数
      * @return 所有导员列表的总数
      */
+    @RequiresRoles("管理员")
     @RequestMapping("/getTutorRoleListTotal.do")
     @ResponseBody
     public Result getTutorRoleListTotal(@RequestBody Map map) {

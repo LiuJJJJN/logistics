@@ -16,6 +16,7 @@ import stuRole from "@/views/stuRole";
 import tutorRole from "@/views/tutorRole";
 import dicType from "@/views/dicType";
 import dicValue from "@/views/dicValue";
+import userInfo from "@/views/userInfo";
 
 Vue.use(VueRouter)
 
@@ -56,6 +57,11 @@ const routes = [
         path:"/",
         name:"welcomePage",
         component: welcomePage
+      },
+      {
+        path:"/userInfo",
+        name:"userInfo",
+        component: userInfo
       },
       {
         path:"/user/feedback",

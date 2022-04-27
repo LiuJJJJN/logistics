@@ -13,8 +13,8 @@
                 <el-avatar :size="size" :src="circleUrl" style="top: 10px; left: 20px; float: left;">img</el-avatar>
               </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item disabled>用户 : {{ username }}</el-dropdown-item>
-                <el-dropdown-item>个人信息</el-dropdown-item>
+                <el-dropdown-item disabled>{{ role }} : {{ name }}</el-dropdown-item>
+                <router-link :to="'/userInfo'"><el-dropdown-item>个人信息</el-dropdown-item></router-link>
                 <el-dropdown-item @click.native="exitLogin">退出登录</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
@@ -58,7 +58,8 @@ export default {
   name: "container",
   data() {
     return {
-      username: this.$store.getters.getUser.username,
+      role: this.$store.getters.getUser.primaryRole,
+      name: this.$store.getters.getUser.name,
       size: "large",
       circleUrl: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
       items: [],

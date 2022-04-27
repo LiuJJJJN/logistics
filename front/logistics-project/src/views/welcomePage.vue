@@ -18,7 +18,7 @@ export default {
   name: "welcomePage",
   data(){
     return{
-      item:[],
+      itemPic:[],
       itemList:[]
     }
   },

@@ -9,7 +9,7 @@
     <el-form-item label="确认密码" prop="checkPassword">
       <el-input v-model="submitForm.checkPassword" show-password></el-input>
     </el-form-item>
-    <el-form-item label="姓名" prop="name">
+    <el-form-item label="真实姓名" prop="name">
       <el-input v-model="submitForm.name"></el-input>
     </el-form-item>
     <el-form-item label="性别" prop="sex">
