@@ -13,6 +13,38 @@
         where type_code='college'
     </select>
 
+    <select id="getDicValuesByCodeOrName" resultType="com.djtu.settings.pojo.DicValue">
+        select id,
+               value,
+               order_no,
+               type_code
+        from tbl_dic_value
+        <if test="value!=null or typeCode!=null or orderNo!=null">
+            where
+        </if>
+        <if test="value!=null">
+            value like concat('%',#{value},'%')
+        </if>
+        <if test="value!=null and typeCode!=null">
+            and
+        </if>
+        <if test="typeCode!=null">
+            type_code like concat('%',#{typeCode},'%')
+        </if>
+        <if test="(value!=null or typeCode!=null) and orderNo!=null ">
+            and
+        </if>
+        <if test="orderNo!=null">
+            order_no like concat('%',#{orderNo},'%')
+        </if>
+        limit #{pageNo}, #{pageSize}
+    </select>
+
+    <select id="getDicValuesListNum" resultType="Integer">
+        select count(id)
+        from tbl_dic_value
+    </select>
+
     <insert id="insertDicValue">
         insert into tbl_dic_value (id,
                                    value,
@@ -24,14 +56,20 @@
                #{typeCode})
     </insert>
 
-    <delete id="deleteDicValue">
+    <delete id="deleteDicValue" parameterType="java.util.List">
         delete from tbl_dic_value
-        where id=#{id}
+        where
+        id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
     </delete>
 
     <update id="updateDicValue">
         update tbl_dic_value
-        set value=#{value}
+        set value=#{value},
+            order_no=#{orderNo},
+            type_code=#{typeCode}
         where id=#{id}
     </update>
 
@@ -42,6 +80,12 @@
                order_no,
                type_code
         from tbl_dic_value
+    </select>
+
+    <select id="getDicValueByCode" resultType="Integer">
+        select count(type_code)
+        from tbl_dic_value
+        where type_code=#{code}
     </select>
 
     <update id="updateDicValueOfCode">

@@ -3,9 +3,11 @@ package com.djtu.settings.service.serviceImpl;
 import com.djtu.exception.DictionaryException;
 import com.djtu.settings.dao.DicValueDao;
 import com.djtu.settings.pojo.DicValue;
+import com.djtu.settings.pojo.vo.DicValueVo;
 import com.djtu.settings.service.DicValueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 @Service
@@ -31,6 +33,21 @@ public class DicValueServiceImpl implements DicValueService {
     }
 
     @Override
+    public List<DicValue> getDicValuesByCodeOrValue(DicValueVo dicValueVo) throws DictionaryException{
+        List<DicValue> list=dicValueDao.getDicValuesByCodeOrName(dicValueVo);
+        if(list.isEmpty()){
+            throw new DictionaryException("获取失败");
+        }
+        return list;
+    }
+
+    @Override
+    public Integer getDicValuesListNum() {
+        Integer num=dicValueDao.getDicValuesListNum();
+        return num;
+    }
+
+    @Override
     public void setDicValues(DicValue dicValue) throws DictionaryException{
         Integer num=dicValueDao.insertDicValue(dicValue);
         if(num<FLAG_NUM){
@@ -39,16 +56,16 @@ public class DicValueServiceImpl implements DicValueService {
     }
 
     @Override
-    public void delDicValues(String id) throws DictionaryException{
-        Integer num=dicValueDao.deleteDicValue(id);
+    public void delDicValues(List<String> data) throws DictionaryException{
+        Integer num=dicValueDao.deleteDicValue(data);
         if(num<FLAG_NUM){
             throw new DictionaryException("删除数据失败");
         }
     }
 
     @Override
-    public void updateDicValues(String value, String id) throws DictionaryException{
-        Integer num=dicValueDao.updateDicValue(value,id);
+    public void updateDicValues(DicValue dicValue) throws DictionaryException{
+        Integer num=dicValueDao.updateDicValue(dicValue);
         if(num<FLAG_NUM){
             throw new DictionaryException("修改数据失败");
         }

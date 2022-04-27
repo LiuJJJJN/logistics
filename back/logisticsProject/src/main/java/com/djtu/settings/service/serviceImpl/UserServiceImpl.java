@@ -1,5 +1,6 @@
 package com.djtu.settings.service.serviceImpl;
 
+import com.djtu.exception.DictionaryException;
 import com.djtu.exception.RegisterException;
 import com.djtu.settings.dao.*;
 import com.djtu.settings.pojo.*;
@@ -35,7 +36,7 @@ public class UserServiceImpl implements UserService {
     private UserRoleDao userRoleDao;
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor={RegisterException.class,Exception.class})
     public void registerStudent(Student student) throws RegisterException {
         //先进行重名检测
         Student stu = studentDao.getStudentByUsername(student.getUsername());
