@@ -35,10 +35,10 @@ public interface DicValueDao {
 
     /**
      * 根据id删除数据字典
-     * @param id
+     * @param data
      * @return
      */
-    Integer deleteDicValue(String id);
+    Integer deleteDicValue(List<String> data);
 
     /**
      * 更新数据字典的值

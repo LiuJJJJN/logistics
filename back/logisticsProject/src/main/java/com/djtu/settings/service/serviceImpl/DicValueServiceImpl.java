@@ -7,6 +7,7 @@ import com.djtu.settings.pojo.vo.DicValueVo;
 import com.djtu.settings.service.DicValueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 @Service
@@ -55,8 +56,8 @@ public class DicValueServiceImpl implements DicValueService {
     }
 
     @Override
-    public void delDicValues(String id) throws DictionaryException{
-        Integer num=dicValueDao.deleteDicValue(id);
+    public void delDicValues(List<String> data) throws DictionaryException{
+        Integer num=dicValueDao.deleteDicValue(data);
         if(num<FLAG_NUM){
             throw new DictionaryException("删除数据失败");
         }
