@@ -1,7 +1,9 @@
 <template>
   <dev>
+    <el-input v-model="input.inputValue" placeholder="请输入value" class="inputName"></el-input>
+    <el-input v-model="input.inputOrderNo" placeholder="请输入orderNo" class="inputName"></el-input>
     <el-input v-model="input.inputCode" placeholder="请输入code" class="inputCode"></el-input>
-    <el-input v-model="input.inputName" placeholder="请输入名称" class="inputName"></el-input>
+
     <el-button type="primary" icon="el-icon-search" @click="searchBtn" class="search">搜索</el-button>
     <br>
     <el-button
@@ -9,7 +11,7 @@
         @click="delBtn" >删 除</el-button>
     <el-button
         size="mini"
-        @click="addDicTypeBtn" >添 加</el-button>
+        @click="addDicValueBtn" >添 加</el-button>
 
     <el-table
         :data="tableData"
@@ -26,29 +28,29 @@
           width="10">
       </el-table-column>
       <el-table-column
-          prop="code"
-          label="code"
+          prop="value"
+          label="value"
           width="230">
         <template slot-scope="scope">
-          <span>{{ scope.row.code }}</span>
+          <span>{{ scope.row.value }}</span>
         </template>
       </el-table-column>
 
       <el-table-column
-          prop="name"
-          label="名称"
+          prop="orderNo"
+          label="order_no"
           width="260">
         <template slot-scope="scope">
-          <span>{{ scope.row.name }}</span>
+          <span>{{ scope.row.orderNo }}</span>
         </template>
       </el-table-column>
 
       <el-table-column
-          prop="description"
-          label="描述"
+          prop="typeCode"
+          label="type_code"
           width="250">
         <template slot-scope="scope">
-          <span>{{ scope.row.description }}</span>
+          <span>{{ scope.row.typeCode }}</span>
         </template>
       </el-table-column>
 
@@ -80,7 +82,6 @@
 
     <!-- 分页 -->
     <div class="block">
-      <span class="demonstration">完整功能</span>
       <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
@@ -93,24 +94,32 @@
     </div>
     <!--  修改模态窗口-->
     <!--    <el-button type="text" @click="dialogFormVisible = true">打开嵌套表单的 Dialog</el-button>-->
-
     <el-dialog title="修改" :visible.sync="dialogFormVisible">
       <el-form :model="form">
-        <el-form-item label="代码" :label-width="formLabelWidth">
-          <el-input v-model="form.code" autocomplete="off" class="aaa"></el-input>
+        <el-form-item label="value" :label-width="formLabelWidth">
+          <el-input v-model="form.value" autocomplete="off" class="aaa"></el-input>
         </el-form-item>
-        <el-form-item label="名称" :label-width="formLabelWidth">
-          <el-input v-model="form.name" autocomplete="off" class="aaa"></el-input>
+        <el-form-item label="order_no" :label-width="formLabelWidth">
+          <el-input v-model="form.orderNo" autocomplete="off" class="aaa"></el-input>
         </el-form-item>
-        <el-form-item label="描述" :label-width="formLabelWidth">
+<!--        <el-form-item label="描述" :label-width="formLabelWidth">
           <el-input v-model="form.description" autocomplete="off" class="aaa"></el-input>
-        </el-form-item>
-        <!--        <el-form-item label="活动区域" :label-width="formLabelWidth">
-                  <el-select v-model="form.region" placeholder="请选择活动区域">
-                    <el-option label="区域一" value="shanghai"></el-option>
-                    <el-option label="区域二" value="beijing"></el-option>
-                  </el-select>
-                </el-form-item>-->
+        </el-form-item>-->
+<!--        <el-form-item label="活动区域" :label-width="formLabelWidth">
+          <el-select v-model="form.region" placeholder="请选择活动区域">
+            <el-option label="区域一" value="shanghai"></el-option>
+            <el-option label="区域二" value="beijing"></el-option>
+          </el-select>
+        </el-form-item>-->
+
+        <el-select v-model="selectValue" placeholder="请选择code">
+          <el-option
+              v-for="item in options"
+              :key="item"
+              :label="item"
+              :value="item">
+          </el-option>
+        </el-select>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -120,23 +129,25 @@
 
 
     <!--添加模态窗口-->
-    <el-dialog title="修改" :visible.sync="dialogFormAddDicValue">
+    <el-dialog title="添 加" :visible.sync="dialogFormAddDicValue">
       <el-form :model="add">
-        <el-form-item label="代码" :label-width="formLabelWidth">
-          <el-input v-model="add.code" autocomplete="off" class="aaa"></el-input>
+        <el-form-item label="value" :label-width="formLabelWidth">
+          <el-input v-model="add.value" autocomplete="off" class="aaa"></el-input>
         </el-form-item>
-        <el-form-item label="名称" :label-width="formLabelWidth">
-          <el-input v-model="add.name" autocomplete="off" class="aaa"></el-input>
+        <el-form-item label="orderNo" :label-width="formLabelWidth">
+          <el-input v-model="add.orderNo" autocomplete="off" class="aaa"></el-input>
         </el-form-item>
-        <el-form-item label="描述" :label-width="formLabelWidth">
+<!--        <el-form-item label="描述" :label-width="formLabelWidth">
           <el-input v-model="add.description" autocomplete="off" class="aaa"></el-input>
-        </el-form-item>
-        <!--        <el-form-item label="活动区域" :label-width="formLabelWidth">
-                  <el-select v-model="form.region" placeholder="请选择活动区域">
-                    <el-option label="区域一" value="shanghai"></el-option>
-                    <el-option label="区域二" value="beijing"></el-option>
-                  </el-select>
-                </el-form-item>-->
+        </el-form-item>-->
+        <el-select v-model="selectValue" placeholder="请选择type_code">
+          <el-option
+              v-for="item in options"
+              :key="item"
+              :label="item"
+              :value="item">
+          </el-option>
+        </el-select>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormAddDicValue = false">取 消</el-button>
@@ -155,18 +166,18 @@ export default {
       multipleSelection: [],
       tableData: [{
         id:'',
-        code:'',
-        name: '',
-        description: '',
+        value:'',
+        orderNo: '',
+        typeCode: '',
       }],
       //模态窗口
       dialogFormAddDicValue: false,
       dialogFormVisible: false,
       form: {
         id:'',
-        code:'',
-        name: '',
-        description:'',
+        value:'',
+        orderNo: '',
+        typeCode:'',
         region: '',
         date1: '',
         date2: '',
@@ -177,9 +188,9 @@ export default {
       },
       add: {
         id:'',
-        code:'',
-        name:'',
-        description:''
+        value:'',
+        typeCode:'',
+        orderNo:''
       },
       formLabelWidth: '120px',
       pageNo: 1, //当前页数
@@ -187,8 +198,12 @@ export default {
       total: 0, //总条数
       input:{
         inputCode:'',
-        inputName:''
-      }
+        inputValue:'',
+        inputOrderNo:''
+      },
+      //修改窗口-下拉菜单
+      options: [],
+      selectValue: ''
     }
   },
   methods:{
@@ -212,15 +227,16 @@ export default {
     },
     //搜索
     searchBtn(){
-      alert(this.pageNo+","+this.pageSize);
-      this.$axios.post("/admin/getDicTByCN.do",
+      this.$axios.post("/admin/getDicVByCV.do",
           {
             pageNo:(this.pageNo-1)*this.pageSize,
             pageSize:this.pageSize,
-            name:this.input.inputName,
-            code:this.input.inputCode
+            value:this.input.inputValue,
+            typeCode:this.input.inputCode,
+            orderNo:this.input.inputOrderNo
           })
           .then(resp=>{
+            console.log(resp);
             this.total=resp.data.data.total;
             this.tableData = resp.data.data.list;
           },err=>{
@@ -228,10 +244,10 @@ export default {
           });
     },
     //加载表格数据
-    getDicTypeList(){
+    getDicValueList(){
       //pageNo第几页
       //pageSize 多少条一页
-      this.$axios.post("/admin/.do",
+      this.$axios.post("/admin/getDicVByCV.do",
           {
             pageNo:(this.pageNo-1)*this.pageSize,
             pageSize:this.pageSize
@@ -249,62 +265,140 @@ export default {
     //显示几条
     handleSizeChange(val) {
       this.pageSize = val;
-      this.getDicTypeList();
+      this.getDicValueList();
     },
     //当前页数
     handleCurrentChange(val) {
       this.pageNo = val;
-      alert("no"+this.pageNo);
-      this.getDicTypeList();
+      this.getDicValueList();
     },
-    //模态窗口
+    //修改触发模态窗口
     updateBtn(index,row){
       this.dialogFormVisible = true;
       this.form.id=row.id;
-      this.form.code=row.code;
-      this.form.name=row.name;
-      this.form.description=row.description;
-    },
-    //修改按钮
-    updateSureBtn(){
-      this.$axios.post("/admin/updateDicTL.do",
+      this.form.value=row.value;
+      this.form.orderNo=row.orderNo;
+      this.selectValue=row.typeCode;
+      //this.form.typeCode=row.typeCode;
+      //下拉菜单加载
+      this.$axios.post("/admin/getDicTL.do",
           {
-            code:this.form.code,
-            name:this.form.name,
-            description:this.form.description,
-            id:this.form.id
           })
           .then(resp=>{
             console.log(resp.data);
             //this.tableData=resp.data.data;
-            this.getDicTypeList();
+            var list = [];
+            for(let i=0; i<resp.data.data.length;i++){
+              list[i] = resp.data.data[i].code;
+              //alert(list[i])
+            }
+            this.options=list;
+
+            this.getDicValueList();
           },err=>{
             console.log(err);
           });
-      this.dialogFormVisible = false
+    },
+    //修改-确认按钮
+    updateSureBtn(){
+      if(this.form.value==''){
+        this.$notify({
+          title: '偏移',
+          message: 'value不能为空',
+          offset: 100
+        });
+        return false;
+      }else if(this.form.orderNo==''){
+        this.$notify({
+          title: '偏移',
+          message: 'orderNo不能为空',
+          offset: 100
+        });
+        return false;
+      }else{
+        this.$axios.post("/admin/updateDicV.do",
+            {
+              value:this.form.value,
+              orderNo:this.form.orderNo,
+              typeCode:this.selectValue,
+              id:this.form.id
+            })
+            .then(resp=>{
+              this.getDicValueList()
+              console.log(resp.data);
+              //this.tableData=resp.data.data;
+            },err=>{
+              console.log(err);
+            });
+        this.dialogFormVisible = false
+      }
+
 
     },
     //添加按钮
-    addDicTypeBtn(){
+    addDicValueBtn(){
       this.dialogFormAddDicValue = true;
-    },
-    //添加确定按钮
-    addSureBtn(){
-      alert(this.add.code);
-      this.$axios.post("/admin/setDicTL.do",
+      this.$axios.post("/admin/getDicTL.do",
           {
-            code:this.add.code,
-            name:this.add.name,
-            description:this.add.description,
           })
           .then(resp=>{
             console.log(resp.data);
-            this.tableData=resp.data.data;
-            this.getDicTypeList();
+            //this.tableData=resp.data.data;
+            var list = [];
+            for(let i=0; i<resp.data.data.length;i++){
+              list[i] = resp.data.data[i].code;
+              //alert(list[i])
+            }
+            this.options=list;
+            this.getDicValueList();
           },err=>{
             console.log(err);
           });
-      this.dialogFormAddDicValue = false;
+    },
+    //添加确定按钮
+    addSureBtn(){
+      if(this.add.value==''){
+        this.$notify({
+          title: '偏移',
+          message: 'value不能为空',
+          offset: 100
+        });
+        return false;
+      }else if(this.add.orderNo==''){
+        this.$notify({
+          title: '偏移',
+          message: 'orderNo不能为空',
+          offset: 100
+        });
+        return false;
+      }else if(this.selectValue==''){
+        this.$notify({
+          title: '偏移',
+          message: '请选择学院',
+          offset: 100
+        });
+        return false;
+      }
+      else{
+        this.$axios.post("/admin/setDicV.do",
+            {
+              value:this.add.value,
+              orderNo:this.add.orderNo,
+              typeCode:this.selectValue,
+            })
+            .then(resp=>{
+              this.add.value='',
+                  this.add.orderNo='',
+                  this.selectValue=''
+              console.log(resp.data);
+              //this.tableData=resp.data.data;
+              this.getDicValueList();
+            },err=>{
+              console.log(err);
+            });
+        this.dialogFormAddDicValue = false;
+      }
+
     },
     //删除
     selection(val){
@@ -328,7 +422,7 @@ export default {
     }
   },
   created() {
-    this.getDicTypeList();
+    this.getDicValueList();
     //this.loadCollege();
   }
 }

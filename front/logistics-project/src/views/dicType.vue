@@ -2,6 +2,7 @@
   <dev>
     <el-input v-model="input.inputCode" placeholder="请输入code" class="inputCode"></el-input>
     <el-input v-model="input.inputName" placeholder="请输入名称" class="inputName"></el-input>
+    <el-input v-model="input.inputDescription" placeholder="请输入描述" class="inputDescription"></el-input>
     <el-button type="primary" icon="el-icon-search" @click="searchBtn" class="search">搜索</el-button>
     <br>
     <el-button
@@ -80,7 +81,6 @@
 
 <!-- 分页 -->
     <div class="block">
-      <span class="demonstration">完整功能</span>
       <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
@@ -94,7 +94,7 @@
     <!--  修改模态窗口-->
 <!--    <el-button type="text" @click="dialogFormVisible = true">打开嵌套表单的 Dialog</el-button>-->
 
-    <el-dialog title="修改" :visible.sync="dialogFormVisible">
+    <el-dialog title="修 改" :visible.sync="dialogFormVisible">
       <el-form :model="form">
         <el-form-item label="代码" :label-width="formLabelWidth">
           <el-input v-model="form.code" autocomplete="off" class="aaa"></el-input>
@@ -120,7 +120,7 @@
 
 
     <!--添加模态窗口-->
-    <el-dialog title="修改" :visible.sync="dialogFormAddDicValue">
+    <el-dialog title="添 加" :visible.sync="dialogFormAddDicValue">
       <el-form :model="add">
         <el-form-item label="代码" :label-width="formLabelWidth">
           <el-input v-model="add.code" autocomplete="off" class="aaa"></el-input>
@@ -187,7 +187,8 @@ export default {
       total: 0, //总条数
       input:{
         inputCode:'',
-        inputName:''
+        inputName:'',
+        inputDescription:''
       }
     }
   },
@@ -212,13 +213,13 @@ export default {
     },
     //搜索
     searchBtn(){
-      alert(this.pageNo+","+this.pageSize);
       this.$axios.post("/admin/getDicTByCN.do",
           {
             pageNo:(this.pageNo-1)*this.pageSize,
             pageSize:this.pageSize,
             name:this.input.inputName,
-            code:this.input.inputCode
+            code:this.input.inputCode,
+            description:this.input.inputDescription
           })
           .then(resp=>{
             this.total=resp.data.data.total;
@@ -254,10 +255,9 @@ export default {
     //当前页数
     handleCurrentChange(val) {
       this.pageNo = val;
-      alert("no"+this.pageNo);
       this.getDicTypeList();
     },
-    //模态窗口
+    //修改-模态窗口
     updateBtn(index,row){
       this.dialogFormVisible = true;
       this.form.id=row.id;
@@ -267,21 +267,45 @@ export default {
     },
     //修改按钮
     updateSureBtn(){
-      this.$axios.post("/admin/updateDicTL.do",
-          {
-                  code:this.form.code,
-                  name:this.form.name,
-                  description:this.form.description,
-                  id:this.form.id
-          })
-          .then(resp=>{
-            console.log(resp.data);
-            //this.tableData=resp.data.data;
-            this.getDicTypeList();
-          },err=>{
-            console.log(err);
-          });
-      this.dialogFormVisible = false
+      if(this.form.code==''){
+        this.$notify({
+          title: '偏移',
+          message: '代码不能为空',
+          offset: 100
+        });
+        return false;
+      }else if(this.form.name==''){
+        this.$notify({
+          title: '偏移',
+          message: '名称不能为空',
+          offset: 100
+        });
+        return false;
+      }else if(this.form.description==''){
+        this.$notify({
+          title: '偏移',
+          message: '描述不能为空',
+          offset: 100
+        });
+        return false;
+      }else{
+        this.$axios.post("/admin/updateDicTL.do",
+            {
+              code:this.form.code,
+              name:this.form.name,
+              description:this.form.description,
+              id:this.form.id
+            })
+            .then(resp=>{
+              console.log(resp.data);
+              //this.tableData=resp.data.data;
+              this.getDicTypeList();
+            },err=>{
+              console.log(err);
+            });
+        this.dialogFormVisible = false
+      }
+
 
     },
     //添加按钮
@@ -290,21 +314,44 @@ export default {
     },
     //添加确定按钮
     addSureBtn(){
-      alert(this.add.code);
-      this.$axios.post("/admin/setDicTL.do",
-          {
-            code:this.add.code,
-            name:this.add.name,
-            description:this.add.description,
-          })
-          .then(resp=>{
-            console.log(resp.data);
-            this.tableData=resp.data.data;
-            this.getDicTypeList();
-          },err=>{
-            console.log(err);
-          });
-      this.dialogFormAddDicValue = false;
+      if(this.add.code==''){
+        this.$notify({
+          title: '偏移',
+          message: '代码不能为空',
+          offset: 100
+        });
+        return false;
+      }else if(this.add.name==''){
+        this.$notify({
+          title: '偏移',
+          message: '名称不能为空',
+          offset: 100
+        });
+        return false;
+      }else if(this.add.description==''){
+        this.$notify({
+          title: '偏移',
+          message: '描述不能为空',
+          offset: 100
+        });
+        return false;
+      }else{
+        this.$axios.post("/admin/setDicTL.do",
+            {
+              code:this.add.code,
+              name:this.add.name,
+              description:this.add.description,
+            })
+            .then(resp=>{
+              console.log(resp.data);
+              this.tableData=resp.data.data;
+              this.getDicTypeList();
+            },err=>{
+              console.log(err);
+            });
+        this.dialogFormAddDicValue = false;
+      }
+
     },
     //删除
     selection(val){
@@ -320,12 +367,13 @@ export default {
           })
           .then(resp=>{
             console.log(resp.data);
+            console.log(resp.data);
             this.tableData=resp.data.data;
             this.getDicTypeList();
           },err=>{
             console.log(err);
           });
-    }
+    },
   },
   created() {
     this.getDicTypeList();
@@ -340,6 +388,11 @@ export default {
   margin-left: 40px;
 }
 .inputName{
+  width:200px;
+  margin-left: 40px;
+  margin-bottom: 30px;
+}
+.inputDescription{
   width:200px;
   margin-left: 40px;
   margin-bottom: 30px;

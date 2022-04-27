@@ -16,7 +16,7 @@
                name,
                description
         from tbl_dic_type
-        <if test="code!=null or name!=null">
+        <if test="code!=null or name!=null or description!=null">
             where
         </if>
         <if test="code!=null">
@@ -27,6 +27,12 @@
         </if>
         <if test="name!=null">
             name like concat('%',#{name},'%')
+        </if>
+        <if test="(code!=null or name!=null) and description!=null ">
+            and
+        </if>
+        <if test="description!=null">
+            description like concat('%',#{description},'%')
         </if>
         limit #{pageNo}, #{pageSize}
     </select>

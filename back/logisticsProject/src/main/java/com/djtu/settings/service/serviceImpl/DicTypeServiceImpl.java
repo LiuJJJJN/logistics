@@ -21,12 +21,21 @@ public class DicTypeServiceImpl implements DicTypeService {
     private DicValueDao dicValueDao;
     private static final int Flag_NUM=1;
     @Override
-    public Integer getDicTypeList() throws DictionaryException{
+    public Integer getDicTypeListNum() throws DictionaryException{
         List<DicType> list=dicTypeDao.getDicTypeList();
         if(list.isEmpty()){
             throw new DictionaryException("获取失败");
         }
         return list.size();
+    }
+
+    @Override
+    public List<DicType> getDicTypeList() throws DictionaryException{
+        List<DicType> list=dicTypeDao.getDicTypeList();
+        if(list.isEmpty()){
+            throw new DictionaryException("获取失败");
+        }
+        return list;
     }
 
     @Override

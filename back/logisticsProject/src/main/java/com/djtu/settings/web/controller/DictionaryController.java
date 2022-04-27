@@ -5,6 +5,7 @@ import com.djtu.response.Result;
 import com.djtu.settings.pojo.DicType;
 import com.djtu.settings.pojo.DicValue;
 import com.djtu.settings.pojo.vo.DicTypeVo;
+import com.djtu.settings.pojo.vo.DicValueVo;
 import com.djtu.settings.service.DicTypeService;
 import com.djtu.settings.service.DicValueService;
 import com.djtu.utils.StringUtil;
@@ -36,13 +37,32 @@ public class DictionaryController {
     }
 
     /**
+     * 查询所有数据字典值，可根据value或type_code查询也可查询所有
+     * @param dicValueVo
+     * @return
+     * @throws DictionaryException
+     */
+    @RequestMapping("/getDicVByCV.do")
+    @ResponseBody
+    public Result getDicValuesByCodeOrValue(@RequestBody DicValueVo dicValueVo) throws DictionaryException{
+        List<DicValue> list=dicValueService.getDicValuesByCodeOrValue(dicValueVo);
+        Integer total=dicValueService.getDicValuesListNum();
+        Map<String,Object> map=new Hashtable<>();
+        map.put("list",list);
+        map.put("total",total);
+        return new Result().setCode(200).setMessage("获取成功").setData(map);
+    }
+
+    /**
      *管理员-添加数据字典信息
      * @param dicValue
      * @return 是否添加返回信息
      */
-    @RequestMapping(value = "/setDicV.do",method = RequestMethod.POST)
+    @RequestMapping(value = "/setDicV.do")
     @ResponseBody
     public Result setDicValues(@RequestBody DicValue dicValue) throws DictionaryException{
+        System.out.println("!!!!"+dicValue);
+        dicValue.setId(StringUtil.generateUUID());
         dicValueService.setDicValues(dicValue);
         return new Result().setCode(200).setMessage("添加成功");
     }
@@ -61,33 +81,33 @@ public class DictionaryController {
 
     /**
      * 管理员-更新数据字典信息
-     * @param value 更新后的值
-     * @param id 主键
-     * @return
+     * @param dicValue 数据字典值实例
+     * @return 是否修改返回信息
      */
     @RequestMapping("/updateDicV.do")
     @ResponseBody
-    public Result updateDicValues(@RequestParam(value="value")String value,@RequestParam(value="id")String id)throws DictionaryException{
-        dicValueService.updateDicValues(value,id);
+    public Result updateDicValues(@RequestBody DicValue dicValue)throws DictionaryException{
+        dicValueService.updateDicValues(dicValue);
         return new Result().setCode(200).setMessage("修改成功");
     }
 
-    /**
-     * 查询所有数据字典类型
-     * @return 数据字典类型列表
-     */
-    /*@RequestMapping("/getDicTL.do")
+
+    @RequestMapping("/getDicTL.do")
     @ResponseBody
     public Result getDicTypeList() throws DictionaryException{
         List<DicType> list=dicTypeService.getDicTypeList();
         return new Result().setCode(200).setMessage("查询成功").setData(list);
-    }*/
+    }
 
+    /**
+     * 查询所有数据字典类型,可根据code或name查询也可查询所有
+     * @return 数据字典类型列表
+     */
     @RequestMapping("/getDicTByCN.do")
     @ResponseBody
     public Result getDicTypeListByCodeOrName(@RequestBody DicTypeVo dicTypeVo) throws DictionaryException{
         List<DicType> list=dicTypeService.getDicTypeListByCodeOrName(dicTypeVo);
-        Integer total=dicTypeService.getDicTypeList();
+        Integer total=dicTypeService.getDicTypeListNum();
         Map<String,Object> map=new Hashtable<>();
         map.put("list",list);
         map.put("total",total);
