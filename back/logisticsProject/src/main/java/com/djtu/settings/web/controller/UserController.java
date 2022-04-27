@@ -53,6 +53,7 @@ public class UserController {
         //封装 token 为自定义 UsernamePasswordToken 类
         JwtToken jwtToken = new JwtToken(jwt, password);
 
+        //执行 Shiro 的认证
         try {
             subject.login(jwtToken);
         } catch (UnknownAccountException e) {
@@ -61,6 +62,7 @@ public class UserController {
             return new Result().setCode(401).setMessage("密码错误, 请重试");
         }
 
+        //配置返回用户信息内容
         UserVo backUser = null;
         if ("学生".equals(ident)) {
             backUser = userService.getUserVoByStudentUsername(username);
@@ -69,22 +71,25 @@ public class UserController {
         } else if ("管理员".equals(ident)) {
             backUser = userService.getUserVoByAdminUsername(username);
         }
-
-        //配置返回 data 内容
         backUser.setPassword("");
         backUser.setSalt("");
         backUser.setPrimaryRole(ident);
+
+        //创建返回数据集合
         Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("user", backUser); // 1.传递用户信息
+        resultMap.put("token", jwt); // 2.传递 token
         String sessionId = (String) subject.getSession().getId();
-        resultMap.put("sessionId", sessionId);
-        resultMap.put("user", backUser); //传递用户信息
-        resultMap.put("token", jwt); //传递token
+        resultMap.put("sessionId", sessionId); // 3.传递 sessionId
+        resultMap.put("rememberMe", rememberMe); // 4.传递是否七天免登录的标记
         long timeStamp = System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 7; //设置过期时间为 7 天
         if (!rememberMe) {
             timeStamp = System.currentTimeMillis() + 1000 * 60 * 30; //如果没选七天免登录的话, 过期时间为 30 分钟
         }
-        resultMap.put("rememberMe", rememberMe); //传递是否七天免登录的标记
-        resultMap.put("timestamp", timeStamp); //传递过期时间戳
+        resultMap.put("timestamp", timeStamp); // 5.传递过期时间戳
+
+        //将此用户角色信息存至 session: 方便 Shiro 的授权方法使用
+        subject.getSession().setAttribute("userVo", backUser);
 
         return new Result().setCode(200).setMessage("登录成功").setData(resultMap);
     }

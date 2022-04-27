@@ -7,6 +7,7 @@ import com.djtu.settings.pojo.DicValue;
 import com.djtu.settings.pojo.vo.DicTypeVo;
 import com.djtu.settings.service.DicTypeService;
 import com.djtu.settings.service.DicValueService;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +27,7 @@ public class DictionaryController {
      *管理员-加载所有数据字典信息
      * @return 返回数据字典列表信息
      */
+    @RequiresRoles("管理员")
     @RequestMapping("/getDicVL.do")
     @ResponseBody
     public Result getDicValuesList() throws DictionaryException {
@@ -38,6 +40,7 @@ public class DictionaryController {
      * @param dicValue
      * @return 是否添加返回信息
      */
+    @RequiresRoles("管理员")
     @RequestMapping(value = "/setDicV.do",method = RequestMethod.POST)
     @ResponseBody
     public Result setDicValues(@RequestBody DicValue dicValue) throws DictionaryException{
@@ -50,6 +53,7 @@ public class DictionaryController {
      * @param id 主键
      * @return 是否删除返回信息
      */
+    @RequiresRoles("管理员")
     @RequestMapping(value = "/delDicV.do")
     @ResponseBody
     public Result delDicValues(String id) throws DictionaryException{
@@ -63,6 +67,7 @@ public class DictionaryController {
      * @param id 主键
      * @return
      */
+    @RequiresRoles("管理员")
     @RequestMapping("/updateDicV.do")
     @ResponseBody
     public Result updateDicValues(@RequestParam(value="value")String value,@RequestParam(value="id")String id)throws DictionaryException{
@@ -74,6 +79,7 @@ public class DictionaryController {
      * 查询所有数据字典类型
      * @return 数据字典类型列表
      */
+    @RequiresRoles("管理员")
     @RequestMapping("/getDicTL.do")
     @ResponseBody
     public Result getDicTypeList() throws DictionaryException{
@@ -81,6 +87,7 @@ public class DictionaryController {
         return new Result().setCode(200).setMessage("查询成功");
     }
 
+    @RequiresRoles("管理员")
     @RequestMapping("/setDicTL.do")
     @ResponseBody
     public Result setDicType(DicType dicType) throws DictionaryException{
@@ -88,6 +95,7 @@ public class DictionaryController {
         return new Result().setCode(200).setMessage("插入成功");
     }
 
+    @RequiresRoles("管理员")
     @RequestMapping("/delDicTL.do")
     @ResponseBody
     public Result delDicType(String code) throws DictionaryException{
@@ -95,10 +103,12 @@ public class DictionaryController {
         return new Result().setCode(200).setMessage("删除成功");
     }
 
+    @RequiresRoles("管理员")
     @RequestMapping(value = "/updateDicTL.do")
     @ResponseBody
     public Result updateDicType(@RequestBody DicType dicType) throws DictionaryException{
         dicTypeService.updateDicType(dicType);
         return new Result().setCode(200).setMessage("更新成功");
     }
+
 }

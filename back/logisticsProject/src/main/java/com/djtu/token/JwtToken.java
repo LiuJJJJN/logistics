@@ -50,7 +50,7 @@ public class JwtToken implements HostAuthenticationToken, RememberMeAuthenticati
         this(token, password, false, host);
     }
 
-    public JwtToken(String token, String password, String host) {
+    public JwtToken(String token, String userId, String password, String host) {
         this(token, password != null ? password.toCharArray() : null, false, host);
     }
 
@@ -74,27 +74,4 @@ public class JwtToken implements HostAuthenticationToken, RememberMeAuthenticati
         this(username, password != null ? password.toCharArray() : null, rememberMe, host);
     }
 
-//    @Override
-//    public String toString() {
-//        StringBuilder sb = new StringBuilder();
-//        sb.append(this.getClass().getName());
-//        sb.append(" - ");
-//        sb.append(JwtUtil.parseJWT(this.token).getId());
-//        sb.append(", rememberMe=").append(this.rememberMe);
-//        if (this.host != null) {
-//            sb.append(" (").append(this.host).append(")");
-//        }
-//        return sb.toString();
-//    }
-
-
-    @Override
-    public String toString() {
-        return "JwtToken{" +
-                "token='" + token.substring(0, 5) + '\'' +
-                ", password=" + Arrays.toString(password) +
-                ", rememberMe=" + rememberMe +
-                ", host='" + host + '\'' +
-                '}';
-    }
 }

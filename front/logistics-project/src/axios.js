@@ -1,4 +1,5 @@
 import axios from "axios";
+import store from "@/store";
 import router from './router';
 import ElementUI from 'element-ui';
 
@@ -30,6 +31,7 @@ axios.interceptors.response.use(resp =>{
         return resp;
     }else if(res.code == 401){ // 401 未登录 或 登录过期
         ElementUI.Message.error(res.message, {duration:3*1000});
+        store.commit("REMOVE_INFO");
         router.push("/login");
         return Promise.reject(res.message);
     }else if(res.code == 402){ //402 无权限访问 或 后端抛出的异常

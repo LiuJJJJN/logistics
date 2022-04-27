@@ -27,10 +27,6 @@ public class CustomerRealm extends AuthorizingRealm {
     @Autowired
     private UserService userService;
     @Autowired
-    private TutorService tutorService;
-    @Autowired
-    private AdminService adminService;
-    @Autowired
     private RoleService roleService;
     @Autowired
     private PermissionService permissionService;
@@ -44,20 +40,13 @@ public class CustomerRealm extends AuthorizingRealm {
     //授权
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principal) {
-        String username = (String) principal.iterator().next();
-//        Set<String> roles = roleService.getRoleByUsername(username);
-//        Set<String> permissions = permissionService.getPermissionByUsername(username);
+        UserVo userVo = (UserVo) SecurityUtils.getSubject().getSession().getAttribute("userVo");
+        Set<String> roles = roleService.getRolesByUserId(userVo.getUserId());
 
-        Set<String> roles = new HashSet<>();
-        roles.add("导员");
-
-        System.out.println("============================================");
-        System.out.println(username);
-        System.out.println(SecurityUtils.getSubject());
+        System.out.println(roles);
 
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         info.addRoles(roles);
-//        info.addStringPermissions(null);
         return info;
     }
 

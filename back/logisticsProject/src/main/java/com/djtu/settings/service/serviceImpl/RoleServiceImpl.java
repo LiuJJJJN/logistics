@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class RoleServiceImpl implements RoleService {
@@ -28,6 +29,11 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public int removeUserRole(String userId, Integer roleId) {
         return roleDao.removeUserRole(userId, roleId);
+    }
+
+    @Override
+    public Set<String> getRolesByUserId(String userId) {
+        return roleDao.getRoleSetByUserId(userId);
     }
 
 }

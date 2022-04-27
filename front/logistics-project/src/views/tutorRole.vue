@@ -149,7 +149,7 @@ export default {
         username:'loading',
         name:'loading',
         remark:'loading',
-        perms: ['学生'],
+        perms: ['导员'],
       },
       tableData: [{
         id:'',

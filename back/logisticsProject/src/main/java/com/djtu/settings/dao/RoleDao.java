@@ -2,10 +2,10 @@ package com.djtu.settings.dao;
 
 
 import com.djtu.settings.pojo.Role;
-import com.djtu.utils.StringUtil;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Set;
 
 public interface RoleDao {
 
@@ -32,4 +32,11 @@ public interface RoleDao {
      * @return 影响条数
      */
     int removeUserRole(@Param("userId") String userId, @Param("roleId") Integer roleId);
+
+    /**
+     * 根据用户id查询角色集合
+     * @param userId 用户id
+     * @return 角色集合
+     */
+    Set<String> getRoleSetByUserId(String userId);
 }

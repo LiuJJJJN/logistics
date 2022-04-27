@@ -18,4 +18,11 @@
                      where user_id = #{userId})
         order by id asc
     </select>
+    <select id="getRoleSetByUserId" resultType="java.lang.String">
+        select name
+        from tbl_user_role ur
+                 join tbl_role r
+                      on ur.role_id = r.id
+        where ur.user_id = #{userId};
+    </select>
 </mapper>
