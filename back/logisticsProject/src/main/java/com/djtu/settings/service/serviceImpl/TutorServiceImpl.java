@@ -21,4 +21,9 @@ public class TutorServiceImpl implements TutorService {
         }
     }
 
+    @Override
+    public Tutor getTutorByUsername(String username) {
+        return tutorDao.getTutorByUsername(username);
+    }
+
 }

@@ -15,7 +15,7 @@ public class Tutor {
   private String name;
   private String sex;
   private String college;
-  private String dormId;
+  private Dorm dorm;
   private String remark;
   private String avatarPath;
 

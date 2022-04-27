@@ -20,8 +20,8 @@ public class Student {
   private String stuClass;
   private String remark;
   private String sno;
-  private String dormId;
-  private String tutorId;
+  private Dorm dorm;
+  private Tutor tutor;
   private String avatarPath;
 
 }

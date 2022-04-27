@@ -26,4 +26,9 @@ public class StudentServiceImpl implements StudentService {
         return studentDao.getStudentTotal();
     }
 
+    @Override
+    public Student getStudentByUsername(String username) {
+        return studentDao.getStudentByUsername(username);
+    }
+
 }

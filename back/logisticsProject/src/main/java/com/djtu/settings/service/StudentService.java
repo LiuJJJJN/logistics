@@ -1,6 +1,7 @@
 package com.djtu.settings.service;
 
 import com.djtu.exception.RegisterException;
+import com.djtu.settings.pojo.Student;
 
 public interface StudentService {
 
@@ -16,4 +17,11 @@ public interface StudentService {
      * @return 学生总数
      */
     Integer getStudentTotal();
+
+    /**
+     * 根据学生username获取学生实例
+     * @param username username
+     * @return 学生实例
+     */
+    Student getStudentByUsername(String username);
 }
