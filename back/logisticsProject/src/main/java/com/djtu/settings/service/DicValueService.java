@@ -2,6 +2,7 @@ package com.djtu.settings.service;
 
 import com.djtu.exception.DictionaryException;
 import com.djtu.settings.pojo.DicValue;
+import com.djtu.settings.pojo.vo.DicValueVo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +23,19 @@ public interface DicValueService {
     List<DicValue> getDicValuesList() throws DictionaryException;
 
     /**
+     *查询所有数据字典值，可根据value或type_code查询也可查询所有
+     * @param dicValueVo dicValueVo实例
+     * @return 数据字典值列表
+     */
+    List<DicValue> getDicValuesByCodeOrValue(DicValueVo dicValueVo) throws DictionaryException;
+
+    /**
+     * 查询所有数据字典值个数
+     * @return 个数
+     */
+    Integer getDicValuesListNum();
+
+    /**
      * 插入数据字典
      * @param dicValue 数据字典
      */
@@ -35,8 +49,8 @@ public interface DicValueService {
 
     /**
      * 更新数据字典数据
-     * @param value 更改后的值
-     * @param id 主键
+     * @param dicValue 数据字典值实例
      */
-    void updateDicValues(String value, String id) throws DictionaryException;
+    void updateDicValues(DicValue dicValue) throws DictionaryException;
+
 }
