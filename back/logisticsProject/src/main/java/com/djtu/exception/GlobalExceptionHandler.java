@@ -17,7 +17,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = UnauthorizedException.class)
     public Result handler(UnauthorizedException e){
         log.error("运行时异常----------------{}" + e.getMessage());
-        return new Result().setCode(401).setMessage("无权限访问");
+        return new Result().setCode(401).setMessage("无权限访问，请勿尝试访问非账户权限内的内容");
     }
 
     @ExceptionHandler(value = ExpiredCredentialsException.class)
@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = UnauthenticatedException.class)
     public Result handler(UnauthenticatedException e) {
         log.error("运行时异常----------------{}", e.getMessage());
-        return new Result().setCode(401).setMessage("未登录");
+        return new Result().setCode(401).setMessage("未登录，请勿非法访问");
     }
 
     @ExceptionHandler(value = AuthenticationException.class)
@@ -49,4 +49,5 @@ public class GlobalExceptionHandler {
         log.error("运行时异常----------------{}",e.getMessage());
         return new Result().setCode(402).setMessage(e.getMessage());
     }
+
 }

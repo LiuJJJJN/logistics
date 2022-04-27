@@ -66,6 +66,7 @@ export default {
                 this.$store.commit("SET_USERINFO", resp.data.data.user); //向全局存储中中存值
                 this.$store.commit("SET_REMEMBER_ME", resp.data.data.rememberMe); //向全局存储中中存值
                 this.$store.commit("SET_TIME_STAMP", resp.data.data.timestamp); //向全局存储中中存值
+                localStorage.setItem("sessionId", resp.data.data.sessionId); //向全局存储中中存值
                 this.$message({
                   message: resp.data.message,
                   type: 'success'

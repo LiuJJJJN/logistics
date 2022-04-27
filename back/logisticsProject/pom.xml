@@ -44,6 +44,16 @@
             <artifactId>shiro-spring</artifactId>
             <version>1.9.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-core</artifactId>
+            <version>1.9.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-web</artifactId>
+            <version>1.9.0</version>
+        </dependency>
 
         <!-- jackson -->
         <dependency>
@@ -162,12 +172,6 @@
             <version>5.2.5.RELEASE</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
-<!--        <dependency>-->
-<!--            <groupId>org.apache.logging.log4j</groupId>-->
-<!--            <artifactId>log4j-core</artifactId>-->
-<!--            <version>2.14.1</version>-->
-<!--        </dependency>-->
         <!--/littleHan-->
 
     </dependencies>

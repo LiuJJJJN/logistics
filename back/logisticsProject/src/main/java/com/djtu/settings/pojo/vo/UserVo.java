@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserVo {
     private String userId;
+    private String PrimaryRole;
     private String username;
     private String password;
     private String salt;
@@ -19,5 +20,16 @@ public class UserVo {
     private String sex;
     private String remark;
     private String avatarPath;
+
+    public UserVo(String userId, String username, String password, String salt, String name, String sex, String remark, String avatarPath) {
+        this.userId = userId;
+        this.username = username;
+        this.password = password;
+        this.salt = salt;
+        this.name = name;
+        this.sex = sex;
+        this.remark = remark;
+        this.avatarPath = avatarPath;
+    }
 
 }
