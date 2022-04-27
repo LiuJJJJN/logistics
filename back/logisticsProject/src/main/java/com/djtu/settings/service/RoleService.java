@@ -31,4 +31,11 @@ public interface RoleService {
      * @return 操作影响条数
      */
     int removeUserRole(String userId, Integer integer);
+
+    /**
+     * 通过userId查询关联的所有角色集合
+     * @param userId 用户表id
+     * @return 关联的角色集合
+     */
+    Set<String> getRolesByUserId(String userId);
 }

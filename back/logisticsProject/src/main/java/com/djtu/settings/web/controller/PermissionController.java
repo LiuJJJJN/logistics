@@ -8,7 +8,7 @@ import com.djtu.settings.pojo.vo.TutorSearchVo;
 import com.djtu.settings.service.*;
 import com.djtu.settings.pojo.vo.StudentRoleVo;
 import com.djtu.utils.StringUtil;
-import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,8 +30,6 @@ public class PermissionController {
     private RoleService roleService;
     @Autowired
     private UserService userService;
-    @Autowired
-    private StudentService studentService;
 
     /**
      * 根据userId获取当前角色的所有功能列表
@@ -54,6 +52,7 @@ public class PermissionController {
      * 获取所有学生以及相对应的角色列表
      * @return 所有学生以及相对应的角色列表
      */
+    @RequiresRoles(value = {"导员", "管理员"}, logical = Logical.OR)
     @RequestMapping("/getStudentRoleList.do")
     @ResponseBody
     public Result getUserPermissionList(@RequestBody Map map) {
@@ -84,6 +83,7 @@ public class PermissionController {
      * 获取所有导员以及相对应的角色列表
      * @return 所有导员以及相对应的角色列表
      */
+    @RequiresRoles("管理员")
     @RequestMapping("/getTutorRoleList.do")
     @ResponseBody
     public Result getTutorRoleList(@RequestBody Map map) {
@@ -106,6 +106,7 @@ public class PermissionController {
      * 获取所有学生列表的总数
      * @return 所有学生列表的总数
      */
+    @RequiresRoles(value = {"导员", "管理员"}, logical = Logical.OR)
     @RequestMapping("/getStudentRoleListTotal.do")
     @ResponseBody
     public Result getStudentRoleListTotal(@RequestBody Map map) {
@@ -155,6 +156,7 @@ public class PermissionController {
      * 根据前端传来的userId更改用户的对应角色列表
      * @return 是否更改成功
      */
+    @RequiresRoles(value = {"导员", "管理员"}, logical = Logical.OR)
     @RequestMapping("/changeUserRoleList.do")
     @ResponseBody
     public Result changeStudentRole(@RequestBody Map map){
