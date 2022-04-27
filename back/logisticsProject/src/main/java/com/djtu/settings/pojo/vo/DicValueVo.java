@@ -4,14 +4,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DicTypeVo {
+public class DicValueVo {
     private String id;
-    private String code;
-    private String name;
-    private String description;
+    private String value;
+    private Long orderNo;
+    private String typeCode;
     private int pageNo;
     private int pageSize;
+
 }

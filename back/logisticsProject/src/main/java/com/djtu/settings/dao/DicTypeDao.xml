@@ -10,11 +10,40 @@
         from tbl_dic_type
     </select>
 
+    <select id="getDicTypeListByCodeOrName" resultType="com.djtu.settings.pojo.DicType">
+        select id,
+               code,
+               name,
+               description
+        from tbl_dic_type
+        <if test="code!=null or name!=null or description!=null">
+            where
+        </if>
+        <if test="code!=null">
+            code like concat('%',#{code},'%')
+        </if>
+        <if test="code!=null and name!=null">
+            and
+        </if>
+        <if test="name!=null">
+            name like concat('%',#{name},'%')
+        </if>
+        <if test="(code!=null or name!=null) and description!=null ">
+            and
+        </if>
+        <if test="description!=null">
+            description like concat('%',#{description},'%')
+        </if>
+        limit #{pageNo}, #{pageSize}
+    </select>
+
     <insert id="setDicType">
-        insert into tbl_dic_type (code,
+        insert into tbl_dic_type (id,
+                                  code,
                                   name,
                                   description)
-        values (#{code},
+        values (#{id},
+                #{code},
                 #{name},
                 #{description})
 

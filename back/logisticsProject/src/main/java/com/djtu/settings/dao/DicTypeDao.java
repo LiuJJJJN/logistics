@@ -2,6 +2,7 @@ package com.djtu.settings.dao;
 
 
 import com.djtu.settings.pojo.DicType;
+import com.djtu.settings.pojo.vo.DicTypeVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -13,6 +14,13 @@ public interface DicTypeDao {
      * @return
      */
     List<DicType> getDicTypeList();
+
+    /**
+     * 根据code或name获取数据字典
+     * @param dicTypeVo 数据字典vo实例
+     * @return 数据字典列表
+     */
+    List<DicType> getDicTypeListByCodeOrName(DicTypeVo dicTypeVo);
 
     /**
      * 插入数据字典类型
@@ -40,4 +48,6 @@ public interface DicTypeDao {
      * @return 返回code
      */
     String getCodeById(String id);
+
+
 }
