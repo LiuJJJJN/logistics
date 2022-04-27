@@ -153,6 +153,7 @@ export default {
     return {
       //多选
       multipleSelection: [],
+      idArray:[],
       tableData: [{
         id:'',
         code:'',
@@ -345,6 +346,9 @@ export default {
             .then(resp=>{
               console.log(resp.data);
               this.tableData=resp.data.data;
+              this.add.code='';
+              this.add.name='';
+              this.add.description='';
               this.getDicTypeList();
             },err=>{
               console.log(err);
@@ -360,11 +364,12 @@ export default {
       /*alert(val[0].code+","+val[0].name+","+val[0].description+","+val[0].id);*/
     },
     delBtn(){
-      alert(this.multipleSelection);
+      for(let i=0;i<this.multipleSelection.length;i++){
+        this.idArray[i]=this.multipleSelection[i].id;
+      }
       this.$axios.post("/admin/delDicTL.do",
-          {
-            array:this.dialogFormAddDicValue
-          })
+          this.idArray
+          )
           .then(resp=>{
             console.log(resp.data);
             console.log(resp.data);

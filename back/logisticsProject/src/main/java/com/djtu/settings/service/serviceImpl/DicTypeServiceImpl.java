@@ -53,8 +53,8 @@ public class DicTypeServiceImpl implements DicTypeService {
     }
 
     @Override
-    public void delDicType(String code) throws DictionaryException{
-        Integer i=dicTypeDao.delDicType(code);
+    public void delDicType(List<String> data) throws DictionaryException{
+        Integer i=dicTypeDao.delDicType(data);
         if(i<Flag_NUM){
             throw new DictionaryException("删除失败");
         }

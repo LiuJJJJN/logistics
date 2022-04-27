@@ -56,9 +56,13 @@
                #{typeCode})
     </insert>
 
-    <delete id="deleteDicValue">
+    <delete id="deleteDicValue" parameterType="java.util.List">
         delete from tbl_dic_value
-        where id=#{id}
+        where
+        id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
     </delete>
 
     <update id="updateDicValue">

@@ -43,9 +43,9 @@ public interface DicValueService {
 
     /**
      * 删除数据字典数据
-     * @param id 主键
+     * @param data id集合
      */
-    void delDicValues(String id) throws DictionaryException;
+    void delDicValues(List<String> data) throws DictionaryException;
 
     /**
      * 更新数据字典数据

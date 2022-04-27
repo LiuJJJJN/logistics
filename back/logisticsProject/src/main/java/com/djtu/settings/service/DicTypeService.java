@@ -35,9 +35,9 @@ public interface DicTypeService {
 
     /**
      * 删除数据字典类型
-     * @param code
+     * @param data id列表
      */
-    void delDicType(String code) throws DictionaryException;
+    void delDicType(List<String> data) throws DictionaryException;
 
     /**
      * 修改数据字典类型

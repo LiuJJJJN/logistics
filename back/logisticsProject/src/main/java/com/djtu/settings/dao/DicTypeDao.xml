@@ -51,7 +51,11 @@
 
     <delete id="delDicType">
         delete from tbl_dic_type
-        where code=#{code}
+        where
+        id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
     </delete>
 
     <update id="updateDicType">

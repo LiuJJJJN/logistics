@@ -14,9 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("/admin")
@@ -72,14 +70,14 @@ public class DictionaryController {
 
     /**
      * 管理员-删除数据字典信息
-     * @param id 主键
+     * @param data id集合
      * @return 是否删除返回信息
      */
     @RequiresRoles("管理员")
     @RequestMapping(value = "/delDicV.do")
     @ResponseBody
-    public Result delDicValues(String id) throws DictionaryException{
-        dicValueService.delDicValues(id);
+    public Result delDicValues(@RequestBody List<String> data) throws DictionaryException{
+        dicValueService.delDicValues(data);
         return new Result().setCode(200).setMessage("删除成功");
     }
 
@@ -135,8 +133,8 @@ public class DictionaryController {
     @RequiresRoles("管理员")
     @RequestMapping("/delDicTL.do")
     @ResponseBody
-    public Result delDicType(String code) throws DictionaryException{
-        dicTypeService.delDicType(code);
+    public Result delDicType(@RequestBody List<String> data) throws DictionaryException{
+       dicTypeService.delDicType(data);
         return new Result().setCode(200).setMessage("删除成功");
     }
 

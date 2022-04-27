@@ -31,9 +31,9 @@ public interface DicTypeDao {
 
     /**
      *删除数据字典类型
-     * @param code
+     * @param data id集合
      */
-    Integer delDicType(String code);
+    Integer delDicType(List<String> data);
 
     /**
      * 修改数据字典类型
