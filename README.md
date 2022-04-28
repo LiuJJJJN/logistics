@@ -10,13 +10,12 @@
     - Vue
     - Vue-router
     - Element-ui
-    - Vuex
     - axios
 - 后端
     - SpringMVC
     - Mybatis
     - Shiro
-    - 数据库：MySQL、Redis
+    - 数据库：MySQL
     - 版本管理：git
     - 项目管理：Maven
 
@@ -24,10 +23,14 @@
 
 ### 项目未完成！ 2022-04-16 
 
-- coding...
+- 2022-04-28 登录注册功能、账户权限管理功能、个人信息修改功能、管理员数据字典修改功能实现
+    - [演示地址](http://47.111.84.87/)
+
+
+- 其他功能实现中...
 
 
 
 ### 项目笔记
 
-- [项目笔记.md](https://gitee.com/LiuJaNing/logistics/blob/master/%E9%A1%B9%E7%9B%AE%E7%AC%94%E8%AE%B0.md)
+- [项目笔记.md](https://gitee.com/LiuJaNing/logistics/blob/dev/%E9%A1%B9%E7%9B%AE%E7%AC%94%E8%AE%B0.md)
