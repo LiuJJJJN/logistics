@@ -76,4 +76,5 @@ public class UserManageController {
         userManageService.delTutorList(data);
         return new Result().setCode(200).setMessage("删除成功");
     }
+
 }
