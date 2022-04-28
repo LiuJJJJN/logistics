@@ -19,4 +19,18 @@ public interface TutorService {
      * @return 导员实例
      */
     Tutor getTutorByUsername(String username);
+
+    /**
+     * 根据导员id获取盐
+     * @param id 导员id
+     * @return 盐
+     */
+    String getTutorSaltById(String id);
+
+    /**
+     * 修改导员个人信息
+     * @param tutor 导员实例
+     * @return 修改影响条数
+     */
+    int editTutor(Tutor tutor);
 }

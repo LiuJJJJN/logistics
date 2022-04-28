@@ -2,47 +2,24 @@
 <div style="width: 1200px; margin: 0 auto">
   <h3 style="display: inline-block">用户详细信息</h3>
   <el-button type="primary" icon="el-icon-edit" style="display: inline-block; float: right; margin-right: 10px; margin-top: 10px" @click="changeEdit" circle></el-button>
-  <el-button style="float:right; margin-right: 10px; width: 80px; margin-top: 10px" v-show="showEditBtn" type="success" icon="el-icon-check" round></el-button>
+  <el-popover
+      placement="top"
+      width="160"
+      v-model="visible">
+    <p>确定提交修改吗？</p>
+    <div style="text-align: right; margin: 0">
+      <el-button size="mini" type="text" @click="visible = false">取消</el-button>
+      <el-button type="primary" size="mini" @click="toSubmitChange">确定</el-button>
+    </div>
+    <el-button slot="reference" style="float:right; margin-right: 10px; width: 80px; margin-top: 10px" v-show="showEditBtn" type="success" icon="el-icon-check" round></el-button>
+  </el-popover>
   <el-descriptions class="margin-top" :column="2" :size="size" border>
     <el-descriptions-item>
       <template slot="label">
         <i class="el-icon-picture-outline-round"></i>
         头像
       </template>
-      <el-upload
-          action="#"
-          list-type="picture-card"
-          :auto-upload="false"
-          v-show="showEditBtn"
-          limit="1"
-          :on-exceed="onExceedOne">
-        <i slot="default" class="el-icon-plus"></i>
-        <div slot="file" slot-scope="{file}">
-          <img
-              class="el-upload-list__item-thumbnail"
-              :src="file.url" alt=""
-          >
-          <span class="el-upload-list__item-actions">
-        <span
-            class="el-upload-list__item-preview"
-            @click="handlePictureCardPreview(file)"
-        >
-          <i class="el-icon-zoom-in"></i>
-        </span>
-        <span
-            v-if="!disabled"
-            class="el-upload-list__item-delete"
-            @click="handleRemove(file)"
-        >
-          <i class="el-icon-delete"></i>
-        </span>
-      </span>
-        </div>
-      </el-upload>
-      <el-dialog :visible.sync="dialogVisible">
-        <img width="100%" :src="dialogImageUrl" alt="">
-      </el-dialog>
-      <el-avatar size="large" src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" style="display: inline-block" v-show="!showEditBtn"></el-avatar>
+      <el-avatar size="large" src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" style="display: inline-block"></el-avatar>
     </el-descriptions-item>
     <el-descriptions-item>
       <template slot="label">
@@ -116,7 +93,8 @@
           v-model="submitInfo.sno"
           clearable
           v-show="showEditBtn"
-          style="width: 200px">
+          style="width: 200px"
+          type="number">
       </el-input>
       <span class="contentText" v-show="!showEditBtn">
         {{ userInfo.sno }}
@@ -142,7 +120,7 @@
         班级
       </template>
       <el-input
-          placeholder="请输入学号"
+          placeholder="请输入班级"
           v-model="submitInfo.stuClass"
           clearable
           v-show="showEditBtn"
@@ -159,9 +137,11 @@
       </template>
       <el-date-picker
           v-model="submitInfo.enterDate"
-          type="date"
+          format="yyyy-MM-dd"
+          value-format="yyyy-MM-dd"
           placeholder="选择日期"
-          v-show="showEditBtn">
+          v-show="showEditBtn"
+          >
       </el-date-picker>
       <span class="contentText" v-show="!showEditBtn">
         {{ userInfo.enterDate }}
@@ -186,11 +166,6 @@
       </span>
     </el-descriptions-item>
   </el-descriptions>
-  {{ userInfo }}
-  <br>
-  <br>
-  <br>
-  {{submitInfo}}
 </div>
 </template>
 
@@ -199,15 +174,16 @@ export default {
   name: "userInfo",
   data(){
     return{
-      userInfo:'',
-      submitInfo:'',
+      userInfo:{},
+      submitInfo:{},
       size: 'medium',
       imageUrl: '',
-      showEditBtn: true,
+      showEditBtn: false,
       collegeEnum:[],
       dialogImageUrl: '',
       dialogVisible: false,
-      disabled: false
+      disabled: false,
+      visible: false,
     }
   },
   methods:{
@@ -220,12 +196,12 @@ export default {
           }, err=>{
             console.log(err);
           });
-      this.userInfo = this.$store.getters.getUser;
     },
     changeEdit(){
       this.showEditBtn = !this.showEditBtn;
       if (this.showEditBtn) {
         this.submitInfo = JSON.parse(JSON.stringify(this.userInfo));
+        this.submitInfo.password = '';
       }
     },
     loadCollege:function (){
@@ -240,19 +216,66 @@ export default {
         console.log(err)
       })
     },
-    handleRemove(file) {
-      console.log(file);
-    },
-    handlePictureCardPreview(file) {
-      this.dialogImageUrl = file.url;
-      this.dialogVisible = true;
-    },
-    onExceedOne(){
-      this.$message({
-        message: '警告，最多上传一个头像',
-        type: 'warning'
-      });
-
+    toSubmitChange(){
+      this.visible = false;
+      if (this.submitInfo.username.trim() == '' || !this.submitInfo.username){
+        this.$message({
+          message: '警告，用户名不能为空',
+          type: 'warning'
+        });
+        this.submitInfo.username = '';
+        return;
+      }
+      if (this.submitInfo.username.length < 6 || this.submitInfo.username.length > 18){
+        this.$message({
+          message: '警告，用户名长度应在 6 - 18 字符',
+          type: 'warning'
+        });
+        this.submitInfo.username = '';
+        return;
+      }
+      if (this.submitInfo.password.trim() == '' || !this.submitInfo.password){
+        this.$message({
+          message: '警告，新密码不能为空',
+          type: 'warning'
+        });
+        this.submitInfo.password = '';
+        return;
+      }
+      if (this.submitInfo.password.length < 6 || this.submitInfo.password.length > 18){
+        this.$message({
+          message: '警告，新密码长度应在 6 - 18 字符',
+          type: 'warning'
+        });
+        this.submitInfo.password = '';
+        return;
+      }
+      if (this.submitInfo.sno && this.submitInfo.sno.length > 10){
+        this.$message({
+          message: '警告，学号长度应在 10 字符以内',
+          type: 'warning'
+        });
+        this.submitInfo.password = '';
+        return;
+      }
+      var url = "/user/editStudentInfo.do";
+      if (this.$store.getters.getUser.primaryRole == '导员') {
+        url = "/user/editTutorInfo.do";
+      }
+      if (this.$store.getters.getUser.primaryRole == '管理员') {
+        url = "/user/editAdminInfo.do";
+      }
+      this.$axios.post(url,this.submitInfo)
+          .then(resp=>{
+            this.$message({
+              message: resp.data.message,
+              type: 'success'
+            });
+            this.$store.commit("REMOVE_INFO");
+            this.$router.replace("/login");
+          }, err=>{
+            console.log(err);
+          });
     }
   },
   created() {

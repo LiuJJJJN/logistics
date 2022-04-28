@@ -26,4 +26,21 @@ public class TutorServiceImpl implements TutorService {
         return tutorDao.getTutorByUsername(username);
     }
 
+    @Override
+    public String getTutorSaltById(String id) {
+        return tutorDao.getTutorSaltById(id);
+    }
+
+    @Override
+    public synchronized int editTutor(Tutor tutor) {
+        Tutor oldTutor = tutorDao.getTutorById(tutor.getId());
+
+        int usernameCount = tutorDao.getUsernameCountByUsername(tutor.getUsername());
+
+        if (oldTutor.getUsername().equals(tutor.getUsername()) || usernameCount == 0) {
+            return tutorDao.editTutor(tutor);
+        }
+        return 0;
+    }
+
 }

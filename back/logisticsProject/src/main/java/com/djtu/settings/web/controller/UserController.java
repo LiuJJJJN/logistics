@@ -13,6 +13,8 @@ import com.djtu.utils.StringUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -60,7 +62,7 @@ public class UserController {
         try {
             subject.login(jwtToken);
         } catch (UnknownAccountException e) {
-            return new Result().setCode(401).setMessage("账号不存在, 请等待管理员录入");
+            return new Result().setCode(401).setMessage("账号不存在, 请重试");
         } catch (IncorrectCredentialsException e) {
             return new Result().setCode(401).setMessage("密码错误, 请重试");
         }
@@ -166,6 +168,7 @@ public class UserController {
         return new Result().setCode(200).setMessage("用户名可用");
     }
 
+    @RequiresRoles(value = {"学生", "导员", "管理员"}, logical = Logical.OR)
     @RequestMapping("/getUserInfo.do")
     @ResponseBody
     public Result getUserInfoByUsernameIdent(){
@@ -174,8 +177,10 @@ public class UserController {
             Student student = studentService.getStudentByUsername(userVo.getUsername());
             student.setPassword(null);
             student.setSalt(null);
-            student.getTutor().setPassword(null);
-            student.getTutor().setSalt(null);
+            if (student.getTutor() != null) {
+                student.getTutor().setPassword(null);
+                student.getTutor().setSalt(null);
+            }
             return new Result().setCode(200).setMessage("学生信息获取成功").setData(student);
         }
         if ("导员".equals(userVo.getPrimaryRole())) {
@@ -191,6 +196,45 @@ public class UserController {
             return new Result().setCode(200).setMessage("管理员信息获取成功").setData(admin);
         }
         return new Result().setCode(401).setMessage("未查询到当前登录角色信息, 请重新登录");
+    }
+
+    @RequiresRoles("学生")
+    @RequestMapping("/editStudentInfo.do")
+    @ResponseBody
+    public Result editUserInfo(@RequestBody Student student){
+        String salt = studentService.getStudentSaltById(student.getId());
+        student.setPassword(StringUtil.md5(student.getPassword(), salt));
+        int res = studentService.editStudent(student);
+        if (res == 1) {
+            return new Result().setCode(200).setMessage("修改学生信息成功, 请重新登录");
+        }
+        return new Result().setCode(402).setMessage("修改学生信息失败, 请尝试修改用户名或学号");
+    }
+
+    @RequiresRoles("导员")
+    @RequestMapping("/editTutorInfo.do")
+    @ResponseBody
+    public Result editTutorInfo(@RequestBody Tutor tutor){
+        String salt = tutorService.getTutorSaltById(tutor.getId());
+        tutor.setPassword(StringUtil.md5(tutor.getPassword(), salt));
+        int res = tutorService.editTutor(tutor);
+        if (res == 1) {
+            return new Result().setCode(200).setMessage("修改导员信息成功, 请重新登录");
+        }
+        return new Result().setCode(402).setMessage("修改导员信息失败, 请尝试修改用户名");
+    }
+
+    @RequiresRoles("管理员")
+    @RequestMapping("/editAdminInfo.do")
+    @ResponseBody
+    public Result editAdminInfo(@RequestBody Admin admin){
+        String salt = adminService.getAdminSaltById(admin.getId());
+        admin.setPassword(StringUtil.md5(admin.getPassword(), salt));
+        int res = adminService.editAdmin(admin);
+        if (res == 1) {
+            return new Result().setCode(200).setMessage("修改管理员信息成功, 请重新登录");
+        }
+        return new Result().setCode(402).setMessage("修改管理员信息失败, 请尝试修改用户名");
     }
 
 }

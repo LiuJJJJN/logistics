@@ -17,4 +17,22 @@ public class AdminServiceImpl implements AdminService {
     public Admin getAdminByUsername(String username) {
         return adminDao.getAdminByUsername(username);
     }
+
+    @Override
+    public String getAdminSaltById(String id) {
+        return adminDao.getAdminSaltById(id);
+    }
+
+    @Override
+    public int editAdmin(Admin admin) {
+        Admin oldAdmin = adminDao.getAdminById(admin.getId());
+
+        int usernameCount = adminDao.getUsernameCountByUsername(admin.getUsername());
+
+        if (oldAdmin.getUsername().equals(admin.getUsername()) || usernameCount == 0) {
+            return adminDao.editAdmin(admin);
+        }
+        return 0;
+    }
+
 }
