@@ -1,16 +1,29 @@
 <template>
-  <dev>
-    <el-input v-model="input.inputCode" placeholder="请输入code" class="inputCode"></el-input>
-    <el-input v-model="input.inputName" placeholder="请输入名称" class="inputName"></el-input>
-    <el-input v-model="input.inputDescription" placeholder="请输入描述" class="inputDescription"></el-input>
-    <el-button type="primary" icon="el-icon-search" @click="searchBtn" class="search">搜索</el-button>
-    <br>
+  <div>
+    <div style="height: 60px; margin-left: -35px">
+      <el-input v-model="input.inputCode" placeholder="请输入code" class="inputCode"></el-input>
+      <el-input v-model="input.inputName" placeholder="请输入名称" class="inputName"></el-input>
+      <el-input v-model="input.inputDescription" placeholder="请输入描述" class="inputDescription"></el-input>
+      <el-button type="primary" icon="el-icon-search" @click="searchBtn" class="search">搜索</el-button>
+    </div>
+    <!--  删除按钮  -->
+    <el-popconfirm
+        title="确定删除吗？">
+      <el-button
+          size="mini"
+          type="primary"
+          icon="el-icon-delete"
+          slot="reference"
+          @click="delBtn"
+          class="functionBtn"></el-button>
+    </el-popconfirm>
+    <!--  添加按钮  -->
     <el-button
         size="mini"
-        @click="delBtn" >删 除</el-button>
-    <el-button
-        size="mini"
-        @click="addDicTypeBtn" >添 加</el-button>
+        type="primary"
+        icon="el-icon-plus"
+        @click="addDicTypeBtn"
+        class="functionBtn"></el-button>
 
     <el-table
         :data="tableData"
@@ -80,13 +93,14 @@
     </el-table>
 
 <!-- 分页 -->
-    <div class="block">
+    <div class="block my-pagination">
       <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :current-page="pageNo"
           :page-sizes="[5, 10, 50, 100]"
           :page-size="pageSize"
+          background
           layout="total, sizes, prev, pager, next, jumper"
           :total="total">
       </el-pagination>
@@ -143,7 +157,7 @@
         <el-button type="primary" @click="addSureBtn">确 定</el-button>
       </div>
     </el-dialog>
-  </dev>
+  </div>
 </template>
 
 <script>
@@ -367,6 +381,7 @@ export default {
       for(let i=0;i<this.multipleSelection.length;i++){
         this.idArray[i]=this.multipleSelection[i].id;
       }
+
       this.$axios.post("/admin/delDicTL.do",
           this.idArray
           )
@@ -406,9 +421,18 @@ export default {
   margin-left: 40px;
 }
 .aaa{
-  width: 120px;
+  width: 220px;
 }
 .my-pagination{
-  margin-left: 350px;
+  margin: 20px;
 }
+.functionBtn{
+  display: inline-block;
+  height: 35px;
+  width: 60px;
+  margin-left: 5px;
+  margin-bottom: 13px;
+  margin-right: 10px;
+}
+
 </style>

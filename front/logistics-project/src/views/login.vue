@@ -3,7 +3,7 @@
     <el-form ref="form" :model="form" :rules="rules" label-width="80px" class="login-ruleForm">
       <h1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Login</h1>
       <el-form-item label="角色" prop="ident">
-        <el-radio-group v-model="form.ident" size="small" style="float: right; margin-top: 5px">
+        <el-radio-group v-model="form.ident" size="small" >
           <el-radio-button label="学生"></el-radio-button>
           <el-radio-button label="导员"></el-radio-button>
           <el-radio-button label="管理员"></el-radio-button>
@@ -23,7 +23,7 @@
           <el-col :span="11">
             <div class="login-code" width="100%" @click="refreshCode">
               <!--验证码组件-->
-              <CAPTCHA :identifyCode="identifyCode"></CAPTCHA>
+              <CAPTCHA :identifyCode="identifyCode" style="line-height: 10px"></CAPTCHA>
             </div>
           </el-col>
         </el-row>
@@ -144,18 +144,18 @@ export default {
     this.identifyCode = ''
     this.makeCode(this.identifyCodes, 4)
 
-    // this.$notify({
-    //   title: '提示',
-    //   message: '项目仅实现 登录、注册、根据账户权限动态加载功能列表 等功能.<br/><br/>' +
-    //       '现有学生<br/>账户:stu1,密码:stu1<br/><br/>' +
-    //       '现有学生同时拥有导员权限<br/>账户:stu2,密码:stu2<br/><br/>' +
-    //       '现有导员<br/>账户:tutor1,密码:tutor1<br/><br/>' +
-    //       '现有导员同时拥有管理员权限<br/>账户:tutor2,密码:tutor2<br/><br/>' +
-    //       '现有管理员<br/>账户:admin1,密码:admin1<br/><br/>' +
-    //       '项目 gitee 地址:<br/> <a href="https://gitee.com/LiuJaNing/logistics/tree/dev/">https://gitee.com/...</a>',
-    //   duration: 0,
-    //   dangerouslyUseHTMLString: true
-    // });
+    this.$notify({
+      title: '提示',
+      message: '项目仅实现 登录、注册、修改账户权限、修改个人信息 功能.<br/><br/>' +
+          '在管理员界面中实现了学生、导员权限修改功能, 数据字典增删改查<br/><br/>' +
+          '在导员界面中实现了学生权限修改功能<br/><br/>' +
+          '在学生、导员、管理员界面中都实现了个人信息的修改功能<br/><br/>' +
+          '管理员账号:admin123, 密码:123123<br/><br/>' +
+          '项目 gitee 地址:<br/> <a href="https://gitee.com/LiuJaNing/logistics/tree/dev/">https://gitee.com/...</a>',
+      duration: 0,
+      dangerouslyUseHTMLString: true,
+      offset: 200
+    });
   }
 
 }
