@@ -6,12 +6,18 @@
       <el-input v-model="input.inputDescription" placeholder="请输入描述" class="inputDescription"></el-input>
       <el-button type="primary" icon="el-icon-search" @click="searchBtn" class="search">搜索</el-button>
     </div>
-    <el-button
-        size="mini"
-        type="primary"
-        icon="el-icon-delete"
-        @click="delBtn"
-        class="functionBtn"></el-button>
+    <!--  删除按钮  -->
+    <el-popconfirm
+        title="确定删除吗？">
+      <el-button
+          size="mini"
+          type="primary"
+          icon="el-icon-delete"
+          slot="reference"
+          @click="delBtn"
+          class="functionBtn"></el-button>
+    </el-popconfirm>
+    <!--  添加按钮  -->
     <el-button
         size="mini"
         type="primary"
@@ -85,10 +91,9 @@
           width="">
       </el-table-column>
     </el-table>
-    <br>
 
 <!-- 分页 -->
-    <div class="block">
+    <div class="block my-pagination">
       <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
@@ -376,6 +381,7 @@ export default {
       for(let i=0;i<this.multipleSelection.length;i++){
         this.idArray[i]=this.multipleSelection[i].id;
       }
+
       this.$axios.post("/admin/delDicTL.do",
           this.idArray
           )
@@ -415,10 +421,10 @@ export default {
   margin-left: 40px;
 }
 .aaa{
-  width: 120px;
+  width: 220px;
 }
 .my-pagination{
-  margin-left: 350px;
+  margin: 20px;
 }
 .functionBtn{
   display: inline-block;
