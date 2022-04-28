@@ -44,5 +44,59 @@
 
     </insert>
 
+    <select id="getTutorList" resultType="com.djtu.settings.pojo.Tutor">
+        select id,
+               username,
+               password,
+               salt,
+               name,
+               sex,
+               college,
+               dorm_id,
+               remark,
+               avatar_path
+        from tbl_tutor
 
+        <if test="username!=null or name!=null or college!=null">
+            where
+        </if>
+        <if test="username!=null">
+            username like concat('%',#{username},'%')
+        </if>
+        <if test="username!=null and name!=null">
+            and
+        </if>
+        <if test="name!=null">
+            name like concat('%',#{name},'%')
+        </if>
+        <if test="(username!=null or name!=null) and college!=null ">
+            and
+        </if>
+        <if test="college!=null">
+            college like concat('%',#{college},'%')
+        </if>
+        limit #{pageNo}, #{pageSize}
+    </select>
+
+    <select id="getTutorNum" resultType="Integer">
+        select count(id)
+        from tbl_tutor
+    </select>
+
+    <update id="resetPwdById">
+
+        update tbl_tutor
+        set salt=#{salt},
+            password=#{password}
+            where id=#{id}
+    </update>
+
+    <delete id="delTutorList" parameterType="java.util.List">
+        delete from tbl_tutor
+        where
+        id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
 </mapper>

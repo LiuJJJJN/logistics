@@ -67,4 +67,10 @@ public interface DicValueDao {
      * @return
      */
     Integer updateDicValueOfCode(@Param("oldCode")String oldCode, @Param("newCode")String newCode);
+
+    /**
+     * 获取所有学院列表
+     * @return
+     */
+    List<DicValue> getAllCollege();
 }
