@@ -55,5 +55,10 @@ public class GlobalExceptionHandler {
         log.error("运行时异常----------------{}",e.getMessage());
         return new Result().setCode(402).setMessage(e.getMessage());
     }
+//    @ExceptionHandler(value = NullPointerException.class)
+//    public Result handler(NullPointerException e){
+//        log.error("运行时异常----------------{}",e.getMessage());
+//        return new Result().setCode(401).setMessage("服务端异常, 请重新登陆");
+//    }
 
 }

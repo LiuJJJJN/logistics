@@ -43,7 +43,7 @@ public class PermissionController {
         List<Role> roleList = roleService.getRoleListByUserId(userId);
         List<Object> permList = permissionService.getPermissionListByRoleList(roleList);
         if (permList.isEmpty()) {
-            return new Result().setCode(500).setMessage("获取权限列表失败");
+            return new Result().setCode(401).setMessage("获取权限列表失败, 请重新登录");
         }
         return new Result().setCode(200).setMessage("获取权限列表成功").setData(permList);
     }

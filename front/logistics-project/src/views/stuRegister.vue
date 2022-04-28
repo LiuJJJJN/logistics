@@ -41,6 +41,8 @@
             v-model="submitForm.enterDate"
             align="right"
             type="date"
+            format="yyyy-MM-dd"
+            value-format="yyyy-MM-dd"
             placeholder="选择日期"
             :picker-options="ruleForm.pickerOptions">
         </el-date-picker>

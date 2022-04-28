@@ -4,7 +4,24 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.djtu.settings.dao.TutorDao">
 
-    <select id="getTutorByUsername" resultType="com.djtu.settings.pojo.Tutor">
+    <cache eviction="FIFO"
+           flushInterval="60000"
+           size="512"
+           readOnly="true"/>
+
+    <resultMap id="tutorMap" type="Tutor">
+        <association javaType="Dorm" property="dorm" select="getDorm" column="dorm_id" />
+    </resultMap>
+    <update id="editTutor">
+        update tbl_tutor
+        set username = #{username},
+            password = #{password},
+            name = #{name},
+            sex = #{sex},
+            college = #{college}
+        where id = #{id}
+    </update>
+    <select id="getTutorByUsername" resultType="com.djtu.settings.pojo.Tutor" resultMap="tutorMap">
         select
             id,
             username,
@@ -19,7 +36,41 @@
             from tbl_tutor
             where username=#{username}
     </select>
-
+    <select id="getDorm" resultType="Dorm">
+        select  id,
+                door_no,
+                water,
+                power,
+                size,
+                have_wc,
+                remark
+        from tbl_dorm
+        where id = #{id}
+    </select>
+    <select id="getTutorSaltById" resultType="java.lang.String">
+        select salt
+        from tbl_tutor
+        where id = #{id}
+    </select>
+    <select id="getTutorById" resultType="com.djtu.settings.pojo.Tutor">
+        select  id,
+                username,
+                password,
+                salt,
+                name,
+                sex,
+                college,
+                dorm_id,
+                remark,
+                avatar_path
+        from tbl_tutor
+        where id = #{id}
+    </select>
+    <select id="getUsernameCountByUsername" resultType="java.lang.Integer">
+        select count(*)
+        from tbl_tutor
+        where username = #{username}
+    </select>
     <insert id="setTutor">
         insert into tbl_tutor (
                                id,
@@ -39,7 +90,7 @@
                #{name},
                #{sex},
                #{college},
-               #{dormId},
+               #{dorm},
                #{remark})
 
     </insert>

@@ -4,6 +4,11 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.djtu.settings.dao.UserRoleDao">
 
+    <cache eviction="FIFO"
+           flushInterval="60000"
+           size="512"
+           readOnly="true"/>
+
     <insert id="setUserRole">
         insert into tbl_user_role (
                               role_id,

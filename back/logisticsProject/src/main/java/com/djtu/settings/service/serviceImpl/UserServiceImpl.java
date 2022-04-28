@@ -88,7 +88,7 @@ public class UserServiceImpl implements UserService {
         userRole.setRoleId(TUTOR_DEFAULT_ROLE_ID);
         //用户表注入信息
         Integer userFlag = userDao.setTutorUser(user);
-        //教职工表注入注册信息
+        //导员表注入注册信息
         Integer tutorFlag = tutorDao.setTutor(tutor);
         //用户角色表注入信息
         Integer tutorRoleFlag = userRoleDao.setUserRole(userRole);
