@@ -22,6 +22,7 @@ public class UserManageServiceImpl implements UserManageService {
     TutorDao tutorDao;
     @Autowired
     DicValueDao dicValueDao;
+    private static final Integer NUM=1;
     @Override
     public List<Tutor> getTutorList(TutorVo tutorVo) {
         List<Tutor> list=tutorDao.getTutorList(tutorVo);
@@ -69,5 +70,14 @@ public class UserManageServiceImpl implements UserManageService {
        /* if(i!=data.size()){
             throw new UserManagerException("删除失败");
         }*/
+    }
+
+    @Override
+    @Transactional(rollbackFor={UserManagerException.class})
+    public void addOrUpTutorRemark(Tutor tutor) throws UserManagerException{
+        Integer n=tutorDao.addOrUpTutorRemark(tutor);
+        if(n<NUM){
+            throw new UserManagerException("修改成功");
+        }
     }
 }

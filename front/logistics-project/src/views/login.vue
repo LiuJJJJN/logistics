@@ -3,7 +3,7 @@
     <el-form ref="form" :model="form" :rules="rules" label-width="80px" class="login-ruleForm">
       <h1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Login</h1>
       <el-form-item label="角色" prop="ident">
-        <el-radio-group v-model="form.ident" size="small" style="float: right; margin-top: 5px">
+        <el-radio-group v-model="form.ident" size="small" >
           <el-radio-button label="学生"></el-radio-button>
           <el-radio-button label="导员"></el-radio-button>
           <el-radio-button label="管理员"></el-radio-button>
@@ -23,7 +23,7 @@
           <el-col :span="11">
             <div class="login-code" width="100%" @click="refreshCode">
               <!--验证码组件-->
-              <CAPTCHA :identifyCode="identifyCode"></CAPTCHA>
+              <CAPTCHA :identifyCode="identifyCode" style="line-height: 10px"></CAPTCHA>
             </div>
           </el-col>
         </el-row>
