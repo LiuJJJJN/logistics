@@ -4,10 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Student {
+public class Student implements Serializable {
   private String id;
   private String username;
   private String password;
@@ -20,8 +22,8 @@ public class Student {
   private String stuClass;
   private String remark;
   private String sno;
-  private String dormId;
-  private String tutorId;
+  private Dorm dorm;
+  private Tutor tutor;
   private String avatarPath;
 
 }

@@ -4,6 +4,7 @@ import com.djtu.shiro.filter.JwtFilter;
 import com.djtu.shiro.matchers.MyHashedCredentialsMatcher;
 import com.djtu.shiro.realms.CustomerRealm;
 import com.djtu.shiro.session.ShiroSession;
+import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.session.mgt.SessionManager;
@@ -70,6 +71,13 @@ public class ShiroConfig {
         matcher.setHashIterations(1024);
         //3. 为自定义的 Realm 设置 CredentialsMatcher
         realm.setCredentialsMatcher(matcher);
+        //4. 开启EH缓存
+        realm.setCacheManager(new EhCacheManager());
+        realm.setCachingEnabled(true);
+        realm.setAuthenticationCachingEnabled(true);
+        realm.setAuthenticationCacheName("authenticationCache");
+        realm.setAuthorizationCachingEnabled(true);
+        realm.setAuthorizationCacheName("authorizationCache");
 
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(realm);

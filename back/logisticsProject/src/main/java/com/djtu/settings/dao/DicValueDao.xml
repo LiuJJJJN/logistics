@@ -3,7 +3,12 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.djtu.settings.dao.DicValueDao">
-    
+
+    <cache eviction="FIFO"
+           flushInterval="60000"
+           size="512"
+           readOnly="true"/>
+
     <select id="getCollegeList" resultType="com.djtu.settings.pojo.DicValue">
         select id,
                value,
@@ -12,7 +17,6 @@
         from tbl_dic_value
         where type_code='college'
     </select>
-
     <select id="getDicValuesByCodeOrName" resultType="com.djtu.settings.pojo.DicValue">
         select id,
                value,
@@ -39,7 +43,6 @@
         </if>
         limit #{pageNo}, #{pageSize}
     </select>
-
     <select id="getDicValuesListNum" resultType="Integer">
         select count(id)
         from tbl_dic_value
@@ -55,7 +58,6 @@
                #{orderNo},
                #{typeCode})
     </insert>
-
     <delete id="deleteDicValue" parameterType="java.util.List">
         delete from tbl_dic_value
         where
@@ -64,7 +66,6 @@
             #{item}
         </foreach>
     </delete>
-
     <update id="updateDicValue">
         update tbl_dic_value
         set value=#{value},
@@ -72,7 +73,6 @@
             type_code=#{typeCode}
         where id=#{id}
     </update>
-
     <select id="getDicValueList" resultType="com.djtu.settings.pojo.DicValue">
         select
                id,
@@ -81,13 +81,11 @@
                type_code
         from tbl_dic_value
     </select>
-
     <select id="getDicValueByCode" resultType="Integer">
         select count(type_code)
         from tbl_dic_value
         where type_code=#{code}
     </select>
-
     <update id="updateDicValueOfCode">
         update tbl_dic_value
         set type_code=#{newCode}

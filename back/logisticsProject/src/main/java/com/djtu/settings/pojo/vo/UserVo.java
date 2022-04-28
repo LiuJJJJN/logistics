@@ -4,13 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 /**
  * 在用户登录后, 返回封装的统一类型
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserVo {
+public class UserVo implements Serializable {
     private String userId;
     private String PrimaryRole;
     private String username;

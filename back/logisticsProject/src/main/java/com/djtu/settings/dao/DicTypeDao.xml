@@ -3,13 +3,18 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.djtu.settings.dao.DicTypeDao">
+
+    <cache eviction="FIFO"
+           flushInterval="60000"
+           size="512"
+           readOnly="true"/>
+
     <select id="getDicTypeList" resultType="com.djtu.settings.pojo.DicType">
         select code,
                name,
                description
         from tbl_dic_type
     </select>
-
     <select id="getDicTypeListByCodeOrName" resultType="com.djtu.settings.pojo.DicType">
         select id,
                code,
@@ -48,7 +53,6 @@
                 #{description})
 
     </insert>
-
     <delete id="delDicType">
         delete from tbl_dic_type
         where
@@ -57,7 +61,6 @@
             #{item}
         </foreach>
     </delete>
-
     <update id="updateDicType">
         update tbl_dic_type
         set code=#{code},
@@ -65,7 +68,6 @@
             description=#{description}
             where id=#{id}
     </update>
-
     <select id="getCodeById" resultType="String">
         select code
         from tbl_dic_type
