@@ -38,4 +38,10 @@ public interface UserManageService {
      * @param data id列表
      */
     void delTutorList(List<String> data) throws UserManagerException;
+
+    /**
+     * 添加或修改备注
+     * @param tutor 导员实例
+     */
+    void addOrUpTutorRemark(Tutor tutor) throws UserManagerException;
 }

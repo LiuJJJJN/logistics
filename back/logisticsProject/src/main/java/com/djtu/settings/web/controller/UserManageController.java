@@ -80,7 +80,8 @@ public class UserManageController {
     @RequiresRoles("管理员")
     @RequestMapping("/admin/manage/addOrUpTutorRemark.do")
     @ResponseBody
-    public Result addOrUpTutorRemark(Tutor tutor){
+    public Result addOrUpTutorRemark(@RequestBody Tutor tutor) throws UserManagerException{
+        userManageService.addOrUpTutorRemark(tutor);
         return new Result().setCode(200).setMessage("添加/修改成功");
     }
 }
