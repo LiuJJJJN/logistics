@@ -76,4 +76,10 @@ public interface TutorDao {
      * @return 相同数量
      */
     int getUsernameCountByUsername(String username);
+
+    /**
+     * 添加或修改导员备注
+     * @param tutor 导员实例
+     */
+    Integer addOrUpTutorRemark(Tutor tutor);
 }

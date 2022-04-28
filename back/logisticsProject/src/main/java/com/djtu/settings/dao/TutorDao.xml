@@ -71,6 +71,12 @@
         from tbl_tutor
         where username = #{username}
     </select>
+
+    <update id="addOrUpTutorRemark">
+        update tbl_tutor
+        set  remark=#{remark}
+        where id=#{id}
+    </update>
     <insert id="setTutor">
         insert into tbl_tutor (
                                id,

@@ -185,7 +185,8 @@ export default {
       //添加或修改模态窗口
       dialogFormVisible: false,
       form: {
-        remark:''
+        remark:'',
+        id:''
       },
       add: {
         id:'',
@@ -255,15 +256,40 @@ export default {
     addOrUpdateBtn(index,row){
       this.dialogFormVisible=true;
       this.form.remark=row.remark;
-      this.$axios.post("/admin/manage/addOrUpTutorRemark.do",
-          this.form.remark
-      )
-          .then(resp=>{
-            console.log(resp);
-            this.getTutorList();
-          },err=>{
-            console.log(err);
-          });
+      this.form.id=row.id;
+
+    },
+    //添加或修改模态窗口确定按钮
+    updateSureBtn(){
+
+      this.$confirm('是否确定修改?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        //添加或修改
+        this.$axios.post("/admin/manage/addOrUpTutorRemark.do", {
+          remark: this.form.remark,
+          id:this.form.id
+        })
+            .then(resp=>{
+              console.log(resp);
+              this.getTutorList();
+              this.dialogFormVisible=false;
+            },err=>{
+              console.log(err);
+            });
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消修改'
+        });
+      });
+
+
+
+
+
     },
     //获取被选择的实例,同时将被选择的实例提取id转为数组
     delOrResetSelection(val){
