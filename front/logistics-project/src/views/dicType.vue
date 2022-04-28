@@ -1,16 +1,23 @@
 <template>
-  <dev>
-    <el-input v-model="input.inputCode" placeholder="请输入code" class="inputCode"></el-input>
-    <el-input v-model="input.inputName" placeholder="请输入名称" class="inputName"></el-input>
-    <el-input v-model="input.inputDescription" placeholder="请输入描述" class="inputDescription"></el-input>
-    <el-button type="primary" icon="el-icon-search" @click="searchBtn" class="search">搜索</el-button>
-    <br>
+  <div>
+    <div style="height: 60px; margin-left: -35px">
+      <el-input v-model="input.inputCode" placeholder="请输入code" class="inputCode"></el-input>
+      <el-input v-model="input.inputName" placeholder="请输入名称" class="inputName"></el-input>
+      <el-input v-model="input.inputDescription" placeholder="请输入描述" class="inputDescription"></el-input>
+      <el-button type="primary" icon="el-icon-search" @click="searchBtn" class="search">搜索</el-button>
+    </div>
     <el-button
         size="mini"
-        @click="delBtn" >删 除</el-button>
+        type="primary"
+        icon="el-icon-delete"
+        @click="delBtn"
+        class="functionBtn"></el-button>
     <el-button
         size="mini"
-        @click="addDicTypeBtn" >添 加</el-button>
+        type="primary"
+        icon="el-icon-plus"
+        @click="addDicTypeBtn"
+        class="functionBtn"></el-button>
 
     <el-table
         :data="tableData"
@@ -78,6 +85,7 @@
           width="">
       </el-table-column>
     </el-table>
+    <br>
 
 <!-- 分页 -->
     <div class="block">
@@ -87,6 +95,7 @@
           :current-page="pageNo"
           :page-sizes="[5, 10, 50, 100]"
           :page-size="pageSize"
+          background
           layout="total, sizes, prev, pager, next, jumper"
           :total="total">
       </el-pagination>
@@ -143,7 +152,7 @@
         <el-button type="primary" @click="addSureBtn">确 定</el-button>
       </div>
     </el-dialog>
-  </dev>
+  </div>
 </template>
 
 <script>
@@ -411,4 +420,13 @@ export default {
 .my-pagination{
   margin-left: 350px;
 }
+.functionBtn{
+  display: inline-block;
+  height: 35px;
+  width: 60px;
+  margin-left: 5px;
+  margin-bottom: 13px;
+  margin-right: 10px;
+}
+
 </style>
