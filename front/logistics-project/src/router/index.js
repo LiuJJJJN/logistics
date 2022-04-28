@@ -17,6 +17,8 @@ import tutorRole from "@/views/tutorRole";
 import dicType from "@/views/dicType";
 import dicValue from "@/views/dicValue";
 import userInfo from "@/views/userInfo";
+import studentManage from "@/views/studentManage";
+import tutorManage from "@/views/tutorManage";
 
 Vue.use(VueRouter)
 
@@ -79,7 +81,7 @@ const routes = [
         component: tutorFeedback
       },
       {
-        path:"/tutor/student",
+        path:"/tutor/studentManage",
         name:"tutorStudent",
         component: tutorStudent
       },
@@ -104,10 +106,20 @@ const routes = [
         component: dicValue
       },
       {
+        path:"/admin/studentManage",
+        name:"studentManage",
+        component: studentManage
+      },
+      {
+        path:"/admin/tutorManage",
+        name:"tutorManage",
+        component: tutorManage
+      },
+      {
         path: "/*",
         name: "notFoundPage",
         component: notFoundPage
-      }
+      },
     ]
   }
 ]
