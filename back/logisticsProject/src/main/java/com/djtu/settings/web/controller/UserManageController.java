@@ -76,4 +76,11 @@ public class UserManageController {
         userManageService.delTutorList(data);
         return new Result().setCode(200).setMessage("删除成功");
     }
+
+    @RequiresRoles("管理员")
+    @RequestMapping("/admin/manage/addOrUpTutorRemark.do")
+    @ResponseBody
+    public Result addOrUpTutorRemark(Tutor tutor){
+        return new Result().setCode(200).setMessage("添加/修改成功");
+    }
 }

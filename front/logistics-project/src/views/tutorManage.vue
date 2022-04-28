@@ -185,7 +185,8 @@ export default {
       //添加或修改模态窗口
       dialogFormVisible: false,
       form: {
-        remark:''
+        remark:'',
+        id:''
       },
       add: {
         id:'',
@@ -255,9 +256,11 @@ export default {
     addOrUpdateBtn(index,row){
       this.dialogFormVisible=true;
       this.form.remark=row.remark;
-      this.$axios.post("/admin/manage/addOrUpTutorRemark.do",
-          this.form.remark
-      )
+      this.form.id=row.id;
+      this.$axios.post("/admin/manage/addOrUpTutorRemark.do", {
+        remark: this.form.remark,
+        id:this.form.id
+      })
           .then(resp=>{
             console.log(resp);
             this.getTutorList();
