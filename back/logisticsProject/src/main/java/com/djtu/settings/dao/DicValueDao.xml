@@ -91,4 +91,12 @@
         set type_code=#{newCode}
         where type_code=#{oldCode}
     </update>
+
+    <select id="getAllCollege" resultType="com.djtu.settings.pojo.DicValue">
+        select id,
+               value,
+               order_no,
+               type_code
+        from tbl_dic_value
+    </select>
 </mapper>
