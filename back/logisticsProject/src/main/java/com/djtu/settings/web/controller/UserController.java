@@ -2,7 +2,7 @@ package com.djtu.settings.web.controller;
 
 import com.djtu.exception.RegisterException;
 import com.djtu.response.Result;
-import com.djtu.settings.pojo.DicValue;
+import com.djtu.settings.pojo.Admin;
 import com.djtu.settings.pojo.Student;
 import com.djtu.settings.pojo.Tutor;
 import com.djtu.settings.service.*;
@@ -13,6 +13,8 @@ import com.djtu.utils.StringUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,11 +29,14 @@ import java.util.Map;
 @RequestMapping("/user")
 public class UserController {
     @Autowired
+    private UserService userService;
+    @Autowired
     private StudentService studentService;
     @Autowired
     private TutorService tutorService;
     @Autowired
-    private UserService userService;
+    private AdminService adminService;
+
 
     /**
      * 登录功能
@@ -57,7 +62,7 @@ public class UserController {
         try {
             subject.login(jwtToken);
         } catch (UnknownAccountException e) {
-            return new Result().setCode(401).setMessage("账号不存在, 请等待管理员录入");
+            return new Result().setCode(401).setMessage("账号不存在, 请重试");
         } catch (IncorrectCredentialsException e) {
             return new Result().setCode(401).setMessage("密码错误, 请重试");
         }
@@ -161,6 +166,75 @@ public class UserController {
     public Result registerStudentUserNameVerify(String username) throws RegisterException {
         studentService.registerStudentUserNameVerify(username);
         return new Result().setCode(200).setMessage("用户名可用");
+    }
+
+    @RequiresRoles(value = {"学生", "导员", "管理员"}, logical = Logical.OR)
+    @RequestMapping("/getUserInfo.do")
+    @ResponseBody
+    public Result getUserInfoByUsernameIdent(){
+        UserVo userVo = (UserVo) SecurityUtils.getSubject().getSession().getAttribute("userVo");
+        if ("学生".equals(userVo.getPrimaryRole())) {
+            Student student = studentService.getStudentByUsername(userVo.getUsername());
+            student.setPassword(null);
+            student.setSalt(null);
+            if (student.getTutor() != null) {
+                student.getTutor().setPassword(null);
+                student.getTutor().setSalt(null);
+            }
+            return new Result().setCode(200).setMessage("学生信息获取成功").setData(student);
+        }
+        if ("导员".equals(userVo.getPrimaryRole())) {
+            Tutor tutor = tutorService.getTutorByUsername(userVo.getUsername());
+            tutor.setPassword(null);
+            tutor.setSalt(null);
+            return new Result().setCode(200).setMessage("导员信息获取成功").setData(tutor);
+        }
+        if ("管理员".equals(userVo.getPrimaryRole())) {
+            Admin admin = adminService.getAdminByUsername(userVo.getUsername());
+            admin.setPassword(null);
+            admin.setSalt(null);
+            return new Result().setCode(200).setMessage("管理员信息获取成功").setData(admin);
+        }
+        return new Result().setCode(401).setMessage("未查询到当前登录角色信息, 请重新登录");
+    }
+
+    @RequiresRoles("学生")
+    @RequestMapping("/editStudentInfo.do")
+    @ResponseBody
+    public Result editUserInfo(@RequestBody Student student){
+        String salt = studentService.getStudentSaltById(student.getId());
+        student.setPassword(StringUtil.md5(student.getPassword(), salt));
+        int res = studentService.editStudent(student);
+        if (res == 1) {
+            return new Result().setCode(200).setMessage("修改学生信息成功, 请重新登录");
+        }
+        return new Result().setCode(402).setMessage("修改学生信息失败, 请尝试修改用户名或学号");
+    }
+
+    @RequiresRoles("导员")
+    @RequestMapping("/editTutorInfo.do")
+    @ResponseBody
+    public Result editTutorInfo(@RequestBody Tutor tutor){
+        String salt = tutorService.getTutorSaltById(tutor.getId());
+        tutor.setPassword(StringUtil.md5(tutor.getPassword(), salt));
+        int res = tutorService.editTutor(tutor);
+        if (res == 1) {
+            return new Result().setCode(200).setMessage("修改导员信息成功, 请重新登录");
+        }
+        return new Result().setCode(402).setMessage("修改导员信息失败, 请尝试修改用户名");
+    }
+
+    @RequiresRoles("管理员")
+    @RequestMapping("/editAdminInfo.do")
+    @ResponseBody
+    public Result editAdminInfo(@RequestBody Admin admin){
+        String salt = adminService.getAdminSaltById(admin.getId());
+        admin.setPassword(StringUtil.md5(admin.getPassword(), salt));
+        int res = adminService.editAdmin(admin);
+        if (res == 1) {
+            return new Result().setCode(200).setMessage("修改管理员信息成功, 请重新登录");
+        }
+        return new Result().setCode(402).setMessage("修改管理员信息失败, 请尝试修改用户名");
     }
 
 }

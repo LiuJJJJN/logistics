@@ -43,8 +43,6 @@ public class CustomerRealm extends AuthorizingRealm {
         UserVo userVo = (UserVo) SecurityUtils.getSubject().getSession().getAttribute("userVo");
         Set<String> roles = roleService.getRolesByUserId(userVo.getUserId());
 
-        System.out.println(roles);
-
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         info.addRoles(roles);
         return info;

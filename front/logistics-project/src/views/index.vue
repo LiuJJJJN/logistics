@@ -33,7 +33,7 @@
                 <el-menu-item-group :title="item.fatherMenu[y].name">
                   <div v-for="a in x.subMenu" :key="a">
                     <router-link :to="a.path">
-                      <el-menu-item :index="a" :class="$route.path==a.path?'is-active':''">{{ a.name }}</el-menu-item>
+                      <el-menu-item :index="a.path" :class="$route.path==a.path?'is-active':''">{{ a.name }}</el-menu-item>
                     </router-link>
                   </div>
                 </el-menu-item-group>
@@ -61,29 +61,9 @@ export default {
       role: this.$store.getters.getUser.primaryRole,
       name: this.$store.getters.getUser.name,
       size: "large",
-      circleUrl: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
+      circleUrl: "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
       items: [],
-      itemList: [
-        {
-          role: "loading",
-          fatherMenu: [
-            {
-              name: "loading",
-              subMenu: [
-                {
-                  "id": "loading",
-                  "code": "loading",
-                  "name": "loading",
-                  "fatherId": "loading",
-                  "path": "loading",
-                  "isMenu": "loading",
-                  "roleId": "loading"
-                }
-              ]
-            }
-          ]
-        }
-      ]
+      itemList: []
     }
   },
   methods: {
@@ -103,7 +83,7 @@ export default {
           .then(resp => {
             //渲染功能列表
             this.itemList = resp.data.data;
-            // console.log(this.itemList);
+            console.log(this.itemList);
           }, err => {
             console.log(err)
           })
@@ -119,6 +99,7 @@ export default {
     for (let i = 0; i < 3; i++) {
       this.items.push(i);
     }
+
   }
 }
 </script>
@@ -185,3 +166,14 @@ a {
 }
 
 </style>
+
+<!--
+
+this.$axios.post("")
+      .then(resp=>{
+        console.log(resp);
+      }, err=>{
+        console.log(err);
+      });
+
+-->

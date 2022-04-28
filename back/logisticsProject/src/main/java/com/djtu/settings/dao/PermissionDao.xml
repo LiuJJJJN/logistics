@@ -4,6 +4,11 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.djtu.settings.dao.PermissionDao">
 
+    <cache eviction="FIFO"
+           flushInterval="60000"
+           size="512"
+           readOnly="true"/>
+
     <insert id="addPermList" parameterType="com.djtu.settings.pojo.Permission">
         insert into tbl_permission
         values (#{id},

@@ -61,6 +61,11 @@ public class TestController {
         return "hello2 vue this is springMVC";
     }
 
-
+    @RequestMapping(value = "/test4.do")
+    @ResponseBody
+    public String test4(@RequestBody List<String> list){
+        System.out.println(list);
+        return "hello2 vue this is springMVC";
+    }
 
 }

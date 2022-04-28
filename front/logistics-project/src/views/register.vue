@@ -9,7 +9,7 @@
         </router-link>
         <div style="padding: 10px; display: inline-block"></div>
         <router-link :to="'/register/tutorRegister'">
-          <el-radio-button label="注册教职工"></el-radio-button>
+          <el-radio-button label="注册导员"></el-radio-button>
         </router-link>
       </el-radio-group>
       <router-view></router-view>

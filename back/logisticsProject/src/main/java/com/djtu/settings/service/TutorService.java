@@ -1,6 +1,7 @@
 package com.djtu.settings.service;
 
 import com.djtu.exception.RegisterException;
+import com.djtu.settings.pojo.Tutor;
 import com.djtu.settings.pojo.vo.UserVo;
 
 public interface TutorService {
@@ -12,4 +13,24 @@ public interface TutorService {
      */
     void registerTutorUserNameVerify(String username) throws RegisterException;
 
+    /**
+     * 根据导员username获取导员实例
+     * @param username username
+     * @return 导员实例
+     */
+    Tutor getTutorByUsername(String username);
+
+    /**
+     * 根据导员id获取盐
+     * @param id 导员id
+     * @return 盐
+     */
+    String getTutorSaltById(String id);
+
+    /**
+     * 修改导员个人信息
+     * @param tutor 导员实例
+     * @return 修改影响条数
+     */
+    int editTutor(Tutor tutor);
 }

@@ -9,10 +9,13 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DicValue implements Serializable {
+public class Dorm implements Serializable {
   private String id;
-  private String value;
-  private Long orderNo;
-  private String typeCode;
+  private String doorNo;
+  private long water;
+  private long power;
+  private long size;
+  private String haveWc;
+  private String remark;
 
 }
