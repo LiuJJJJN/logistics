@@ -5,10 +5,12 @@ import com.djtu.settings.dao.DicValueDao;
 import com.djtu.settings.dao.StudentDao;
 import com.djtu.settings.dao.TutorDao;
 import com.djtu.settings.dao.UserDao;
+import com.djtu.settings.dao.UserRoleDao;
 import com.djtu.settings.pojo.DicValue;
 import com.djtu.settings.pojo.Student;
 import com.djtu.settings.pojo.Tutor;
 import com.djtu.settings.pojo.vo.StudentSearchVo;
+import com.djtu.settings.pojo.User;
 import com.djtu.settings.pojo.vo.TutorVo;
 import com.djtu.settings.service.UserManageService;
 import com.djtu.utils.StringUtil;
@@ -30,6 +32,12 @@ public class UserManageServiceImpl implements UserManageService {
     private TutorDao tutorDao;
     @Autowired
     private DicValueDao dicValueDao;
+    @Autowired
+    private DicValueDao dicValueDao;
+    @Autowired
+    private UserDao userDao;
+    @Autowired
+    private UserRoleDao userRoleDao;
     private static final Integer NUM=1;
 
     @Override
@@ -74,11 +82,18 @@ public class UserManageServiceImpl implements UserManageService {
     @Override
     @Transactional(rollbackFor={UserManagerException.class})
     public void delTutorList(List<String> data) throws UserManagerException {
-        Integer i=tutorDao.delTutorList(data);
-        System.out.println("输出"+i);
-       /* if(i!=data.size()){
-            throw new UserManagerException("删除失败");
-        }*/
+        Integer flag=data.size();
+        //根据id删除tutor表里的记录
+        Integer delTutorNum=tutorDao.delTutorList(data);
+        //user表：根据tutor_id查出id
+        List<User> list=userDao.getIdByTutorId(data);
+        //根据user_id删除tbl_user_role表中的记录
+        Integer delUserRoleNum=userRoleDao.delByUserId(list);
+        //根据id(tutor_id)删除user表里的记录
+        Integer delUserNum=userDao.delByTutorId(data);
+        if(delTutorNum!=flag && delUserRoleNum!=flag && delUserNum!=flag){
+            throw new UserManagerException("导员删除失败");
+        }
     }
 
     @Override

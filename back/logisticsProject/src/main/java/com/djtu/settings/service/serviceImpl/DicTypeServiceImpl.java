@@ -45,6 +45,7 @@ public class DicTypeServiceImpl implements DicTypeService {
     }
 
     @Override
+    @Transactional(rollbackFor = {DictionaryException.class})
     public void setDicType(DicType dicType) throws DictionaryException{
         Integer i=dicTypeDao.setDicType(dicType);
         if(i<Flag_NUM){
@@ -53,6 +54,7 @@ public class DicTypeServiceImpl implements DicTypeService {
     }
 
     @Override
+    @Transactional(rollbackFor = {DictionaryException.class})
     public void delDicType(List<String> data) throws DictionaryException{
         Integer i=dicTypeDao.delDicType(data);
         if(i<Flag_NUM){
@@ -81,7 +83,5 @@ public class DicTypeServiceImpl implements DicTypeService {
                 throw new DictionaryException("更新失败");
             }
         }
-
-
     }
 }

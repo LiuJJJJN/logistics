@@ -75,15 +75,26 @@ public class UserManageController {
         return new Result().setCode(200).setMessage("重置成功");
     }
 
+    /**
+     * 批量删除导员
+     * @param data 导员id列表
+     * @return 是否删除信息
+     * @throws UserManagerException
+     */
     @RequiresRoles("管理员")
     @RequestMapping("/admin/manage/delTutorL.do")
     @ResponseBody
     public Result delTutorList(@RequestBody List<String> data)throws UserManagerException{
-        System.out.println("!!!!"+data);
         userManageService.delTutorList(data);
         return new Result().setCode(200).setMessage("删除成功");
     }
 
+    /**
+     * 添加或修改导员备注
+     * @param tutor 导员实例
+     * @return 是否添加/修改信息
+     * @throws UserManagerException
+     */
     @RequiresRoles("管理员")
     @RequestMapping("/admin/manage/addOrUpTutorRemark.do")
     @ResponseBody

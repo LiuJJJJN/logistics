@@ -404,24 +404,30 @@ export default {
     selection(val) {
       this.multipleSelection = val;
       console.log(val);
-      /*alert(val[0].code+","+val[0].name+","+val[0].description+","+val[0].id);*/
     },
     delBtn() {
       for (let i = 0; i < this.multipleSelection.length; i++) {
         this.idArray[i] = this.multipleSelection[i].id;
       }
       console.log(this.idArray);
-      this.$axios.post("/admin/delDicV.do",
-          //array:this.dialogFormAddDicValue
-          this.idArray
-      )
-          .then(resp => {
-            console.log(resp.data);
-            //this.tableData=resp.data.data;
-            this.getDicValueList();
-          }, err => {
-            console.log(err);
-          });
+      if (this.idArray.length != 0) {
+        this.$axios.post("/admin/delDicV.do",
+            //array:this.dialogFormAddDicValue
+            this.idArray
+        ).then(resp => {
+          console.log(resp.data);
+          //this.tableData=resp.data.data;
+          this.getDicValueList();
+        }, err => {
+          console.log(err);
+        });
+      }else{
+        this.$message({
+          message: '请选择要删除的数据字典类型',
+          type: 'warning'
+        });
+      }
+
     }
   },
   created() {
