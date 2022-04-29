@@ -170,4 +170,23 @@
                   #{tutorId}
               )
     </insert>
+
+    <select id="getIdByTutorId" resultType="com.djtu.settings.pojo.User">
+        select id
+        from tbl_user
+        where
+        tutor_id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <delete id="delByTutorId">
+        delete from tbl_user
+        where
+        tutor_id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
 </mapper>

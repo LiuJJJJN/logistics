@@ -62,7 +62,6 @@ public class DictionaryController {
     @RequestMapping(value = "/setDicV.do",method = RequestMethod.POST)
     @ResponseBody
     public Result setDicValues(@RequestBody DicValue dicValue) throws DictionaryException{
-        System.out.println("!!!!"+dicValue);
         dicValue.setId(StringUtil.generateUUID());
         dicValueService.setDicValues(dicValue);
         return new Result().setCode(200).setMessage("添加成功");
@@ -121,6 +120,12 @@ public class DictionaryController {
         return new Result().setCode(200).setMessage("条件查询成功").setData(map);
     }
 
+    /**
+     * 插入数据字典类型
+     * @param dicType 数据字典类型实例
+     * @return 是否插入信息
+     * @throws DictionaryException
+     */
     @RequiresRoles("管理员")
     @RequestMapping("/setDicTL.do")
     @ResponseBody
@@ -130,6 +135,12 @@ public class DictionaryController {
         return new Result().setCode(200).setMessage("插入成功");
     }
 
+    /**
+     * 删除数据字典类型
+     * @param data 数据字典类型id列表
+     * @return 是否删除数据字典信息
+     * @throws DictionaryException
+     */
     @RequiresRoles("管理员")
     @RequestMapping("/delDicTL.do")
     @ResponseBody
@@ -138,6 +149,12 @@ public class DictionaryController {
         return new Result().setCode(200).setMessage("删除成功");
     }
 
+    /**
+     * 更新数据字典类型
+     * @param dicType
+     * @return 是否更新数据字典信息
+     * @throws DictionaryException
+     */
     @RequiresRoles("管理员")
     @RequestMapping(value = "/updateDicTL.do")
     @ResponseBody

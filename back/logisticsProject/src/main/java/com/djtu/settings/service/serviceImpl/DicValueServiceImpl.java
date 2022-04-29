@@ -48,6 +48,7 @@ public class DicValueServiceImpl implements DicValueService {
     }
 
     @Override
+    @Transactional(rollbackFor = {DictionaryException.class})
     public void setDicValues(DicValue dicValue) throws DictionaryException{
         Integer num=dicValueDao.insertDicValue(dicValue);
         if(num<FLAG_NUM){
@@ -56,6 +57,7 @@ public class DicValueServiceImpl implements DicValueService {
     }
 
     @Override
+    @Transactional(rollbackFor = {DictionaryException.class})
     public void delDicValues(List<String> data) throws DictionaryException{
         Integer num=dicValueDao.deleteDicValue(data);
         if(num<FLAG_NUM){
@@ -64,6 +66,7 @@ public class DicValueServiceImpl implements DicValueService {
     }
 
     @Override
+    @Transactional(rollbackFor = {DictionaryException.class})
     public void updateDicValues(DicValue dicValue) throws DictionaryException{
         Integer num=dicValueDao.updateDicValue(dicValue);
         if(num<FLAG_NUM){

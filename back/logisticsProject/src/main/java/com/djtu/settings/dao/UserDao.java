@@ -73,4 +73,19 @@ public interface UserDao {
      * @return 总数
      */
     Integer getTutorUserRoleVoListTotal(@Param("vo") TutorSearchVo tutorSearchVo);
+
+    /**
+     * 根据tutorId获取user表里的id
+     * @param data
+     * @return
+     */
+    List<User> getIdByTutorId(List<String> data);
+    /**
+     * 根据totorId删除user表记录
+     * @param data
+     * @return
+     */
+    Integer delByTutorId(List<String> data);
+
+
 }
