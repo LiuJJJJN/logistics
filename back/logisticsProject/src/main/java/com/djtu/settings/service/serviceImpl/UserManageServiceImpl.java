@@ -2,9 +2,13 @@ package com.djtu.settings.service.serviceImpl;
 
 import com.djtu.exception.UserManagerException;
 import com.djtu.settings.dao.DicValueDao;
+import com.djtu.settings.dao.StudentDao;
 import com.djtu.settings.dao.TutorDao;
+import com.djtu.settings.dao.UserDao;
 import com.djtu.settings.pojo.DicValue;
+import com.djtu.settings.pojo.Student;
 import com.djtu.settings.pojo.Tutor;
+import com.djtu.settings.pojo.vo.StudentSearchVo;
 import com.djtu.settings.pojo.vo.TutorVo;
 import com.djtu.settings.service.UserManageService;
 import com.djtu.utils.StringUtil;
@@ -19,10 +23,15 @@ import java.util.List;
 public class UserManageServiceImpl implements UserManageService {
 
     @Autowired
-    TutorDao tutorDao;
+    private StudentDao studentDao;
     @Autowired
-    DicValueDao dicValueDao;
+    private UserDao userDao;
+    @Autowired
+    private TutorDao tutorDao;
+    @Autowired
+    private DicValueDao dicValueDao;
     private static final Integer NUM=1;
+
     @Override
     public List<Tutor> getTutorList(TutorVo tutorVo) {
         List<Tutor> list=tutorDao.getTutorList(tutorVo);
@@ -80,4 +89,10 @@ public class UserManageServiceImpl implements UserManageService {
             throw new UserManagerException("修改成功");
         }
     }
+
+    @Override
+    public List<Student> getStudentList(StudentSearchVo studentSearchVo, Integer pageNo, Integer pageSize) {
+        return studentDao.getStudentListByPageCondition(studentSearchVo, pageNo, pageSize);
+    }
+
 }

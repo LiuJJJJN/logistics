@@ -1,5 +1,6 @@
 package com.djtu.settings.dao;
 
+import com.djtu.settings.pojo.Student;
 import com.djtu.settings.pojo.User;
 import com.djtu.settings.pojo.vo.StudentRoleVo;
 import com.djtu.settings.pojo.vo.StudentSearchVo;
@@ -73,4 +74,5 @@ public interface UserDao {
      * @return 总数
      */
     Integer getTutorUserRoleVoListTotal(@Param("vo") TutorSearchVo tutorSearchVo);
+
 }

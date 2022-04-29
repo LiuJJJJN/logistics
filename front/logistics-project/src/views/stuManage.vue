@@ -1,26 +1,45 @@
 <template>
   <div>
     <el-row :gutter="20" style="margin-bottom: 20px">
-      <el-col :span="4">
-        <el-input
-            placeholder="请输入用户名"
-            v-model="searchForm.username"
-            clearable>
-        </el-input>
-      </el-col>
-      <el-col :span="4">
+      <el-col :span="3">
         <el-input
             placeholder="请输入姓名"
             v-model="searchForm.name"
             clearable>
         </el-input>
       </el-col>
-      <el-col :span="5">
+      <el-col :span="3">
+        <el-input
+            placeholder="请输入学号"
+            v-model="searchForm.sno"
+            clearable>
+        </el-input>
+      </el-col>
+      <el-col :span="3">
         <el-select v-model="searchForm.college" placeholder="请选择所属学院" >
           <div v-for="item in collegeEnum" :key="item">
             <el-option :label="item" :value="item"></el-option>
           </div>
         </el-select>
+      </el-col>
+      <el-col :span="3">
+        <el-input
+            placeholder="请输入班级"
+            v-model="searchForm.stuClass"
+            clearable>
+        </el-input>
+      </el-col>
+      <el-col :span="7">
+        <el-date-picker
+            v-model="searchForm.date"
+            type="daterange"
+            align="right"
+            unlink-panels
+            range-separator="至"
+            start-placeholder="入学时间开始日期"
+            end-placeholder="入学时间结束日期"
+            :picker-options="pickerOptions">
+        </el-date-picker>
       </el-col>
       <el-col :span="2">
         <el-button icon="el-icon-search" circle @click="getUserRoleList"></el-button>
@@ -35,30 +54,58 @@
       </el-table-column>
       <el-table-column
           label="用户名"
-          width="150">
+          width="100">
         <template slot-scope="scope">
           <span>{{ scope.row.username }}</span>
         </template>
       </el-table-column>
       <el-table-column
           label="姓名"
-          width="150">
+          width="100">
         <template slot-scope="scope">
           <span>{{ scope.row.name }}</span>
         </template>
       </el-table-column>
       <el-table-column
           label="性别"
-          width="100">
+          width="50">
         <template slot-scope="scope">
           <span>{{ scope.row.sex }}</span>
         </template>
       </el-table-column>
       <el-table-column
+          label="学号"
+          width="120">
+        <template slot-scope="scope">
+          <span>{{ scope.row.sno }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+          label="注册时间"
+          width="100">
+        <template slot-scope="scope">
+          <span>{{ scope.row.enterDate }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
           label="学院"
-          width="150">
+          width="130">
         <template slot-scope="scope">
           <span>{{ scope.row.college }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+          label="班级"
+          width="100">
+        <template slot-scope="scope">
+          <span>{{ scope.row.stuClass }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+          label="学制"
+          width="50">
+        <template slot-scope="scope">
+          <span>{{ scope.row.schoolSys }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -68,23 +115,11 @@
           <span>{{ scope.row.remark }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-          label="角色"
-          width="220">
-        <template slot-scope="scope">
-          <el-popover trigger="hover" placement="top" v-for="perm in scope.row.perms" :key="perm" style="display: inline-block; margin-right: 10px">
-            <p>角色名: {{ perm }}</p>
-            <div slot="reference" class="name-wrapper">
-              <el-tag size="medium">{{ perm }}</el-tag>
-            </div>
-          </el-popover>
-        </template>
-      </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button
               size="mini"
-              @click="showDialog(scope.$index, scope.row)" >修改权限</el-button>
+              @click="showDialog(scope.$index, scope.row)" >修改备注</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -103,8 +138,8 @@
     </div>
 
 
-    <!--  选择权限模态窗口-->
-    <el-dialog title="修改角色权限" :visible.sync="dialogFormVisible">
+    <!--  修改备注模态窗口-->
+    <el-dialog title="修改备注信息" :visible.sync="dialogRemarkFormVisible">
       <el-form :model="form">
         <el-form-item label="用户名" :label-width="formLabelWidth">
           <span>{{ submitForm.username }}</span>
@@ -113,19 +148,19 @@
           <span>{{ submitForm.name }}</span>
         </el-form-item>
         <el-form-item label="备注" :label-width="formLabelWidth">
-          <span>{{ submitForm.remark }}</span>
-        </el-form-item>
-        <el-form-item label="权限" :label-width="formLabelWidth">
-          <el-checkbox-group v-model="submitForm.perms" size="small">
-            <el-checkbox-button disabled>学生</el-checkbox-button>
-            <el-checkbox-button disabled>导员</el-checkbox-button>
-            <el-checkbox-button v-for="perm in perms" :label="perm" :key="perm">{{perm}}</el-checkbox-button>
-          </el-checkbox-group>
+          <el-input
+              type="textarea"
+              placeholder="请输入内容"
+              v-model="submitForm.remark"
+              maxlength="255"
+              show-word-limit
+              style="width: 500px"
+          />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="changeStudentRole">确 定</el-button>
+        <el-button @click="dialogRemarkFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="editStudentRemark">确 定</el-button>
       </div>
     </el-dialog>
 
@@ -133,35 +168,35 @@
 </template>
 
 <script>
-const permOptions = ['管理员'];
 export default {
-  name: "tutorRole",
+  name: "stuManage",
   data(){
     return{
       collegeEnum:[],
       searchForm:{
-        username:'',
         name:'',
-        college:''
+        sno:'',
+        college:'',
+        stuClass:'',
+        date:[]
       },
       submitForm:{
         id:'loading',
-        username:'loading',
-        name:'loading',
         remark:'loading',
-        perms: ['导员'],
       },
       tableData: [{
         id:'',
         username:'loading',
         name: 'loading',
-        perms: [],
         sex: 'loading',
+        sno:'loading',
+        enterDate: '',
         college:'',
+        stuClass:'',
+        schoolSys:'',
         remark: 'loading',
       }],
-      perms: permOptions,
-      dialogFormVisible: false,
+      dialogRemarkFormVisible: false,
       pickerOptions: {
         shortcuts: [{
           text: '最近一周',
@@ -215,16 +250,16 @@ export default {
   },
   methods:{
     showDialog (index, row) {
-      this.dialogFormVisible = true
+      this.dialogRemarkFormVisible = true
       this.submitForm.id = row.id;
       this.submitForm.name = row.name;
-      this.submitForm.perms = row.perms;
       this.submitForm.remark = row.remark;
       this.submitForm.sex = row.sex;
       this.submitForm.username = row.username;
     },
     getUserRoleList(){
-      this.$axios.post("/permission/getTutorRoleListTotal.do",
+      //复用了权限管理中的接口，获取学生总数
+      this.$axios.post("/permission/getStudentListTotal.do",
           {
             name:this.searchForm.name,
             sno:this.searchForm.sno,
@@ -238,12 +273,13 @@ export default {
           },err=>{
             console.log(err);
           });
-      this.$axios.post("/permission/getTutorRoleList.do",
+      this.$axios.post("/admin/manage/getStudentList.do",
           {
-            username:this.searchForm.username,
             name:this.searchForm.name,
             sno:this.searchForm.sno,
             college:this.searchForm.college,
+            stuClass:this.searchForm.stuClass,
+            date:this.searchForm.date,
             pageNo:(this.pageNo-1)*this.pageSize,
             pageSize:this.pageSize
           })
@@ -277,10 +313,10 @@ export default {
         console.log(err)
       })
     },
-    changeStudentRole(){
-      this.dialogFormVisible = false;
+    editStudentRemark(){
+      this.dialogRemarkFormVisible = false;
       // console.log(this.submitForm);
-      this.$axios.post("/permission/changeUserRoleList.do", this.submitForm)
+      this.$axios.post("/admin/manage/editStudentRemark.do", this.submitForm)
           .then(resp=>{
             this.$router.go(0);
             console.log(resp.data)

@@ -2,7 +2,9 @@ package com.djtu.settings.service;
 
 import com.djtu.exception.UserManagerException;
 import com.djtu.settings.pojo.DicValue;
+import com.djtu.settings.pojo.Student;
 import com.djtu.settings.pojo.Tutor;
+import com.djtu.settings.pojo.vo.StudentSearchVo;
 import com.djtu.settings.pojo.vo.TutorVo;
 
 import java.util.List;
@@ -44,4 +46,14 @@ public interface UserManageService {
      * @param tutor 导员实例
      */
     void addOrUpTutorRemark(Tutor tutor) throws UserManagerException;
+
+    /**
+     * 模糊查询、分页查询 学生列表
+     * @param studentSearchVo 模糊查询信息
+     * @param pageNo 页码
+     * @param pageSize 数据量
+     * @return 学生列表
+     */
+    List<Student> getStudentList(StudentSearchVo studentSearchVo, Integer pageNo, Integer pageSize);
+
 }

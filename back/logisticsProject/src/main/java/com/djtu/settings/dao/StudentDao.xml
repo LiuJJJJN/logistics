@@ -25,6 +25,11 @@
             enter_date = #{enterDate}
         where id = #{id}
     </update>
+    <update id="editStudentRemarkById">
+        update tbl_student
+        set remark = #{remark}
+        where id = #{id}
+    </update>
     <select id="getStudentByUsername" resultMap="studentMap">
         select  id,
                 username,
@@ -124,6 +129,31 @@
         select salt
         from tbl_student
         where id = #{id}
+    </select>
+    <select id="getStudentListByPageCondition" resultType="com.djtu.settings.pojo.Student">
+        select id, name, username, sex, sno, enter_date, college, stu_class, school_sys, remark
+        from tbl_student
+        <where>
+            <if test="vo.name != null">
+                and name like '%' #{vo.name} '%'
+            </if>
+            <if test="vo.sno != null">
+                and sno like '%' #{vo.sno} '%'
+            </if>
+            <if test="vo.college != null">
+                and college like '%' #{vo.college} '%'
+            </if>
+            <if test="vo.stuClass != null">
+                and stu_class like '%' #{vo.stuClass} '%'
+            </if>
+            <if test="vo.startDate != null">
+                and enter_date &gt; #{vo.startDate}
+            </if>
+            <if test="vo.endDate != null">
+                and enter_date &lt; #{vo.endDate}
+            </if>
+        </where>
+        limit #{pageNo}, #{pageSize}
     </select>
     <insert id="setStudent">
         insert into tbl_student(

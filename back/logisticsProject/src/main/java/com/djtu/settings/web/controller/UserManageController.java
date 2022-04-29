@@ -4,9 +4,14 @@ import com.djtu.exception.DictionaryException;
 import com.djtu.exception.UserManagerException;
 import com.djtu.response.Result;
 import com.djtu.settings.pojo.DicValue;
+import com.djtu.settings.pojo.Student;
 import com.djtu.settings.pojo.Tutor;
+import com.djtu.settings.pojo.vo.StudentRoleVo;
+import com.djtu.settings.pojo.vo.StudentSearchVo;
 import com.djtu.settings.pojo.vo.TutorVo;
+import com.djtu.settings.service.StudentService;
 import com.djtu.settings.service.UserManageService;
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,7 +27,9 @@ import java.util.Map;
 public class UserManageController {
 
     @Autowired
-    UserManageService userManageService;
+    private UserManageService userManageService;
+    @Autowired
+    private StudentService studentService;
 
     /**
      * 获取导员信息
@@ -83,6 +90,48 @@ public class UserManageController {
     public Result addOrUpTutorRemark(@RequestBody Tutor tutor) throws UserManagerException{
         userManageService.addOrUpTutorRemark(tutor);
         return new Result().setCode(200).setMessage("添加/修改成功");
+    }
+
+    /**
+     * 分页、模糊查询学生列表
+     * @param map 分页、查询信息
+     * @return 学生列表
+     */
+    @RequiresRoles(value = {"导员", "管理员"}, logical = Logical.OR)
+    @RequestMapping("/admin/manage/getStudentList.do")
+    @ResponseBody
+    public Result getUserPermissionList(@RequestBody Map map) {
+        Integer pageNo = (Integer) map.get("pageNo");
+        Integer pageSize = (Integer) map.get("pageSize");
+        String name = (String) map.get("name");
+        String sno = (String) map.get("sno");
+        String college = (String) map.get("college");
+        String stuClass = (String) map.get("stuClass");
+        List<String> date = (List) map.get("date");
+        String startDate = null;
+        String endDate = null;
+        if (date != null && !date.isEmpty()) {
+            startDate = date.get(0).substring(0, 10);
+            endDate = date.get(1).substring(0, 10);
+        }
+        StudentSearchVo studentSearchVo = new StudentSearchVo(name, sno, college, stuClass, startDate, endDate);
+
+        List<Student> studentList = userManageService.getStudentList(studentSearchVo, pageNo, pageSize);
+
+        if (studentList == null) {
+            return new Result().setCode(402).setMessage("获取学生列表失败");
+        }
+        return new Result().setCode(200).setMessage("获取学生列表成功").setData(studentList);
+    }
+
+    @RequestMapping("/admin/manage/editStudentRemark.do")
+    @ResponseBody
+    public Result editStudentRemark(@RequestBody Map map) throws UserManagerException {
+        String id = (String) map.get("id");
+        String remark = (String) map.get("remark");
+        studentService.editStudentRemarkById(id, remark);
+
+        return new Result().setCode(200).setMessage("修改学生备注成功");
     }
 
 }

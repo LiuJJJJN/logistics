@@ -107,7 +107,7 @@ public class PermissionController {
      * @return 所有学生列表的总数
      */
     @RequiresRoles(value = {"导员", "管理员"}, logical = Logical.OR)
-    @RequestMapping("/getStudentRoleListTotal.do")
+    @RequestMapping("/getStudentListTotal.do")
     @ResponseBody
     public Result getStudentRoleListTotal(@RequestBody Map map) {
         String name = (String) map.get("name");
