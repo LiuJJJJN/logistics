@@ -33,10 +33,6 @@ public class UserManageServiceImpl implements UserManageService {
     @Autowired
     private DicValueDao dicValueDao;
     @Autowired
-    private DicValueDao dicValueDao;
-    @Autowired
-    private UserDao userDao;
-    @Autowired
     private UserRoleDao userRoleDao;
     private static final Integer NUM=1;
 
