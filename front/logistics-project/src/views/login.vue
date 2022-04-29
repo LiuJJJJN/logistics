@@ -15,19 +15,19 @@
       <el-form-item label="密码" prop="password" >
         <el-input @keyup.enter.native="onSubmit('form')" v-model="form.password"  placeholder="请输入密码" show-password></el-input>
       </el-form-item>
-      <el-form-item label="验证码" prop="code">
-        <el-row :span="24">
-          <el-col :span="13">
-            <el-input v-model="form.code" auto-complete="off" placeholder="请输入验证码" size=""></el-input>
-          </el-col>
-          <el-col :span="11">
-            <div class="login-code" width="100%" @click="refreshCode">
-              <!--验证码组件-->
-              <CAPTCHA :identifyCode="identifyCode" style="line-height: 10px"></CAPTCHA>
-            </div>
-          </el-col>
-        </el-row>
-      </el-form-item>
+<!--      <el-form-item label="验证码" prop="code">-->
+<!--        <el-row :span="24">-->
+<!--          <el-col :span="13">-->
+<!--            <el-input v-model="form.code" auto-complete="off" placeholder="请输入验证码" size=""></el-input>-->
+<!--          </el-col>-->
+<!--          <el-col :span="11">-->
+<!--            <div class="login-code" width="100%" @click="refreshCode">-->
+<!--              &lt;!&ndash;验证码组件&ndash;&gt;-->
+<!--              <CAPTCHA :identifyCode="identifyCode" style="line-height: 10px"></CAPTCHA>-->
+<!--            </div>-->
+<!--          </el-col>-->
+<!--        </el-row>-->
+<!--      </el-form-item>-->
       <el-form-item label="" prop="rememberMe" class="rememberMe">
         <el-checkbox v-model="form.rememberMe">七天免登录</el-checkbox>
       </el-form-item>
@@ -82,11 +82,11 @@ export default {
   },
   methods: {
     onSubmit(formName) {
-      if (this.form.code.toLowerCase() !== this.identifyCode.toLowerCase()) {
-        this.$message.error('请填写正确验证码')
-        this.refreshCode()
-        return
-      }
+      // if (this.form.code.toLowerCase() !== this.identifyCode.toLowerCase()) {
+      //   this.$message.error('请填写正确验证码')
+      //   this.refreshCode()
+      //   return
+      // }
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.$axios.post("/user/login.do", this.form)
@@ -144,18 +144,18 @@ export default {
     this.identifyCode = ''
     this.makeCode(this.identifyCodes, 4)
 
-    this.$notify({
-      title: '提示',
-      message: '项目仅实现 登录、注册、修改账户权限、修改个人信息 功能.<br/><br/>' +
-          '在管理员界面中实现了学生、导员权限修改功能, 数据字典增删改查<br/><br/>' +
-          '在导员界面中实现了学生权限修改功能<br/><br/>' +
-          '在学生、导员、管理员界面中都实现了个人信息的修改功能<br/><br/>' +
-          '管理员账号:admin123, 密码:123123<br/><br/>' +
-          '项目 gitee 地址:<br/> <a href="https://gitee.com/LiuJaNing/logistics/tree/dev/">https://gitee.com/...</a>',
-      duration: 0,
-      dangerouslyUseHTMLString: true,
-      offset: 200
-    });
+    // this.$notify({
+    //   title: '提示',
+    //   message: '项目仅实现 登录、注册、修改账户权限、修改个人信息 功能.<br/><br/>' +
+    //       '在管理员界面中实现了学生、导员权限修改功能, 数据字典增删改查<br/><br/>' +
+    //       '在导员界面中实现了学生权限修改功能<br/><br/>' +
+    //       '在学生、导员、管理员界面中都实现了个人信息的修改功能<br/><br/>' +
+    //       '管理员账号:admin123, 密码:123123<br/><br/>' +
+    //       '项目 gitee 地址:<br/> <a href="https://gitee.com/LiuJaNing/logistics/tree/dev/">https://gitee.com/...</a>',
+    //   duration: 0,
+    //   dangerouslyUseHTMLString: true,
+    //   offset: 200
+    // });
   }
 
 }
