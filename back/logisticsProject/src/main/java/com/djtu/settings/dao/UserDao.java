@@ -1,5 +1,6 @@
 package com.djtu.settings.dao;
 
+import com.djtu.settings.pojo.Student;
 import com.djtu.settings.pojo.User;
 import com.djtu.settings.pojo.vo.StudentRoleVo;
 import com.djtu.settings.pojo.vo.StudentSearchVo;
@@ -80,12 +81,12 @@ public interface UserDao {
      * @return
      */
     List<User> getIdByTutorId(List<String> data);
+
     /**
      * 根据totorId删除user表记录
      * @param data
      * @return
      */
     Integer delByTutorId(List<String> data);
-
 
 }

@@ -1,7 +1,11 @@
 package com.djtu.settings.dao;
 
 import com.djtu.settings.pojo.Student;
+import com.djtu.settings.pojo.vo.StudentSearchVo;
 import com.djtu.settings.pojo.vo.UserVo;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface StudentDao {
 
@@ -66,4 +70,22 @@ public interface StudentDao {
      * @return 盐
      */
     String getStudentSaltById(String id);
+
+    /**
+     * 根据模糊查询分页条件查询学生数据
+     * @param studentSearchVo 模糊查询
+     * @param pageNo 页码
+     * @param pageSize 数据量
+     * @return 学生列表
+     */
+    List<Student> getStudentListByPageCondition(@Param("vo") StudentSearchVo studentSearchVo,
+                                                @Param("pageNo") Integer pageNo, @Param("pageSize") Integer pageSize);
+
+    /**
+     * 根据学生id修改备注
+     * @param id id
+     * @param remark 备注
+     * @return 影响条数
+     */
+    int editStudentRemarkById(@Param("id") String id, @Param("remark") String remark);
 }

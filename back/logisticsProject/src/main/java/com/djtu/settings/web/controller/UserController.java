@@ -168,6 +168,10 @@ public class UserController {
         return new Result().setCode(200).setMessage("用户名可用");
     }
 
+    /**
+     * 获取当前登录用户个人信息
+     * @return 用户个人信息Vo
+     */
     @RequiresRoles(value = {"学生", "导员", "管理员"}, logical = Logical.OR)
     @RequestMapping("/getUserInfo.do")
     @ResponseBody
@@ -198,6 +202,11 @@ public class UserController {
         return new Result().setCode(401).setMessage("未查询到当前登录角色信息, 请重新登录");
     }
 
+    /**
+     * 修改学生的个人信息
+     * @param student 学生实例
+     * @return 是否修改成功
+     */
     @RequiresRoles("学生")
     @RequestMapping("/editStudentInfo.do")
     @ResponseBody
@@ -211,6 +220,11 @@ public class UserController {
         return new Result().setCode(402).setMessage("修改学生信息失败, 请尝试修改用户名或学号");
     }
 
+    /**
+     * 修改导员的个人信息
+     * @param tutor 导员实例
+     * @return 是否修改成功
+     */
     @RequiresRoles("导员")
     @RequestMapping("/editTutorInfo.do")
     @ResponseBody
@@ -224,6 +238,11 @@ public class UserController {
         return new Result().setCode(402).setMessage("修改导员信息失败, 请尝试修改用户名");
     }
 
+    /**
+     * 修改管理员的个人信息
+     * @param admin 管理员实例
+     * @return 是否修改成功
+     */
     @RequiresRoles("管理员")
     @RequestMapping("/editAdminInfo.do")
     @ResponseBody

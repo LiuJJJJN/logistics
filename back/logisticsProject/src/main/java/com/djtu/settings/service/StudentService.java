@@ -1,6 +1,7 @@
 package com.djtu.settings.service;
 
 import com.djtu.exception.RegisterException;
+import com.djtu.exception.UserManagerException;
 import com.djtu.settings.pojo.Student;
 
 public interface StudentService {
@@ -38,4 +39,11 @@ public interface StudentService {
      * @return 盐
      */
     String getStudentSaltById(String id);
+
+    /**
+     * 根据学生id修改备注
+     * @param id 学生id
+     * @param remark 备注
+     */
+    void editStudentRemarkById(String id, String remark) throws UserManagerException;
 }
