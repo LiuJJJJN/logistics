@@ -88,4 +88,20 @@ public interface StudentDao {
      * @return 影响条数
      */
     int editStudentRemarkById(@Param("id") String id, @Param("remark") String remark);
+
+    /**
+     * 批量删除学生
+     * @param stuList 学生id列表
+     * @return 删除条数
+     */
+    int deleteStudentByStuList(List<String> stuList);
+
+    /**
+     * 根据id修改学生密码和盐
+     * @param id 学生id
+     * @param password 加密后的密码
+     * @param salt 盐
+     * @return 影响条数
+     */
+    int editStudentPwdById(@Param("id") String id, @Param("pwd") String password, @Param("salt") String salt);
 }

@@ -6,16 +6,13 @@
       <el-input v-model="input.inputCode" placeholder="请输入code" class="inputCode"></el-input>
       <el-button type="primary" icon="el-icon-search" @click="searchBtn" class="search">搜索</el-button>
     </div>
-    <el-popconfirm
-        title="确定删除吗？">
-      <el-button
-          size="mini"
-          type="primary"
-          icon="el-icon-delete"
-          slot="reference"
-          @click="delBtn"
-          class="functionBtn"></el-button>
-    </el-popconfirm>
+    <el-button
+        size="mini"
+        type="danger"
+        icon="el-icon-delete"
+        slot="reference"
+        @click="delBtn"
+        class="functionBtn"></el-button>
     <el-button
         size="mini"
         type="primary"

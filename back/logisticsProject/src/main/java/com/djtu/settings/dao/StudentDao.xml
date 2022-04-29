@@ -30,6 +30,18 @@
         set remark = #{remark}
         where id = #{id}
     </update>
+    <update id="editStudentPwdById">
+        update tbl_student
+        set password = #{pwd}, salt = #{salt}
+        where id = #{id}
+    </update>
+    <delete id="deleteStudentByStuList">
+        delete from tbl_student
+        where id in
+        <foreach collection="list" item="stuId" open="(" separator="," close=")">
+            #{stuId}
+        </foreach>
+    </delete>
     <select id="getStudentByUsername" resultMap="studentMap">
         select  id,
                 username,

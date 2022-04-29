@@ -73,4 +73,5 @@ public interface DicValueDao {
      * @return
      */
     List<DicValue> getAllCollege();
+
 }
