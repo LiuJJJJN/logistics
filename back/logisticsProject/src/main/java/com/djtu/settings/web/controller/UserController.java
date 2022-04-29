@@ -21,7 +21,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,6 +40,8 @@ public class UserController {
     @Autowired
     private AdminService adminService;
 
+    //文件绝对路径前置目录
+    private static final String ABSOLUTE_PATH = "/opt/logisticsImg/";
 
     /**
      * 登录功能
@@ -254,6 +259,24 @@ public class UserController {
             return new Result().setCode(200).setMessage("修改管理员信息成功, 请重新登录");
         }
         return new Result().setCode(402).setMessage("修改管理员信息失败, 请尝试修改用户名");
+    }
+
+    @RequestMapping("/uploadAvatar.do")
+    @ResponseBody
+    public Result uploadAvatar(MultipartFile file) {
+        UserVo userVo = (UserVo) SecurityUtils.getSubject().getSession().getAttribute("userVo");
+        if ("学生".equals(userVo.getPrimaryRole())) {
+            studentService.setAvatarPath(userVo.getUsername(), file.getOriginalFilename());
+        }else if ("导员".equals(userVo.getPrimaryRole())) {
+            tutorService.setAvatarPath(userVo.getUsername(), file.getOriginalFilename());
+        }
+        try {
+            file.transferTo(new File(ABSOLUTE_PATH + file.getOriginalFilename()));
+        } catch (IOException e) {
+            return new Result().setCode(402).setMessage("头像上传失败");
+        }
+
+        return new Result().setCode(200).setMessage("头像上传成功");
     }
 
 }

@@ -82,7 +82,7 @@ export default {
   },
   methods: {
     onSubmit(formName) {
-      // if (this.form.code.toLowerCase() !== this.identifyCode.toLowerCase()) {
+      // if (this.form.code && this.form.code.toLowerCase() !== this.identifyCode.toLowerCase()) {
       //   this.$message.error('请填写正确验证码')
       //   this.refreshCode()
       //   return
