@@ -11,7 +11,7 @@
         title="确定删除吗？">
       <el-button
           size="mini"
-          type="primary"
+          type="danger"
           icon="el-icon-delete"
           slot="reference"
           @click="delBtn"

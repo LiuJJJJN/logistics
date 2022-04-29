@@ -89,4 +89,17 @@ public interface UserDao {
      */
     Integer delByTutorId(List<String> data);
 
+    /**
+     * 根据学生id列表获取对应的User列表
+     * @param stuList 学生id列表
+     * @return User列表
+     */
+    List<User> getUserIdListByStudentIdList(List<String> stuList);
+
+    /**
+     * 根据User id列表删除User对应字段
+     * @param userList User id列表
+     * @return 影响条数
+     */
+    int delUserByStudentId(List<User> userList);
 }

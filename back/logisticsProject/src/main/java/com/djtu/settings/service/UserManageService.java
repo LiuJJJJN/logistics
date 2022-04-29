@@ -56,4 +56,15 @@ public interface UserManageService {
      */
     List<Student> getStudentList(StudentSearchVo studentSearchVo, Integer pageNo, Integer pageSize);
 
+    /**
+     * 批量删除学生
+     * @param stuList 学生列表
+     */
+    void delStudentList(List<String> stuList) throws UserManagerException;
+
+    /**
+     * 修改学生密码
+     * @param id 学生id
+     */
+    void resetStudentPwd(String id) throws UserManagerException;
 }

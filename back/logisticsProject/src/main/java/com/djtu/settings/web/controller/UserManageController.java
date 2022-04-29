@@ -135,6 +135,12 @@ public class UserManageController {
         return new Result().setCode(200).setMessage("获取学生列表成功").setData(studentList);
     }
 
+    /**
+     * 修改学生备注
+     * @param map 学生id及新备注
+     * @return 修改成功提示
+     * @throws UserManagerException 修改失败错误提示
+     */
     @RequestMapping("/admin/manage/editStudentRemark.do")
     @ResponseBody
     public Result editStudentRemark(@RequestBody Map map) throws UserManagerException {
@@ -143,6 +149,35 @@ public class UserManageController {
         studentService.editStudentRemarkById(id, remark);
 
         return new Result().setCode(200).setMessage("修改学生备注成功");
+    }
+
+    /**
+     * 批量删除学生
+     * @param data 学生id列表
+     * @return 是否删除信息
+     * @throws UserManagerException 删除失败抛出异常提示
+     */
+    @RequiresRoles(value = {"管理员", "导员"}, logical = Logical.OR)
+    @RequestMapping("/admin/manage/delStudentL.do")
+    @ResponseBody
+    public Result delStudentList(@RequestBody List<String> data)throws UserManagerException{
+        userManageService.delStudentList(data);
+        return new Result().setCode(200).setMessage("删除成功");
+    }
+
+    /**
+     * 重置学生密码
+     * @param map 学生id
+     * @return 修改成功提示
+     * @throws UserManagerException 修改失败抛出异常提示
+     */
+    @RequiresRoles(value = {"管理员", "导员"}, logical = Logical.OR)
+    @RequestMapping("/admin/manage/resetStudentPassword.do")
+    @ResponseBody
+    public Result resetStudentPassword(@RequestBody Map map)throws UserManagerException{
+        String id = (String) map.get("id");
+        userManageService.resetStudentPwd(id);
+        return new Result().setCode(200).setMessage("修改成功");
     }
 
 }

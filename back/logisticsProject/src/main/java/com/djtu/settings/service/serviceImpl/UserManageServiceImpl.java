@@ -106,4 +106,29 @@ public class UserManageServiceImpl implements UserManageService {
         return studentDao.getStudentListByPageCondition(studentSearchVo, pageNo, pageSize);
     }
 
+    @Override
+    @Transactional(rollbackFor = UserManagerException.class)
+    public void delStudentList(List<String> stuList) throws UserManagerException {
+        int res = studentDao.deleteStudentByStuList(stuList);
+        if (res != stuList.size()) {
+            throw new UserManagerException("批量删除学生失败");
+        }
+        List<User> userList = userDao.getUserIdListByStudentIdList(stuList);
+        userRoleDao.delByUserId(userList);
+        int userRes = userDao.delUserByStudentId(userList);
+        if (userRes != stuList.size()) {
+            throw new UserManagerException("批量删除学生对应User失败");
+        }
+    }
+
+    @Override
+    public void resetStudentPwd(String id) throws UserManagerException {
+        String salt = StringUtil.rand4Str();
+        String password = StringUtil.md5("000000", salt);
+        int res = studentDao.editStudentPwdById(id, password, salt);
+        if (res != 1) {
+            throw new UserManagerException("重置学生密码失败");
+        }
+    }
+
 }

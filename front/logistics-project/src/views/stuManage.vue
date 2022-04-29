@@ -33,7 +33,6 @@
         <el-date-picker
             v-model="searchForm.date"
             type="daterange"
-            align="right"
             unlink-panels
             range-separator="至"
             start-placeholder="入学时间开始日期"
@@ -42,13 +41,28 @@
         </el-date-picker>
       </el-col>
       <el-col :span="2">
-        <el-button icon="el-icon-search" circle @click="getUserRoleList"></el-button>
+        <el-button icon="el-icon-search" circle @click="getStudentList"></el-button>
       </el-col>
     </el-row>
+
+    <el-button
+        size="mini"
+        type="danger"
+        icon="el-icon-delete"
+        slot="reference"
+        @click="delBtn"
+        class="functionBtn"></el-button>
+
     <el-table
         :data="tableData"
-        style="width: 100%">
+        style="width: 100%"
+        @selection-change="delOrResetSelection">
       <el-table-column
+          type="selection"
+          width="55">
+      </el-table-column>
+      <el-table-column
+          label="序号"
           type="index"
           width="70">
       </el-table-column>
@@ -119,7 +133,10 @@
         <template slot-scope="scope">
           <el-button
               size="mini"
-              @click="showDialog(scope.$index, scope.row)" >修改备注</el-button>
+              @click="showRemarkDialog(scope.$index, scope.row)" >修改备注</el-button>
+          <el-button
+              size="mini"
+              @click="resetPwd(scope.$index, scope.row)" >重置密码</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -246,10 +263,12 @@ export default {
       pageNo: 1, //当前页数
       pageSize: 10, //显示条数
       total: 0, //总条数
+      multipleSelection: [],
+      idArray:[]
     }
   },
   methods:{
-    showDialog (index, row) {
+    showRemarkDialog (index, row) {
       this.dialogRemarkFormVisible = true
       this.submitForm.id = row.id;
       this.submitForm.name = row.name;
@@ -257,7 +276,7 @@ export default {
       this.submitForm.sex = row.sex;
       this.submitForm.username = row.username;
     },
-    getUserRoleList(){
+    getStudentList(){
       //复用了权限管理中的接口，获取学生总数
       this.$axios.post("/permission/getStudentListTotal.do",
           {
@@ -323,10 +342,74 @@ export default {
           }, err=>{
             console.log(err)
           })
+    },
+    delBtn(){
+      if (this.idArray.length !== 0) {
+        this.$confirm('此操作将永久删除, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          //删除
+          this.$axios.post("/admin/manage/delStudentL.do",
+              this.idArray
+          ).then(resp => {
+            console.log(resp);
+            this.getStudentList();
+          }, err => {
+            console.log(err);
+          });
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
+      } else {
+        this.$message({
+          message: '请选择要删除的学生',
+          type: 'warning'
+        });
+      }
+    },
+    resetPwd(index, row){
+      console.log(row.id)
+      this.$confirm('此操作将修改学生密码为 \'000000\' 且不可逆, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        //删除
+        this.$axios.post("/admin/manage/resetStudentPassword.do", {
+          id:row.id
+        }).then(resp => {
+          this.$message({
+            message: resp.data.message,
+            type: 'success'
+          });
+        }, err => {
+          console.log(err);
+        });
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消修改'
+        });
+      });
+    },
+    delOrResetSelection(val){
+      this.multipleSelection = val;
+      for (let i = 0; i < this.multipleSelection.length; i++) {
+        this.idArray[i] = this.multipleSelection[i].id;
+      }
     }
   },
   created() {
-    this.getUserRoleList();
+    this.getStudentList();
     this.loadCollege();
   }
 }
@@ -335,5 +418,14 @@ export default {
 <style scoped>
 .my-pagination{
   margin: 20px;
+}
+
+.functionBtn {
+  display: inline-block;
+  height: 35px;
+  width: 60px;
+  margin-left: 5px;
+  margin-bottom: 13px;
+  margin-right: 10px;
 }
 </style>
