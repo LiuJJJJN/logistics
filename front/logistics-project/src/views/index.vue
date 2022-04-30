@@ -10,7 +10,7 @@
           <div class="grid-content bg-purple">
             <el-dropdown style="top: 10px; left: 20px;">
               <span class="el-dropdown-link">
-                <el-avatar :size="size" :src="circleUrl" style="top: 10px; left: 20px; float: left;">img</el-avatar>
+                <el-avatar :size="size" :src="'http://47.111.84.87/images/'+avatarPath" style="top: 10px; left: 20px; float: left;">img</el-avatar>
               </span>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item disabled>{{ role }} : {{ name }}</el-dropdown-item>
@@ -61,7 +61,7 @@ export default {
       role: this.$store.getters.getUser.primaryRole,
       name: this.$store.getters.getUser.name,
       size: "large",
-      circleUrl: "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
+      avatarPath: this.$store.getters.getUser.avatarPath,
       items: [],
       itemList: []
     }

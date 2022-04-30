@@ -62,4 +62,12 @@ public class StudentServiceImpl implements StudentService {
         }
     }
 
+    @Override
+    public void setAvatarPath(String username, String avatarPath) throws UserManagerException {
+        int res = studentDao.setStudentAvatarPathByUsername(username, avatarPath);
+        if (res != 1) {
+            throw new UserManagerException("学生头像设置失败");
+        }
+    }
+
 }

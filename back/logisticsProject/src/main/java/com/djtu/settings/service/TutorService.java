@@ -1,6 +1,7 @@
 package com.djtu.settings.service;
 
 import com.djtu.exception.RegisterException;
+import com.djtu.exception.UserManagerException;
 import com.djtu.settings.pojo.Tutor;
 import com.djtu.settings.pojo.vo.UserVo;
 
@@ -33,4 +34,11 @@ public interface TutorService {
      * @return 修改影响条数
      */
     int editTutor(Tutor tutor);
+
+    /**
+     * 为指定username的导员设置头像路径
+     * @param username 用户名
+     * @param avatarPath 头像路径
+     */
+    void setAvatarPath(String username, String avatarPath) throws UserManagerException;
 }

@@ -72,12 +72,12 @@ public class ShiroConfig {
         //3. 为自定义的 Realm 设置 CredentialsMatcher
         realm.setCredentialsMatcher(matcher);
         //4. 开启EH缓存
-        realm.setCacheManager(new EhCacheManager());
-        realm.setCachingEnabled(true);
-        realm.setAuthenticationCachingEnabled(true);
-        realm.setAuthenticationCacheName("authenticationCache");
-        realm.setAuthorizationCachingEnabled(true);
-        realm.setAuthorizationCacheName("authorizationCache");
+//        realm.setCacheManager(new EhCacheManager());
+//        realm.setCachingEnabled(true);
+//        realm.setAuthenticationCachingEnabled(true);
+//        realm.setAuthenticationCacheName("authenticationCache");
+//        realm.setAuthorizationCachingEnabled(true);
+//        realm.setAuthorizationCacheName("authorizationCache");
 
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(realm);

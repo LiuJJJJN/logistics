@@ -19,20 +19,20 @@
         <i class="el-icon-picture-outline-round"></i>
         头像
       </template>
-      <el-avatar size="large" :src="'http://47.111.84.87/images/'+userInfo.avatarPath" style="display: inline-block" v-show="!showEditBtn && userInfo.college"></el-avatar>
+      <el-avatar size="large" :src="'http://47.111.84.87/images/'+avatarPath" style="display: inline-block" v-show="!showEditBtn && userInfo.college"></el-avatar>
       <el-upload
           class="upload-demo"
           ref="upload"
           :on-preview="handlePreview"
           :on-remove="handleRemove"
           :auto-upload="false"
-          action="http://127.0.0.1:8080/logisticsProject/user/uploadAvatar.do"
+          :headers="{authToken: this.$store.getters.getSessionId}"
+          action="http://47.111.84.87:8080/logisticsProject/user/uploadAvatar.do"
           multiple
           :limit="1"
           :on-exceed="handleExceed"
           v-show="showEditBtn && userInfo.college">
         <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-        <el-button style="margin-left: 10px;" size="small" type="success" @click="submitAvatar">上传到服务器</el-button>
         <div slot="tip" class="el-upload__tip" style="display: inline-block; margin-left: 10px">只能上传jpg/png文件，且不超过500kb</div>
       </el-upload>
     </el-descriptions-item>
@@ -181,7 +181,6 @@
       </span>
     </el-descriptions-item>
   </el-descriptions>
-  {{ userInfo }}
 </div>
 </template>
 
@@ -200,6 +199,7 @@ export default {
       dialogVisible: false,
       disabled: false,
       visible: false,
+      avatarPath: this.$store.getters.getUser.avatarPath,
     }
   },
   methods:{
@@ -234,6 +234,7 @@ export default {
     },
     toSubmitChange(){
       this.visible = false;
+      this.submitAvatar();
       if (this.submitInfo.username.trim() == '' || !this.submitInfo.username){
         this.$message({
           message: '警告，用户名不能为空',
