@@ -102,4 +102,18 @@ public interface UserDao {
      * @return 影响条数
      */
     int delUserByStudentId(List<User> userList);
+
+    /**
+     * 根据userId查询对应学生id
+     * @param userId userId
+     * @return 学生Id
+     */
+    String getStudentIdByUserId(String userId);
+
+    /**
+     * 根据userId查询对应导员id
+     * @param userId userId
+     * @return 导员Id
+     */
+    String getTutorIdByUserId(String userId);
 }

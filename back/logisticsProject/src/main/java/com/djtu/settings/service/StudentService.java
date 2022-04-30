@@ -46,4 +46,12 @@ public interface StudentService {
      * @param remark 备注
      */
     void editStudentRemarkById(String id, String remark) throws UserManagerException;
+
+    /**
+     * 为指定username的学生设置头像路径
+     * @param username 用户名
+     * @param avatarPath 头像路径
+     */
+    void setAvatarPath(String username, String avatarPath) throws UserManagerException;
+
 }

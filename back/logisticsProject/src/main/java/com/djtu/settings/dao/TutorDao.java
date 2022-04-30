@@ -2,6 +2,7 @@ package com.djtu.settings.dao;
 
 import com.djtu.settings.pojo.Tutor;
 import com.djtu.settings.pojo.vo.TutorVo;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -82,4 +83,12 @@ public interface TutorDao {
      * @param tutor 导员实例
      */
     Integer addOrUpTutorRemark(Tutor tutor);
+
+    /**
+     * 为指定username的导员设置头像路径
+     * @param username 用户名
+     * @param avatarPath 头像路径
+     * @return 影响条数
+     */
+    int setTutorAvatarPathByUsername(@Param("username") String username, @Param("avatarPath") String avatarPath);
 }

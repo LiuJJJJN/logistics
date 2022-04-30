@@ -19,7 +19,22 @@
         <i class="el-icon-picture-outline-round"></i>
         头像
       </template>
-      <el-avatar size="large" src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" style="display: inline-block"></el-avatar>
+      <el-avatar size="large" :src="'http://47.111.84.87/images/'+avatarPath" style="display: inline-block" v-show="!showEditBtn && userInfo.college"></el-avatar>
+      <el-upload
+          class="upload-demo"
+          ref="upload"
+          :on-preview="handlePreview"
+          :on-remove="handleRemove"
+          :auto-upload="false"
+          :headers="{authToken: this.$store.getters.getSessionId}"
+          action="http://47.111.84.87:8080/logisticsProject/user/uploadAvatar.do"
+          multiple
+          :limit="1"
+          :on-exceed="handleExceed"
+          v-show="showEditBtn && userInfo.college">
+        <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+        <div slot="tip" class="el-upload__tip" style="display: inline-block; margin-left: 10px">只能上传jpg/png文件，且不超过500kb</div>
+      </el-upload>
     </el-descriptions-item>
     <el-descriptions-item>
       <template slot="label">
@@ -184,6 +199,7 @@ export default {
       dialogVisible: false,
       disabled: false,
       visible: false,
+      avatarPath: this.$store.getters.getUser.avatarPath,
     }
   },
   methods:{
@@ -218,6 +234,7 @@ export default {
     },
     toSubmitChange(){
       this.visible = false;
+      this.submitAvatar();
       if (this.submitInfo.username.trim() == '' || !this.submitInfo.username){
         this.$message({
           message: '警告，用户名不能为空',
@@ -276,6 +293,21 @@ export default {
           }, err=>{
             console.log(err);
           });
+    },
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+    },
+    handlePreview(file) {
+      console.log(file);
+    },
+    handleExceed(){
+      this.$message({
+        message: '最多只能上传一个头像',
+        type: 'warning'
+      });
+    },
+    submitAvatar(){
+      this.$refs.upload.submit();
     }
   },
   created() {
