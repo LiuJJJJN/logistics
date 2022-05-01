@@ -1,6 +1,7 @@
 package com.djtu.settings.web.controller;
 
 import com.djtu.exception.RegisterException;
+import com.djtu.exception.UserManagerException;
 import com.djtu.response.Result;
 import com.djtu.settings.pojo.Admin;
 import com.djtu.settings.pojo.Student;
@@ -21,7 +22,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,6 +41,9 @@ public class UserController {
     @Autowired
     private AdminService adminService;
 
+    //文件绝对路径前置目录
+    private static final String ABSOLUTE_PATH = "/opt/logisticsImg/";
+//    private static final String ABSOLUTE_PATH = "D://";
 
     /**
      * 登录功能
@@ -168,6 +175,10 @@ public class UserController {
         return new Result().setCode(200).setMessage("用户名可用");
     }
 
+    /**
+     * 获取当前登录用户个人信息
+     * @return 用户个人信息Vo
+     */
     @RequiresRoles(value = {"学生", "导员", "管理员"}, logical = Logical.OR)
     @RequestMapping("/getUserInfo.do")
     @ResponseBody
@@ -198,6 +209,11 @@ public class UserController {
         return new Result().setCode(401).setMessage("未查询到当前登录角色信息, 请重新登录");
     }
 
+    /**
+     * 修改学生的个人信息
+     * @param student 学生实例
+     * @return 是否修改成功
+     */
     @RequiresRoles("学生")
     @RequestMapping("/editStudentInfo.do")
     @ResponseBody
@@ -211,6 +227,11 @@ public class UserController {
         return new Result().setCode(402).setMessage("修改学生信息失败, 请尝试修改用户名或学号");
     }
 
+    /**
+     * 修改导员的个人信息
+     * @param tutor 导员实例
+     * @return 是否修改成功
+     */
     @RequiresRoles("导员")
     @RequestMapping("/editTutorInfo.do")
     @ResponseBody
@@ -224,6 +245,11 @@ public class UserController {
         return new Result().setCode(402).setMessage("修改导员信息失败, 请尝试修改用户名");
     }
 
+    /**
+     * 修改管理员的个人信息
+     * @param admin 管理员实例
+     * @return 是否修改成功
+     */
     @RequiresRoles("管理员")
     @RequestMapping("/editAdminInfo.do")
     @ResponseBody
@@ -235,6 +261,40 @@ public class UserController {
             return new Result().setCode(200).setMessage("修改管理员信息成功, 请重新登录");
         }
         return new Result().setCode(402).setMessage("修改管理员信息失败, 请尝试修改用户名");
+    }
+
+    /**
+     * 头像上传接口
+     * @param file 头像文件
+     * @return 是否上传成功
+     * @throws UserManagerException 数据库头像路径更新错误
+     */
+    @RequestMapping("/uploadAvatar.do")
+    @ResponseBody
+    public Result uploadAvatar(MultipartFile file) throws UserManagerException {
+        UserVo userVo = (UserVo) SecurityUtils.getSubject().getSession().getAttribute("userVo");
+        String userId = userVo.getUserId();
+        String avatarPath = null;
+        if ("学生".equals(userVo.getPrimaryRole())) {
+            String studentId = userService.getStudentIdByUserId(userId);
+            avatarPath = '/'+studentId+'/'+file.getOriginalFilename();
+            studentService.setAvatarPath(userVo.getUsername(), avatarPath);
+            File diskPath = new File(ABSOLUTE_PATH+studentId);
+            diskPath.mkdirs();
+        }else if ("导员".equals(userVo.getPrimaryRole())) {
+            String tutorId = userService.getTutorIdByUserId(userId);
+            avatarPath = '/'+tutorId+'/'+file.getOriginalFilename();
+            tutorService.setAvatarPath(userVo.getUsername(), avatarPath);
+            File diskPath = new File(ABSOLUTE_PATH+tutorId);
+            diskPath.mkdirs();
+        }
+        try {
+            file.transferTo(new File(ABSOLUTE_PATH + avatarPath));
+        } catch (IOException e) {
+            return new Result().setCode(402).setMessage("头像上传失败");
+        }
+
+        return new Result().setCode(200).setMessage("头像上传成功");
     }
 
 }

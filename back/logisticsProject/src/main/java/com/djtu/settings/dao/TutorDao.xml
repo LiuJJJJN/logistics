@@ -147,6 +147,11 @@
             password=#{password}
             where id=#{id}
     </update>
+    <update id="setTutorAvatarPathByUsername">
+        update tbl_tutor
+        set avatar_path = #{avatarPath}
+        where username = #{username}
+    </update>
 
     <delete id="delTutorList" parameterType="java.util.List">
         delete from tbl_tutor

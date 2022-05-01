@@ -6,16 +6,13 @@
       <el-input v-model="input.inputCode" placeholder="请输入code" class="inputCode"></el-input>
       <el-button type="primary" icon="el-icon-search" @click="searchBtn" class="search">搜索</el-button>
     </div>
-    <el-popconfirm
-        title="确定删除吗？">
-      <el-button
-          size="mini"
-          type="primary"
-          icon="el-icon-delete"
-          slot="reference"
-          @click="delBtn"
-          class="functionBtn"></el-button>
-    </el-popconfirm>
+    <el-button
+        size="mini"
+        type="danger"
+        icon="el-icon-delete"
+        slot="reference"
+        @click="delBtn"
+        class="functionBtn"></el-button>
     <el-button
         size="mini"
         type="primary"
@@ -140,17 +137,16 @@
         <el-form-item label="orderNo" :label-width="formLabelWidth">
           <el-input v-model="add.orderNo" autocomplete="off" class="aaa"></el-input>
         </el-form-item>
-        <!--        <el-form-item label="描述" :label-width="formLabelWidth">
-                  <el-input v-model="add.description" autocomplete="off" class="aaa"></el-input>
-                </el-form-item>-->
-        <el-select v-model="selectValue" placeholder="请选择type_code">
-          <el-option
-              v-for="item in options"
-              :key="item"
-              :label="item"
-              :value="item">
-          </el-option>
-        </el-select>
+        <el-form-item label="type_code" :label-width="formLabelWidth">
+          <el-select v-model="selectValue" placeholder="请选择type_code">
+            <el-option
+                v-for="item in options"
+                :key="item"
+                :label="item"
+                :value="item">
+            </el-option>
+          </el-select>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormAddDicValue = false">取 消</el-button>

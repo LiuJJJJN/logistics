@@ -1,7 +1,11 @@
 package com.djtu.settings.dao;
 
 import com.djtu.settings.pojo.Student;
+import com.djtu.settings.pojo.vo.StudentSearchVo;
 import com.djtu.settings.pojo.vo.UserVo;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface StudentDao {
 
@@ -66,4 +70,47 @@ public interface StudentDao {
      * @return 盐
      */
     String getStudentSaltById(String id);
+
+    /**
+     * 根据模糊查询分页条件查询学生数据
+     * @param studentSearchVo 模糊查询
+     * @param pageNo 页码
+     * @param pageSize 数据量
+     * @return 学生列表
+     */
+    List<Student> getStudentListByPageCondition(@Param("vo") StudentSearchVo studentSearchVo,
+                                                @Param("pageNo") Integer pageNo, @Param("pageSize") Integer pageSize);
+
+    /**
+     * 根据学生id修改备注
+     * @param id id
+     * @param remark 备注
+     * @return 影响条数
+     */
+    int editStudentRemarkById(@Param("id") String id, @Param("remark") String remark);
+
+    /**
+     * 批量删除学生
+     * @param stuList 学生id列表
+     * @return 删除条数
+     */
+    int deleteStudentByStuList(List<String> stuList);
+
+    /**
+     * 根据id修改学生密码和盐
+     * @param id 学生id
+     * @param password 加密后的密码
+     * @param salt 盐
+     * @return 影响条数
+     */
+    int editStudentPwdById(@Param("id") String id, @Param("pwd") String password, @Param("salt") String salt);
+
+    /**
+     * 为指定username的学生设置头像路径
+     * @param username 用户名
+     * @param avatarPath 头像路径
+     * @return 影响条数
+     */
+    int setStudentAvatarPathByUsername(@Param("username") String username, @Param("avatarPath") String avatarPath);
+
 }

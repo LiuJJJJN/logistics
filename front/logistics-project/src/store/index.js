@@ -8,7 +8,8 @@ export default new Vuex.Store({
     token:localStorage.getItem("token"), //设置 token 值
     userInfo:JSON.parse(localStorage.getItem("userInfo")), //设置 userInfo 值
     rememberMe:localStorage.getItem("rememberMe"), //设置 rememberMe 值
-    timeStamp:localStorage.getItem("timeStamp") //设置 timestamp 值
+    timeStamp:localStorage.getItem("timeStamp"), //设置 timestamp 值
+    sessionId:localStorage.getItem("sessionId") //设置 sessionId 值
   },
   getters: {
     getUser: state => { //获取 userInfo
@@ -25,6 +26,9 @@ export default new Vuex.Store({
     },
     getTimeStamp: state => { //获取 timeStamp
       return state.timeStamp;
+    },
+    getSessionId: state => { //获取 sessionId
+      return state.sessionId;
     }
   },
   mutations: {
@@ -44,15 +48,21 @@ export default new Vuex.Store({
       state.timeStamp = timeStamp;
       localStorage.setItem("timeStamp", timeStamp);
     },
+    SET_SESSION_ID: (state, sessionId)=>{ //设置 sessionId
+      state.sessionId = sessionId;
+      localStorage.setItem("sessionId", sessionId);
+    },
     REMOVE_INFO:(state)=>{ //删除所有数据
       state.token = '';
       state.userInfo = {};
       state.rememberMe = null;
       state.timeStamp = null;
+      state.sessionId = null;
       localStorage.setItem("token", '');
       localStorage.setItem("userInfo", JSON.stringify({}));
       localStorage.setItem("rememberMe", null);
       localStorage.setItem("timeStamp", null);
+      localStorage.setItem("sessionId", null);
     }
   },
   actions: {

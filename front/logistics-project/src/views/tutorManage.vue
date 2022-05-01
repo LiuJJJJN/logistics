@@ -15,7 +15,7 @@
     </div>
     <el-button
         size="mini"
-        type="primary"
+        type="danger"
         icon="el-icon-delete"
         slot="reference"
         @click="delBtn"
@@ -95,7 +95,7 @@
         <template slot-scope="scope">
           <el-button
               size="mini"
-              @click="addOrUpdateBtn(scope.$index,scope.row)">添加/修改备注
+              @click="addOrUpdateBtn(scope.$index,scope.row)">修改备注
           </el-button>
         </template>
       </el-table-column>
@@ -130,10 +130,18 @@
     <!--  添加/修改模态窗口-->
     <!--    <el-button type="text" @click="dialogFormVisible = true">打开嵌套表单的 Dialog</el-button>-->
 
-    <el-dialog title="删除/修改" :visible.sync="dialogFormVisible">
+    <el-dialog title="修改备注" :visible.sync="dialogFormVisible">
       <el-form :model="form">
         <el-form-item label="备注：" :label-width="formLabelWidth">
-          <el-input v-model="form.remark" autocomplete="off" class="addAndUpCss"></el-input>
+          <el-input
+              autocomplete="off"
+              type="textarea"
+              placeholder="请输入内容"
+              v-model="form.remark"
+              maxlength="255"
+              show-word-limit
+              style="width: 500px">
+          </el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -334,7 +342,6 @@ export default {
     },
     //删除
     delBtn() {
-
       if (this.idArray.length != 0) {
         this.$confirm('此操作将永久删除, 是否继续?', '提示', {
           confirmButtonText: '确定',

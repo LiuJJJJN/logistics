@@ -2,11 +2,14 @@ package com.djtu.settings.service.serviceImpl;
 
 import com.djtu.exception.UserManagerException;
 import com.djtu.settings.dao.DicValueDao;
+import com.djtu.settings.dao.StudentDao;
 import com.djtu.settings.dao.TutorDao;
 import com.djtu.settings.dao.UserDao;
 import com.djtu.settings.dao.UserRoleDao;
 import com.djtu.settings.pojo.DicValue;
+import com.djtu.settings.pojo.Student;
 import com.djtu.settings.pojo.Tutor;
+import com.djtu.settings.pojo.vo.StudentSearchVo;
 import com.djtu.settings.pojo.User;
 import com.djtu.settings.pojo.vo.TutorVo;
 import com.djtu.settings.service.UserManageService;
@@ -21,15 +24,19 @@ import java.util.List;
 @Service
 public class UserManageServiceImpl implements UserManageService {
 
+
+    @Autowired
+    private StudentDao studentDao;
+    @Autowired
+    private UserDao userDao;
     @Autowired
     private TutorDao tutorDao;
     @Autowired
     private DicValueDao dicValueDao;
     @Autowired
-    private UserDao userDao;
-    @Autowired
     private UserRoleDao userRoleDao;
     private static final Integer NUM=1;
+
     @Override
     public List<Tutor> getTutorList(TutorVo tutorVo) {
         List<Tutor> list=tutorDao.getTutorList(tutorVo);
@@ -94,4 +101,35 @@ public class UserManageServiceImpl implements UserManageService {
             throw new UserManagerException("添加备注成功");
         }
     }
+
+    @Override
+    public List<Student> getStudentList(StudentSearchVo studentSearchVo, Integer pageNo, Integer pageSize) {
+        return studentDao.getStudentListByPageCondition(studentSearchVo, pageNo, pageSize);
+    }
+
+    @Override
+    @Transactional(rollbackFor = UserManagerException.class)
+    public void delStudentList(List<String> stuList) throws UserManagerException {
+        int res = studentDao.deleteStudentByStuList(stuList);
+        if (res != stuList.size()) {
+            throw new UserManagerException("批量删除学生失败");
+        }
+        List<User> userList = userDao.getUserIdListByStudentIdList(stuList);
+        userRoleDao.delByUserId(userList);
+        int userRes = userDao.delUserByStudentId(userList);
+        if (userRes != stuList.size()) {
+            throw new UserManagerException("批量删除学生对应User失败");
+        }
+    }
+
+    @Override
+    public void resetStudentPwd(String id) throws UserManagerException {
+        String salt = StringUtil.rand4Str();
+        String password = StringUtil.md5("000000", salt);
+        int res = studentDao.editStudentPwdById(id, password, salt);
+        if (res != 1) {
+            throw new UserManagerException("重置学生密码失败");
+        }
+    }
+
 }

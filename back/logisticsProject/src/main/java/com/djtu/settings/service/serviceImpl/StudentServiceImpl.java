@@ -1,6 +1,7 @@
 package com.djtu.settings.service.serviceImpl;
 
 import com.djtu.exception.RegisterException;
+import com.djtu.exception.UserManagerException;
 import com.djtu.settings.dao.StudentDao;
 import com.djtu.settings.pojo.Student;
 import com.djtu.settings.service.StudentService;
@@ -51,6 +52,22 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public String getStudentSaltById(String id) {
         return studentDao.getStudentSaltById(id);
+    }
+
+    @Override
+    public void editStudentRemarkById(String id, String remark) throws UserManagerException {
+        int res = studentDao.editStudentRemarkById(id, remark);
+        if (res != 1) {
+            throw new UserManagerException("学生备注修改失败");
+        }
+    }
+
+    @Override
+    public void setAvatarPath(String username, String avatarPath) throws UserManagerException {
+        int res = studentDao.setStudentAvatarPathByUsername(username, avatarPath);
+        if (res != 1) {
+            throw new UserManagerException("学生头像设置失败");
+        }
     }
 
 }

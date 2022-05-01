@@ -147,6 +147,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public String getStudentIdByUserId(String userId) {
+        return userDao.getStudentIdByUserId(userId);
+    }
+
+    @Override
+    public String getTutorIdByUserId(String userId) {
+        return userDao.getTutorIdByUserId(userId);
+    }
+
+    @Override
     public UserVo getUserVoByTutorUsername(String username) {
         Tutor tutor = tutorDao.getTutorByUsername(username);
         if (tutor == null) {

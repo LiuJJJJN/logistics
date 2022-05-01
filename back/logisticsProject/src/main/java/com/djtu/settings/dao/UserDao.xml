@@ -180,13 +180,40 @@
             #{item}
         </foreach>
     </select>
-
+    <select id="getUserIdListByStudentIdList" resultType="com.djtu.settings.pojo.User">
+        select id,
+               student_id,
+               tutor_id,
+               admin_id
+        from tbl_user
+        where student_id in
+        <foreach collection="list" item="stuId" open="(" separator="," close=")" >
+            #{stuId}
+        </foreach>
+    </select>
+    <select id="getStudentIdByUserId" resultType="java.lang.String">
+        select student_id
+        from tbl_user
+        where id = #{userId}
+    </select>
+    <select id="getTutorIdByUserId" resultType="java.lang.String">
+        select tutor_id
+        from tbl_user
+        where id = #{userId}
+    </select>
     <delete id="delByTutorId">
         delete from tbl_user
         where
         tutor_id in
         <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
             #{item}
+        </foreach>
+    </delete>
+    <delete id="delUserByStudentId">
+        delete from tbl_user
+        where id in
+        <foreach collection="list" item="user" open="(" separator="," close=")">
+            #{user.id}
         </foreach>
     </delete>
 </mapper>

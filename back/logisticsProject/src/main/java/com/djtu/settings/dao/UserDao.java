@@ -1,5 +1,6 @@
 package com.djtu.settings.dao;
 
+import com.djtu.settings.pojo.Student;
 import com.djtu.settings.pojo.User;
 import com.djtu.settings.pojo.vo.StudentRoleVo;
 import com.djtu.settings.pojo.vo.StudentSearchVo;
@@ -80,6 +81,7 @@ public interface UserDao {
      * @return
      */
     List<User> getIdByTutorId(List<String> data);
+
     /**
      * 根据totorId删除user表记录
      * @param data
@@ -87,5 +89,31 @@ public interface UserDao {
      */
     Integer delByTutorId(List<String> data);
 
+    /**
+     * 根据学生id列表获取对应的User列表
+     * @param stuList 学生id列表
+     * @return User列表
+     */
+    List<User> getUserIdListByStudentIdList(List<String> stuList);
 
+    /**
+     * 根据User id列表删除User对应字段
+     * @param userList User id列表
+     * @return 影响条数
+     */
+    int delUserByStudentId(List<User> userList);
+
+    /**
+     * 根据userId查询对应学生id
+     * @param userId userId
+     * @return 学生Id
+     */
+    String getStudentIdByUserId(String userId);
+
+    /**
+     * 根据userId查询对应导员id
+     * @param userId userId
+     * @return 导员Id
+     */
+    String getTutorIdByUserId(String userId);
 }
