@@ -19,6 +19,7 @@ import dicValue from "@/views/dicValue";
 import userInfo from "@/views/userInfo";
 import stuManage from "@/views/stuManage";
 import tutorManage from "@/views/tutorManage";
+import userMyFeedback from "@/views/userMyFeedback";
 
 Vue.use(VueRouter)
 
@@ -66,9 +67,14 @@ const routes = [
         component: userInfo
       },
       {
-        path:"/user/feedback",
+        path:"/user/userFeedback",
         name:"userFeedback",
         component: userFeedback
+      },
+      {
+        path:"/user/userMyFeedback",
+        name:"userMyFeedback",
+        component: userMyFeedback
       },
       {
         path:"/tutor/class",

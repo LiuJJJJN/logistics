@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.djtu.settings.dao.FeedbackDao">
+
+    <cache eviction="FIFO"
+           flushInterval="60000"
+           size="512"
+           readOnly="true"/>
+
+    <insert id="studentAddFeedback">
+        insert into tbl_feedback (id,
+                                  feedback,
+                                  title_feedback,
+                                  stu_id,
+                                  time,
+                                  status)
+        values(#{id},
+               #{feedback},
+               #{titleFeedback},
+               #{stuId},
+               #{time},
+               #{status})
+    </insert>
+</mapper>
