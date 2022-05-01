@@ -22,13 +22,13 @@ import java.util.List;
 public class UserManageServiceImpl implements UserManageService {
 
     @Autowired
-    TutorDao tutorDao;
+    private TutorDao tutorDao;
     @Autowired
-    DicValueDao dicValueDao;
+    private DicValueDao dicValueDao;
     @Autowired
-    UserDao userDao;
+    private UserDao userDao;
     @Autowired
-    UserRoleDao userRoleDao;
+    private UserRoleDao userRoleDao;
     private static final Integer NUM=1;
     @Override
     public List<Tutor> getTutorList(TutorVo tutorVo) {
@@ -91,7 +91,7 @@ public class UserManageServiceImpl implements UserManageService {
     public void addOrUpTutorRemark(Tutor tutor) throws UserManagerException{
         Integer n=tutorDao.addOrUpTutorRemark(tutor);
         if(n<NUM){
-            throw new UserManagerException("修改成功");
+            throw new UserManagerException("添加备注成功");
         }
     }
 }
