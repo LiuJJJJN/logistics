@@ -24,6 +24,7 @@ import java.util.List;
 @Service
 public class UserManageServiceImpl implements UserManageService {
 
+
     @Autowired
     private StudentDao studentDao;
     @Autowired
@@ -97,7 +98,7 @@ public class UserManageServiceImpl implements UserManageService {
     public void addOrUpTutorRemark(Tutor tutor) throws UserManagerException{
         Integer n=tutorDao.addOrUpTutorRemark(tutor);
         if(n<NUM){
-            throw new UserManagerException("修改成功");
+            throw new UserManagerException("添加备注成功");
         }
     }
 

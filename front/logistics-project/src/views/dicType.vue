@@ -119,12 +119,6 @@
         <el-form-item label="描述" :label-width="formLabelWidth">
           <el-input v-model="form.description" autocomplete="off" class="aaa"></el-input>
         </el-form-item>
-<!--        <el-form-item label="活动区域" :label-width="formLabelWidth">
-          <el-select v-model="form.region" placeholder="请选择活动区域">
-            <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option>
-          </el-select>
-        </el-form-item>-->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -145,12 +139,6 @@
         <el-form-item label="描述" :label-width="formLabelWidth">
           <el-input v-model="add.description" autocomplete="off" class="aaa"></el-input>
         </el-form-item>
-        <!--        <el-form-item label="活动区域" :label-width="formLabelWidth">
-                  <el-select v-model="form.region" placeholder="请选择活动区域">
-                    <el-option label="区域一" value="shanghai"></el-option>
-                    <el-option label="区域二" value="beijing"></el-option>
-                  </el-select>
-                </el-form-item>-->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormAddDicValue = false">取 消</el-button>
@@ -375,25 +363,34 @@ export default {
     selection(val){
       this.multipleSelection = val;
       console.log(val);
-      /*alert(val[0].code+","+val[0].name+","+val[0].description+","+val[0].id);*/
     },
     delBtn(){
       for(let i=0;i<this.multipleSelection.length;i++){
         this.idArray[i]=this.multipleSelection[i].id;
       }
 
-      this.$axios.post("/admin/delDicTL.do",
-          this.idArray
-          )
-          .then(resp=>{
-            console.log(resp.data);
-            console.log(resp.data);
-            this.tableData=resp.data.data;
-            this.getDicTypeList();
-          },err=>{
-            console.log(err);
-          });
+      if (this.idArray.length != 0) {
+        this.$axios.post("/admin/delDicTL.do",
+            this.idArray
+        )
+            .then(resp=>{
+              console.log(resp.data);
+              console.log(resp.data);
+              this.tableData=resp.data.data;
+              this.getDicTypeList();
+            },err=>{
+              console.log(err);
+            });
+      }else{
+        this.$message({
+          message: '请选择要删除的数据字典类型',
+          type: 'warning'
+        });
+      }
     },
+
+
+
   },
   created() {
     this.getDicTypeList();

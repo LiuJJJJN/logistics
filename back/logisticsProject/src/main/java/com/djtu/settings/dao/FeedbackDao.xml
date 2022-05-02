@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.djtu.settings.dao.FeedbackDao">
+
+    <cache eviction="FIFO"
+           flushInterval="60000"
+           size="512"
+           readOnly="true"/>
+
+    <insert id="studentAddFeedback">
+        insert into tbl_feedback (id,
+                                  feedback,
+                                  title_feedback,
+                                  stu_id,
+                                  time,
+                                  status,
+                                  del_flag)
+        values(#{id},
+               #{feedback},
+               #{titleFeedback},
+               #{stuId},
+               #{time},
+               #{status},
+               #{delFlag})
+    </insert>
+
+    <select id="getFeedbackByStudent" resultType="com.djtu.settings.pojo.Feedback">
+        select id,
+               title_feedback,
+               time
+        from tbl_feedback
+        where stu_id=#{stuId} and del_flag='0'
+        limit #{pageNo},#{pageSize}
+
+    </select>
+
+    <select id="getListNum" resultType="Integer">
+        select count(stu_id)
+        from tbl_feedback
+        where stu_id=#{stuId} and del_flag='0'
+    </select>
+
+    <update id="updateFeedbackById">
+        update tbl_feedback
+        set del_flag='1'
+        where id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <select id="getDetailedInfById" resultType="com.djtu.settings.pojo.Feedback">
+        select id,
+               feedback,
+               status
+        from tbl_feedback
+        where id=#{id}
+    </select>
+
+    <update id="updateDetail">
+        update tbl_feedback
+        set feedback=#{feedback}
+        where id=#{id}
+    </update>
+</mapper>

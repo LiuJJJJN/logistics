@@ -420,7 +420,7 @@ export default {
         });
       }else{
         this.$message({
-          message: '请选择要删除的数据字典类型',
+          message: '请选择要删除的数据字典值',
           type: 'warning'
         });
       }
