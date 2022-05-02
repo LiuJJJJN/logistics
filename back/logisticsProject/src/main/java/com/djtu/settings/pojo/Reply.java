@@ -7,13 +7,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Feedback {
+public class Reply {
     private String id;
-    private String feedback;
-    private String titleFeedback;
-    private String stuId;
+    private String reply;
+    private String tutorId;
+    private String feedbackId;
     private String time;
-    private String status;
-    private String delFlag;
 
 }
