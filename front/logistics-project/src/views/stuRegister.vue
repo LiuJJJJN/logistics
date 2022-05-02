@@ -159,7 +159,6 @@ export default {
         this.submitForm.username = '';//用户名设置空
         console.log(err)
       })
-
     },
     toRegister(formName) {
       this.$refs[formName].validate((valid) => {
