@@ -18,7 +18,7 @@
 <!--      <el-form-item label="验证码" prop="code">-->
 <!--        <el-row :span="24">-->
 <!--          <el-col :span="13">-->
-<!--            <el-input v-model="form.code" auto-complete="off" placeholder="请输入验证码" size=""></el-input>-->
+<!--            <el-input @keyup.enter.native="onSubmit('form')" v-model="form.code" auto-complete="off" placeholder="请输入验证码" size=""></el-input>-->
 <!--          </el-col>-->
 <!--          <el-col :span="11">-->
 <!--            <div class="login-code" width="100%" @click="refreshCode">-->

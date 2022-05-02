@@ -337,7 +337,6 @@ export default {
       // console.log(this.submitForm);
       this.$axios.post("/admin/manage/editStudentRemark.do", this.submitForm)
           .then(resp=>{
-            // this.$router.go(0);
             this.getStudentList();
             this.$message({
               type: 'success',
