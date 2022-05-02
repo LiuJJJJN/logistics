@@ -3,7 +3,7 @@
     <el-header>
       <el-row type="flex" class="row-bg" justify="space-between">
         <el-col :span="4" @click.native="toIndex" style="cursor: pointer">
-          <div class="grid-content bg-purple"><span style="font-size: 25px;font-weight: bolder">DJTU后勤管理系统</span>
+          <div class="grid-content bg-purple"><span style="font-size: 25px;font-weight: bolder">校园智慧后勤管理系统</span>
           </div>
         </el-col>
         <el-col :span="2">
@@ -170,10 +170,16 @@ a {
 <!--
 
 this.$axios.post("")
-      .then(resp=>{
-        console.log(resp);
-      }, err=>{
-        console.log(err);
-      });
+    .then(resp=>{
+      console.log(resp);
+    }, err=>{
+      console.log(err);
+    });
+
+this.$message({
+  message: resp.data.message,
+  type: 'success'
+});
+
 
 -->

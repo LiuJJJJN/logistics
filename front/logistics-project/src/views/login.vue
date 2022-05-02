@@ -62,7 +62,7 @@ export default {
         password: "",
         code: ""
       },
-      identifyCodes: '1234567890abcdefjhijklinopqrsduvwxyz',//随机串内容
+      identifyCodes: '2346789abcdefjhijknpqrduvwxyz',//随机串内容
       identifyCode: '',
       rules: {
         ident: [

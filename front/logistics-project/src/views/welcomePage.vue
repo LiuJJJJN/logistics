@@ -1,8 +1,8 @@
 <template>
   <div>
     <el-carousel :interval="4000" type="card" height="300px">
-      <el-carousel-item v-for="item in 6" :key="item">
-        <h3 class="medium">{{ item }}</h3>
+      <el-carousel-item v-for="item in fileList" :key="item">
+        <img :src="item.url" alt="" />
       </el-carousel-item>
     </el-carousel>
     <el-col :span="5" class="el-col">
@@ -19,7 +19,8 @@ export default {
   data(){
     return{
       itemPic:[],
-      itemList:[]
+      itemList:[],
+      fileList:[]
     }
   },
   methods:{
@@ -45,10 +46,23 @@ export default {
     },
     toPath:function (path){
       this.$router.replace(path);
-    }
+    },
+    loadFileList(){
+      this.$axios.post("/getFileList.do")
+          .then(resp=>{
+            this.fileList = resp.data.data;
+            // this.$message({
+            //   message: resp.data.message,
+            //   type: 'success'
+            // });
+          }, err=>{
+            console.log(err);
+          })
+    },
   },
   created() {
     this.getMenuList();
+    this.loadFileList();
   }
 }
 </script>
