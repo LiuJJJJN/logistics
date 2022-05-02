@@ -20,6 +20,7 @@ import userInfo from "@/views/userInfo";
 import stuManage from "@/views/stuManage";
 import tutorManage from "@/views/tutorManage";
 import userMyFeedback from "@/views/userMyFeedback";
+import adminCarousel from "@/views/adminCarousel";
 
 Vue.use(VueRouter)
 
@@ -120,6 +121,11 @@ const routes = [
         path:"/admin/tutorManage",
         name:"tutorManage",
         component: tutorManage
+      },
+      {
+        path:"/admin/carousel",
+        name:"adminCarousel",
+        component: adminCarousel
       },
       {
         path: "/*",

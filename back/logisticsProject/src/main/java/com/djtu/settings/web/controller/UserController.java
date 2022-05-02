@@ -271,7 +271,7 @@ public class UserController {
      */
     @RequestMapping("/uploadAvatar.do")
     @ResponseBody
-    public Result uploadAvatar(MultipartFile file) throws UserManagerException {
+    public String uploadAvatar(MultipartFile file) throws UserManagerException {
         UserVo userVo = (UserVo) SecurityUtils.getSubject().getSession().getAttribute("userVo");
         String userId = userVo.getUserId();
         String avatarPath = null;
@@ -291,10 +291,10 @@ public class UserController {
         try {
             file.transferTo(new File(ABSOLUTE_PATH + avatarPath));
         } catch (IOException e) {
-            return new Result().setCode(402).setMessage("头像上传失败");
+            return null;
         }
 
-        return new Result().setCode(200).setMessage("头像上传成功");
+        return null;
     }
 
 }
