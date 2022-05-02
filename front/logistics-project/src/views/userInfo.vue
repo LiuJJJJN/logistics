@@ -14,12 +14,12 @@
     <el-button slot="reference" style="float:right; margin-right: 10px; width: 80px; margin-top: 10px" v-show="showEditBtn" type="success" icon="el-icon-check" round></el-button>
   </el-popover>
   <el-descriptions class="margin-top" :column="2" :size="size" border>
-    <el-descriptions-item>
+    <el-descriptions-item span="2">
       <template slot="label">
         <i class="el-icon-picture-outline-round"></i>
         头像
       </template>
-      <el-avatar size="large" :src="'http://47.111.84.87/images/'+avatarPath" style="display: inline-block" v-show="!showEditBtn && userInfo.college"></el-avatar>
+      <el-avatar :src="'http://47.111.84.87/images/'+avatarPath" style="display: inline-block; width: 100px; height: 100px" v-show="!showEditBtn && userInfo.college"></el-avatar>
       <el-upload
           class="upload-demo"
           ref="upload"
@@ -31,9 +31,11 @@
           multiple
           :limit="1"
           :on-exceed="handleExceed"
-          v-show="showEditBtn && userInfo.college">
+          v-show="showEditBtn && userInfo.college"
+          :before-upload="beforeAvatarUpload"
+          style="height: 105px;">
         <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-        <div slot="tip" class="el-upload__tip" style="display: inline-block; margin-left: 10px">只能上传jpg/png文件，且不超过500kb</div>
+        <div slot="tip" class="el-upload__tip" style="display: inline-block; margin-left: 10px">只能上传jpg文件，且不超过10MB</div>
       </el-upload>
     </el-descriptions-item>
     <el-descriptions-item>
@@ -308,6 +310,18 @@ export default {
     },
     submitAvatar(){
       this.$refs.upload.submit();
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === 'image/jpeg';
+      const isLt2M = file.size / 1024 / 1024 < 10;
+
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG 格式!');
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 10MB!');
+      }
+      return isJPG && isLt2M;
     }
   },
   created() {

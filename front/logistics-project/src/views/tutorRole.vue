@@ -282,7 +282,7 @@ export default {
       // console.log(this.submitForm);
       this.$axios.post("/permission/changeUserRoleList.do", this.submitForm)
           .then(resp=>{
-            this.$router.go(0);
+            this.getUserRoleList();
             console.log(resp.data)
           }, err=>{
             console.log(err)
