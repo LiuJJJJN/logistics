@@ -67,4 +67,11 @@ public interface UserManageService {
      * @param id 学生id
      */
     void resetStudentPwd(String id) throws UserManagerException;
+
+    /**
+     * 修改学生的导员外键为导员id
+     * @param stuId 学生id
+     * @param tutorId 导员id
+     */
+    void editStudentTutorIdById(String stuId, String tutorId) throws UserManagerException;
 }

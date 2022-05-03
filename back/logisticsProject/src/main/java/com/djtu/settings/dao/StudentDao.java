@@ -113,4 +113,11 @@ public interface StudentDao {
      */
     int setStudentAvatarPathByUsername(@Param("username") String username, @Param("avatarPath") String avatarPath);
 
+    /**
+     * 根据学生id修改对应导员外键id
+     * @param stuId 学生id
+     * @param tutorId 导员id
+     * @return 影响条数
+     */
+    int editStudentTutorIdById(@Param("stuId") String stuId, @Param("tutorId") String tutorId);
 }

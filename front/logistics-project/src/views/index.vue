@@ -10,7 +10,7 @@
           <div class="grid-content bg-purple">
             <el-dropdown style="top: 10px; left: 20px;">
               <span class="el-dropdown-link">
-                <el-avatar :size="size" :src="'http://47.111.84.87/images/'+avatarPath" style="top: 10px; left: 20px; float: left;">img</el-avatar>
+                <el-avatar :size="size" :src="'http://47.111.84.87/images/'+avatarPath" style="top: 10px; left: 20px; float: left;">暂无</el-avatar>
               </span>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item disabled>{{ role }} : {{ name }}</el-dropdown-item>
@@ -23,7 +23,6 @@
       </el-row>
     </el-header>
     <el-container>
-
       <el-aside width="200px">
         <el-menu :default-openeds="items" :default-active="$route.path"> <!--哪个功能不折叠-->
           <div v-for="(item, index) in itemList" :key="index">

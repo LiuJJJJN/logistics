@@ -9,8 +9,11 @@ import com.djtu.settings.pojo.Tutor;
 import com.djtu.settings.pojo.vo.StudentRoleVo;
 import com.djtu.settings.pojo.vo.StudentSearchVo;
 import com.djtu.settings.pojo.vo.TutorVo;
+import com.djtu.settings.pojo.vo.UserVo;
 import com.djtu.settings.service.StudentService;
 import com.djtu.settings.service.UserManageService;
+import com.djtu.settings.service.UserService;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +33,8 @@ public class UserManageController {
     private UserManageService userManageService;
     @Autowired
     private StudentService studentService;
+    @Autowired
+    private UserService userService;
 
     /**
      * 获取导员信息
@@ -178,6 +183,22 @@ public class UserManageController {
         String id = (String) map.get("id");
         userManageService.resetStudentPwd(id);
         return new Result().setCode(200).setMessage("修改成功");
+    }
+
+    /**
+     * 导员认领学生: 修改学生的导员外键
+     * @param map 导员id 学生id
+     * @return 是否认领成功
+     */
+    @RequiresRoles("导员")
+    @RequestMapping("/tutor/claimStu.do")
+    @ResponseBody
+    public Result claimStu(@RequestBody Map map) throws UserManagerException {
+        String stuId = (String) map.get("stuId");
+        String userId = ((UserVo)SecurityUtils.getSubject().getSession().getAttribute("userVo")).getUserId();
+        String tutorId = userService.getTutorIdByUserId(userId);
+        userManageService.editStudentTutorIdById(stuId, tutorId);
+        return new Result().setCode(200).setMessage("认领学生成功");
     }
 
 }

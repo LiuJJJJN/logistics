@@ -43,7 +43,6 @@ public class UserController {
 
     //文件绝对路径前置目录
     private static final String ABSOLUTE_PATH = "/opt/logisticsImg/";
-//    private static final String ABSOLUTE_PATH = "D://";
 
     /**
      * 登录功能
