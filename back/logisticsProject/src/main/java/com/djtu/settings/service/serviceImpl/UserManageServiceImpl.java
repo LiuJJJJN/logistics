@@ -132,4 +132,12 @@ public class UserManageServiceImpl implements UserManageService {
         }
     }
 
+    @Override
+    public void editStudentTutorIdById(String stuId, String tutorId) throws UserManagerException {
+        int res = studentDao.editStudentTutorIdById(stuId, tutorId);
+        if (res != 1) {
+            throw new UserManagerException("修改学生表导员外键失败");
+        }
+    }
+
 }

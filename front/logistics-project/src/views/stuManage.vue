@@ -64,11 +64,11 @@
       <el-table-column
           label="序号"
           type="index"
-          width="70">
+          width="50">
       </el-table-column>
       <el-table-column
           label="用户名"
-          width="100">
+          width="120">
         <template slot-scope="scope">
           <span>{{ scope.row.username }}</span>
         </template>
@@ -103,7 +103,7 @@
       </el-table-column>
       <el-table-column
           label="学院"
-          width="130">
+          width="120">
         <template slot-scope="scope">
           <span>{{ scope.row.college }}</span>
         </template>
@@ -137,6 +137,11 @@
           <el-button
               size="mini"
               @click="resetPwd(scope.$index, scope.row)" >重置密码</el-button>
+          <el-button
+              size="mini"
+              @click="claimStu(scope.$index, scope.row)"
+              v-show="isTutor"
+              :disabled="scope.row.tutor">认领学生</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -264,7 +269,8 @@ export default {
       pageSize: 10, //显示条数
       total: 0, //总条数
       multipleSelection: [],
-      idArray:[]
+      idArray:[],
+      isTutor:this.$store.getters.getUser.primaryRole == '导员'
     }
   },
   methods:{
@@ -410,6 +416,19 @@ export default {
       for (let i = 0; i < this.multipleSelection.length; i++) {
         this.idArray[i] = this.multipleSelection[i].id;
       }
+    },
+    claimStu(index, row){
+      console.log(row)
+      // this.$axios.post("/tutor/claimStu.do", {
+      //   stuId: row.id
+      // }).then(resp=>{
+      //   this.$message({
+      //     message: resp.data.message,
+      //     type: 'success'
+      //   });
+      // }, err=>{
+      //   console.log(err)
+      // })
     }
   },
   created() {

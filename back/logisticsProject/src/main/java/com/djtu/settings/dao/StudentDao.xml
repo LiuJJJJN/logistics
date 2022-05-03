@@ -9,19 +9,19 @@
            size="512"
            readOnly="true"/>
 
-    <resultMap id="studentMap" type="Student" >
+    <resultMap id="studentMap" type="Student">
         <association property="tutor" javaType="Tutor" select="getTutor" column="tutor_id"/>
-        <association property="dorm" javaType="Dorm" select="getDorm" column="dorm_id" />
+        <association property="dorm" javaType="Dorm" select="getDorm" column="dorm_id"/>
     </resultMap>
     <update id="editStudent">
         update tbl_student
-        set username = #{username},
-            password = #{password},
-            name = #{name},
-            sex = #{sex},
-            sno = #{sno},
-            college = #{college},
-            stu_class = #{stuClass},
+        set username   = #{username},
+            password   = #{password},
+            name       = #{name},
+            sex        = #{sex},
+            sno        = #{sno},
+            college    = #{college},
+            stu_class  = #{stuClass},
             enter_date = #{enterDate}
         where id = #{id}
     </update>
@@ -32,13 +32,19 @@
     </update>
     <update id="editStudentPwdById">
         update tbl_student
-        set password = #{pwd}, salt = #{salt}
+        set password = #{pwd},
+            salt     = #{salt}
         where id = #{id}
     </update>
     <update id="setStudentAvatarPathByUsername">
         update tbl_student
         set avatar_path = #{avatarPath}
         where username = #{username}
+    </update>
+    <update id="editStudentTutorIdById">
+        update tbl_student
+        set tutor_id = #{tutorId}
+        where id = #{stuId}
     </update>
     <delete id="deleteStudentByStuList">
         delete from tbl_student
@@ -48,46 +54,46 @@
         </foreach>
     </delete>
     <select id="getStudentByUsername" resultMap="studentMap">
-        select  id,
-                username,
-                password,
-                school_sys,
-                salt,
-                name,
-                sex,
-                enter_date,
-                college,
-                stu_class,
-                remark,
-                sno,
-                dorm_id,
-                tutor_id,
-                avatar_path
+        select id,
+               username,
+               password,
+               school_sys,
+               salt,
+               name,
+               sex,
+               enter_date,
+               college,
+               stu_class,
+               remark,
+               sno,
+               dorm_id,
+               tutor_id,
+               avatar_path
         from tbl_student s
         where s.username = #{username}
     </select>
     <select id="getTutor" resultType="Tutor">
-        select  id,
-                username,
-                password,
-                salt,
-                name,
-                sex,
-                college,
-                dorm_id,
-                remark,
-                avatar_path
+        select id,
+               username,
+               password,
+               salt,
+               name,
+               sex,
+               college,
+               dorm_id,
+               remark,
+               avatar_path
         from tbl_tutor
         where id = #{id}
     </select>
     <select id="getDorm" resultType="Dorm">
-        select  id,
-                door_no,
-                water,
-                power,
-                size,
-                have_wc,
-                remark
+        select id,
+               door_no,
+               water,
+               power,
+               size,
+               have_wc,
+               remark
         from tbl_dorm
         where id = #{id}
     </select>
@@ -108,10 +114,11 @@
                tutor_id,
                avatar_path
         from tbl_student
-        where sno=#{sno}
+        where sno = #{sno}
     </select>
     <select id="getStudentTotal" resultType="java.lang.Integer">
-        select count(*) from tbl_student;
+        select count(*)
+        from tbl_student;
     </select>
     <select id="getStudentById" resultType="com.djtu.settings.pojo.Student">
         select id,
@@ -130,7 +137,7 @@
                tutor_id,
                avatar_path
         from tbl_student
-        where id=#{id}
+        where id = #{id}
     </select>
     <select id="getUsernameCountByUsername" resultType="java.lang.Integer">
         select count(*)
@@ -147,8 +154,20 @@
         from tbl_student
         where id = #{id}
     </select>
-    <select id="getStudentListByPageCondition" resultType="com.djtu.settings.pojo.Student">
-        select id, name, username, sex, sno, enter_date, college, stu_class, school_sys, remark
+    <select id="getStudentListByPageCondition" resultType="com.djtu.settings.pojo.Student" resultMap="studentMap">
+        select
+            id,
+            name,
+            username,
+            sex,
+            sno,
+            enter_date,
+            college,
+            stu_class,
+            school_sys,
+            dorm_id,
+            tutor_id,
+            remark
         from tbl_student
         <where>
             <if test="vo.name != null">
@@ -173,8 +192,7 @@
         limit #{pageNo}, #{pageSize}
     </select>
     <insert id="setStudent">
-        insert into tbl_student(
-                                id,
+        insert into tbl_student(id,
                                 username,
                                 password,
                                 salt,
@@ -186,18 +204,17 @@
                                 stu_class,
                                 remark,
                                 sno)
-        values(
-               #{id},
-               #{username},
-               #{password},
-               #{salt},
-               #{name},
-               #{sex},
-               #{enterDate},
-               #{schoolSys},
-               #{college},
-               #{stuClass},
-               #{remark},
-               #{sno})
+        values (#{id},
+                #{username},
+                #{password},
+                #{salt},
+                #{name},
+                #{sex},
+                #{enterDate},
+                #{schoolSys},
+                #{college},
+                #{stuClass},
+                #{remark},
+                #{sno})
     </insert>
 </mapper>

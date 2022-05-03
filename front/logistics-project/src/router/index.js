@@ -6,7 +6,6 @@ import index from "@/views/index";
 import tutorClass from "@/views/tutorClass";
 import tutorFeedback from "@/views/tutorFeedback";
 import userFeedback from "@/views/userFeedback";
-import tutorStudent from "@/views/tutorStudent";
 import register from "@/views/register";
 import stuRegister from "@/views/stuRegister";
 import tutorRegister from "@/views/tutorRegister";
@@ -89,8 +88,8 @@ const routes = [
       },
       {
         path:"/tutor/studentManage",
-        name:"tutorStudent",
-        component: tutorStudent
+        name:"stuManage",
+        component: stuManage
       },
       {
         path:"/admin/studentRole",
