@@ -120,4 +120,32 @@ public interface StudentDao {
      * @return 影响条数
      */
     int editStudentTutorIdById(@Param("stuId") String stuId, @Param("tutorId") String tutorId);
+
+    /**
+     * 分页 模糊查询 导员所属的学生
+     * @param tutorId 导员id
+     * @param studentSearchVo 搜索内容
+     * @param pageNo 页码
+     * @param pageSize 数据量
+     * @return 学生列表
+     */
+    List<Student> getStudentListByPageConditionAndTutorId(@Param("tutorId") String tutorId,
+                                                          @Param("vo") StudentSearchVo studentSearchVo,
+                                                          @Param("pageNo") Integer pageNo,
+                                                          @Param("pageSize") Integer pageSize);
+
+    /**
+     * 根据导员id获取对应的学生总数
+     * @param tutorId 导员id
+     * @param studentSearchVo 模糊查询条件
+     * @return 学生总数
+     */
+    Integer getStudentByTutorTotal(@Param("tutorId") String tutorId, @Param("vo") StudentSearchVo studentSearchVo);
+
+    /**
+     * 设置学生的导员外键为空
+     * @param stuId 学生id
+     * @return 影响条数
+     */
+    int setStudentTutorId2Null(String stuId);
 }

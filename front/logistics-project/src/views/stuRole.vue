@@ -276,7 +276,7 @@ export default {
       this.submitForm.username = row.username;
     },
     getUserRoleList(){
-      this.$axios.post("/permission/getStudentRoleListTotal.do",
+      this.$axios.post("/permission/getStudentListTotal.do",
           {
             name:this.searchForm.name,
             sno:this.searchForm.sno,
