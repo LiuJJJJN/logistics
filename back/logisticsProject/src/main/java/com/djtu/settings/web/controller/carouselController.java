@@ -61,7 +61,6 @@ public class carouselController {
      * 获取当前所有文件列表
      * @return 当前所有文件列表
      */
-    @RequiresRoles("管理员")
     @RequestMapping("/getFileList.do")
     @ResponseBody
     public Result getFileList() {
