@@ -157,6 +157,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Integer getStudentRoleListTotal(String tutorId, StudentSearchVo studentSearchVo) {
+        return studentDao.getStudentByTutorTotal(tutorId, studentSearchVo);
+    }
+
+    @Override
     public UserVo getUserVoByTutorUsername(String username) {
         Tutor tutor = tutorDao.getTutorByUsername(username);
         if (tutor == null) {

@@ -2,12 +2,10 @@ package com.djtu.settings.web.controller;
 
 import com.djtu.response.Result;
 import com.djtu.settings.pojo.*;
-import com.djtu.settings.pojo.vo.StudentSearchVo;
-import com.djtu.settings.pojo.vo.TutorRoleVo;
-import com.djtu.settings.pojo.vo.TutorSearchVo;
+import com.djtu.settings.pojo.vo.*;
 import com.djtu.settings.service.*;
-import com.djtu.settings.pojo.vo.StudentRoleVo;
 import com.djtu.utils.StringUtil;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -124,6 +122,37 @@ public class PermissionController {
         StudentSearchVo studentSearchVo = new StudentSearchVo(name, sno, college, stuClass, startDate, endDate);
 
         Integer total = userService.getStudentRoleListTotal(studentSearchVo);
+
+        if (total == null) {
+            return new Result().setCode(402).setMessage("获取学生列表总数失败");
+        }
+        return new Result().setCode(200).setMessage("获取学生列表总数成功").setData(total);
+    }
+
+    /**
+     * 获取所有学生列表的总数
+     * @return 所有学生列表的总数
+     */
+    @RequiresRoles(value = {"导员", "管理员"}, logical = Logical.OR)
+    @RequestMapping("/getStudentListByTutorTotal.do")
+    @ResponseBody
+    public Result getStudentListByTutorTotal(@RequestBody Map map) {
+        String userId = ((UserVo) SecurityUtils.getSubject().getSession().getAttribute("userVo")).getUserId();
+        String tutorId = userService.getTutorIdByUserId(userId);
+        String name = (String) map.get("name");
+        String sno = (String) map.get("sno");
+        String college = (String) map.get("college");
+        String stuClass = (String) map.get("stuClass");
+        List<String> date = (List) map.get("date");
+        String startDate = null;
+        String endDate = null;
+        if (date != null && !date.isEmpty()) {
+            startDate = date.get(0).substring(0, 10);
+            endDate = date.get(1).substring(0, 10);
+        }
+        StudentSearchVo studentSearchVo = new StudentSearchVo(name, sno, college, stuClass, startDate, endDate);
+
+        Integer total = userService.getStudentRoleListTotal(tutorId, studentSearchVo);
 
         if (total == null) {
             return new Result().setCode(402).setMessage("获取学生列表总数失败");
