@@ -7,16 +7,22 @@
       <el-button type="primary" icon="el-icon-search" @click="searchBtn" class="search">搜索</el-button>
     </div>
     <!--  删除按钮  -->
-    <el-popconfirm
-        title="确定删除吗？">
+    <el-popover
+        placement="top"
+        width="170"
+        v-model="visible">
+      <p>已经了解删除操作的后果?</p>
+      <div style="text-align: right; margin: 0">
+        <el-button size="mini" type="text" @click="visible = false">取消</el-button>
+        <el-button type="primary" size="mini" @click="delBtn">确定</el-button>
+      </div>
       <el-button
-          size="mini"
-          type="danger"
-          icon="el-icon-delete"
-          slot="reference"
-          @click="delBtn"
-          class="functionBtn"></el-button>
-    </el-popconfirm>
+        size="mini"
+        type="danger"
+        icon="el-icon-delete"
+        slot="reference"
+        class="functionBtn"></el-button>
+    </el-popover>
     <!--  添加按钮  -->
     <el-button
         size="mini"
@@ -110,7 +116,7 @@
 
     <el-dialog title="修 改" :visible.sync="dialogFormVisible">
       <el-form :model="form">
-        <el-form-item label="代码" :label-width="formLabelWidth">
+        <el-form-item label="code" :label-width="formLabelWidth">
           <el-input v-model="form.code" autocomplete="off" class="aaa"></el-input>
         </el-form-item>
         <el-form-item label="名称" :label-width="formLabelWidth">
@@ -130,7 +136,7 @@
     <!--添加模态窗口-->
     <el-dialog title="添 加" :visible.sync="dialogFormAddDicValue">
       <el-form :model="add">
-        <el-form-item label="代码" :label-width="formLabelWidth">
+        <el-form-item label="code" :label-width="formLabelWidth">
           <el-input v-model="add.code" autocomplete="off" class="aaa"></el-input>
         </el-form-item>
         <el-form-item label="名称" :label-width="formLabelWidth">
@@ -192,7 +198,8 @@ export default {
         inputCode:'',
         inputName:'',
         inputDescription:''
-      }
+      },
+      visible:false
     }
   },
   methods:{
@@ -365,6 +372,7 @@ export default {
       console.log(val);
     },
     delBtn(){
+      this.visible = false;
       for(let i=0;i<this.multipleSelection.length;i++){
         this.idArray[i]=this.multipleSelection[i].id;
       }

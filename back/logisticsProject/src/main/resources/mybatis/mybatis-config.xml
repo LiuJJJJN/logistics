@@ -13,6 +13,7 @@
 
     <typeAliases>
         <package name="com.djtu.settings.pojo"/>
+        <package name="com.djtu.dorm.pojo"/>
     </typeAliases>
 
 </configuration>

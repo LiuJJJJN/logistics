@@ -3,16 +3,25 @@
     <div style="height: 60px; margin-left: -35px">
       <el-input v-model="input.inputValue" placeholder="请输入value" class="inputName"></el-input>
       <el-input v-model="input.inputOrderNo" placeholder="请输入orderNo" class="inputName"></el-input>
-      <el-input v-model="input.inputCode" placeholder="请输入code" class="inputCode"></el-input>
+      <el-input v-model="input.inputCode" placeholder="请输入type_code" class="inputCode"></el-input>
       <el-button type="primary" icon="el-icon-search" @click="searchBtn" class="search">搜索</el-button>
     </div>
+    <el-popover
+        placement="top"
+        width="170"
+        v-model="visible">
+      <p>已经了解删除操作的后果?</p>
+      <div style="text-align: right; margin: 0">
+        <el-button size="mini" type="text" @click="visible = false">取消</el-button>
+        <el-button type="primary" size="mini" @click="delBtn">确定</el-button>
+      </div>
     <el-button
         size="mini"
         type="danger"
         icon="el-icon-delete"
         slot="reference"
-        @click="delBtn"
         class="functionBtn"></el-button>
+    </el-popover>
     <el-button
         size="mini"
         type="primary"
@@ -110,7 +119,7 @@
         <el-form-item label="order_no" :label-width="formLabelWidth">
           <el-input v-model="form.orderNo" autocomplete="off" class="aaa"></el-input>
         </el-form-item>
-        <el-form-item label="code" :label-width="formLabelWidth">
+        <el-form-item label="type_code" :label-width="formLabelWidth">
           <el-select v-model="selectValue" placeholder="请选择code">
             <el-option
                 v-for="item in options"
@@ -134,7 +143,7 @@
         <el-form-item label="value" :label-width="formLabelWidth">
           <el-input v-model="add.value" autocomplete="off" class="aaa"></el-input>
         </el-form-item>
-        <el-form-item label="orderNo" :label-width="formLabelWidth">
+        <el-form-item label="order_no" :label-width="formLabelWidth">
           <el-input v-model="add.orderNo" autocomplete="off" class="aaa"></el-input>
         </el-form-item>
         <el-form-item label="type_code" :label-width="formLabelWidth">
@@ -203,7 +212,8 @@ export default {
       },
       //修改窗口-下拉菜单
       options: [],
-      selectValue: ''
+      selectValue: '',
+      visible:false
     }
   },
   methods: {
@@ -357,23 +367,20 @@ export default {
     addSureBtn() {
       if (this.add.value == '') {
         this.$notify({
-          title: '偏移',
-          message: 'value不能为空',
-          offset: 100
+          title: '通知',
+          message: 'value不能为空'
         });
         return false;
       } else if (this.add.orderNo == '') {
         this.$notify({
-          title: '偏移',
-          message: 'orderNo不能为空',
-          offset: 100
+          title: '通知',
+          message: 'orderNo不能为空'
         });
         return false;
       } else if (this.selectValue == '') {
         this.$notify({
-          title: '偏移',
-          message: '请选择学院',
-          offset: 100
+          title: '通知',
+          message: '请选择type_code'
         });
         return false;
       } else {
@@ -403,6 +410,7 @@ export default {
       console.log(val);
     },
     delBtn() {
+      this.visible = false;
       for (let i = 0; i < this.multipleSelection.length; i++) {
         this.idArray[i] = this.multipleSelection[i].id;
       }
