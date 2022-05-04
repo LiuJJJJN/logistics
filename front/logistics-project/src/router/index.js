@@ -5,7 +5,7 @@ import login from "@/views/login";
 import index from "@/views/index";
 import tutorClass from "@/views/tutorClass";
 import tutorFeedback from "@/views/tutorFeedback";
-import userFeedback from "@/views/userFeedback";
+import feedback from "@/views/feedback";
 import register from "@/views/register";
 import stuRegister from "@/views/stuRegister";
 import tutorRegister from "@/views/tutorRegister";
@@ -67,9 +67,9 @@ const routes = [
         component: userInfo
       },
       {
-        path:"/user/userFeedback",
-        name:"userFeedback",
-        component: userFeedback
+        path:"/user/feedback",
+        name:"feedback",
+        component: feedback
       },
       {
         path:"/tutor/class",

@@ -1,21 +1,22 @@
 <template>
   <div>
-
     <el-row :gutter="20">
-      <el-col :span="1"><div class="grid-content bg-purple">
-        <el-badge :value="100" :max="this.unNum" class="item" v-show="this.unNum==0?false:true" >
-          <el-button size="small" @click="unReply">未回复</el-button>
-        </el-badge>
-      </div></el-col>
-      <el-col :span="6"><div class="grid-content bg-purple">
-        <p>回复历史：</p>
-      </div></el-col>
+      <el-col :span="1">
+        <div class="grid-content bg-purple">
+          <el-badge :value="this.unNum" :max="10" class="item" v-show="this.unNum==0?false:true">
+            <el-button size="large" @click="unReply">未回复</el-button>
+          </el-badge>
+        </div>
+      </el-col>
+      <el-col :span="6">
+        <div class="grid-content bg-purple">
+          <h1 style="font-size: 20px; margin-left: -50px">历史回复:</h1>
+        </div>
+      </el-col>
     </el-row>
-    <br>
-    <br>
     <el-table
         :data="tableData"
-        style="width: 100%" >
+        style="width: 100%">
       <el-table-column
           label="反馈日期"
           width="240">
@@ -34,14 +35,14 @@
       </el-table-column>
       <el-table-column
           label="学生姓名"
-          width="240">
+          width="150">
         <template slot-scope="scope">
           <span style="margin-left: 10px">{{ scope.row.name }}</span>
         </template>
       </el-table-column>
       <el-table-column
           label="反馈标题"
-          width="200">
+          width="500">
         <template slot-scope="scope">
           <i class="el-icon-s-order"></i>
           <span style="margin-left: 10px">{{ scope.row.titleFeedback }}</span>
@@ -51,13 +52,14 @@
         <template slot-scope="scope">
           <el-button
               size="mini"
-              @click="historyFeedbackInf(scope.$index,scope.row)">详细内容</el-button>
+              @click="historyFeedbackInf(scope.$index,scope.row)">详细内容
+          </el-button>
           <div style="display:inline-block; padding-left: 10px"></div>
-<!--            <el-button
-                size="mini"
-                type="danger"
-                @click="handleDelete(scope.$index, scope.row)"
-                slot="reference">删 除</el-button>-->
+          <!--            <el-button
+                          size="mini"
+                          type="danger"
+                          @click="handleDelete(scope.$index, scope.row)"
+                          slot="reference">删 除</el-button>-->
         </template>
       </el-table-column>
     </el-table>
@@ -75,7 +77,8 @@
         </el-pagination>
       </div>
     </div>
-<!--抽屉窗口-->
+
+    <!--抽屉窗口-->
     <el-drawer
         title="未回复"
         :visible.sync="table"
@@ -99,41 +102,32 @@
         </el-table-column>
         <el-table-column property="address" label="">
           <template slot-scope="scope">
-          <el-button size="small" @click="feedbackInf(scope.$index,scope.row)">反馈内容</el-button>
+            <el-button size="small" @click="feedbackInf(scope.$index,scope.row)">反馈内容</el-button>
           </template>
         </el-table-column>
       </el-table>
       <!--反馈内容-->
-      <el-dialog title="反馈内容" :visible.sync="detailedInfOpen">
-            <!--学生的内容-->
-            <el-row :gutter="20">
-              <el-col :span="2.5">
-                <span class="spanCss">{{this.who}}:</span>
-                <div class="grid-content bg-purple"></div></el-col>
-              <el-col :span="6"><div class="grid-content bg-purple">
-                <el-input
-                    type="textarea"
-                    :rows="2"
-                    placeholder="请输入内容"
-                    v-model="textarea" :disabled="true" class="feedbackInfCss">
-                </el-input>
-              </div></el-col>
-            </el-row>
-            <br>
-            <!--我的答复 -->
-            <el-row :gutter="20">
-              <el-col :span="2.5"><div class="grid-content bg-purple">
-                <span class="spanCss2">我:</span>
-              </div></el-col>
-              <el-col :span="6"><div class="grid-content bg-purple">
-                <el-input
-                    type="textarea"
-                    :rows="2"
-                    placeholder="输入您的答复"
-                    v-model="textarea2" class="replyCss">
-                </el-input>
-              </div></el-col>
-            </el-row>
+      <el-dialog title="反馈内容" :visible.sync="detailedInfOpen" :append-to-body="true">
+        <el-form label-width="150px">
+          <!--学生的内容-->
+          <el-form-item :label="this.who+':'">
+            <el-input
+                type="textarea"
+                :rows="4"
+                v-model="this.textarea"
+                :disabled="true"
+                class="feedbackInfCss2"></el-input>
+          </el-form-item>
+          <!--答复 -->
+          <el-form-item label="回复:">
+            <el-input
+                type="textarea"
+                :rows="4"
+                v-model="textarea2"
+                placeholder="输入您的答复"
+                class="feedbackInfCss2"></el-input>
+          </el-form-item>
+        </el-form>
         <el-button type="primary" round class="replyButton" @click="replyButton">答 复</el-button>
       </el-dialog>
 
@@ -153,41 +147,29 @@
         </div>
       </div>
     </el-drawer>
+
     <!--历史详细内容模态窗口-->
     <el-dialog title="详细内容" :visible.sync="detailedhistoryInfOpen">
-      <!--学生的内容-->
-      <el-row :gutter="20">
-        <el-col :span="2.5">
-          <span class="spanCss">{{this.whoHistoryInf}}:</span>
-          <div class="grid-content bg-purple"></div></el-col>
-        <el-col :span="6"><div class="grid-content bg-purple">
+      <el-form label-width="150px">
+        <!--学生的内容-->
+        <el-form-item :label="this.whoHistoryInf+':'">
           <el-input
               type="textarea"
-              :rows="2"
-              placeholder="请输入内容"
-              v-model="this.textarea3" :disabled="true" class="feedbackInfCss">
-          </el-input>
-        </div></el-col>
-      </el-row>
-      <br>
-      <!--我的答复 -->
-      <el-row :gutter="20">
-        <el-col :span="2.5"><div class="grid-content bg-purple">
-          <span class="spanCss2">我:</span>
-
-        </div>
-        </el-col>
-        <el-col :span="6">
-          <div class="grid-content bg-purple">
-            <el-input
-                type="textarea"
-                :rows="2"
-                placeholder="请输入内容"
-                v-model="this.replyList[0].reply" :disabled="true" class="feedbackInfCss2">
-            </el-input>
-        </div>
-        </el-col>
-      </el-row>
+              :rows="4"
+              v-model="this.textarea3"
+              :disabled="true"
+              class="feedbackInfCss2"></el-input>
+        </el-form-item>
+        <!--我的答复 -->
+        <el-form-item label="我的回复:">
+          <el-input
+              type="textarea"
+              :rows="4"
+              v-model="this.replyList[0].reply"
+              :disabled="true"
+              class="feedbackInfCss2"></el-input>
+        </el-form-item>
+      </el-form>
     </el-dialog>
   </div>
 </template>
@@ -206,16 +188,16 @@ export default {
       historyPageNo: 1, //当前页数
       historyPageSize: 10, //显示条数
       historyTotal: 0, //总条数
-      who : '',
-      idFlag : '',
-      textarea : '',
-      textarea2 : '',
+      who: '',
+      idFlag: '',
+      textarea: '',
+      textarea2: '',
       detailedInfOpen: false,
       detailedhistoryInfOpen: false,
-      whoHistoryInf : '',
-      textarea3 : '',
-      textarea4 : '',
-      gridData : [{
+      whoHistoryInf: '',
+      textarea3: '',
+      textarea4: '',
+      gridData: [{
         date: '2016-05-02',
         name: '王小虎',
         address: '上海市'
@@ -223,8 +205,8 @@ export default {
       showUnReply: false,
       tableData: [{
         name: '',
-        id : '',
-        titleFeedback : '',
+        id: '',
+        titleFeedback: '',
         time: '',
         replyTime: '',
       }, {
@@ -240,40 +222,40 @@ export default {
       }],
       replyList: [{
         time: '',
-        reply : ''
+        reply: ''
       }],
       dialogVisible: false
     }
   },
   methods: {
     //上来就加载为回复的记录数量
-    unReplyNumShow(){
-      this.$axios.post("/tutor/getUnNum.do",{
-            id:this.$store.getters.getUser.userId ,//user表中的id
+    unReplyNumShow() {
+      this.$axios.post("/tutor/getUnNum.do", {
+            id: this.$store.getters.getUser.userId,//user表中的id
           }
       ).then(resp => {
-        this.unNum=resp.data.data.num;
+        this.unNum = resp.data.data.num;
         console.log(resp.data);
       }, err => {
         console.log(err);
       });
     },
     //未回复按钮，显示表格
-    unReply(){
+    unReply() {
       this.table = true;
       this.unReplyList();
     },
     //加载未回复的反馈
-    unReplyList(){
-      this.$axios.post("/tutor/getReplyL.do",{
-            id:this.$store.getters.getUser.userId ,//user表中的id
+    unReplyList() {
+      this.$axios.post("/tutor/getReplyL.do", {
+            id: this.$store.getters.getUser.userId,//user表中的id
             tutorId: (this.pageNo - 1) * this.pageSize,//避免后端建立vo类之间赋值给user的tutorId
             adminId: this.pageSize
           }
       ).then(resp => {
-        this.total=resp.data.data.total;
+        this.total = resp.data.data.total;
         this.gridData = resp.data.data.list;
-        this.unNum=resp.data.data.total;
+        this.unNum = resp.data.data.total;
         console.log(resp.data);
       }, err => {
         console.log(err);
@@ -289,42 +271,43 @@ export default {
       this.unReplyList();
     },
     //未反馈的详细内容
-    feedbackInf(index,row){
-      this.detailedInfOpen=true;
-      this.who=row.name;
-      this.idFlag=row.id;
-      this.$axios.post("/tutor/getFeedbackBI.do",{
-        id:row.id
-      }
+    feedbackInf(index, row) {
+      this.detailedInfOpen = true;
+      this.who = row.name;
+      this.idFlag = row.id;
+      this.$axios.post("/tutor/getFeedbackBI.do", {
+            id: row.id
+          }
       ).then(resp => {
-        this.textarea=resp.data.data.feedback;
+        this.textarea = resp.data.data.feedback;
         console.log(resp.data);
       }, err => {
         console.log(err);
       });
     },
     //答复确认按钮
-    replyButton(){
-      if(this.textarea2==''){
+    replyButton() {
+      if (this.textarea2 == '') {
         this.$message({
           message: '警告，回复内容不能为空',
           type: 'warning'
         });
-      }else{
+      } else {
         this.$confirm('是否确认回复?', '', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$axios.post("/tutor/tutorReply.do",{
-            id:this.$store.getters.getUser.userId,//user表中的id
-            tutorId:this.idFlag,//当前学生反馈的id
-            reply:this.textarea2
+          this.$axios.post("/tutor/tutorReply.do", {
+                id: this.$store.getters.getUser.userId,//user表中的id
+                tutorId: this.idFlag,//当前学生反馈的id
+                reply: this.textarea2
               }
           ).then(resp => {
-            this.detailedInfOpen=false;
-            this.textarea2='';
+            this.detailedInfOpen = false;
+            this.textarea2 = '';
             this.unReplyList();
+            this.replyHistoryList();
             console.log(resp.data);
           }, err => {
             console.log(err);
@@ -342,47 +325,47 @@ export default {
       }
     },
     //回复过的历史反馈列表
-    replyHistoryList(){
-      this.$axios.post("/tutor/getRL.do",{
-            id:this.$store.getters.getUser.userId ,//user表中的id
+    replyHistoryList() {
+      this.$axios.post("/tutor/getRL.do", {
+            id: this.$store.getters.getUser.userId,//user表中的id
             tutorId: (this.historyPageNo - 1) * this.historyPageSize,//避免后端建立vo类之间赋值给user的tutorId
             adminId: this.historyPageSize
           }
       ).then(resp => {
-        this.historyTotal=resp.data.data.total;
+        this.historyTotal = resp.data.data.total;
         this.tableData = resp.data.data.list;
         console.log(resp.data);
       }, err => {
         console.log(err);
       });
     },
-    historyHandleSizeChange(val){
+    historyHandleSizeChange(val) {
       this.historyPageSize = val;
       this.replyHistoryList();
     },
-    historyHandleCurrentChange(val){
+    historyHandleCurrentChange(val) {
       this.pageNo = val;
       this.replyHistoryList();
     },
     //详细内容
-    historyFeedbackInf(index,row){
-      this.detailedhistoryInfOpen=true;
-      this.$axios.post("/tutor/getHistoryIBI.do",{
-            id:row.id ,//feed_id
+    historyFeedbackInf(index, row) {
+      this.detailedhistoryInfOpen = true;
+      this.$axios.post("/tutor/getHistoryIBI.do", {
+            id: row.id,//feed_id
           }
       ).then(resp => {
-        this.textarea3=resp.data.data.feedback;
-        this.whoHistoryInf=row.name;
+        this.textarea3 = resp.data.data.feedback;
+        this.whoHistoryInf = row.name;
         console.log(resp.data);
       }, err => {
         console.log(err);
       });
-      this.$axios.post("/tutor/getReplyIBI.do",{
-            id:row.id ,//feed_id
+      this.$axios.post("/tutor/getReplyIBI.do", {
+            id: row.id,//feed_id
           }
       ).then(resp => {
-        this.replyList=resp.data.data;
-        this.whoHistoryInf=row.name;
+        this.replyList = resp.data.data;
+        this.whoHistoryInf = row.name;
         console.log(resp.data);
       }, err => {
         console.log(err);
@@ -401,27 +384,35 @@ export default {
   margin-top: 10px;
   margin-left: 1200px;
 }
-.feedbackInfCss{
+
+.feedbackInfCss {
   width: 400px;
 }
-.spanCss{
+
+.spanCss {
   color: #409EFF;
   margin-left: 100px;
 }
-.spanCss2{
-  color: chartreuse;
+
+.spanCss2 {
   margin-left: 100px;
 }
-.replyCss{
+
+.replyCss {
   margin-left: 30px;
   width: 400px;
 }
-.replyButton{
-  margin-top: 12px;
-  margin-left: 500px;
+
+.replyButton {
+  margin-top: 10px;
+  margin-left: 550px;
 }
 
-.feedbackInfCss2{
-  margin-left:30px;
+.feedbackInfCss2 {
+  width: 500px;
+}
+
+.my-pagination {
+  margin: 20px;
 }
 </style>

@@ -38,13 +38,13 @@
     <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
   </span>
   </el-dialog>
+
   <!--历史记录抽屉窗口-->
   <el-drawer
       title="历史记录"
       :visible.sync="table"
       direction="rtl"
       size="40%">
-
     <el-button type="danger" @click="delHistory" style="margin-left: 550px" icon="el-icon-delete" circle></el-button>
     <el-table :data="gridData" @selection-change="selection">
       <el-table-column
@@ -65,6 +65,7 @@
         <el-button :plain="true" @click="detailedInf(scope.$index,scope.row)">
         查看详细</el-button></template></el-table-column>
     </el-table>
+    <br>
     <!-- 分页 -->
     <div class="pageCss">
       <div class="block my-pagination">
@@ -81,17 +82,17 @@
       </div>
     </div>
   </el-drawer>
+
 <!--详细信息模态窗口  -->
   <el-dialog title="反馈详细" :visible.sync="detailedInfOpen" >
     <!--  进度条  -->
         <div class="stepStyle">
-          <el-steps :space="200" :active="active" finish-status="success">
+          <el-steps :space="200" :active="active" finish-status="success" align-center>
             <el-step title="上传反馈"></el-step>
-            <el-step title="等待批阅中"></el-step>
+            <el-step title="等待答复中"></el-step>
             <el-step title="已答复"></el-step>
           </el-steps>
         </div>
-
     <!-- 反馈内容 -->
     <br>
     <el-card class="box-card">
@@ -99,16 +100,15 @@
       <div  class="text item">
         <el-input
             type="textarea"
-            :rows="2"
+            :rows="4"
             placeholder="请输入内容"
             v-model="textarea2"
             :disabled="active==3?true:false">
         </el-input>
       </div>
-      <el-button type="primary" plain @click="updateFeedback()" style="float: right" v-show="active==3?false:true">修 改</el-button>
+      <el-button type="primary" plain @click="updateFeedback()" style="float: right; margin-bottom: 20px" v-show="active==3?false:true">修 改</el-button>
     </el-card>
     <br>
-
     <el-card class="box-card" v-show="active==3?true:false">
       <font> 导员的回复：</font>
       <div v-for="o in replyList" :key="o" class="text item">
@@ -352,6 +352,7 @@ export default {
 }
 .stepStyle{
   margin-left: 140px;
+  width: 460px;
 }
 .textareaInf{
   width: 500px;

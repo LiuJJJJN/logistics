@@ -109,7 +109,6 @@ public class TutorReplyServiceImpl implements TutorReplyService {
         String tutorId=userDao.getTutorIdByUserId(id);
         //在学生表中查询stu_id是tutorId的学生id记录
         List<Student> stuList=studentDao.getStudentListByTutorId(tutorId);
-        System.out.println(stuList);
         //根据stuId获取feedback，条件导员回复过以及没有被删除的
         List<FeedbackStudentVo> list=feedbackDao.getFeedbackByStuIdWhereStatusDelFlag(pageNo,pageSize,stuList);
         Integer total=feedbackDao.getReplyHistoryNum(stuList);
