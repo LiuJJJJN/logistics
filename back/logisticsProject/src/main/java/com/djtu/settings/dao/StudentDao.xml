@@ -200,4 +200,16 @@
                #{remark},
                #{sno})
     </insert>
+
+    <select id="getStudentListByTutorId" resultType="com.djtu.settings.pojo.Student">
+        select id,
+               name,
+               sex,
+               college,
+               stu_class,
+               sno,
+               avatar_path
+        from tbl_student
+        where tutor_id=#{tutorId}
+    </select>
 </mapper>
