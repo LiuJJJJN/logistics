@@ -42,6 +42,15 @@
         where stu_id=#{stuId} and del_flag='0'
     </select>
 
+    <select id="delLimit" resultType="Integer">
+        select count(status)
+        from tbl_feedback
+        where status='2' and id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
     <update id="updateFeedbackById">
         update tbl_feedback
         set del_flag='1'
@@ -64,4 +73,90 @@
         set feedback=#{feedback}
         where id=#{id}
     </update>
+
+    <select id="getFeedbackAndStuListByStuId" resultType="com.djtu.settings.pojo.vo.FeedbackStudentVo">
+        select f.id,
+               f.title_feedback,
+               f.time,
+               s.name
+        from tbl_feedback f join tbl_student s on s.id=f.stu_id
+        where f.status='2' and f.stu_id in
+                             <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+                                #{item.id}
+                             </foreach>
+        limit #{pageNo},#{pageSize}
+    </select>
+
+    <select id="getNum" resultType="Integer">
+        select count(id)
+        from tbl_feedback
+        where status='2' and stu_id in
+                                    <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+                                        #{item.id}
+                                    </foreach>
+    </select>
+
+    <select id="getFeedbackById" resultType="com.djtu.settings.pojo.Feedback">
+        select id,
+               feedback,
+               title_feedback,
+               stu_id,
+               time,
+               status,
+               del_flag
+        from tbl_feedback
+        where id=#{id}
+    </select>
+
+    <update id="setStatus">
+        update tbl_feedback
+        set status='3'
+        where id=#{id}
+    </update>
+
+    <select id="getFeedbackByStuIdWhereStatusDelFlag" resultType="com.djtu.settings.pojo.vo.FeedbackStudentVo">
+        select
+        f.id as 'id',
+        f.time as 'time',
+        r.time as 'replyTime',
+        s.name as 'name',
+        f.title_feedback as 'titleFeedback'
+        from tbl_feedback f join tbl_student s on f.stu_id=s.id join tbl_reply r on f.id=r.feedback_id
+        where f.status='3' and f.del_flag='0' and f.stu_id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item.id}
+        </foreach>
+        limit #{pageNo},#{pageSize}
+    </select>
+
+    <select id="getReplyHistoryNum" resultType="Integer">
+        select count(status)
+        from tbl_feedback
+        where status='3' and del_flag='0' and stu_id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item.id}
+        </foreach>
+    </select>
+
+    <select id="getHistoryInfById" resultType="com.djtu.settings.pojo.Feedback">
+        select id,
+               feedback,
+               title_feedback,
+               stu_id,
+               time,
+               status,
+               del_flag
+        from tbl_feedback
+        where id=#{id}
+    </select>
+
+    <select id="getReplyInfById" resultType="com.djtu.settings.pojo.Reply">
+        select id,
+               reply,
+               tutor_id,
+               feedback_id,
+               time
+        from tbl_reply
+        where feedback_id=#{id}
+    </select>
 </mapper>

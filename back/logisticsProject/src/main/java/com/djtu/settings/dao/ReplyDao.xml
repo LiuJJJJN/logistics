@@ -19,4 +19,17 @@
         where feedback_id=#{feedbackId}
     </select>
 
+    <insert id="setReply">
+        insert into tbl_reply(id,
+                              reply,
+                              tutor_id,
+                              feedback_id,
+                              time)
+        values(#{id},
+               #{reply},
+               #{tutorId},
+               #{feedbackId},
+               #{time})
+
+    </insert>
 </mapper>

@@ -28,6 +28,7 @@ public class UserFeedbackServiceImpl implements UserFeedbackService {
     @Autowired
     ReplyDao replyDao;
     private static final Integer SUCCESS_FLAG=1;
+    private static final Integer UN_ALLOWED=0;
 
     @Override
     @Transactional(rollbackFor ={FeedbackException.class} )
@@ -74,7 +75,13 @@ public class UserFeedbackServiceImpl implements UserFeedbackService {
     }
 
     @Override
+    @Transactional(rollbackFor = {FeedbackException.class})
     public void delStudentFeedbackList(List<String> data) throws FeedbackException{
+        //未答复的历史记录不得删除
+        Integer i=feedbackDao.delLimit(data);
+        if(i>UN_ALLOWED){
+            throw new FeedbackException("未回复的反馈不允许删除");
+        }
         Integer num=feedbackDao.updateFeedbackById(data);
         if(num<SUCCESS_FLAG){
             throw new FeedbackException("删除历史反馈记录失败");

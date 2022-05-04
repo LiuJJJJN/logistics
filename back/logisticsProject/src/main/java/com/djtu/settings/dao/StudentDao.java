@@ -1,5 +1,6 @@
 package com.djtu.settings.dao;
 
+import com.djtu.settings.pojo.Feedback;
 import com.djtu.settings.pojo.Student;
 import com.djtu.settings.pojo.vo.StudentSearchVo;
 import com.djtu.settings.pojo.vo.UserVo;
@@ -114,6 +115,11 @@ public interface StudentDao {
     int setStudentAvatarPathByUsername(@Param("username") String username, @Param("avatarPath") String avatarPath);
 
     /**
+     * 在学生表中查询stu_id是tutorId的学生记录
+     * @param tutorId 学生id
+     * @return 学生列表
+     */
+    List<Student> getStudentListByTutorId(String tutorId);
      * 根据学生id修改对应导员外键id
      * @param stuId 学生id
      * @param tutorId 导员id

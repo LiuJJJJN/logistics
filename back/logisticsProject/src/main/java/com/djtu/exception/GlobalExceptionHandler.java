@@ -4,7 +4,6 @@ import com.djtu.response.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.ExpiredCredentialsException;
-import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authz.UnauthenticatedException;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -58,6 +57,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = FeedbackException.class)
     public Result handler(FeedbackException e){
+        log.error("运行时异常----------------{}",e.getMessage());
+        return new Result().setCode(402).setMessage(e.getMessage());
+    }
+
+    @ExceptionHandler(value = ReplyException.class)
+    public Result handler(ReplyException e){
         log.error("运行时异常----------------{}",e.getMessage());
         return new Result().setCode(402).setMessage(e.getMessage());
     }

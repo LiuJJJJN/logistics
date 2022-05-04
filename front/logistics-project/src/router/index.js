@@ -18,7 +18,6 @@ import dicValue from "@/views/dicValue";
 import userInfo from "@/views/userInfo";
 import stuManage from "@/views/stuManage";
 import tutorManage from "@/views/tutorManage";
-import userMyFeedback from "@/views/userMyFeedback";
 import adminCarousel from "@/views/adminCarousel";
 import tutorMyStudent from "@/views/tutorMyStudent";
 
@@ -71,11 +70,6 @@ const routes = [
         path:"/user/userFeedback",
         name:"userFeedback",
         component: userFeedback
-      },
-      {
-        path:"/user/userMyFeedback",
-        name:"userMyFeedback",
-        component: userMyFeedback
       },
       {
         path:"/tutor/class",
