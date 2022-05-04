@@ -32,8 +32,8 @@
                time
         from tbl_feedback
         where stu_id=#{stuId} and del_flag='0'
+        order by time desc
         limit #{pageNo},#{pageSize}
-
     </select>
 
     <select id="getListNum" resultType="Integer">
