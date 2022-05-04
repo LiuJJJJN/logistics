@@ -9,8 +9,11 @@ import com.djtu.settings.pojo.Tutor;
 import com.djtu.settings.pojo.vo.StudentRoleVo;
 import com.djtu.settings.pojo.vo.StudentSearchVo;
 import com.djtu.settings.pojo.vo.TutorVo;
+import com.djtu.settings.pojo.vo.UserVo;
 import com.djtu.settings.service.StudentService;
 import com.djtu.settings.service.UserManageService;
+import com.djtu.settings.service.UserService;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +33,8 @@ public class UserManageController {
     private UserManageService userManageService;
     @Autowired
     private StudentService studentService;
+    @Autowired
+    private UserService userService;
 
     /**
      * 获取导员信息
@@ -136,6 +141,40 @@ public class UserManageController {
     }
 
     /**
+     * 分页、模糊查询学生列表
+     * @param map 分页、查询信息
+     * @return 学生列表
+     */
+    @RequiresRoles("导员")
+    @RequestMapping("/admin/manage/getStudentListByTutor.do")
+    @ResponseBody
+    public Result getStudentListByTutor(@RequestBody Map map) {
+        String userId = ((UserVo) SecurityUtils.getSubject().getSession().getAttribute("userVo")).getUserId();
+        String tutorId = userService.getTutorIdByUserId(userId);
+        Integer pageNo = (Integer) map.get("pageNo");
+        Integer pageSize = (Integer) map.get("pageSize");
+        String name = (String) map.get("name");
+        String sno = (String) map.get("sno");
+        String college = (String) map.get("college");
+        String stuClass = (String) map.get("stuClass");
+        List<String> date = (List) map.get("date");
+        String startDate = null;
+        String endDate = null;
+        if (date != null && !date.isEmpty()) {
+            startDate = date.get(0).substring(0, 10);
+            endDate = date.get(1).substring(0, 10);
+        }
+        StudentSearchVo studentSearchVo = new StudentSearchVo(name, sno, college, stuClass, startDate, endDate);
+
+        List<Student> studentList = userManageService.getStudentList(tutorId, studentSearchVo, pageNo, pageSize);
+
+        if (studentList == null) {
+            return new Result().setCode(402).setMessage("获取学生列表失败");
+        }
+        return new Result().setCode(200).setMessage("获取学生列表成功").setData(studentList);
+    }
+
+    /**
      * 修改学生备注
      * @param map 学生id及新备注
      * @return 修改成功提示
@@ -178,6 +217,35 @@ public class UserManageController {
         String id = (String) map.get("id");
         userManageService.resetStudentPwd(id);
         return new Result().setCode(200).setMessage("修改成功");
+    }
+
+    /**
+     * 导员认领学生: 修改学生的导员外键
+     * @param map 导员id 学生id
+     * @return 是否认领成功
+     */
+    @RequiresRoles("导员")
+    @RequestMapping("/tutor/claimStu.do")
+    @ResponseBody
+    public Result claimStu(@RequestBody Map map) throws UserManagerException {
+        String stuId = (String) map.get("stuId");
+        String userId = ((UserVo)SecurityUtils.getSubject().getSession().getAttribute("userVo")).getUserId();
+        String tutorId = userService.getTutorIdByUserId(userId);
+        userManageService.editStudentTutorIdById(stuId, tutorId);
+        return new Result().setCode(200).setMessage("认领学生成功");
+    }
+
+    /**
+     * 导员抛弃学生: 修改学生的导员外键
+     * @param stuId 学生id
+     * @return 是否认领成功
+     */
+    @RequiresRoles("导员")
+    @RequestMapping("/tutor/abandonStu.do")
+    @ResponseBody
+    public Result abandonStu(String stuId) throws UserManagerException {
+        userManageService.delStudentTutorIdByStudentId(stuId);
+        return new Result().setCode(200).setMessage("抛弃学生成功");
     }
 
 }

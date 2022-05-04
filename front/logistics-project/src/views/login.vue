@@ -1,7 +1,10 @@
 <template>
   <div>
+    <div style="width: 500px; margin: 0 auto; margin-top: 200px; padding-left: 20px">
+      <h2 style="width: 217px; margin: 0 auto; margin-bottom: 30px">后勤管理系统 - 登录</h2>
+<!--      <h3 style="width: 80px; margin: 0 auto; margin-top: 50px">登录界面</h3>-->
+    </div>
     <el-form ref="form" :model="form" :rules="rules" label-width="80px" class="login-ruleForm">
-      <h1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Login</h1>
       <el-form-item label="角色" prop="ident">
         <el-radio-group v-model="form.ident" size="small" >
           <el-radio-button label="学生"></el-radio-button>
@@ -83,8 +86,9 @@ export default {
   methods: {
     onSubmit(formName) {
       // if (this.form.code && this.form.code.toLowerCase() !== this.identifyCode.toLowerCase()) {
-      //   this.$message.error('请填写正确验证码')
-      //   this.refreshCode()
+      //   this.$message.error('请填写正确验证码');
+      //   this.form.code = '';
+      //   this.refreshCode();
       //   return
       // }
       this.$refs[formName].validate((valid) => {
@@ -164,7 +168,7 @@ export default {
 <style scoped>
 
 .login-ruleForm {
-  padding-top: 200px;
+  padding-top: 20px;
   width: 300px;
   margin: 0 auto;
   text-align: center;

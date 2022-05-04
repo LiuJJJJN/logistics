@@ -9,16 +9,6 @@
            size="512"
            readOnly="true"/>
 
-    <insert id="addPermList" parameterType="com.djtu.settings.pojo.Permission">
-        insert into tbl_permission
-        values (#{id},
-                #{code},
-                #{name},
-                #{fatherId},
-                #{path},
-                #{isMenu},
-                #{roleId})
-    </insert>
     <select id="getSubPermissionListByFatherId" resultType="com.djtu.settings.pojo.Permission">
         select id,
                code,
@@ -29,6 +19,7 @@
                role_id
         from tbl_permission
         where father_id = #{fatherId}
+        order by order_no
     </select>
     <select id="getFatherPermissionListByRoleId" resultType="com.djtu.settings.pojo.Permission">
         select  id,
@@ -39,5 +30,6 @@
                 is_menu,
                 role_id
         from tbl_permission where father_id = 0 and role_id = #{id}
+        order by order_no
     </select>
 </mapper>

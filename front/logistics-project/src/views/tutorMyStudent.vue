@@ -68,14 +68,14 @@
       </el-table-column>
       <el-table-column
           label="用户名"
-          width="140">
+          width="120">
         <template slot-scope="scope">
           <span>{{ scope.row.username }}</span>
         </template>
       </el-table-column>
       <el-table-column
           label="姓名"
-          width="130">
+          width="100">
         <template slot-scope="scope">
           <span>{{ scope.row.name }}</span>
         </template>
@@ -124,7 +124,7 @@
       </el-table-column>
       <el-table-column
           label="备注"
-          width="220">
+          width="200">
         <template slot-scope="scope">
           <span>{{ scope.row.remark }}</span>
         </template>
@@ -133,17 +133,13 @@
         <template slot-scope="scope">
           <el-button
               size="mini"
-              @click="showRemarkDialog(scope.$index, scope.row)"
-              v-show="!isTutor">修改备注</el-button>
+              @click="showRemarkDialog(scope.$index, scope.row)" >修改备注</el-button>
           <el-button
               size="mini"
-              @click="resetPwd(scope.$index, scope.row)"
-              v-show="!isTutor">重置密码</el-button>
+              @click="resetPwd(scope.$index, scope.row)" >重置密码</el-button>
           <el-button
               size="mini"
-              @click="claimStu(scope.$index, scope.row)"
-              v-show="isTutor"
-              :disabled="scope.row.tutor">认领学生</el-button>
+              @click="abandonStu(scope.$index, scope.row)" >抛弃学生</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -193,7 +189,7 @@
 
 <script>
 export default {
-  name: "stuManage",
+  name: "tutorMyStudent",
   data(){
     return{
       collegeEnum:[],
@@ -286,7 +282,7 @@ export default {
     },
     getStudentList(){
       //复用了权限管理中的接口，获取学生总数
-      this.$axios.post("/permission/getStudentListTotal.do",
+      this.$axios.post("/permission/getStudentListByTutorTotal.do",
           {
             name:this.searchForm.name,
             sno:this.searchForm.sno,
@@ -300,7 +296,7 @@ export default {
           },err=>{
             console.log(err);
           });
-      this.$axios.post("/admin/manage/getStudentList.do",
+      this.$axios.post("/admin/manage/getStudentListByTutor.do",
           {
             name:this.searchForm.name,
             sno:this.searchForm.sno,
@@ -319,12 +315,12 @@ export default {
     },
     handleSizeChange(val) {
       this.pageSize = val;
-      this.getStudentList();
+      this.getUserRoleList();
       // console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
       this.pageNo = val;
-      this.getStudentList();
+      this.getUserRoleList();
       // console.log(`当前页: ${val}`);
     },
     loadCollege:function (){
@@ -419,18 +415,20 @@ export default {
         this.idArray[i] = this.multipleSelection[i].id;
       }
     },
-    claimStu(index, row){
-      this.$axios.post("/tutor/claimStu.do", {
-        stuId: row.id
+    abandonStu(index, row){
+      this.$axios.get("/tutor/abandonStu.do", {
+        params:{
+          stuId:row.id
+        }
       }).then(resp=>{
-        this.getStudentList();
         this.$message({
           message: resp.data.message,
           type: 'success'
         });
-      }, err=>{
-        console.log(err)
-      })
+        this.getStudentList();
+        }, err=>{
+          console.log(err);
+        });
     }
   },
   created() {

@@ -95,4 +95,11 @@ public interface UserService {
      */
     String getTutorIdByUserId(String userId);
 
+    /**
+     * 获取当前导员认领的学生总数
+     * @param tutorId 导员id
+     * @param studentSearchVo 模糊查询
+     * @return 符合条件的学生数量
+     */
+    Integer getStudentRoleListTotal(String tutorId, StudentSearchVo studentSearchVo);
 }

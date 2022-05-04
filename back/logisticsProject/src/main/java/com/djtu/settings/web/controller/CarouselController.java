@@ -15,10 +15,9 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-public class carouselController {
+public class CarouselController {
 
     //文件绝对路径前置目录
-//    private static final String ABSOLUTE_PATH = "D://CarouselPath/";
     private static final String ABSOLUTE_PATH = "/opt/logisticsImg/Carousel/";
     //远程图片服务器前置目录
     private static final String SERVER_PATH = "http://47.111.84.87/images/Carousel/";
@@ -28,16 +27,15 @@ public class carouselController {
      * @param file 上传的图片
      * @return 仅用于让前端识别为请求成功
      */
-    @RequiresRoles("管理员")
     @RequestMapping("/addCarousel.do")
     @ResponseBody
     public String addCarousel(MultipartFile file) {
         try {
-            file.transferTo(new File(ABSOLUTE_PATH+file.getOriginalFilename()));
+            file.transferTo(new File(ABSOLUTE_PATH + file.getOriginalFilename()));
+            System.out.println(ABSOLUTE_PATH + file.getOriginalFilename());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
         return null;
     }
 
@@ -49,7 +47,7 @@ public class carouselController {
     @RequiresRoles("管理员")
     @RequestMapping("/removeCarousel.do")
     @ResponseBody
-    public Result removeCarousel(String name){
+    public Result removeCarousel(String name) {
         File file = new File(ABSOLUTE_PATH + name);
         if (file.delete()) {
             return new Result().setCode(200).setMessage("删除图片成功");
@@ -67,10 +65,13 @@ public class carouselController {
         List<Map<String, String>> list = new ArrayList<>();
         File file = new File(ABSOLUTE_PATH);
         File[] files = file.listFiles();
+        if (files == null) {
+            return new Result().setCode(402).setMessage("获取走马灯图片列表失败");
+        }
         for (File f : files) {
             Map<String, String> map = new HashMap<>();
             map.put("name", f.getName());
-            map.put("url", SERVER_PATH+f.getName());
+            map.put("url", SERVER_PATH + f.getName());
             list.add(map);
         }
         return new Result().setCode(200).setMessage("获取走马灯图片列表成功").setData(list);

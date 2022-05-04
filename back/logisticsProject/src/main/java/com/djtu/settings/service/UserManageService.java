@@ -67,4 +67,27 @@ public interface UserManageService {
      * @param id 学生id
      */
     void resetStudentPwd(String id) throws UserManagerException;
+
+    /**
+     * 修改学生的导员外键为导员id
+     * @param stuId 学生id
+     * @param tutorId 导员id
+     */
+    void editStudentTutorIdById(String stuId, String tutorId) throws UserManagerException;
+
+    /**
+     * 模糊查询、分页查询 学生列表
+     * @param tutorId 导员id
+     * @param studentSearchVo 模糊查询信息
+     * @param pageNo 页码
+     * @param pageSize 数据量
+     * @return 学生列表
+     */
+    List<Student> getStudentList(String tutorId, StudentSearchVo studentSearchVo, Integer pageNo, Integer pageSize);
+
+    /**
+     * 导员抛弃学生，删除学生的导员外键
+     * @param stuId 学生id
+     */
+    void delStudentTutorIdByStudentId(String stuId) throws UserManagerException;
 }
