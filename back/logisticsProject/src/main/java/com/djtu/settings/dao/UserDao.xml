@@ -4,11 +4,6 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.djtu.settings.dao.UserDao">
 
-    <cache eviction="FIFO"
-           flushInterval="60000"
-           size="512"
-           readOnly="true"/>
-
     <select id="getUserIdByStudentId" resultType="java.lang.String">
         select id from tbl_user where student_id = #{id};
     </select>

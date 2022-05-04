@@ -9,12 +9,6 @@ import java.util.Map;
 public interface PermissionDao {
 
     /**
-     * 添加权限方法
-     * @param permission 权限
-     */
-    void addPermList(Permission permission);
-
-    /**
      * 根据父权限查找对应的子权限
      * @param fatherId 父权限 id
      * @return 对应的子权限列表
