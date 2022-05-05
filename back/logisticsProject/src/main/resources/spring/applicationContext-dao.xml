@@ -15,7 +15,6 @@
         <property name="url" value="${jdbc.url}"></property>
         <property name="username" value="${jdbc.username}"></property>
         <property name="password" value="${jdbc.password}"></property>
-        <property name="maxActive" value="${jdbc.maxActive}"></property>
     </bean>
 
     <!--声明SqlSessionFactoryBean-->
@@ -27,7 +26,11 @@
     <!--声明MyBatis的扫描器-->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="sqlSessionFactoryBeanName" value="sqlSession"></property>
-        <property name="basePackage" value="com.djtu.settings.dao,com.djtu.dorm.dao"></property>
+        <property name="basePackage" value="com.djtu.settings.dao,
+                                            com.djtu.dorm.dao,
+                                            com.djtu.dictionary.dao,
+                                            com.djtu.feedback.dao,
+                                            com.djtu.permission.dao"></property>
     </bean>
 
     <!--事务管理器-->

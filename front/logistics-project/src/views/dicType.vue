@@ -223,7 +223,7 @@ export default {
     },
     //搜索
     searchBtn(){
-      this.$axios.post("/admin/getDicTByCN.do",
+      this.$axios.post("/dic/getDicTByCN.do",
           {
             pageNo:(this.pageNo-1)*this.pageSize,
             pageSize:this.pageSize,
@@ -242,7 +242,7 @@ export default {
     getDicTypeList(){
       //pageNo第几页
       //pageSize 多少条一页
-      this.$axios.post("/admin/getDicTByCN.do",
+      this.$axios.post("/dic/getDicTByCN.do",
           {
             pageNo:(this.pageNo-1)*this.pageSize,
             pageSize:this.pageSize
@@ -299,7 +299,7 @@ export default {
         });
         return false;
       }else{
-        this.$axios.post("/admin/updateDicTL.do",
+        this.$axios.post("/dic/updateDicTL.do",
             {
               code:this.form.code,
               name:this.form.name,
@@ -346,7 +346,7 @@ export default {
         });
         return false;
       }else{
-        this.$axios.post("/admin/setDicTL.do",
+        this.$axios.post("/dic/setDicTL.do",
             {
               code:this.add.code,
               name:this.add.name,
@@ -378,7 +378,7 @@ export default {
       }
 
       if (this.idArray.length != 0) {
-        this.$axios.post("/admin/delDicTL.do",
+        this.$axios.post("/dic/delDicTL.do",
             this.idArray
         )
             .then(resp=>{

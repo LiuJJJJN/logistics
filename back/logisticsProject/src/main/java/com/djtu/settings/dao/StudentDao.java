@@ -1,9 +1,7 @@
 package com.djtu.settings.dao;
 
-import com.djtu.settings.pojo.Feedback;
 import com.djtu.settings.pojo.Student;
 import com.djtu.settings.pojo.vo.StudentSearchVo;
-import com.djtu.settings.pojo.vo.UserVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

@@ -324,7 +324,7 @@ export default {
       // console.log(`当前页: ${val}`);
     },
     loadCollege:function (){
-      this.$axios.get("/getCollegeList.do").then(resp=>{
+      this.$axios.get("/dic/getCollegeList.do").then(resp=>{
         var list = [];
         list[0] = '';
         for(let i=0; i<resp.data.data.length;i++){

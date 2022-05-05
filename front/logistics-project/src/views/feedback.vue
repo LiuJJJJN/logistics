@@ -187,7 +187,7 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$axios.post("/user/stuAddFb.do", {
+          this.$axios.post("/feedback/stuAddFb.do", {
             stuId:this.$store.getters.getUser.userId,//当前用户的userId：this.$store.getters.getUser.userId
             titleFeedback:this.text,
             feedback:this.textarea
@@ -218,7 +218,7 @@ export default {
     },
     //加载历史记录列表
     historyList(){
-      this.$axios.post("/user/stuFdList.do", { //加载历史列表信息
+      this.$axios.post("/feedback/stuFdList.do", { //加载历史列表信息
         id:this.$store.getters.getUser.userId,//当前用户的userId：this.$store.getters.getUser.userId
         tutorId: (this.pageNo - 1) * this.pageSize,//避免后端建立vo类之间赋值给user的tutorId
         adminId: this.pageSize
@@ -257,7 +257,7 @@ export default {
           type: 'warning'
         }).then(() => {
           //删除
-          this.$axios.post("/user/delStuFL.do",
+          this.$axios.post("/feedback/delStuFL.do",
               //array:this.dialogFormAddDicValue
               this.idArray
           ).then(resp => {
@@ -288,7 +288,7 @@ export default {
     //历史记录-详细信息
     detailedInf(index, row){
       this.detailedInfOpen=true;
-      this.$axios.post("/user/getDI.do",{
+      this.$axios.post("/feedback/getDI.do",{
         id:row.id
       }
       ).then(resp => {

@@ -237,7 +237,7 @@ export default {
     },
     //搜索
     searchBtn() {
-      this.$axios.post("/admin/getDicVByCV.do",
+      this.$axios.post("/dic/getDicVByCV.do",
           {
             pageNo: (this.pageNo - 1) * this.pageSize,
             pageSize: this.pageSize,
@@ -257,7 +257,7 @@ export default {
     getDicValueList() {
       //pageNo第几页
       //pageSize 多少条一页
-      this.$axios.post("/admin/getDicVByCV.do",
+      this.$axios.post("/dic/getDicVByCV.do",
           {
             pageNo: (this.pageNo - 1) * this.pageSize,
             pageSize: this.pageSize
@@ -291,7 +291,7 @@ export default {
       this.selectValue = row.typeCode;
       //this.form.typeCode=row.typeCode;
       //下拉菜单加载
-      this.$axios.post("/admin/getDicTL.do",
+      this.$axios.post("/dic/getDicTL.do",
           {})
           .then(resp => {
             console.log(resp.data);
@@ -325,7 +325,7 @@ export default {
         });
         return false;
       } else {
-        this.$axios.post("/admin/updateDicV.do",
+        this.$axios.post("/dic/updateDicV.do",
             {
               value: this.form.value,
               orderNo: this.form.orderNo,
@@ -347,7 +347,7 @@ export default {
     //添加按钮
     addDicValueBtn() {
       this.dialogFormAddDicValue = true;
-      this.$axios.post("/admin/getDicTL.do",
+      this.$axios.post("/dic/getDicTL.do",
           {})
           .then(resp => {
             console.log(resp.data);
@@ -384,7 +384,7 @@ export default {
         });
         return false;
       } else {
-        this.$axios.post("/admin/setDicV.do",
+        this.$axios.post("/dic/setDicV.do",
             {
               value: this.add.value,
               orderNo: this.add.orderNo,
@@ -416,7 +416,7 @@ export default {
       }
       console.log(this.idArray);
       if (this.idArray.length != 0) {
-        this.$axios.post("/admin/delDicV.do",
+        this.$axios.post("/dic/delDicV.do",
             //array:this.dialogFormAddDicValue
             this.idArray
         ).then(resp => {

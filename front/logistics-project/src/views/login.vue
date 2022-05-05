@@ -93,6 +93,7 @@ export default {
       // }
       this.$refs[formName].validate((valid) => {
         if (valid) {
+          this.form.username = this.form.username.trim();
           this.$axios.post("/user/login.do", this.form)
               .then(resp => {
                 // console.log(resp.data);
