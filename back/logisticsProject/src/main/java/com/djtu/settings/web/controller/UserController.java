@@ -47,7 +47,7 @@ public class UserController {
     private AdminService adminService;
 
     //文件绝对路径前置目录
-    @Value("${IMAGE_ABSOLUTE_PATH}")
+    @Value("${AVATAR_ABSOLUTE_PATH}")
     private String ABSOLUTE_PATH;
 
     /**

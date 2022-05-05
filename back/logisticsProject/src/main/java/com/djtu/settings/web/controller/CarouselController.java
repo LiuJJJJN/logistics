@@ -26,7 +26,7 @@ import java.util.Map;
 public class CarouselController {
 
     //文件绝对路径前置目录
-    @Value("${IMAGE_ABSOLUTE_PATH}")
+    @Value("${CAROUSEL_ABSOLUTE_PATH}")
     private String ABSOLUTE_PATH;
     //远程图片服务器前置目录
     @Value("${IMAGE_SERVER_PATH}")
@@ -38,15 +38,13 @@ public class CarouselController {
      * @param file 上传的图片
      * @return 仅用于让前端识别为请求成功
      */
-    @RequiresRoles("管理员")
     @RequestMapping("/addCarousel.do")
     @ResponseBody
     public String addCarousel(MultipartFile file) {
         try {
             file.transferTo(new File(ABSOLUTE_PATH + file.getOriginalFilename()));
-            System.out.println(ABSOLUTE_PATH + file.getOriginalFilename());
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         return null;
     }
