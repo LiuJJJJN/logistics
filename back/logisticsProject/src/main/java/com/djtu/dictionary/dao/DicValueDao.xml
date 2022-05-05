@@ -96,5 +96,15 @@
                order_no,
                type_code
         from tbl_dic_value
+        where type_code = 'college'
+    </select>
+    <select id="getBuildingTypeList" resultType="com.djtu.dictionary.pojo.DicValue">
+        select id,
+               value,
+               order_no,
+               type_code
+        from tbl_dic_value
+        where type_code = 'buildingType'
+        order by order_no
     </select>
 </mapper>

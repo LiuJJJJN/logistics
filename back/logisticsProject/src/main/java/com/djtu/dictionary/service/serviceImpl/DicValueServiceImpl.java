@@ -70,4 +70,13 @@ public class DicValueServiceImpl implements DicValueService {
             throw new DictionaryException("修改数据失败");
         }
     }
+
+    @Override
+    public List<DicValue> getBuildingTypeList() throws DictionaryException {
+        List<DicValue> buildingTypeList = dicValueDao.getBuildingTypeList();
+        if (buildingTypeList.isEmpty()) {
+            throw new DictionaryException("获取楼宇类型列表失败");
+        }
+        return buildingTypeList;
+    }
 }

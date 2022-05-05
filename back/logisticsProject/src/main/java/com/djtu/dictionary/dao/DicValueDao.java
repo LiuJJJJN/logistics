@@ -75,4 +75,10 @@ public interface DicValueDao {
      */
     List<DicValue> getAllCollege();
 
+    /**
+     * 获取所有楼宇类型列表
+     * @return 楼宇类型列表
+     */
+    List<DicValue> getBuildingTypeList();
+
 }
