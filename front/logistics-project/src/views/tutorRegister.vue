@@ -27,7 +27,7 @@
     </el-form-item>
     <br>
     <el-form class="sub-res-button">
-      <el-button type="primary" @click="toRegister('ruleForm')">立即创建</el-button>
+      <el-button type="primary" @click="toRegister('ruleForm')">立即注册</el-button>
       <el-button @click="resetForm('ruleForm')">重置</el-button>
     </el-form>
   </el-form>
@@ -116,7 +116,12 @@ export default {
         return false;
       }
       console.log("事件触发");
-      this.$axios.get("/user/registerTutorUV.do",{ params: { username:this.submitForm.username} }).then(resp=>{
+      this.$axios.get("/user/registerTutorUV.do",{
+        params: {
+          username:this.submitForm.username.trim()
+        }
+      }).then(resp=>{
+        this.submitForm.username = this.submitForm.username.trim();
         this.$message({
           message: resp.data.message,
           type: 'success'
@@ -156,7 +161,7 @@ export default {
       this.$refs[formName].resetFields();
     },
     loadCollege:function (){
-      this.$axios.get("/getCollegeList.do").then(resp=>{
+      this.$axios.get("/dic/getCollegeList.do").then(resp=>{
         var list = [];
         for(let i=0; i<resp.data.data.length;i++){
           list[i] = resp.data.data[i].value;

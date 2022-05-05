@@ -93,6 +93,7 @@ export default {
       // }
       this.$refs[formName].validate((valid) => {
         if (valid) {
+          this.form.username = this.form.username.trim();
           this.$axios.post("/user/login.do", this.form)
               .then(resp => {
                 // console.log(resp.data);
@@ -150,10 +151,7 @@ export default {
 
     // this.$notify({
     //   title: '提示',
-    //   message: '项目仅实现 登录、注册、修改账户权限、修改个人信息、头像上传 等功能.<br/><br/>' +
-    //       '在管理员界面中实现了学生、导员权限修改功能, 数据字典增删改查<br/><br/>' +
-    //       '在导员界面中实现了学生权限修改功能<br/><br/>' +
-    //       '在学生、导员、管理员界面中都实现了个人信息的修改功能<br/><br/>' +
+    //   message: '项目目前实现 登录注册、账户角色管理、个人信息修改、数据字典 等功能.<br/><br/>' +
     //       '管理员账号:admin123, 密码:123123<br/><br/>' +
     //       '项目 gitee 地址:<br/> <a href="https://gitee.com/LiuJaNing/logistics/tree/dev/">https://gitee.com/...</a>',
     //   duration: 0,

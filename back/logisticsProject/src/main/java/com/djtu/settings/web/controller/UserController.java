@@ -18,6 +18,7 @@ import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +29,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+/**
+ * 登录、注册、个人信息相关接口
+ */
 
 @Controller
 @RequestMapping("/user")
@@ -42,10 +47,12 @@ public class UserController {
     private AdminService adminService;
 
     //文件绝对路径前置目录
-    private static final String ABSOLUTE_PATH = "/opt/logisticsImg/";
+    @Value("${AVATAR_ABSOLUTE_PATH}")
+    private String ABSOLUTE_PATH;
 
     /**
      * 登录功能
+     *
      * @param map 前端传来的用户信息、角色信息、是否七天免登录
      * @return 登录成功时返回token、时间戳、免登录标记、用户信息
      */
@@ -107,6 +114,7 @@ public class UserController {
 
     /**
      * 学生注册
+     *
      * @param student 学生信息
      * @return 注册成功的返回信息
      * @throws RegisterException 注册异常
@@ -129,6 +137,7 @@ public class UserController {
 
     /**
      * 导员注册
+     *
      * @param tutor 导员
      * @return 是否重名的返回信息
      * @throws RegisterException 注册异常
@@ -150,6 +159,7 @@ public class UserController {
 
     /**
      * 导员注册用户名查重验证
+     *
      * @param username 导员用户名
      * @return 是否重名的返回信息
      * @throws RegisterException 注册异常
@@ -163,6 +173,7 @@ public class UserController {
 
     /**
      * 学生注册用户名查重验证
+     *
      * @param username 学生用户名
      * @return 是否重名的返回信息
      * @throws RegisterException 注册异常
@@ -176,12 +187,13 @@ public class UserController {
 
     /**
      * 获取当前登录用户个人信息
+     *
      * @return 用户个人信息Vo
      */
     @RequiresRoles(value = {"学生", "导员", "管理员"}, logical = Logical.OR)
     @RequestMapping("/getUserInfo.do")
     @ResponseBody
-    public Result getUserInfoByUsernameIdent(){
+    public Result getUserInfoByUsernameIdent() {
         UserVo userVo = (UserVo) SecurityUtils.getSubject().getSession().getAttribute("userVo");
         if ("学生".equals(userVo.getPrimaryRole())) {
             Student student = studentService.getStudentByUsername(userVo.getUsername());
@@ -210,13 +222,14 @@ public class UserController {
 
     /**
      * 修改学生的个人信息
+     *
      * @param student 学生实例
      * @return 是否修改成功
      */
     @RequiresRoles("学生")
     @RequestMapping("/editStudentInfo.do")
     @ResponseBody
-    public Result editUserInfo(@RequestBody Student student){
+    public Result editUserInfo(@RequestBody Student student) {
         String salt = studentService.getStudentSaltById(student.getId());
         student.setPassword(StringUtil.md5(student.getPassword(), salt));
         int res = studentService.editStudent(student);
@@ -228,13 +241,14 @@ public class UserController {
 
     /**
      * 修改导员的个人信息
+     *
      * @param tutor 导员实例
      * @return 是否修改成功
      */
     @RequiresRoles("导员")
     @RequestMapping("/editTutorInfo.do")
     @ResponseBody
-    public Result editTutorInfo(@RequestBody Tutor tutor){
+    public Result editTutorInfo(@RequestBody Tutor tutor) {
         String salt = tutorService.getTutorSaltById(tutor.getId());
         tutor.setPassword(StringUtil.md5(tutor.getPassword(), salt));
         int res = tutorService.editTutor(tutor);
@@ -246,13 +260,14 @@ public class UserController {
 
     /**
      * 修改管理员的个人信息
+     *
      * @param admin 管理员实例
      * @return 是否修改成功
      */
     @RequiresRoles("管理员")
     @RequestMapping("/editAdminInfo.do")
     @ResponseBody
-    public Result editAdminInfo(@RequestBody Admin admin){
+    public Result editAdminInfo(@RequestBody Admin admin) {
         String salt = adminService.getAdminSaltById(admin.getId());
         admin.setPassword(StringUtil.md5(admin.getPassword(), salt));
         int res = adminService.editAdmin(admin);
@@ -264,10 +279,12 @@ public class UserController {
 
     /**
      * 头像上传接口
+     *
      * @param file 头像文件
      * @return 是否上传成功
      * @throws UserManagerException 数据库头像路径更新错误
      */
+    @RequiresRoles(value = {"学生", "导员", "管理员"}, logical = Logical.OR)
     @RequestMapping("/uploadAvatar.do")
     @ResponseBody
     public String uploadAvatar(MultipartFile file) throws UserManagerException {
@@ -276,15 +293,15 @@ public class UserController {
         String avatarPath = null;
         if ("学生".equals(userVo.getPrimaryRole())) {
             String studentId = userService.getStudentIdByUserId(userId);
-            avatarPath = '/'+studentId+'/'+file.getOriginalFilename();
+            avatarPath = '/' + studentId + '/' + file.getOriginalFilename();
             studentService.setAvatarPath(userVo.getUsername(), avatarPath);
-            File diskPath = new File(ABSOLUTE_PATH+studentId);
+            File diskPath = new File(ABSOLUTE_PATH + studentId);
             diskPath.mkdirs();
-        }else if ("导员".equals(userVo.getPrimaryRole())) {
+        } else if ("导员".equals(userVo.getPrimaryRole())) {
             String tutorId = userService.getTutorIdByUserId(userId);
-            avatarPath = '/'+tutorId+'/'+file.getOriginalFilename();
+            avatarPath = '/' + tutorId + '/' + file.getOriginalFilename();
             tutorService.setAvatarPath(userVo.getUsername(), avatarPath);
-            File diskPath = new File(ABSOLUTE_PATH+tutorId);
+            File diskPath = new File(ABSOLUTE_PATH + tutorId);
             diskPath.mkdirs();
         }
         try {

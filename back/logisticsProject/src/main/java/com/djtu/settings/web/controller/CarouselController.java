@@ -1,7 +1,10 @@
 package com.djtu.settings.web.controller;
 
 import com.djtu.response.Result;
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -14,16 +17,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 走马灯图片相关接口
+ */
+
 @Controller
+@PropertySource({"classpath:server.properties"})
 public class CarouselController {
 
     //文件绝对路径前置目录
-    private static final String ABSOLUTE_PATH = "/opt/logisticsImg/Carousel/";
+    @Value("${CAROUSEL_ABSOLUTE_PATH}")
+    private String ABSOLUTE_PATH;
     //远程图片服务器前置目录
-    private static final String SERVER_PATH = "http://47.111.84.87/images/Carousel/";
+    @Value("${IMAGE_SERVER_PATH}")
+    private String SERVER_PATH;
 
     /**
      * 上传走马灯图片接口
+     *
      * @param file 上传的图片
      * @return 仅用于让前端识别为请求成功
      */
@@ -32,15 +43,15 @@ public class CarouselController {
     public String addCarousel(MultipartFile file) {
         try {
             file.transferTo(new File(ABSOLUTE_PATH + file.getOriginalFilename()));
-            System.out.println(ABSOLUTE_PATH + file.getOriginalFilename());
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         return null;
     }
 
     /**
      * 删除走马灯图片的接口
+     *
      * @param name 要删除的文件名
      * @return 仅用于让前端识别为请求成功
      */
@@ -56,9 +67,11 @@ public class CarouselController {
     }
 
     /**
-     * 获取当前所有文件列表
-     * @return 当前所有文件列表
+     * 获取当前所有走马灯图片列表
+     *
+     * @return 当前所有图片列表
      */
+    @RequiresRoles(value = {"学生", "导员", "管理员"}, logical = Logical.OR)
     @RequestMapping("/getFileList.do")
     @ResponseBody
     public Result getFileList() {
