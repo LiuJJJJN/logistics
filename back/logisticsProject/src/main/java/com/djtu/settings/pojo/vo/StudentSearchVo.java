@@ -6,9 +6,6 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
-/**
- * 学生搜索vo
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

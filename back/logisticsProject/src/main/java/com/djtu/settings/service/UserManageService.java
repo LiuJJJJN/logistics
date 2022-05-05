@@ -1,7 +1,7 @@
 package com.djtu.settings.service;
 
 import com.djtu.exception.UserManagerException;
-import com.djtu.settings.pojo.DicValue;
+import com.djtu.dictionary.pojo.DicValue;
 import com.djtu.settings.pojo.Student;
 import com.djtu.settings.pojo.Tutor;
 import com.djtu.settings.pojo.vo.StudentSearchVo;
