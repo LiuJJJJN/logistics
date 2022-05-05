@@ -120,6 +120,7 @@ public interface StudentDao {
      * @return 学生列表
      */
     List<Student> getStudentListByTutorId(String tutorId);
+    /*
      * 根据学生id修改对应导员外键id
      * @param stuId 学生id
      * @param tutorId 导员id
