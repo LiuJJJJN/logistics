@@ -3,7 +3,6 @@
   <h2>反馈:
   </h2>
   <el-checkbox-group v-model="checkboxGroup1" style="float: left">
-<!--    <el-checkbox-button v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox-button>-->
   </el-checkbox-group>
   <el-button :plain="true" @click="historyButton" style="float: right">历史记录</el-button>
   <el-input
@@ -45,14 +44,9 @@
       :visible.sync="table"
       direction="rtl"
       size="36%">
-<!--    <el-button type="danger" @click="delHistory" style="margin-left: 550px" icon="el-icon-delete" circle></el-button>-->
-<!--    <h3 v-show="">暂无历史记录</h3>-->
+
     <div v-show="showHistoryTable">
     <el-table :data="gridData" @selection-change="selection" >
-<!--      <el-table-column
-          type="selection"
-          width="50">
-      </el-table-column>-->
       <el-table-column property="date" label="反馈时间" width="220">
         <template slot-scope="scope">
         <span>{{ scope.row.time }}</span>

@@ -131,4 +131,17 @@ public class TutorReplyController {
         return new Result().setCode(200).setMessage("获取成功").setData(list);
     }
 
+    /**
+     * 再次回复学生反馈
+     * @param reply 答复实例
+     * @return 再次回复学生反馈成功
+     * @throws ReplyException
+     */
+    @RequiresRoles("导员")
+    @RequestMapping("/replyAgain.do")
+    @ResponseBody
+    public Result replyAgain(@RequestBody Reply reply) throws ReplyException{
+        tutorReplyService.replyAgain(reply);
+        return new Result().setCode(200).setMessage("再次回复成功");
+    }
 }

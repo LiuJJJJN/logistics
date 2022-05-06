@@ -64,4 +64,12 @@ public interface TutorReplyService {
      * @return 答复实例
      */
     List<Reply> getReplyInfById(Feedback feedback);
+
+    /**
+     * * 再次回复学生反馈
+     * @param reply 答复实例
+     * @param reply
+     * @throws ReplyException
+     */
+    void replyAgain(Reply reply) throws ReplyException;
 }
