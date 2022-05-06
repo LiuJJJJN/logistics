@@ -3,7 +3,6 @@
   <h2>反馈:
   </h2>
   <el-checkbox-group v-model="checkboxGroup1" style="float: left">
-    <el-checkbox-button v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox-button>
   </el-checkbox-group>
   <el-button :plain="true" @click="historyButton" style="float: right">历史记录</el-button>
   <el-input
@@ -44,13 +43,10 @@
       title="历史记录"
       :visible.sync="table"
       direction="rtl"
-      size="40%">
-    <el-button type="danger" @click="delHistory" style="margin-left: 550px" icon="el-icon-delete" circle></el-button>
-    <el-table :data="gridData" @selection-change="selection">
-      <el-table-column
-          type="selection"
-          width="50">
-      </el-table-column>
+      size="36%">
+
+    <div v-show="showHistoryTable">
+    <el-table :data="gridData" @selection-change="selection" >
       <el-table-column property="date" label="反馈时间" width="220">
         <template slot-scope="scope">
         <span>{{ scope.row.time }}</span>
@@ -80,6 +76,7 @@
             background>
         </el-pagination>
       </div>
+    </div>
     </div>
   </el-drawer>
 
@@ -144,12 +141,7 @@ export default {
       pageNo: 1, //当前页数
       pageSize: 10, //显示条数
       total: 0, //总条数
-      gridData: [{
-        id: '',
-        time: '',
-        titleFeedback: '',
-        address: ''
-      }],
+      gridData: [],
       multipleSelection: [],
       idArray: [],
       replyList: [{
@@ -158,7 +150,8 @@ export default {
         tutorId : '',
         feedbackId : '',
         time : '',
-      }]
+      }],
+      showHistoryTable : true
     }
   },
   methods: {
@@ -362,7 +355,7 @@ export default {
   margin: 0 auto;
 }
 .pageCss{
-  margin-left: 80px;
+  margin-left: 40px;
 }
 .text {
   font-size: 14px;

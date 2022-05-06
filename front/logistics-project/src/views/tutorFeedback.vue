@@ -1,19 +1,12 @@
 <template>
   <div>
-    <el-row :gutter="20">
-      <el-col :span="1">
-        <div class="grid-content bg-purple">
-          <el-badge :value="this.unNum" :max="10" class="item" v-show="this.unNum==0?false:true">
-            <el-button size="large" @click="unReply">未回复</el-button>
-          </el-badge>
-        </div>
-      </el-col>
-      <el-col :span="6">
-        <div class="grid-content bg-purple">
-          <h1 style="font-size: 20px; margin-left: -50px">历史回复:</h1>
-        </div>
-      </el-col>
-    </el-row>
+    <h1 style="font-size: 20px; display: inline-block; width: 200px">历史回复:</h1>
+    <div style="float: right">
+      <el-badge :value="this.unNum" :max="100" class="item1"  v-show="this.unNum==0?false:true">
+        <el-button size="large" @click="unReply">未回复</el-button>
+      </el-badge>
+    </div>
+
     <el-table
         :data="tableData"
         style="width: 100%">
@@ -34,7 +27,7 @@
       </el-table-column>
       <el-table-column
           label="反馈标题"
-          width="500">
+          width="350">
         <template slot-scope="scope">
           <i class="el-icon-s-order"></i>
           <span style="margin-left: 10px">{{ scope.row.titleFeedback }}</span>
@@ -55,11 +48,6 @@
               @click="historyFeedbackInf(scope.$index,scope.row)">详细内容
           </el-button>
           <div style="display:inline-block; padding-left: 10px"></div>
-          <!--            <el-button
-                          size="mini"
-                          type="danger"
-                          @click="handleDelete(scope.$index, scope.row)"
-                          slot="reference">删 除</el-button>-->
         </template>
       </el-table-column>
     </el-table>
@@ -152,23 +140,22 @@
     <el-dialog title="详细内容" :visible.sync="detailedhistoryInfOpen">
       <el-form label-width="150px">
         <!--学生的内容-->
-        <el-form-item :label="this.whoHistoryInf+':'">
+        <el-card class="box-card">
+          <div class="text item"><font color="#d2691e">{{this.whoHistoryInf}}：&nbsp;&nbsp;</font><font color="#deb887" style="font-family: 幼圆">{{this.textarea3}}</font></div>
+          <div v-for="o in this.replyList" :key="o" class="text item">
+            <font style="font-weight: bold">我：</font><font style="font-weight: lighter;font-family: 幼圆">{{o.reply }}</font>
+          </div>
+        </el-card>
+        <!--再次答复 -->
+        <div style="margin-top: 30px"><font style="margin-left:150px;font-size: 15px">再次回复:</font></div>
+        <el-form-item label="" style="margin-top: 10px">
           <el-input
               type="textarea"
               :rows="4"
-              v-model="this.textarea3"
-              :disabled="true"
+              v-model="replyAgainInf"
               class="feedbackInfCss2"></el-input>
         </el-form-item>
-        <!--我的答复 -->
-        <el-form-item label="我的回复:">
-          <el-input
-              type="textarea"
-              :rows="4"
-              v-model="this.replyList[0].reply"
-              :disabled="true"
-              class="feedbackInfCss2"></el-input>
-        </el-form-item>
+        <el-button type="primary" round style="margin-left:550px" @click="replyAgainInfBtn">回 复</el-button>
       </el-form>
     </el-dialog>
   </div>
@@ -214,7 +201,9 @@ export default {
         time: '',
         reply: ''
       }],
-      dialogVisible: false
+      dialogVisible: false,
+      getId: '',
+      replyAgainInf: ''
     }
   },
   methods: {
@@ -334,12 +323,13 @@ export default {
       this.replyHistoryList();
     },
     historyHandleCurrentChange(val) {
-      this.pageNo = val;
+      this.historyPageNo = val;
       this.replyHistoryList();
     },
     //详细内容
     historyFeedbackInf(index, row) {
       this.detailedhistoryInfOpen = true;
+      this.getId=row.id;
       this.$axios.post("/reply/getHistoryIBI.do", {
             id: row.id,//feed_id
           }
@@ -360,6 +350,44 @@ export default {
       }, err => {
         console.log(err);
       });
+    },
+    //再次回复按钮
+    replyAgainInfBtn(){
+      if(this.replyAgainInf==''){
+        this.$message({
+          message: '警告，回复内容不能为空',
+          type: 'warning'
+        });
+      }else{
+        this.$confirm('是否确认再次回复?', '', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$axios.post("/reply/replyAgain.do", {
+                tutorId: this.$store.getters.getUser.userId,//userId
+                feedbackId: this.getId,//反馈的id
+                reply:this.replyAgainInf//再次回复的内容
+              }
+          ).then(resp => {
+            this.replyAgainInf='';
+            this.replyHistoryList();
+            console.log(resp.data);
+          }, err => {
+            console.log(err);
+          });
+          this.$message({
+            type: 'success',
+            message: '再次回复成功!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消回复'
+          });
+        });
+      }
+
     }
   },
   created() {
@@ -370,7 +398,7 @@ export default {
 </script>
 
 <style scoped>
-.item {
+.item1 {
   margin-top: 10px;
   margin-left: 1200px;
 }
@@ -399,10 +427,23 @@ export default {
 }
 
 .feedbackInfCss2 {
-  width: 500px;
+  width: 480px;
 }
 
 .my-pagination {
   margin: 20px;
+}
+.text {
+  font-size: 14px;
+}
+
+.item {
+  padding: 18px 0;
+}
+
+.box-card {
+  margin-left: 150px;
+  width: 480px;
+  background-color: azure;
 }
 </style>

@@ -129,4 +129,17 @@ public class TutorReplyServiceImpl implements TutorReplyService {
         return list;
     }
 
+    @Override
+    @Transactional(rollbackFor = {ReplyException.class})
+    public void replyAgain(Reply reply) throws ReplyException{
+        String userId=reply.getTutorId();
+        String tutorId = userDao.getTutorIdByUserId(userId);
+        reply.setId(StringUtil.generateUUID());
+        reply.setTime(DateTimeUtil.getSysTime());
+        reply.setTutorId(tutorId);
+        Integer n=feedbackDao.setReply(reply);
+        if(n<SUCCESS_FLAG){
+            throw new ReplyException("再次回复失败");
+        }
+    }
 }
