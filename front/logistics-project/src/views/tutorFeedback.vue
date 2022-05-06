@@ -353,7 +353,6 @@ export default {
     },
     //再次回复按钮
     replyAgainInfBtn(){
-      alert(this.getId);
       if(this.replyAgainInf==''){
         this.$message({
           message: '警告，回复内容不能为空',
