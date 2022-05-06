@@ -30,7 +30,8 @@
                                             com.djtu.dorm.dao,
                                             com.djtu.dictionary.dao,
                                             com.djtu.feedback.dao,
-                                            com.djtu.permission.dao"></property>
+                                            com.djtu.permission.dao,
+                                            com.djtu.building.dao"></property>
     </bean>
 
     <!--事务管理器-->
