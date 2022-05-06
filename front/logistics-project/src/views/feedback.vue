@@ -46,7 +46,9 @@
       direction="rtl"
       size="36%">
 <!--    <el-button type="danger" @click="delHistory" style="margin-left: 550px" icon="el-icon-delete" circle></el-button>-->
-    <el-table :data="gridData" @selection-change="selection">
+<!--    <h3 v-show="">暂无历史记录</h3>-->
+    <div v-show="showHistoryTable">
+    <el-table :data="gridData" @selection-change="selection" >
 <!--      <el-table-column
           type="selection"
           width="50">
@@ -80,6 +82,7 @@
             background>
         </el-pagination>
       </div>
+    </div>
     </div>
   </el-drawer>
 
@@ -144,12 +147,7 @@ export default {
       pageNo: 1, //当前页数
       pageSize: 10, //显示条数
       total: 0, //总条数
-      gridData: [{
-        id: '',
-        time: '',
-        titleFeedback: '',
-        address: ''
-      }],
+      gridData: [],
       multipleSelection: [],
       idArray: [],
       replyList: [{
@@ -158,7 +156,8 @@ export default {
         tutorId : '',
         feedbackId : '',
         time : '',
-      }]
+      }],
+      showHistoryTable : true
     }
   },
   methods: {

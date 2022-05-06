@@ -10,7 +10,7 @@
       </el-col>
       <el-col :span="6">
         <div class="grid-content bg-purple">
-          <h1 style="font-size: 20px; margin-left: -50px">历史回复:</h1>
+          <h1 style="font-size: 20px; ">历史回复:</h1>
         </div>
       </el-col>
     </el-row>
@@ -34,7 +34,7 @@
       </el-table-column>
       <el-table-column
           label="反馈标题"
-          width="500">
+          width="350">
         <template slot-scope="scope">
           <i class="el-icon-s-order"></i>
           <span style="margin-left: 10px">{{ scope.row.titleFeedback }}</span>
