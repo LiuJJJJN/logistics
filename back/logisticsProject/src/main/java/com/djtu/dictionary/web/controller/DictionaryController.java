@@ -9,6 +9,7 @@ import com.djtu.dictionary.pojo.vo.DicValueVo;
 import com.djtu.exception.DictionaryException;
 import com.djtu.response.Result;
 import com.djtu.utils.StringUtil;
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -39,6 +40,19 @@ public class DictionaryController {
     @ResponseBody
     public Result getCollegeList() {
         List<DicValue> list = dicValueService.getCollegeList();
+        return new Result().setCode(200).setMessage("获取成功").setData(list);
+    }
+
+    /**
+     * 获取楼宇类型列表
+     *
+     * @return 楼宇类型列表
+     */
+    @RequiresRoles("管理员")
+    @RequestMapping("/getBuildingTypeList.do")
+    @ResponseBody
+    public Result getBuildingList() throws DictionaryException {
+        List<DicValue> list = dicValueService.getBuildingTypeList();
         return new Result().setCode(200).setMessage("获取成功").setData(list);
     }
 

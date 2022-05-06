@@ -171,15 +171,12 @@ a {
 
 this.$axios.post("")
     .then(resp=>{
-      console.log(resp);
+    this.$message({
+      message: resp.data.message,
+      type: 'success'
+    });
     }, err=>{
       console.log(err);
     });
-
-this.$message({
-  message: resp.data.message,
-  type: 'success'
-});
-
 
 -->
