@@ -42,5 +42,19 @@
         from tbl_building
         order by order_no
     </select>
+    <resultMap id="buildingName2ValueMap" type="BuildingValueVo">
+        <result column="name" property="value" />
+    </resultMap>
+    <select id="getBuildingValueListByType" resultType="com.djtu.building.pojo.vo.BuildingValueVo" resultMap="buildingName2ValueMap">
+        select id,
+               name,
+               floor,
+               order_no,
+               type,
+               rooms
+        from tbl_building
+        where type = #{type}
+        order by order_no
+    </select>
 
 </mapper>

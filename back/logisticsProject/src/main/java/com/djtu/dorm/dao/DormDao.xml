@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.djtu.dorm.dao.DormDao">
+
+    <cache eviction="FIFO"
+           flushInterval="60000"
+           size="512"
+           readOnly="true"/>
+
+    <insert id="addDormByDormVo">
+        insert into tbl_dorm
+        value (
+                #{id},
+                #{doorNo},
+                #{water},
+                #{power},
+                #{size},
+                #{haveWc},
+                #{remark},
+                #{buildingId}
+            )
+    </insert>
+    <update id="editDormByDormVo">
+        update tbl_dorm set
+                    door_no = #{doorNo},
+                    water = #{water},
+                    power = #{power},
+                    size = #{size},
+                    have_wc = #{haveWc},
+                    remark = #{remark},
+                    building_id = #{buildingId}
+        where id = #{id}
+    </update>
+    <delete id="deleteDormByDormId">
+        delete from tbl_dorm
+        where id = #{id}
+    </delete>
+    <resultMap id="dormMap" type="Dorm">
+        <association javaType="Building" property="building" select="getBuilding" column="building_id"/>
+    </resultMap>
+    <select id="getDormList" resultType="com.djtu.dorm.pojo.Dorm" resultMap="dormMap">
+        select
+                id,
+                door_no,
+                water,
+                power,
+                size,
+                have_wc,
+                remark,
+                building_id
+        from tbl_dorm
+    </select>
+    <select id="getBuilding" resultType="com.djtu.building.pojo.Building">
+        select  id,
+                name,
+                floor,
+                order_no,
+                type,
+                rooms
+        from tbl_building
+        where id = #{building_id}
+    </select>
+
+</mapper>

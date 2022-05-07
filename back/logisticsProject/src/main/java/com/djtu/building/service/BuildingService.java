@@ -1,6 +1,7 @@
 package com.djtu.building.service;
 
 import com.djtu.building.pojo.Building;
+import com.djtu.building.pojo.vo.BuildingValueVo;
 import com.djtu.exception.BuildingException;
 
 import java.util.List;
@@ -34,4 +35,11 @@ public interface BuildingService {
      * @param id 楼宇id
      */
     void deleteBuildingById(String id) throws BuildingException;
+
+    /**
+     * 获取寝室楼宇value列表
+     *
+     * @return 楼宇value列表
+     */
+    List<BuildingValueVo> getBuildingValueListByType(String type) throws BuildingException;
 }

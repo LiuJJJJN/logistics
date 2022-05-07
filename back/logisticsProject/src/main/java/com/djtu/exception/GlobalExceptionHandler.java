@@ -73,4 +73,10 @@ public class GlobalExceptionHandler {
         return new Result().setCode(402).setMessage(e.getMessage());
     }
 
+    @ExceptionHandler(value = DormException.class)
+    public Result handler(DormException e){
+        log.error("运行时异常----------------{}", e.getMessage());
+        return new Result().setCode(402).setMessage(e.getMessage());
+    }
+
 }
