@@ -2,26 +2,27 @@
   <div>
     <div style="width: 500px; margin: 0 auto; margin-top: 200px; padding-left: 20px">
       <h2 style="width: 217px; margin: 0 auto; margin-bottom: 30px">后勤管理系统 - 登录</h2>
-<!--      <h3 style="width: 80px; margin: 0 auto; margin-top: 50px">登录界面</h3>-->
     </div>
     <el-form ref="form" :model="form" :rules="rules" label-width="80px" class="login-ruleForm">
       <el-form-item label="角色" prop="ident">
-        <el-radio-group v-model="form.ident" size="small" >
+        <el-radio-group v-model="form.ident" size="small">
           <el-radio-button label="学生"></el-radio-button>
           <el-radio-button label="导员"></el-radio-button>
           <el-radio-button label="管理员"></el-radio-button>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="账号" prop="username">
-        <el-input v-model="form.username"  placeholder="请输入账号" clearable></el-input>
+        <el-input v-model="form.username" placeholder="请输入账号" clearable></el-input>
       </el-form-item>
-      <el-form-item label="密码" prop="password" >
-        <el-input @keyup.enter.native="onSubmit('form')" v-model="form.password"  placeholder="请输入密码" show-password></el-input>
+      <el-form-item label="密码" prop="password">
+        <el-input @keyup.enter.native="onSubmit('form')" v-model="form.password" placeholder="请输入密码"
+                  show-password></el-input>
       </el-form-item>
 <!--      <el-form-item label="验证码" prop="code">-->
 <!--        <el-row :span="24">-->
 <!--          <el-col :span="13">-->
-<!--            <el-input @keyup.enter.native="onSubmit('form')" v-model="form.code" auto-complete="off" placeholder="请输入验证码" size=""></el-input>-->
+<!--            <el-input @keyup.enter.native="onSubmit('form')" v-model="form.code" auto-complete="off"-->
+<!--                      placeholder="请输入验证码" size=""></el-input>-->
 <!--          </el-col>-->
 <!--          <el-col :span="11">-->
 <!--            <div class="login-code" width="100%" @click="refreshCode">-->
@@ -46,9 +47,10 @@
 
 <script>
 import CAPTCHA from "@/views/CAPTCHA";
+
 export default {
   // eslint-disable-next-line vue/no-unused-components
-  components: { CAPTCHA },	//写在export default{}中与data同级表示使用组件
+  components: {CAPTCHA},	//写在export default{}中与data同级表示使用组件
   // eslint-disable-next-line vue/multi-word-component-names
   name: "login",
   data() {
@@ -56,7 +58,7 @@ export default {
       form: {
         username: '',
         password: '',
-        code:'',
+        code: '',
         ident: '学生',
         rememberMe: false
       },
@@ -65,7 +67,7 @@ export default {
         password: "",
         code: ""
       },
-      identifyCodes: '2346789abcdefjhijknpqrduvwxyz',//随机串内容
+      identifyCodes: '234678abcefghknpquvwxyz',//随机串内容
       identifyCode: '',
       rules: {
         ident: [
@@ -79,7 +81,7 @@ export default {
           {required: true, message: "密码必填", trigger: 'blur'},
           {min: 3, max: 18, message: "密码长度不能小于 3 位或超过 18 位"}
         ],
-        code: [{ required: true, message: "请输入验证码", trigger: "blur" }]
+        code: [{required: true, message: "请输入验证码", trigger: "blur"}]
       }
     }
   },
@@ -121,7 +123,7 @@ export default {
     toRegister: function () {
       this.$router.replace("/register/stuRegister");
     },
-    checkLogin:function (){
+    checkLogin: function () {
       if (this.$store.getters.getTimeStamp > 0) { //页面打开时判断是否需要登录
         this.$router.replace("/index");
         this.$notify({
@@ -131,16 +133,16 @@ export default {
         });
       }
     },
-    refreshCode () {
+    refreshCode() {
       this.identifyCode = ''
       this.makeCode(this.identifyCodes, 4)
     },
-    makeCode (o, l) {
+    makeCode(o, l) {
       for (let i = 0; i < l; i++) {
         this.identifyCode += this.identifyCodes[this.randomNum(0, this.identifyCodes.length)]
       }
     },
-    randomNum (min, max) {
+    randomNum(min, max) {
       return Math.floor(Math.random() * (max - min) + min)
     }
   },

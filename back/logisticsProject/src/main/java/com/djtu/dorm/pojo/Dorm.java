@@ -1,5 +1,6 @@
-package com.djtu.settings.pojo;
+package com.djtu.dorm.pojo;
 
+import com.djtu.building.pojo.Building;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,5 +18,6 @@ public class Dorm implements Serializable {
   private long size;
   private String haveWc;
   private String remark;
+  private Building building;
 
 }

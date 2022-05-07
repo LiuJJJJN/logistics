@@ -1,6 +1,7 @@
 package com.djtu.building.web.controller;
 
 import com.djtu.building.pojo.Building;
+import com.djtu.building.pojo.vo.BuildingValueVo;
 import com.djtu.building.service.BuildingService;
 import com.djtu.exception.BuildingException;
 import com.djtu.response.Result;
@@ -78,6 +79,20 @@ public class BuildingController {
     @ResponseBody
     public Result getBuildingList() throws BuildingException {
         List<Building> buildingList = buildingService.getBuildingList();
+        return new Result().setCode(200).setMessage("获取楼宇列表成功").setData(buildingList);
+    }
+
+    /**
+     * 获取寝室楼宇列表接口, name改为value
+     *
+     * @return 楼宇列表
+     * @throws BuildingException 获取楼宇列表异常
+     */
+    @RequiresRoles("管理员")
+    @RequestMapping("/getDormBuildingValueList.do")
+    @ResponseBody
+    public Result getBuildingValueList() throws BuildingException {
+        List<BuildingValueVo> buildingList = buildingService.getBuildingValueListByType("公寓楼");
         return new Result().setCode(200).setMessage("获取楼宇列表成功").setData(buildingList);
     }
 

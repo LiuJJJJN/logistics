@@ -1,6 +1,7 @@
 package com.djtu.building.dao;
 
 import com.djtu.building.pojo.Building;
+import com.djtu.building.pojo.vo.BuildingValueVo;
 
 import java.util.List;
 
@@ -36,4 +37,11 @@ public interface BuildingDao {
      * @return 影响条数
      */
     int deleteBuildingById(String id);
+
+    /**
+     * 获取楼宇value列表
+     *
+     * @return 楼宇value列表
+     */
+    List<BuildingValueVo> getBuildingValueListByType(String type);
 }
