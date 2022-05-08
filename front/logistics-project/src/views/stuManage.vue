@@ -75,7 +75,7 @@
       </el-table-column>
       <el-table-column
           label="姓名"
-          width="130">
+          width="70">
         <template slot-scope="scope">
           <span>{{ scope.row.name }}</span>
         </template>
@@ -110,7 +110,7 @@
       </el-table-column>
       <el-table-column
           label="班级"
-          width="100">
+          width="70">
         <template slot-scope="scope">
           <span>{{ scope.row.stuClass }}</span>
         </template>
@@ -120,6 +120,14 @@
           width="50">
         <template slot-scope="scope">
           <span>{{ scope.row.schoolSys }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+          label="当前寝室"
+          width="160">
+        <template slot-scope="scope">
+          <span v-if="scope.row.dorm != null">{{ scope.row.dorm.building.name+" / "+scope.row.dorm.doorNo }}</span>
+          <span v-if="scope.row.dorm == null">暂无</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -144,6 +152,10 @@
               @click="claimStu(scope.$index, scope.row)"
               v-show="isTutor"
               :disabled="scope.row.tutor">认领学生</el-button>
+          <el-button
+              size="mini"
+              @click="stuDorm(scope.$index, scope.row)"
+              v-show="!isTutor">分配寝室</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -188,6 +200,30 @@
       </div>
     </el-dialog>
 
+    <!--  分配寝室对话框  -->
+    <el-dialog
+        title="分配寝室"
+        :visible.sync="dialogStuDormVisible" width="40%">
+      <el-form :model="dormForm">
+        <el-form-item label="用户名" :label-width="formLabelWidth">
+          <span>{{ dormForm.username }}</span>
+        </el-form-item>
+        <el-form-item label="姓名" :label-width="formLabelWidth">
+          <span>{{ dormForm.name }}</span>
+        </el-form-item>
+        <el-form-item label="寝室" :label-width="formLabelWidth">
+          <el-cascader
+              v-model="dormForm.dorm"
+              :options="dormOptions"
+              :props="{ expandTrigger: 'hover' }"></el-cascader>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogStuDormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="setStuDorm">确 定</el-button>
+      </span>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -204,22 +240,8 @@ export default {
         stuClass:'',
         date:[]
       },
-      submitForm:{
-        id:'loading',
-        remark:'loading',
-      },
-      tableData: [{
-        id:'',
-        username:'loading',
-        name: 'loading',
-        sex: 'loading',
-        sno:'loading',
-        enterDate: '',
-        college:'',
-        stuClass:'',
-        schoolSys:'',
-        remark: 'loading',
-      }],
+      submitForm:{},
+      tableData: [],
       dialogRemarkFormVisible: false,
       pickerOptions: {
         shortcuts: [{
@@ -266,13 +288,16 @@ export default {
         resource: '',
         desc: ''
       },
+      dormForm:{},
       formLabelWidth: '120px',
       pageNo: 1, //当前页数
       pageSize: 10, //显示条数
       total: 0, //总条数
       multipleSelection: [],
       idArray:[],
-      isTutor:this.$store.getters.getUser.primaryRole == '导员'
+      isTutor:this.$store.getters.getUser.primaryRole == '导员',
+      dialogStuDormVisible: false,
+      dormOptions:[]
     }
   },
   methods:{
@@ -431,11 +456,40 @@ export default {
       }, err=>{
         console.log(err)
       })
+    },
+    stuDorm(index, row){
+      this.dialogStuDormVisible = true;
+      this.dormForm = row;
+      // console.log(row);
+    },
+    loadDormOptions(){
+      this.$axios.post("/dorm/getDormOptions.do")
+          .then(resp=>{
+            this.dormOptions = resp.data.data;
+          }, err=>{
+            console.log(err);
+          });
+    },
+    setStuDorm(){
+      this.$axios.post("/admin/manage/editStudentDorm.do", {
+        id:this.dormForm.id,
+        dormId:this.dormForm.dorm[1]
+      }).then(resp=>{
+        this.dialogStuDormVisible = false;
+        this.$message({
+          message: resp.data.message,
+          type: 'success'
+        });
+        this.getStudentList();
+      }, err=>{
+        console.log(err);
+      });
     }
   },
   created() {
     this.getStudentList();
     this.loadCollege();
+    this.loadDormOptions();
   }
 }
 </script>

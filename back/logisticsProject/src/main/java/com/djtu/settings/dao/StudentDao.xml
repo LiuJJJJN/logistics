@@ -51,6 +51,11 @@
         set tutor_id = null
         where id = #{stuId}
     </update>
+    <update id="editStudentDormById">
+        update tbl_student
+        set dorm_id = #{dormId}
+        where id = #{id}
+    </update>
     <delete id="deleteStudentByStuList">
         delete from tbl_student
         where id in
@@ -91,14 +96,15 @@
         from tbl_tutor
         where id = #{id}
     </select>
-    <select id="getDorm" resultType="Dorm">
+    <select id="getDorm" resultType="Dorm" resultMap="com.djtu.dorm.dao.DormDao.dormMap">
         select id,
                door_no,
                water,
                power,
                size,
                have_wc,
-               remark
+               remark,
+               building_id
         from tbl_dorm
         where id = #{id}
     </select>
@@ -198,18 +204,18 @@
     </select>
     <select id="getStudentListByPageConditionAndTutorId" resultType="com.djtu.settings.pojo.Student">
         select
-        id,
-        name,
-        username,
-        sex,
-        sno,
-        enter_date,
-        college,
-        stu_class,
-        school_sys,
-        dorm_id,
-        tutor_id,
-        remark
+            id,
+            name,
+            username,
+            sex,
+            sno,
+            enter_date,
+            college,
+            stu_class,
+            school_sys,
+            dorm_id,
+            tutor_id,
+            remark
         from tbl_student
         <where>
             tutor_id = #{tutorId}
@@ -296,5 +302,10 @@
                avatar_path
         from tbl_student
         where tutor_id=#{tutorId}
+    </select>
+    <select id="countDormByDormId" resultType="java.lang.Integer">
+        select count(*)
+        from tbl_student
+        where dorm_id = #{dormId}
     </select>
 </mapper>

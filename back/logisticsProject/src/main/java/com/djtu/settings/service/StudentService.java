@@ -54,4 +54,11 @@ public interface StudentService {
      */
     void setAvatarPath(String username, String avatarPath) throws UserManagerException;
 
+    /**
+     * 修改学生寝室
+     *
+     * @param id 学生id
+     * @param dormId 寝室id
+     */
+    void editStudentDormById(String id, String dormId) throws UserManagerException;
 }

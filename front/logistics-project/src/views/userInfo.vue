@@ -170,7 +170,7 @@
         寝室
       </template>
       <span class="contentText">
-        {{ userInfo.dorm.doorNo }}
+        {{ userInfo.dorm.building.name+" / "+userInfo.dorm.doorNo }}
       </span>
     </el-descriptions-item>
     <el-descriptions-item v-if="userInfo.tutor != null">

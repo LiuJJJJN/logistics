@@ -62,5 +62,54 @@
         from tbl_building
         where id = #{building_id}
     </select>
+    <select id="getDormListByBuildingId" resultType="com.djtu.dorm.pojo.Dorm">
+        select  id,
+                door_no,
+                water,
+                power,
+                size,
+                have_wc,
+                remark
+        from tbl_dorm
+        where building_id = #{id}
+    </select>
+    <select id="getDormSizeByDormId" resultType="java.lang.Integer">
+        select size from tbl_dorm where id = #{dormId}
+    </select>
+    <select id="getDormByUserId" resultType="com.djtu.dorm.pojo.Dorm" resultMap="dormMap">
+        select id,
+               door_no,
+               water,
+               power,
+               size,
+               have_wc,
+               building_id
+        from tbl_dorm
+        where id = (select dorm_id
+                    from tbl_student
+                    where id = (select student_id
+                                from tbl_user
+                                where id = #{userId}))
+    </select>
+    <select id="getDormFriendByUserId" resultType="com.djtu.settings.pojo.Student" resultMap="com.djtu.settings.dao.StudentDao.studentMap">
+        select id,
+               name,
+               username,
+               sex,
+               sno,
+               enter_date,
+               college,
+               stu_class,
+               school_sys,
+               dorm_id,
+               tutor_id,
+               remark
+        from tbl_student
+        where dorm_id = (select dorm_id
+                         from tbl_student
+                         where id = (select student_id
+                                     from tbl_user
+                                     where id = #{userId}));
+    </select>
 
 </mapper>

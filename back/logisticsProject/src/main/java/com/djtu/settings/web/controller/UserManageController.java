@@ -202,6 +202,24 @@ public class UserManageController {
     }
 
     /**
+     * 修改学生寝室
+     *
+     * @param map 学生id及寝室id
+     * @return 修改成功提示
+     * @throws UserManagerException 修改失败错误提示
+     */
+    @RequiresRoles(value = {"导员", "管理员"}, logical = Logical.OR)
+    @RequestMapping("/admin/manage/editStudentDorm.do")
+    @ResponseBody
+    public Result editStudentDorm(@RequestBody Map map) throws UserManagerException {
+        String id = (String) map.get("id");
+        String dormId = (String) map.get("dormId");
+        studentService.editStudentDormById(id, dormId);
+
+        return new Result().setCode(200).setMessage("修改学生寝室成功");
+    }
+
+    /**
      * 批量删除学生
      *
      * @param data 学生id列表

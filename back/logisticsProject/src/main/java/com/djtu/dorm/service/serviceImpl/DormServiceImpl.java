@@ -1,21 +1,29 @@
 package com.djtu.dorm.service.serviceImpl;
 
+import com.djtu.building.dao.BuildingDao;
+import com.djtu.building.pojo.Building;
 import com.djtu.dorm.dao.DormDao;
 import com.djtu.dorm.pojo.Dorm;
 import com.djtu.dorm.pojo.vo.DormVo;
 import com.djtu.dorm.service.DormService;
 import com.djtu.exception.DormException;
+import com.djtu.settings.pojo.Student;
 import com.djtu.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class DormServiceImpl implements DormService {
 
     @Autowired
     private DormDao dormDao;
+    @Autowired
+    private BuildingDao buildingDao;
 
     @Override
     public void addDormByDormVo(DormVo dormVo) throws DormException {
@@ -49,5 +57,49 @@ public class DormServiceImpl implements DormService {
         if (res != 1) {
             throw new DormException("修改寝室信息失败");
         }
+    }
+
+    @Override
+    public List<Object> getBuildingDormOptions() {
+        List<Object> fatherList = new ArrayList<>();
+
+        List<Building> buildingList = buildingDao.getBuildingList();
+        for (Building building : buildingList) {
+            Map<String, Object> fatherMap = new HashMap<>();
+            fatherMap.put("value", building.getId());
+            fatherMap.put("label", building.getName());
+            List<Object> subList = new ArrayList<>();
+            List<Dorm> dormList = dormDao.getDormListByBuildingId(building.getId());
+            for (Dorm dorm : dormList) {
+                Map<String, Object> subMap = new HashMap<>();
+                subMap.put("value", dorm.getId());
+                subMap.put("label", dorm.getDoorNo());
+
+                subList.add(subMap);
+            }
+            fatherMap.put("children", subList);
+
+            fatherList.add(fatherMap);
+        }
+
+        return fatherList;
+    }
+
+    @Override
+    public Dorm getDormByUserId(String userId) throws DormException {
+        Dorm dorm = dormDao.getDormByUserId(userId);
+        if (dorm == null) {
+            throw new DormException("未查询到寝室信息");
+        }
+        return dorm;
+    }
+
+    @Override
+    public List<Student> getDormFriendByUserId(String userId) throws DormException {
+        List<Student> dormFriends = dormDao.getDormFriendByUserId(userId);
+        if (dormFriends.isEmpty()) {
+            throw new DormException("获取室友信息失败或暂无室友");
+        }
+        return dormFriends;
     }
 }

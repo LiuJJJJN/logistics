@@ -78,7 +78,8 @@ public interface StudentDao {
      * @return 学生列表
      */
     List<Student> getStudentListByPageCondition(@Param("vo") StudentSearchVo studentSearchVo,
-                                                @Param("pageNo") Integer pageNo, @Param("pageSize") Integer pageSize);
+                                                @Param("pageNo") Integer pageNo,
+                                                @Param("pageSize") Integer pageSize);
 
     /**
      * 根据学生id修改备注
@@ -155,4 +156,21 @@ public interface StudentDao {
      * @return 影响条数
      */
     int setStudentTutorId2Null(String stuId);
+
+    /**
+     * 修改学生寝室
+     *
+     * @param id 学生id
+     * @param dormId 寝室id
+     * @return 影响条数
+     */
+    int editStudentDormById(@Param("id") String id, @Param("dormId") String dormId);
+
+    /**
+     * 根据寝室id查询寝室现有人数
+     *
+     * @param dormId 寝室id
+     * @return 现有人数
+     */
+    int countDormByDormId(String dormId);
 }

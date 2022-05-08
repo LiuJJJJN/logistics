@@ -5,6 +5,8 @@ import com.djtu.dorm.pojo.vo.DormVo;
 import com.djtu.dorm.service.DormService;
 import com.djtu.exception.DormException;
 import com.djtu.response.Result;
+import com.djtu.settings.pojo.Student;
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -80,6 +82,48 @@ public class DormController {
         String id = (String) map.get("id");
         dormService.deleteDormByDormId(id);
         return new Result().setCode(200).setMessage("删除寝室成功");
+    }
+
+    /**
+     * 获取楼宇和寝室的级联列表
+     *
+     * @return 查询成功
+     * @throws DormException 查询失败
+     */
+    @RequiresRoles(value = {"管理员", "导员"}, logical = Logical.OR)
+    @RequestMapping("/getDormOptions.do")
+    @ResponseBody
+    public Result getDormOptions() throws DormException {
+        List<Object> buildingDormList = dormService.getBuildingDormOptions();
+        return new Result().setCode(200).setMessage("查询级联菜单成功").setData(buildingDormList);
+    }
+
+    /**
+     * 根据用户id获取寝室信息
+     *
+     * @return 查询成功
+     * @throws DormException 查询失败
+     */
+    @RequiresRoles("学生")
+    @RequestMapping("/getDormByUserId.do")
+    @ResponseBody
+    public Result getDormByUserId(String userId) throws DormException {
+        Dorm dorm = dormService.getDormByUserId(userId);
+        return new Result().setCode(200).setMessage("查询寝室信息成功").setData(dorm);
+    }
+
+    /**
+     * 根据用户id获取室友列表
+     *
+     * @return 查询成功
+     * @throws DormException 查询失败
+     */
+    @RequiresRoles("学生")
+    @RequestMapping("/getDormFriendByUserId.do")
+    @ResponseBody
+    public Result getDormFriendByUserId(String userId) throws DormException {
+        List<Student> studentList = dormService.getDormFriendByUserId(userId);
+        return new Result().setCode(200).setMessage("查询室友列表成功").setData(studentList);
     }
 
 }

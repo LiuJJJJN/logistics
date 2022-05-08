@@ -1,9 +1,11 @@
 package com.djtu.settings.service.serviceImpl;
 
+import com.djtu.dorm.dao.DormDao;
 import com.djtu.exception.RegisterException;
 import com.djtu.exception.UserManagerException;
 import com.djtu.settings.dao.StudentDao;
 import com.djtu.settings.pojo.Student;
+import com.djtu.settings.pojo.User;
 import com.djtu.settings.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,8 @@ public class StudentServiceImpl implements StudentService {
 
     @Autowired
     private StudentDao studentDao;
+    @Autowired
+    private DormDao dormDao;
 
     @Override
     public void registerStudentUserNameVerify(String username) throws RegisterException {
@@ -67,6 +71,19 @@ public class StudentServiceImpl implements StudentService {
         int res = studentDao.setStudentAvatarPathByUsername(username, avatarPath);
         if (res != 1) {
             throw new UserManagerException("学生头像设置失败");
+        }
+    }
+
+    @Override
+    public synchronized void editStudentDormById(String id, String dormId) throws UserManagerException {
+        int size = dormDao.getDormSizeByDormId(dormId);
+        int count = studentDao.countDormByDormId(dormId);
+        if (count == size) {
+            throw new UserManagerException("寝室人满!");
+        }
+        int res = studentDao.editStudentDormById(id, dormId);
+        if (res != 1) {
+            throw new UserManagerException("修改学生寝室失败");
         }
     }
 

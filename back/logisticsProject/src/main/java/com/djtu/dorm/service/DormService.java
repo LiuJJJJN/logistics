@@ -3,6 +3,7 @@ package com.djtu.dorm.service;
 import com.djtu.dorm.pojo.Dorm;
 import com.djtu.dorm.pojo.vo.DormVo;
 import com.djtu.exception.DormException;
+import com.djtu.settings.pojo.Student;
 
 import java.util.List;
 
@@ -35,4 +36,27 @@ public interface DormService {
      * @param dormVo dormVo
      */
     void editDormByDormVo(DormVo dormVo) throws DormException;
+
+    /**
+     * 获取楼宇和寝室级联列表
+     *
+     * @return 列表
+     */
+    List<Object> getBuildingDormOptions();
+
+    /**
+     * 根据用户id查询寝室和楼宇相关信息
+     *
+     * @param userId 用户id
+     * @return 寝室实例
+     */
+    Dorm getDormByUserId(String userId) throws DormException;
+
+    /**
+     * 根据用户id查询室友列表
+     *
+     * @param userId 用户id
+     * @return 室友列表
+     */
+    List<Student> getDormFriendByUserId(String userId) throws DormException;
 }
