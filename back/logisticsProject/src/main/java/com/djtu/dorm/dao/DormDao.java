@@ -38,4 +38,12 @@ public interface DormDao {
      * @return 影响条数
      */
     int editDormByDormVo(DormVo dormVo);
+
+    /**
+     * 根据楼宇id获取寝室列表
+     *
+     * @param id 楼宇id
+     * @return 寝室列表
+     */
+    List<Dorm> getDormListByBuildingId(String id);
 }

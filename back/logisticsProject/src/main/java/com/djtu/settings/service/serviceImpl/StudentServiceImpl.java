@@ -70,4 +70,12 @@ public class StudentServiceImpl implements StudentService {
         }
     }
 
+    @Override
+    public void editStudentDormById(String id, String dormId) throws UserManagerException {
+        int res = studentDao.editStudentDormById(id, dormId);
+        if (res != 1) {
+            throw new UserManagerException("修改学生寝室失败");
+        }
+    }
+
 }

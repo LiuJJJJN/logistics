@@ -35,4 +35,12 @@ public interface DormService {
      * @param dormVo dormVo
      */
     void editDormByDormVo(DormVo dormVo) throws DormException;
+
+    /**
+     * 获取楼宇和寝室级联列表
+     *
+     * @return 列表
+     */
+    List<Object> getBuildingDormOptions();
+
 }
