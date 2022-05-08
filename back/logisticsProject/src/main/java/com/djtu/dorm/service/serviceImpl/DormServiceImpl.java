@@ -7,6 +7,7 @@ import com.djtu.dorm.pojo.Dorm;
 import com.djtu.dorm.pojo.vo.DormVo;
 import com.djtu.dorm.service.DormService;
 import com.djtu.exception.DormException;
+import com.djtu.settings.pojo.Student;
 import com.djtu.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -82,5 +83,23 @@ public class DormServiceImpl implements DormService {
         }
 
         return fatherList;
+    }
+
+    @Override
+    public Dorm getDormByUserId(String userId) throws DormException {
+        Dorm dorm = dormDao.getDormByUserId(userId);
+        if (dorm == null) {
+            throw new DormException("未查询到寝室信息");
+        }
+        return dorm;
+    }
+
+    @Override
+    public List<Student> getDormFriendByUserId(String userId) throws DormException {
+        List<Student> dormFriends = dormDao.getDormFriendByUserId(userId);
+        if (dormFriends.isEmpty()) {
+            throw new DormException("获取室友信息失败或暂无室友");
+        }
+        return dormFriends;
     }
 }

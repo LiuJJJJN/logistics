@@ -2,6 +2,7 @@ package com.djtu.dorm.dao;
 
 import com.djtu.dorm.pojo.Dorm;
 import com.djtu.dorm.pojo.vo.DormVo;
+import com.djtu.settings.pojo.Student;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -54,4 +55,20 @@ public interface DormDao {
      * @return 寝室size
      */
     int getDormSizeByDormId(String dormId);
+
+    /**
+     * 根据用户id获取寝室信息
+     *
+     * @param userId 用户id
+     * @return 寝室实例
+     */
+    Dorm getDormByUserId(String userId);
+
+    /**
+     * 根据用户id获取室友列表
+     *
+     * @param userId 用户id
+     * @return 室友列表
+     */
+    List<Student> getDormFriendByUserId(String userId);
 }
