@@ -57,7 +57,8 @@ public interface RoleDao {
      */
     List<StudentRoleVo> getStudentUserRoleVoList(@Param("vo") StudentSearchVo studentSearchVo,
                                                  @Param("pageNo") int pageCount,
-                                                 @Param("pageSize") int pageSize);
+                                                 @Param("pageSize") int pageSize,
+                                                 @Param("tutorId") String tutorId);
 
     /**
      * 分页查询导员相关角色信息列表 + 模糊查询
