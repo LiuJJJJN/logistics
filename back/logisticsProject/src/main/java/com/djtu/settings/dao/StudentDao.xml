@@ -303,4 +303,9 @@
         from tbl_student
         where tutor_id=#{tutorId}
     </select>
+    <select id="countDormByDormId" resultType="java.lang.Integer">
+        select count(*)
+        from tbl_student
+        where dorm_id = #{dormId}
+    </select>
 </mapper>

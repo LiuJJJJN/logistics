@@ -166,4 +166,11 @@ public interface StudentDao {
      */
     int editStudentDormById(@Param("id") String id, @Param("dormId") String dormId);
 
+    /**
+     * 根据寝室id查询寝室现有人数
+     *
+     * @param dormId 寝室id
+     * @return 现有人数
+     */
+    int countDormByDormId(String dormId);
 }

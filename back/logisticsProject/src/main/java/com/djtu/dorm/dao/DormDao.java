@@ -46,4 +46,12 @@ public interface DormDao {
      * @return 寝室列表
      */
     List<Dorm> getDormListByBuildingId(String id);
+
+    /**
+     * 根据寝室id查询寝室size大小
+     *
+     * @param dormId 寝室id
+     * @return 寝室size
+     */
+    int getDormSizeByDormId(String dormId);
 }
