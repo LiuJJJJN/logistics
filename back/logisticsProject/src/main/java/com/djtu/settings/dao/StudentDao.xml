@@ -51,6 +51,17 @@
         set tutor_id = null
         where id = #{stuId}
     </update>
+
+    <select id="getStudentAndDormInfByTutorId" resultType="com.djtu.permission.pojo.vo.StudentDormVo">
+        select s.username as 'username',
+               s.name as 'name',
+               s.sex as 'sex',
+               s.college as 'college',
+               s.remark as 'remark',
+               d.door_no as 'doorNo'
+        from tbl_student s join tbl_dorm d on s.dorm_id=d.id
+        where s.tutor_id=#{tutorId}
+    </select>
     <delete id="deleteStudentByStuList">
         delete from tbl_student
         where id in

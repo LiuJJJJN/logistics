@@ -1,19 +1,32 @@
 package com.djtu.settings.service.serviceImpl;
 
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.annotation.ExcelProperty;
+import com.alibaba.excel.util.ListUtils;
+import com.alibaba.excel.util.MapUtils;
 import com.djtu.exception.RegisterException;
 import com.djtu.exception.UserManagerException;
+import com.djtu.permission.pojo.vo.StudentDormVo;
+import com.djtu.response.Result;
 import com.djtu.settings.dao.StudentDao;
+import com.djtu.settings.dao.UserDao;
 import com.djtu.settings.pojo.Student;
 import com.djtu.settings.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.util.List;
 
 @Service
 public class StudentServiceImpl implements StudentService {
 
     @Autowired
     private StudentDao studentDao;
+    @Autowired
+    UserDao userDao;
 
     @Override
     public void registerStudentUserNameVerify(String username) throws RegisterException {
@@ -70,4 +83,19 @@ public class StudentServiceImpl implements StudentService {
         }
     }
 
+    @Override
+    public void downloadMyStudent(String id, HttpServletResponse response) throws IOException {
+        //根据用户id获取导员id
+        String tutorId=userDao.getTutorIdByUserId(id);
+        //根据导员id获取学生
+        List<StudentDormVo> list=studentDao.getStudentAndDormInfByTutorId(tutorId);
+        // 这里注意 有同学反应使用swagger 会导致各种问题，请直接用浏览器或者用postman
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setCharacterEncoding("utf-8");
+        // 这里URLEncoder.encode可以防止中文乱码 当然和easyexcel没有关系
+        String fileName = URLEncoder.encode("学生", "UTF-8").replaceAll("\\+", "%20");
+        response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + fileName + ".xlsx");
+        //EasyExcel.write(response.getOutputStream()).sheet("学生表").doWrite(FileUtils.data());
+        EasyExcel.write(response.getOutputStream(), StudentDormVo.class).sheet("模板").doWrite(list);
+    }
 }

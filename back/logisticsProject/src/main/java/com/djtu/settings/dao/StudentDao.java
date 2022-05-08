@@ -1,5 +1,6 @@
 package com.djtu.settings.dao;
 
+import com.djtu.permission.pojo.vo.StudentDormVo;
 import com.djtu.settings.pojo.Student;
 import com.djtu.settings.pojo.vo.StudentSearchVo;
 import org.apache.ibatis.annotations.Param;
@@ -155,4 +156,11 @@ public interface StudentDao {
      * @return 影响条数
      */
     int setStudentTutorId2Null(String stuId);
+
+    /**
+     * 获取学生信息包括寝室
+     * @param tutorId
+     * @return 学生和寝室信息实例
+     */
+    List<StudentDormVo> getStudentAndDormInfByTutorId(String tutorId);
 }
