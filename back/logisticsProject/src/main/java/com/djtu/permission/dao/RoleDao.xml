@@ -62,6 +62,9 @@
         where u.student_id in (
         select id from tbl_student
         )
+        <if test="tutorId != ''">
+            and s.tutor_id = #{tutorId}
+        </if>
         <if test="vo.name != null">
             and s.name like '%' #{vo.name} '%'
         </if>

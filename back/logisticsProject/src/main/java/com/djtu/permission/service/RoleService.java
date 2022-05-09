@@ -53,7 +53,7 @@ public interface RoleService {
      * @param pageSize  数据量
      * @return 学生用户角色信息列表
      */
-    List<StudentRoleVo> getStudentUserRoleVoList(StudentSearchVo studentSearchVo, int pageCount, int pageSize);
+    List<StudentRoleVo> getStudentUserRoleVoList(StudentSearchVo studentSearchVo, int pageCount, int pageSize, String tutorId);
 
     /**
      * 分页查询导员用户角色相关信息

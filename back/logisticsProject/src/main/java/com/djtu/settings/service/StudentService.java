@@ -63,4 +63,11 @@ public interface StudentService {
      * @param id userId
      */
     void downloadMyStudent(String id, HttpServletResponse response) throws IOException;
+
+    /*
+     * 修改学生寝室
+     * @param id 学生id
+     * @param dormId 寝室id
+     */
+    void editStudentDormById(String id, String dormId) throws UserManagerException;
 }

@@ -1,9 +1,12 @@
 package com.djtu.settings.service.serviceImpl;
 
+
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.util.ListUtils;
 import com.alibaba.excel.util.MapUtils;
+
+import com.djtu.dorm.dao.DormDao;
 import com.djtu.exception.RegisterException;
 import com.djtu.exception.UserManagerException;
 import com.djtu.permission.pojo.vo.StudentDormVo;
@@ -11,6 +14,7 @@ import com.djtu.response.Result;
 import com.djtu.settings.dao.StudentDao;
 import com.djtu.settings.dao.UserDao;
 import com.djtu.settings.pojo.Student;
+import com.djtu.settings.pojo.User;
 import com.djtu.settings.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +31,7 @@ public class StudentServiceImpl implements StudentService {
     private StudentDao studentDao;
     @Autowired
     UserDao userDao;
+    private DormDao dormDao;
 
     @Override
     public void registerStudentUserNameVerify(String username) throws RegisterException {
@@ -98,4 +103,17 @@ public class StudentServiceImpl implements StudentService {
         //EasyExcel.write(response.getOutputStream()).sheet("学生表").doWrite(FileUtils.data());
         EasyExcel.write(response.getOutputStream(), StudentDormVo.class).sheet("模板").doWrite(list);
     }
+
+    public synchronized void editStudentDormById(String id, String dormId) throws UserManagerException {
+        int size = dormDao.getDormSizeByDormId(dormId);
+        int count = studentDao.countDormByDormId(dormId);
+        if (count == size) {
+            throw new UserManagerException("寝室人满!");
+        }
+        int res = studentDao.editStudentDormById(id, dormId);
+        if (res != 1) {
+            throw new UserManagerException("修改学生寝室失败");
+        }
+    }
+
 }

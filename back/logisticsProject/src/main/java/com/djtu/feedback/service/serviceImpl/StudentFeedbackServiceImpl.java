@@ -1,6 +1,7 @@
 package com.djtu.feedback.service.serviceImpl;
 
 import com.djtu.exception.FeedbackException;
+import com.djtu.exception.NothingException;
 import com.djtu.feedback.dao.FeedbackDao;
 import com.djtu.settings.dao.UserDao;
 import com.djtu.feedback.pojo.Feedback;
@@ -46,7 +47,7 @@ public class StudentFeedbackServiceImpl implements StudentFeedbackService {
     }
 
     @Override
-    public List<Feedback> studentFeedbackList(User user) throws FeedbackException {
+    public List<Feedback> studentFeedbackList(User user) throws NothingException {
         Integer pageNo = Integer.valueOf(user.getTutorId());
         Integer pageSize = Integer.valueOf(user.getAdminId());
         //获取该学生的stu_id
@@ -54,7 +55,7 @@ public class StudentFeedbackServiceImpl implements StudentFeedbackService {
         //根据学生id获取反馈列表
         List<Feedback> list = feedbackDao.getFeedbackByStudent(stuId, pageNo, pageSize);
         if (list.isEmpty()) {
-            throw new FeedbackException("未查询到反馈信息");
+            throw new NothingException("未查询到反馈信息");
         }
         return list;
     }

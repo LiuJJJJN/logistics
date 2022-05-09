@@ -43,8 +43,8 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public List<StudentRoleVo> getStudentUserRoleVoList(StudentSearchVo studentSearchVo, int pageCount, int pageSize) {
-        return roleDao.getStudentUserRoleVoList(studentSearchVo, pageCount, pageSize);
+    public List<StudentRoleVo> getStudentUserRoleVoList(StudentSearchVo studentSearchVo, int pageCount, int pageSize, String tutorId) {
+        return roleDao.getStudentUserRoleVoList(studentSearchVo, pageCount, pageSize, tutorId);
     }
 
     @Override

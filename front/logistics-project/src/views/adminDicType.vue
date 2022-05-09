@@ -17,11 +17,11 @@
         <el-button type="primary" size="mini" @click="delBtn">确定</el-button>
       </div>
       <el-button
-        size="mini"
-        type="danger"
-        icon="el-icon-delete"
-        slot="reference"
-        class="functionBtn"></el-button>
+          size="mini"
+          type="danger"
+          icon="el-icon-delete"
+          slot="reference"
+          class="functionBtn"></el-button>
     </el-popover>
     <!--  添加按钮  -->
     <el-button
@@ -46,9 +46,9 @@
           width="10">
       </el-table-column>
       <el-table-column
-        prop="code"
-        label="code"
-        width="230">
+          prop="code"
+          label="code"
+          width="230">
         <template slot-scope="scope">
           <span>{{ scope.row.code }}</span>
         </template>
@@ -79,7 +79,8 @@
         <template slot-scope="scope">
           <el-button
               size="mini"
-              @click="updateBtn(scope.$index,scope.row)" >修 改</el-button>
+              @click="updateBtn(scope.$index,scope.row)">修 改
+          </el-button>
         </template>
       </el-table-column>
       <el-table-column
@@ -89,7 +90,6 @@
         <template slot-scope="">
 
         </template>
-        <!--      <el-button type="text" @click="open">点击打开 Message Box</el-button>-->
       </el-table-column>
       <el-table-column
           prop=""
@@ -98,7 +98,7 @@
       </el-table-column>
     </el-table>
 
-<!-- 分页 -->
+    <!-- 分页 -->
     <div class="block my-pagination">
       <el-pagination
           @size-change="handleSizeChange"
@@ -112,7 +112,7 @@
       </el-pagination>
     </div>
     <!--  修改模态窗口-->
-<!--    <el-button type="text" @click="dialogFormVisible = true">打开嵌套表单的 Dialog</el-button>-->
+    <!--    <el-button type="text" @click="dialogFormVisible = true">打开嵌套表单的 Dialog</el-button>-->
 
     <el-dialog title="修 改" :visible.sync="dialogFormVisible">
       <el-form :model="form">
@@ -161,21 +161,16 @@ export default {
     return {
       //多选
       multipleSelection: [],
-      idArray:[],
-      tableData: [{
-        id:'',
-        code:'',
-        name: '',
-        description: '',
-      }],
+      idArray: [],
+      tableData: [],
       //模态窗口
       dialogFormAddDicValue: false,
       dialogFormVisible: false,
       form: {
-        id:'',
-        code:'',
+        id: '',
+        code: '',
         name: '',
-        description:'',
+        description: '',
         region: '',
         date1: '',
         date2: '',
@@ -185,24 +180,24 @@ export default {
         desc: ''
       },
       add: {
-        id:'',
-        code:'',
-        name:'',
-        description:''
+        id: '',
+        code: '',
+        name: '',
+        description: ''
       },
       formLabelWidth: '120px',
       pageNo: 1, //当前页数
       pageSize: 10, //显示条数
       total: 0, //总条数
-      input:{
-        inputCode:'',
-        inputName:'',
-        inputDescription:''
+      input: {
+        inputCode: '',
+        inputName: '',
+        inputDescription: ''
       },
-      visible:false
+      visible: false,
     }
   },
-  methods:{
+  methods: {
     //删除的确认弹窗
     open() {
       this.$confirm('此操作将永久删除该数据字典类型, 是否继续?', '提示', {
@@ -222,37 +217,37 @@ export default {
       });
     },
     //搜索
-    searchBtn(){
+    searchBtn() {
       this.$axios.post("/dic/getDicTByCN.do",
           {
-            pageNo:(this.pageNo-1)*this.pageSize,
-            pageSize:this.pageSize,
-            name:this.input.inputName,
-            code:this.input.inputCode,
-            description:this.input.inputDescription
+            pageNo: (this.pageNo - 1) * this.pageSize,
+            pageSize: this.pageSize,
+            name: this.input.inputName,
+            code: this.input.inputCode,
+            description: this.input.inputDescription
           })
-          .then(resp=>{
-            this.total=resp.data.data.total;
+          .then(resp => {
+            this.total = resp.data.data.total;
             this.tableData = resp.data.data.list;
-          },err=>{
+          }, err => {
             console.log(err);
           });
     },
     //加载表格数据
-    getDicTypeList(){
+    getDicTypeList() {
       //pageNo第几页
       //pageSize 多少条一页
       this.$axios.post("/dic/getDicTByCN.do",
           {
-            pageNo:(this.pageNo-1)*this.pageSize,
-            pageSize:this.pageSize
+            pageNo: (this.pageNo - 1) * this.pageSize,
+            pageSize: this.pageSize
           })
-          .then(resp=>{
+          .then(resp => {
             console.log(resp.data);
             //alert(this.pageSize);
-            this.total=resp.data.data.total;
+            this.total = resp.data.data.total;
             this.tableData = resp.data.data.list;
-          },err=>{
+          }, err => {
             console.log(err);
           });
 
@@ -268,49 +263,49 @@ export default {
       this.getDicTypeList();
     },
     //修改-模态窗口
-    updateBtn(index,row){
+    updateBtn(index, row) {
       this.dialogFormVisible = true;
-      this.form.id=row.id;
-      this.form.code=row.code;
-      this.form.name=row.name;
-      this.form.description=row.description;
+      this.form.id = row.id;
+      this.form.code = row.code;
+      this.form.name = row.name;
+      this.form.description = row.description;
     },
     //修改按钮
-    updateSureBtn(){
-      if(this.form.code==''){
+    updateSureBtn() {
+      if (this.form.code == '') {
         this.$notify({
           title: '偏移',
           message: '代码不能为空',
           offset: 100
         });
         return false;
-      }else if(this.form.name==''){
+      } else if (this.form.name == '') {
         this.$notify({
           title: '偏移',
           message: '名称不能为空',
           offset: 100
         });
         return false;
-      }else if(this.form.description==''){
+      } else if (this.form.description == '') {
         this.$notify({
           title: '偏移',
           message: '描述不能为空',
           offset: 100
         });
         return false;
-      }else{
+      } else {
         this.$axios.post("/dic/updateDicTL.do",
             {
-              code:this.form.code,
-              name:this.form.name,
-              description:this.form.description,
-              id:this.form.id
+              code: this.form.code,
+              name: this.form.name,
+              description: this.form.description,
+              id: this.form.id
             })
-            .then(resp=>{
+            .then(resp => {
               console.log(resp.data);
               //this.tableData=resp.data.data;
               this.getDicTypeList();
-            },err=>{
+            }, err => {
               console.log(err);
             });
         this.dialogFormVisible = false
@@ -319,47 +314,47 @@ export default {
 
     },
     //添加按钮
-    addDicTypeBtn(){
+    addDicTypeBtn() {
       this.dialogFormAddDicValue = true;
     },
     //添加确定按钮
-    addSureBtn(){
-      if(this.add.code==''){
+    addSureBtn() {
+      if (this.add.code == '') {
         this.$notify({
           title: '偏移',
           message: '代码不能为空',
           offset: 100
         });
         return false;
-      }else if(this.add.name==''){
+      } else if (this.add.name == '') {
         this.$notify({
           title: '偏移',
           message: '名称不能为空',
           offset: 100
         });
         return false;
-      }else if(this.add.description==''){
+      } else if (this.add.description == '') {
         this.$notify({
           title: '偏移',
           message: '描述不能为空',
           offset: 100
         });
         return false;
-      }else{
+      } else {
         this.$axios.post("/dic/setDicTL.do",
             {
-              code:this.add.code,
-              name:this.add.name,
-              description:this.add.description,
+              code: this.add.code,
+              name: this.add.name,
+              description: this.add.description,
             })
-            .then(resp=>{
+            .then(resp => {
               console.log(resp.data);
-              this.tableData=resp.data.data;
-              this.add.code='';
-              this.add.name='';
-              this.add.description='';
+              this.tableData = resp.data.data;
+              this.add.code = '';
+              this.add.name = '';
+              this.add.description = '';
               this.getDicTypeList();
-            },err=>{
+            }, err => {
               console.log(err);
             });
         this.dialogFormAddDicValue = false;
@@ -367,36 +362,35 @@ export default {
 
     },
     //删除
-    selection(val){
+    selection(val) {
       this.multipleSelection = val;
       console.log(val);
     },
-    delBtn(){
+    delBtn() {
       this.visible = false;
-      for(let i=0;i<this.multipleSelection.length;i++){
-        this.idArray[i]=this.multipleSelection[i].id;
+      for (let i = 0; i < this.multipleSelection.length; i++) {
+        this.idArray[i] = this.multipleSelection[i].id;
       }
 
       if (this.idArray.length != 0) {
         this.$axios.post("/dic/delDicTL.do",
             this.idArray
         )
-            .then(resp=>{
+            .then(resp => {
               console.log(resp.data);
               console.log(resp.data);
-              this.tableData=resp.data.data;
+              this.tableData = resp.data.data;
               this.getDicTypeList();
-            },err=>{
+            }, err => {
               console.log(err);
             });
-      }else{
+      } else {
         this.$message({
           message: '请选择要删除的数据字典类型',
           type: 'warning'
         });
       }
     },
-
 
 
   },
@@ -408,30 +402,36 @@ export default {
 </script>
 
 <style scoped>
-.inputCode{
-  width:200px;
+.inputCode {
+  width: 200px;
   margin-left: 40px;
 }
-.inputName{
-  width:200px;
-  margin-left: 40px;
-  margin-bottom: 30px;
-}
-.inputDescription{
-  width:200px;
+
+.inputName {
+  width: 200px;
   margin-left: 40px;
   margin-bottom: 30px;
 }
-.search{
+
+.inputDescription {
+  width: 200px;
+  margin-left: 40px;
+  margin-bottom: 30px;
+}
+
+.search {
   margin-left: 40px;
 }
-.aaa{
+
+.aaa {
   width: 220px;
 }
-.my-pagination{
+
+.my-pagination {
   margin: 20px;
 }
-.functionBtn{
+
+.functionBtn {
   display: inline-block;
   height: 35px;
   width: 60px;

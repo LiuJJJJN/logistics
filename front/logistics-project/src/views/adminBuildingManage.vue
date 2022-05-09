@@ -1,6 +1,8 @@
 <template>
   <div>
-    <el-button type="primary" icon="el-icon-plus" style="margin-bottom: 20px; margin-left: 10px; width: 70px"
+    <el-button type="primary"
+               icon="el-icon-plus"
+               style="margin-bottom: 20px; margin-left: 10px; width: 70px"
                @click="addDialogFormVisible = true"></el-button>
     <el-table
         :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
@@ -148,7 +150,7 @@ export default {
         type: [
           {required: true, message: '请输入楼宇类型', trigger: 'blur'},
         ],
-      }
+      },
     }
   },
   methods: {
@@ -164,13 +166,13 @@ export default {
       }).then(() => {
         this.$axios.post("/building/deleteBuilding.do", {
           id: row.id
-        }).then(resp=>{
+        }).then(resp => {
           this.$message({
-              type: 'success',
-              message: resp.data.message
-            });
+            type: 'success',
+            message: resp.data.message
+          });
           this.loadBuildingList();
-          }, err=>{
+        }, err => {
           console.log(err);
         })
       }).catch(() => {
@@ -184,13 +186,13 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.$axios.post("/building/editBuilding.do", this.editForm)
-              .then(resp=>{
+              .then(resp => {
                 this.$message({
                   message: resp.data.message,
                   type: 'success'
                 });
                 this.loadBuildingList();
-              }, err=>{
+              }, err => {
                 console.log(err);
               });
           this.editDialogFormVisible = false;
@@ -234,11 +236,11 @@ export default {
       this.addDialogFormVisible = false;
       this.$refs[formName].resetFields();
     },
-    loadBuildingList(){
+    loadBuildingList() {
       this.$axios.post("/building/getBuildingList.do")
-          .then(resp=>{
+          .then(resp => {
             this.tableData = resp.data.data;
-          }, err=>{
+          }, err => {
             console.log(err);
           })
     }

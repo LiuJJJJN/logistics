@@ -2,7 +2,7 @@
   <div>
     <h1 style="font-size: 20px; display: inline-block; width: 200px">历史回复:</h1>
     <div style="float: right">
-      <el-badge :value="this.unNum" :max="100" class="item1"  v-show="this.unNum==0?false:true">
+      <el-badge :value="this.unNum" :max="100" class="item1" v-show="this.unNum==0?false:true">
         <el-button size="large" @click="unReply">未回复</el-button>
       </el-badge>
     </div>
@@ -141,9 +141,13 @@
       <el-form label-width="150px">
         <!--学生的内容-->
         <el-card class="box-card">
-          <div class="text item"><font color="#d2691e">{{this.whoHistoryInf}}：&nbsp;&nbsp;</font><font color="#deb887" style="font-family: 幼圆">{{this.textarea3}}</font></div>
+          <div class="text item"><font color="#d2691e">{{ this.whoHistoryInf }}：&nbsp;&nbsp;</font>
+            <font color="#deb887" style="font-family: 幼圆">{{ this.textarea3 }}</font>
+          </div>
           <div v-for="o in this.replyList" :key="o" class="text item">
-            <font style="font-weight: bold">我：</font><font style="font-weight: lighter;font-family: 幼圆">{{o.reply }}</font>
+            <font style="font-weight: bold">我：</font><font style="font-weight: lighter;font-family: 幼圆">{{
+              o.reply
+            }}</font>
           </div>
         </el-card>
         <!--再次答复 -->
@@ -190,20 +194,14 @@ export default {
         address: '上海市'
       }],
       showUnReply: false,
-      tableData: [{
-        name: '',
-        id: '',
-        titleFeedback: '',
-        time: '',
-        replyTime: '',
-      }],
+      tableData: [],
       replyList: [{
         time: '',
         reply: ''
       }],
       dialogVisible: false,
       getId: '',
-      replyAgainInf: ''
+      replyAgainInf: '',
     }
   },
   methods: {
@@ -214,7 +212,7 @@ export default {
           }
       ).then(resp => {
         this.unNum = resp.data.data.num;
-        console.log(resp.data);
+        // console.log(resp.data);
       }, err => {
         console.log(err);
       });
@@ -313,7 +311,7 @@ export default {
       ).then(resp => {
         this.historyTotal = resp.data.data.total;
         this.tableData = resp.data.data.list;
-        console.log(resp.data);
+        // console.log(resp.data);
       }, err => {
         console.log(err);
       });
@@ -329,7 +327,7 @@ export default {
     //详细内容
     historyFeedbackInf(index, row) {
       this.detailedhistoryInfOpen = true;
-      this.getId=row.id;
+      this.getId = row.id;
       this.$axios.post("/reply/getHistoryIBI.do", {
             id: row.id,//feed_id
           }
@@ -352,13 +350,13 @@ export default {
       });
     },
     //再次回复按钮
-    replyAgainInfBtn(){
-      if(this.replyAgainInf==''){
+    replyAgainInfBtn() {
+      if (this.replyAgainInf == '') {
         this.$message({
           message: '警告，回复内容不能为空',
           type: 'warning'
         });
-      }else{
+      } else {
         this.$confirm('是否确认再次回复?', '', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -367,10 +365,10 @@ export default {
           this.$axios.post("/reply/replyAgain.do", {
                 tutorId: this.$store.getters.getUser.userId,//userId
                 feedbackId: this.getId,//反馈的id
-                reply:this.replyAgainInf//再次回复的内容
+                reply: this.replyAgainInf//再次回复的内容
               }
           ).then(resp => {
-            this.replyAgainInf='';
+            this.replyAgainInf = '';
             this.replyHistoryList();
             console.log(resp.data);
           }, err => {
@@ -433,6 +431,7 @@ export default {
 .my-pagination {
   margin: 20px;
 }
+
 .text {
   font-size: 14px;
 }

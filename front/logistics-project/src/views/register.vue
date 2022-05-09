@@ -23,7 +23,7 @@ export default {
   name: "register",
   data() {
     return {
-      ident:'',
+      ident: '',
     };
   },
   methods: {
