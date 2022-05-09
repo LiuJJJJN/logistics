@@ -39,6 +39,7 @@ public class PermissionController {
      * @param map 前端发过来的 suerId
      * @return 功能列表
      */
+    @RequiresRoles(value = {"学生", "导员", "管理员"}, logical = Logical.OR)
     @RequestMapping("/getPermissionList.do")
     @ResponseBody
     public Result getPermissionList(@RequestBody Map<String, String> map) {
