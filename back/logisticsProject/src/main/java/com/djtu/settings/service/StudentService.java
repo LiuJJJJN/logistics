@@ -2,7 +2,11 @@ package com.djtu.settings.service;
 
 import com.djtu.exception.RegisterException;
 import com.djtu.exception.UserManagerException;
+import com.djtu.response.Result;
 import com.djtu.settings.pojo.Student;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 public interface StudentService {
 
@@ -55,8 +59,13 @@ public interface StudentService {
     void setAvatarPath(String username, String avatarPath) throws UserManagerException;
 
     /**
+     * 下载我的学生Excel
+     * @param id userId
+     */
+    void downloadMyStudent(String id, HttpServletResponse response) throws IOException;
+
+    /*
      * 修改学生寝室
-     *
      * @param id 学生id
      * @param dormId 寝室id
      */

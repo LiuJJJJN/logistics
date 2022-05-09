@@ -44,14 +44,36 @@
         <el-button icon="el-icon-search" circle @click="getStudentList"></el-button>
       </el-col>
     </el-row>
+    <el-row :gutter="20">
+      <el-col :span="1.5"><div class="grid-content bg-purple">
+        <el-button
+            size="mini"
+            type="danger"
+            icon="el-icon-delete"
+            slot="reference"
+            @click="delBtn"
+            class="functionBtn"></el-button>
+      </div></el-col>
+      <el-col :span="2"><div class="grid-content bg-purple">
+        <!--学生下载信息-->
+        <el-form :action="actionURL" method="post" type="primary">
+          <el-input type="submit" value="导出" style="width: 80px;"/>
+        </el-form>
+      </div></el-col>
+      <el-col :span="1"><div class="grid-content bg-purple">
+        <el-button type="primary" plain>主要按钮</el-button>
+      </div></el-col>
+    </el-row>
 
-    <el-button
-        size="mini"
-        type="danger"
-        icon="el-icon-delete"
-        slot="reference"
-        @click="delBtn"
-        class="functionBtn"></el-button>
+
+
+    <!--上传-->
+<!--    <input
+        class="file"
+        name="file"
+        type="file"
+        accept=""
+        @change="downloadFile"/>-->
 
     <el-table
         :data="tableData"
@@ -188,19 +210,21 @@
 <script>
 export default {
   name: "tutorMyStudent",
-  data() {
-    return {
-      collegeEnum: [],
-      searchForm: {
-        name: '',
-        sno: '',
-        college: '',
-        stuClass: '',
-        date: []
+  data(){
+    return{
+      actionURL: 'http://localhost:8080/logisticsProject/permission/downloadStu.do?id='+this.$store.getters.getUser.userId,
+      collegeEnum:[],
+      searchForm:{
+        name:'',
+        sno:'',
+        college:'',
+        stuClass:'',
+        date:[]
       },
-      submitForm: {
-        id: 'loading',
-        remark: 'loading',
+      submitForm:{
+        id:'loading',
+        remark:'loading',
+
       },
       tableData: [],
       dialogRemarkFormVisible: false,
@@ -254,12 +278,14 @@ export default {
       pageSize: 10, //显示条数
       total: 0, //总条数
       multipleSelection: [],
-      idArray: [],
-      isTutor: this.$store.getters.getUser.primaryRole == '导员'
+
+      idArray:[],
+      isTutor:this.$store.getters.getUser.primaryRole == '导员',
+      downloadUrl: '',
     }
   },
-  methods: {
-    showRemarkDialog(index, row) {
+  methods:{
+    showRemarkDialog (index, row) {
       this.dialogRemarkFormVisible = true
       this.submitForm.id = row.id;
       this.submitForm.name = row.name;
@@ -302,12 +328,12 @@ export default {
     },
     handleSizeChange(val) {
       this.pageSize = val;
-      this.getUserRoleList();
+      this.getStudentList();
       // console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
       this.pageNo = val;
-      this.getUserRoleList();
+      this.getStudentList();
       // console.log(`当前页: ${val}`);
     },
     loadCollege: function () {
