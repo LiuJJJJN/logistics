@@ -3,6 +3,7 @@ package com.djtu.dorm.service;
 import com.djtu.dorm.pojo.Dorm;
 import com.djtu.dorm.pojo.vo.DormVo;
 import com.djtu.exception.DormException;
+import com.djtu.exception.NothingException;
 import com.djtu.settings.pojo.Student;
 
 import java.util.List;
@@ -50,7 +51,7 @@ public interface DormService {
      * @param userId 用户id
      * @return 寝室实例
      */
-    Dorm getDormByUserId(String userId) throws DormException;
+    Dorm getDormByUserId(String userId) throws NothingException;
 
     /**
      * 根据用户id查询室友列表
@@ -58,5 +59,21 @@ public interface DormService {
      * @param userId 用户id
      * @return 室友列表
      */
-    List<Student> getDormFriendByUserId(String userId) throws DormException;
+    List<Student> getDormFriendByUserId(String userId) throws NothingException;
+
+    /**
+     * 更换寝室申请
+     *
+     * @param fromDorm 现寝室
+     * @param toDorm 意向寝室
+     */
+    void addChangeDormApply(String stuId, String fromDorm, String toDorm) throws DormException;
+
+    /**
+     * 根据学生id获取当前换寝状态
+     *
+     * @param stuId 学生id
+     * @return 当前状态
+     */
+    Integer getStatusByStuId(String stuId) throws NothingException;
 }

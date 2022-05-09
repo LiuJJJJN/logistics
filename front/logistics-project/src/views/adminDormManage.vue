@@ -5,7 +5,7 @@
     <el-table
         :data="tableData.filter(data => !search || data.doorNo.toLowerCase().includes(search.toLowerCase()))"
         style="width: 100%"
-        :default-sort = "{prop: 'building', order: 'building'}">
+        :default-sort="{prop: 'building', order: 'building'}">
       <el-table-column
           prop="building.name"
           label="楼宇"
@@ -58,11 +58,13 @@
         <template slot-scope="scope">
           <el-button
               size="mini"
-              @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+              @click="handleEdit(scope.$index, scope.row)">编辑
+          </el-button>
           <el-button
               size="mini"
               type="danger"
-              @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+              @click="handleDelete(scope.$index, scope.row)">删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -83,7 +85,8 @@
           <el-input v-model="addForm.doorNo" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="寝室大小" :label-width="formLabelWidth" prop="size">
-          <el-input-number v-model="addForm.size" autocomplete="off" controls-position="right" :min="1" :max="99"></el-input-number>
+          <el-input-number v-model="addForm.size" autocomplete="off" controls-position="right" :min="1"
+                           :max="99"></el-input-number>
         </el-form-item>
         <el-form-item label="是否独卫" :label-width="formLabelWidth" prop="haveWc">
           <el-radio-group v-model="addForm.haveWc" size="small">
@@ -92,10 +95,12 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="水费余额" :label-width="formLabelWidth" prop="water">
-          <el-input-number v-model="addForm.water" autocomplete="off" controls-position="right" :controls="false"></el-input-number>
+          <el-input-number v-model="addForm.water" autocomplete="off" controls-position="right"
+                           :controls="false"></el-input-number>
         </el-form-item>
         <el-form-item label="电费余额" :label-width="formLabelWidth" prop="power">
-          <el-input-number v-model="addForm.power" autocomplete="off" controls-position="right" :controls="false"></el-input-number>
+          <el-input-number v-model="addForm.power" autocomplete="off" controls-position="right"
+                           :controls="false"></el-input-number>
         </el-form-item>
         <el-form-item label="备注" :label-width="formLabelWidth" prop="remark">
           <el-input v-model="addForm.remark" autocomplete="off" type="textarea"></el-input>
@@ -123,7 +128,8 @@
           <el-input v-model="editForm.doorNo" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="寝室大小" :label-width="formLabelWidth" prop="size">
-          <el-input-number v-model="editForm.size" autocomplete="off" controls-position="right" :min="1" :max="99"></el-input-number>
+          <el-input-number v-model="editForm.size" autocomplete="off" controls-position="right" :min="1"
+                           :max="99"></el-input-number>
         </el-form-item>
         <el-form-item label="是否独卫" :label-width="formLabelWidth" prop="haveWc">
           <el-radio-group v-model="editForm.haveWc" size="small">
@@ -132,10 +138,12 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="水费余额" :label-width="formLabelWidth" prop="water">
-          <el-input-number v-model="editForm.water" autocomplete="off" controls-position="right" :controls="false"></el-input-number>
+          <el-input-number v-model="editForm.water" autocomplete="off" controls-position="right"
+                           :controls="false"></el-input-number>
         </el-form-item>
         <el-form-item label="电费余额" :label-width="formLabelWidth" prop="power">
-          <el-input-number v-model="editForm.power" autocomplete="off" controls-position="right" :controls="false"></el-input-number>
+          <el-input-number v-model="editForm.power" autocomplete="off" controls-position="right"
+                           :controls="false"></el-input-number>
         </el-form-item>
         <el-form-item label="备注" :label-width="formLabelWidth" prop="remark">
           <el-input v-model="editForm.remark" autocomplete="off" type="textarea"></el-input>
@@ -152,7 +160,7 @@
 <script>
 export default {
   name: "dormManage",
-  data (){
+  data() {
     return {
       tableData: [],
       addDialogFormVisible: false,
@@ -209,13 +217,13 @@ export default {
       }).then(() => {
         this.$axios.post("/dorm/deleteDorm.do", {
           id: row.id
-        }).then(resp=>{
+        }).then(resp => {
           this.$message({
             type: 'success',
             message: resp.data.message
           });
           this.loadDormList();
-        }, err=>{
+        }, err => {
           console.log(err);
         })
       }).catch(() => {
@@ -239,7 +247,7 @@ export default {
     loadAll() {
       // 加载楼宇列表值
       this.$axios.post("/building/getDormBuildingValueList.do")
-          .then(resp=>{
+          .then(resp => {
             // 设置楼宇下拉列表项
             this.restaurants = resp.data.data;
             // 设置楼宇rules验证枚举
@@ -247,9 +255,9 @@ export default {
             for (let temp in resp.data.data) {
               rulesEnum.push(resp.data.data[temp].value);
             }
-            var t = {type:'enum', enum: rulesEnum, message: '楼宇必须为楼宇列表中的值'};
+            var t = {type: 'enum', enum: rulesEnum, message: '楼宇必须为楼宇列表中的值'};
             this.rules.building.push(t);
-          }, err=>{
+          }, err => {
             console.log(err);
           })
     },
@@ -258,18 +266,18 @@ export default {
       this.addForm.buildingId = item.id;
       this.editForm.buildingId = item.id;
     },
-    submitForm(formName){
+    submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.$axios.post("/dorm/addDorm.do", this.addForm)
-              .then(resp=>{
+              .then(resp => {
                 this.$message({
                   message: resp.data.message,
                   type: 'success'
                 });
                 this.addDialogFormVisible = false;
                 this.loadDormList();
-              }, err=>{
+              }, err => {
                 console.log(err);
               });
         } else {
@@ -278,19 +286,19 @@ export default {
         }
       });
     },
-    editDorm(formName){
+    editDorm(formName) {
       this.$refs[formName].validate((valid) => {
         console.log(this.editForm)
         if (valid) {
           this.$axios.post("/dorm/editDorm.do", this.editForm)
-              .then(resp=>{
+              .then(resp => {
                 this.$message({
                   message: resp.data.message,
                   type: 'success'
                 });
                 this.editDialogFormVisible = false;
                 this.loadDormList();
-              }, err=>{
+              }, err => {
                 console.log(err);
               });
         } else {
@@ -299,11 +307,11 @@ export default {
         }
       });
     },
-    loadDormList(){
+    loadDormList() {
       this.$axios.post("/dorm/getDormList.do")
-          .then(resp=>{
+          .then(resp => {
             this.tableData = resp.data.data;
-          }, err=>{
+          }, err => {
             console.log(err);
           });
     },

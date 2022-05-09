@@ -22,6 +22,10 @@
                 #{buildingId}
             )
     </insert>
+    <insert id="addChangeDormApply">
+        insert into tbl_dorm_change
+        value(#{id}, #{stuId}, #{fromDorm}, #{toDorm}, #{status})
+    </insert>
     <update id="editDormByDormVo">
         update tbl_dorm set
                     door_no = #{doorNo},
@@ -110,6 +114,23 @@
                          where id = (select student_id
                                      from tbl_user
                                      where id = #{userId}));
+    </select>
+    <select id="getDormIdByUserId" resultType="java.lang.String">
+        select dorm_id
+        from tbl_student
+        where id = (select student_id
+                    from tbl_user
+                    where id = #{userId})
+    </select>
+    <select id="getApplyCountByStudentId" resultType="java.lang.Integer">
+        select count(*)
+        from tbl_dorm_change
+        where stu_id = #{stuId}
+    </select>
+    <select id="getStatusByStuId" resultType="java.lang.Integer">
+        select status
+        from tbl_dorm_change
+        where stu_id = #{stuId}
     </select>
 
 </mapper>

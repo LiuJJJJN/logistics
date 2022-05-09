@@ -71,4 +71,43 @@ public interface DormDao {
      * @return 室友列表
      */
     List<Student> getDormFriendByUserId(String userId);
+
+    /**
+     * 根据用户id获取对应的寝室id
+     *
+     * @return 寝室id
+     */
+    String getDormIdByUserId(String userId);
+
+    /**
+     * 查询当前用户的正在申请订单数量
+     *
+     * @param stuId 学生id
+     * @return 数量
+     */
+    int getApplyCountByStudentId(String stuId);
+
+    /**
+     * 添加换寝申请
+     *
+     * @param generateUUID id
+     * @param stuId        学生id
+     * @param fromDorm     现寝室
+     * @param toDorm       意向寝室
+     * @param status       状态
+     * @return 影响条数
+     */
+    int addChangeDormApply(@Param("id") String generateUUID,
+                           @Param("stuId") String stuId,
+                           @Param("fromDorm") String fromDorm,
+                           @Param("toDorm") String toDorm,
+                           @Param("status") int status);
+
+    /**
+     * 根据当前学生id获取换寝状态
+     *
+     * @param stuId 学生id
+     * @return 状态
+     */
+    Integer getStatusByStuId(String stuId);
 }

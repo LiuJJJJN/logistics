@@ -16,7 +16,7 @@
         </el-input>
       </el-col>
       <el-col :span="5">
-        <el-select v-model="searchForm.college" placeholder="请选择所属学院" >
+        <el-select v-model="searchForm.college" placeholder="请选择所属学院">
           <div v-for="item in collegeEnum" :key="item">
             <el-option :label="item" :value="item"></el-option>
           </div>
@@ -72,7 +72,8 @@
           label="角色"
           width="220">
         <template slot-scope="scope">
-          <el-popover trigger="hover" placement="top" v-for="perm in scope.row.perms" :key="perm" style="display: inline-block; margin-right: 10px">
+          <el-popover trigger="hover" placement="top" v-for="perm in scope.row.perms" :key="perm"
+                      style="display: inline-block; margin-right: 10px">
             <p>角色名: {{ perm }}</p>
             <div slot="reference" class="name-wrapper">
               <el-tag size="medium">{{ perm }}</el-tag>
@@ -84,7 +85,8 @@
         <template slot-scope="scope">
           <el-button
               size="mini"
-              @click="showDialog(scope.$index, scope.row)" >修改权限</el-button>
+              @click="showDialog(scope.$index, scope.row)">修改权限
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -119,7 +121,7 @@
           <el-checkbox-group v-model="submitForm.perms" size="small">
             <el-checkbox-button disabled>学生</el-checkbox-button>
             <el-checkbox-button disabled>导员</el-checkbox-button>
-            <el-checkbox-button v-for="perm in perms" :label="perm" :key="perm">{{perm}}</el-checkbox-button>
+            <el-checkbox-button v-for="perm in perms" :label="perm" :key="perm">{{ perm }}</el-checkbox-button>
           </el-checkbox-group>
         </el-form-item>
       </el-form>
@@ -136,30 +138,22 @@
 const permOptions = ['管理员'];
 export default {
   name: "tutorRole",
-  data(){
-    return{
-      collegeEnum:[],
-      searchForm:{
-        username:'',
-        name:'',
-        college:''
+  data() {
+    return {
+      collegeEnum: [],
+      searchForm: {
+        username: '',
+        name: '',
+        college: ''
       },
-      submitForm:{
-        id:'loading',
-        username:'loading',
-        name:'loading',
-        remark:'loading',
+      submitForm: {
+        id: 'loading',
+        username: 'loading',
+        name: 'loading',
+        remark: 'loading',
         perms: ['导员'],
       },
-      tableData: [{
-        id:'',
-        username:'loading',
-        name: 'loading',
-        perms: [],
-        sex: 'loading',
-        college:'',
-        remark: 'loading',
-      }],
+      tableData: [],
       perms: permOptions,
       dialogFormVisible: false,
       pickerOptions: {
@@ -213,8 +207,8 @@ export default {
       total: 0, //总条数
     }
   },
-  methods:{
-    showDialog (index, row) {
+  methods: {
+    showDialog(index, row) {
       this.dialogFormVisible = true
       this.submitForm.id = row.id;
       this.submitForm.name = row.name;
@@ -223,34 +217,34 @@ export default {
       this.submitForm.sex = row.sex;
       this.submitForm.username = row.username;
     },
-    getUserRoleList(){
+    getUserRoleList() {
       this.$axios.post("/permission/getTutorRoleListTotal.do",
           {
-            name:this.searchForm.name,
-            sno:this.searchForm.sno,
-            college:this.searchForm.college,
-            stuClass:this.searchForm.stuClass,
-            date:this.searchForm.date
+            name: this.searchForm.name,
+            sno: this.searchForm.sno,
+            college: this.searchForm.college,
+            stuClass: this.searchForm.stuClass,
+            date: this.searchForm.date
           })
-          .then(resp=>{
+          .then(resp => {
             this.total = resp.data.data;
             // console.log(resp.data.data);
-          },err=>{
+          }, err => {
             console.log(err);
           });
       this.$axios.post("/permission/getTutorRoleList.do",
           {
-            username:this.searchForm.username,
-            name:this.searchForm.name,
-            sno:this.searchForm.sno,
-            college:this.searchForm.college,
-            pageNo:(this.pageNo-1)*this.pageSize,
-            pageSize:this.pageSize
+            username: this.searchForm.username,
+            name: this.searchForm.name,
+            sno: this.searchForm.sno,
+            college: this.searchForm.college,
+            pageNo: (this.pageNo - 1) * this.pageSize,
+            pageSize: this.pageSize
           })
-          .then(resp=>{
+          .then(resp => {
             this.tableData = resp.data.data;
             // console.log(resp.data.data);
-          },err=>{
+          }, err => {
             console.log(err)
           })
     },
@@ -264,27 +258,27 @@ export default {
       this.getUserRoleList();
       // console.log(`当前页: ${val}`);
     },
-    loadCollege:function (){
-      this.$axios.get("/dic/getCollegeList.do").then(resp=>{
+    loadCollege: function () {
+      this.$axios.get("/dic/getCollegeList.do").then(resp => {
         var list = [];
         list[0] = '';
-        for(let i=0; i<resp.data.data.length;i++){
-          list[i+1] = resp.data.data[i].value;
+        for (let i = 0; i < resp.data.data.length; i++) {
+          list[i + 1] = resp.data.data[i].value;
         }
         this.collegeEnum = list;
         // console.log(this.collegeEnum);
-      }, err=>{
+      }, err => {
         console.log(err)
       })
     },
-    changeStudentRole(){
+    changeStudentRole() {
       this.dialogFormVisible = false;
       // console.log(this.submitForm);
       this.$axios.post("/permission/changeUserRoleList.do", this.submitForm)
-          .then(resp=>{
+          .then(resp => {
             this.getUserRoleList();
             console.log(resp.data)
-          }, err=>{
+          }, err => {
             console.log(err)
           })
     }
@@ -297,7 +291,7 @@ export default {
 </script>
 
 <style scoped>
-.my-pagination{
+.my-pagination {
   margin: 20px;
 }
 </style>

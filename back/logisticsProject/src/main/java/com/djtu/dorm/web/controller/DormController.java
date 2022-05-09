@@ -4,8 +4,12 @@ import com.djtu.dorm.pojo.Dorm;
 import com.djtu.dorm.pojo.vo.DormVo;
 import com.djtu.dorm.service.DormService;
 import com.djtu.exception.DormException;
+import com.djtu.exception.NothingException;
 import com.djtu.response.Result;
 import com.djtu.settings.pojo.Student;
+import com.djtu.settings.pojo.vo.UserVo;
+import com.djtu.settings.service.UserService;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +27,8 @@ public class DormController {
 
     @Autowired
     private DormService dormService;
+    @Autowired
+    private UserService userService;
 
     /**
      * 添加寝室接口
@@ -64,16 +70,16 @@ public class DormController {
     @RequestMapping("/getDormList.do")
     @ResponseBody
     public Result getDormList() throws DormException {
-        List<Dorm> dormList =  dormService.getDormList();
+        List<Dorm> dormList = dormService.getDormList();
         return new Result().setCode(200).setMessage("获取寝室列表成功").setData(dormList);
     }
 
     /**
      * 删除寝室
      *
-     * @map 寝室id
      * @return 删除成功
      * @throws DormException 删除失败
+     * @map 寝室id
      */
     @RequiresRoles("管理员")
     @RequestMapping("/deleteDorm.do")
@@ -87,13 +93,12 @@ public class DormController {
     /**
      * 获取楼宇和寝室的级联列表
      *
-     * @return 查询成功
-     * @throws DormException 查询失败
+     * @return 列表数据
      */
-    @RequiresRoles(value = {"管理员", "导员"}, logical = Logical.OR)
+    @RequiresRoles(value = {"管理员", "导员", "学生"}, logical = Logical.OR)
     @RequestMapping("/getDormOptions.do")
     @ResponseBody
-    public Result getDormOptions() throws DormException {
+    public Result getDormOptions() {
         List<Object> buildingDormList = dormService.getBuildingDormOptions();
         return new Result().setCode(200).setMessage("查询级联菜单成功").setData(buildingDormList);
     }
@@ -107,7 +112,7 @@ public class DormController {
     @RequiresRoles("学生")
     @RequestMapping("/getDormByUserId.do")
     @ResponseBody
-    public Result getDormByUserId(String userId) throws DormException {
+    public Result getDormByUserId(String userId) throws NothingException {
         Dorm dorm = dormService.getDormByUserId(userId);
         return new Result().setCode(200).setMessage("查询寝室信息成功").setData(dorm);
     }
@@ -121,9 +126,42 @@ public class DormController {
     @RequiresRoles("学生")
     @RequestMapping("/getDormFriendByUserId.do")
     @ResponseBody
-    public Result getDormFriendByUserId(String userId) throws DormException {
+    public Result getDormFriendByUserId(String userId) throws NothingException {
         List<Student> studentList = dormService.getDormFriendByUserId(userId);
         return new Result().setCode(200).setMessage("查询室友列表成功").setData(studentList);
+    }
+
+    /**
+     * 换寝请求
+     *
+     * @return 请求成功
+     * @throws DormException 请求失败
+     */
+    @RequiresRoles("学生")
+    @RequestMapping("/changeDorm.do")
+    @ResponseBody
+    public Result changeDorm(@RequestBody Map map) throws DormException {
+        String userId = ((UserVo) SecurityUtils.getSubject().getSession().getAttribute("userVo")).getUserId();
+        String stuId = userService.getStudentIdByUserId(userId);
+        String fromDorm = (String) map.get("fromDorm");
+        String toDorm = (String) map.get("toDorm");
+        dormService.addChangeDormApply(stuId, fromDorm, toDorm);
+        return new Result().setCode(200).setMessage("寝室更换申请成功");
+    }
+
+    /**
+     * 当前换寝状态
+     *
+     * @return 状态码
+     */
+    @RequiresRoles("学生")
+    @RequestMapping("/getChangeStatus.do")
+    @ResponseBody
+    public Result getChangeStatus() throws NothingException {
+        String userId = ((UserVo) SecurityUtils.getSubject().getSession().getAttribute("userVo")).getUserId();
+        String stuId = userService.getStudentIdByUserId(userId);
+        Integer status = dormService.getStatusByStuId(stuId);
+        return new Result().setCode(200).setMessage("查询状态码成功").setData(status);
     }
 
 }

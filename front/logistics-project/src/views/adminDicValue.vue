@@ -15,12 +15,12 @@
         <el-button size="mini" type="text" @click="visible = false">取消</el-button>
         <el-button type="primary" size="mini" @click="delBtn">确定</el-button>
       </div>
-    <el-button
-        size="mini"
-        type="danger"
-        icon="el-icon-delete"
-        slot="reference"
-        class="functionBtn"></el-button>
+      <el-button
+          size="mini"
+          type="danger"
+          icon="el-icon-delete"
+          slot="reference"
+          class="functionBtn"></el-button>
     </el-popover>
     <el-button
         size="mini"
@@ -173,12 +173,7 @@ export default {
       //多选
       multipleSelection: [],
       idArray: [],
-      tableData: [{
-        id: '',
-        value: '',
-        orderNo: '',
-        typeCode: '',
-      }],
+      tableData: [],
       //模态窗口
       dialogFormAddDicValue: false,
       dialogFormVisible: false,
@@ -213,7 +208,7 @@ export default {
       //修改窗口-下拉菜单
       options: [],
       selectValue: '',
-      visible:false
+      visible: false,
     }
   },
   methods: {
@@ -426,7 +421,7 @@ export default {
         }, err => {
           console.log(err);
         });
-      }else{
+      } else {
         this.$message({
           message: '请选择要删除的数据字典值',
           type: 'warning'

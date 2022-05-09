@@ -37,6 +37,9 @@ axios.interceptors.response.use(resp =>{
     }else if(res.code == 402){ //402 无权限访问 或 后端抛出的异常
         ElementUI.Message.error(res.message, {duration:3*1000});
         return Promise.reject(res.message);
+    }else if(res.code == 403){ //403 不重要的异常
+        console.log("NothingException: "+res.message);
+        return Promise.reject(res.message);
     }else { // 后抛出的运行时异常: 500 系列异常等
         ElementUI.Message.error("其他错误，后端响应内容:"+res.message, {duration:3*1000});
         return Promise.reject(res.message);

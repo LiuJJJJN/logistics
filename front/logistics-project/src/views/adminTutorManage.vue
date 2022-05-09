@@ -165,14 +165,7 @@ export default {
       multipleSelection: [],
       idArray: [],
       resetArray: [],
-      tableData: [{
-        id: '',
-        username: '',
-        name: '',
-        sex: '',
-        college: '',
-        remark: ''
-      }],
+      tableData: [],
       //模态窗口
       dialogFormAddDicValue: false,
       //添加或修改模态窗口
