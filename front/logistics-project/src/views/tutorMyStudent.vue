@@ -340,12 +340,12 @@ export default {
     },
     handleSizeChange(val) {
       this.pageSize = val;
-      this.getUserRoleList();
+      this.getStudentList();
       // console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
       this.pageNo = val;
-      this.getUserRoleList();
+      this.getStudentList();
       // console.log(`当前页: ${val}`);
     },
     loadCollege:function (){
