@@ -4,7 +4,7 @@
   </div>
 </template>
 <script>
-export default{
+export default {
   name: 'CAPTCHA',
   props: {
     identifyCode: { // 默认注册码
@@ -46,19 +46,19 @@ export default{
   },
   methods: {
     // 生成一个随机数
-    randomNum (min, max) {
+    randomNum(min, max) {
       return Math.floor(Math.random() * (max - min) + min)
     },
 
     // 生成一个随机的颜色
-    randomColor (min, max) {
+    randomColor(min, max) {
       let r = this.randomNum(min, max)
       let g = this.randomNum(min, max)
       let b = this.randomNum(min, max)
       return 'rgb(' + r + ',' + g + ',' + b + ')'
     },
 
-    drawPic () {
+    drawPic() {
       let canvas = document.getElementById('s-canvas')
       let ctx = canvas.getContext('2d')
       ctx.textBaseline = 'bottom'
@@ -73,7 +73,7 @@ export default{
       this.drawDot(ctx)
     },
 
-    drawText (ctx, txt, i) {
+    drawText(ctx, txt, i) {
       ctx.fillStyle = this.randomColor(50, 160) // 随机生成字体颜色
       ctx.font = this.randomNum(this.fontSizeMin, this.fontSizeMax) + 'px SimHei' // 随机生成字体大小
       let x = (i + 1) * (this.contentWidth / (this.identifyCode.length + 1))
@@ -88,7 +88,7 @@ export default{
       ctx.translate(-x, -y)
     },
 
-    drawLine (ctx) {
+    drawLine(ctx) {
       // 绘制干扰线
       for (let i = 0; i < 4; i++) {
         ctx.strokeStyle = this.randomColor(100, 200)
@@ -99,7 +99,7 @@ export default{
       }
     },
 
-    drawDot (ctx) {
+    drawDot(ctx) {
       // 绘制干扰点
       for (let i = 0; i < 30; i++) {
         ctx.fillStyle = this.randomColor(0, 255)
@@ -110,11 +110,11 @@ export default{
     }
   },
   watch: {
-    identifyCode () {
+    identifyCode() {
       this.drawPic()
     }
   },
-  mounted () {
+  mounted() {
     this.drawPic()
   }
 }

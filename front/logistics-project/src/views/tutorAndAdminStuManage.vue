@@ -16,7 +16,7 @@
         </el-input>
       </el-col>
       <el-col :span="3">
-        <el-select v-model="searchForm.college" placeholder="请选择所属学院" >
+        <el-select v-model="searchForm.college" placeholder="请选择所属学院">
           <div v-for="item in collegeEnum" :key="item">
             <el-option :label="item" :value="item"></el-option>
           </div>
@@ -62,13 +62,8 @@
           width="55">
       </el-table-column>
       <el-table-column
-          label="序号"
-          type="index"
-          width="50">
-      </el-table-column>
-      <el-table-column
           label="用户名"
-          width="140">
+          width="120">
         <template slot-scope="scope">
           <span>{{ scope.row.username }}</span>
         </template>
@@ -89,7 +84,7 @@
       </el-table-column>
       <el-table-column
           label="学号"
-          width="120">
+          width="110">
         <template slot-scope="scope">
           <span>{{ scope.row.sno }}</span>
         </template>
@@ -110,7 +105,7 @@
       </el-table-column>
       <el-table-column
           label="班级"
-          width="70">
+          width="50">
         <template slot-scope="scope">
           <span>{{ scope.row.stuClass }}</span>
         </template>
@@ -126,13 +121,15 @@
           label="当前寝室"
           width="160">
         <template slot-scope="scope">
-          <span v-if="scope.row.dorm != null">{{ scope.row.dorm.building.name+" / "+scope.row.dorm.doorNo }}</span>
+          <span v-if="scope.row.dorm != null">
+            {{ scope.row.dorm.building.name + " / " + scope.row.dorm.doorNo }}
+          </span>
           <span v-if="scope.row.dorm == null">暂无</span>
         </template>
       </el-table-column>
       <el-table-column
           label="备注"
-          width="220">
+          width="150">
         <template slot-scope="scope">
           <span>{{ scope.row.remark }}</span>
         </template>
@@ -142,20 +139,24 @@
           <el-button
               size="mini"
               @click="showRemarkDialog(scope.$index, scope.row)"
-              v-show="!isTutor">修改备注</el-button>
+              v-show="!isTutor">修改备注
+          </el-button>
           <el-button
               size="mini"
               @click="resetPwd(scope.$index, scope.row)"
-              v-show="!isTutor">重置密码</el-button>
+              v-show="!isTutor">重置密码
+          </el-button>
           <el-button
               size="mini"
               @click="claimStu(scope.$index, scope.row)"
               v-show="isTutor"
-              :disabled="scope.row.tutor">认领学生</el-button>
+              :disabled="scope.row.tutor">认领学生
+          </el-button>
           <el-button
               size="mini"
               @click="stuDorm(scope.$index, scope.row)"
-              v-show="!isTutor">分配寝室</el-button>
+              v-show="!isTutor">分配寝室
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -230,17 +231,17 @@
 <script>
 export default {
   name: "stuManage",
-  data(){
-    return{
-      collegeEnum:[],
-      searchForm:{
-        name:'',
-        sno:'',
-        college:'',
-        stuClass:'',
-        date:[]
+  data() {
+    return {
+      collegeEnum: [],
+      searchForm: {
+        name: '',
+        sno: '',
+        college: '',
+        stuClass: '',
+        date: []
       },
-      submitForm:{},
+      submitForm: {},
       tableData: [],
       dialogRemarkFormVisible: false,
       pickerOptions: {
@@ -288,20 +289,20 @@ export default {
         resource: '',
         desc: ''
       },
-      dormForm:{},
+      dormForm: {},
       formLabelWidth: '120px',
       pageNo: 1, //当前页数
       pageSize: 10, //显示条数
       total: 0, //总条数
       multipleSelection: [],
-      idArray:[],
-      isTutor:this.$store.getters.getUser.primaryRole == '导员',
+      idArray: [],
+      isTutor: this.$store.getters.getUser.primaryRole == '导员',
       dialogStuDormVisible: false,
-      dormOptions:[]
+      dormOptions: [],
     }
   },
-  methods:{
-    showRemarkDialog (index, row) {
+  methods: {
+    showRemarkDialog(index, row) {
       this.dialogRemarkFormVisible = true
       this.submitForm.id = row.id;
       this.submitForm.name = row.name;
@@ -309,36 +310,36 @@ export default {
       this.submitForm.sex = row.sex;
       this.submitForm.username = row.username;
     },
-    getStudentList(){
+    getStudentList() {
       //复用了权限管理中的接口，获取学生总数
       this.$axios.post("/permission/getStudentListTotal.do",
           {
-            name:this.searchForm.name,
-            sno:this.searchForm.sno,
-            college:this.searchForm.college,
-            stuClass:this.searchForm.stuClass,
-            date:this.searchForm.date
+            name: this.searchForm.name,
+            sno: this.searchForm.sno,
+            college: this.searchForm.college,
+            stuClass: this.searchForm.stuClass,
+            date: this.searchForm.date
           })
-          .then(resp=>{
+          .then(resp => {
             this.total = resp.data.data;
             // console.log(resp.data.data);
-          },err=>{
+          }, err => {
             console.log(err);
           });
       this.$axios.post("/admin/manage/getStudentList.do",
           {
-            name:this.searchForm.name,
-            sno:this.searchForm.sno,
-            college:this.searchForm.college,
-            stuClass:this.searchForm.stuClass,
-            date:this.searchForm.date,
-            pageNo:(this.pageNo-1)*this.pageSize,
-            pageSize:this.pageSize
+            name: this.searchForm.name,
+            sno: this.searchForm.sno,
+            college: this.searchForm.college,
+            stuClass: this.searchForm.stuClass,
+            date: this.searchForm.date,
+            pageNo: (this.pageNo - 1) * this.pageSize,
+            pageSize: this.pageSize
           })
-          .then(resp=>{
+          .then(resp => {
             this.tableData = resp.data.data;
             // console.log(resp.data.data);
-          },err=>{
+          }, err => {
             console.log(err)
           })
     },
@@ -352,35 +353,35 @@ export default {
       this.getStudentList();
       // console.log(`当前页: ${val}`);
     },
-    loadCollege:function (){
-      this.$axios.get("/dic/getCollegeList.do").then(resp=>{
+    loadCollege: function () {
+      this.$axios.get("/dic/getCollegeList.do").then(resp => {
         var list = [];
         list[0] = '';
-        for(let i=0; i<resp.data.data.length;i++){
-          list[i+1] = resp.data.data[i].value;
+        for (let i = 0; i < resp.data.data.length; i++) {
+          list[i + 1] = resp.data.data[i].value;
         }
         this.collegeEnum = list;
         // console.log(this.collegeEnum);
-      }, err=>{
+      }, err => {
         console.log(err)
       })
     },
-    editStudentRemark(){
+    editStudentRemark() {
       this.dialogRemarkFormVisible = false;
       // console.log(this.submitForm);
       this.$axios.post("/admin/manage/editStudentRemark.do", this.submitForm)
-          .then(resp=>{
+          .then(resp => {
             this.getStudentList();
             this.$message({
               type: 'success',
               message: resp.data.message
             });
             console.log(resp.data)
-          }, err=>{
+          }, err => {
             console.log(err)
           })
     },
-    delBtn(){
+    delBtn() {
       if (this.idArray.length !== 0) {
         this.$confirm('此操作将永久删除, 是否继续?', '提示', {
           confirmButtonText: '确定',
@@ -413,7 +414,7 @@ export default {
         });
       }
     },
-    resetPwd(index, row){
+    resetPwd(index, row) {
       console.log(row.id)
       this.$confirm('此操作将修改学生密码为 \'000000\' 且不可逆, 是否继续?', '提示', {
         confirmButtonText: '确定',
@@ -422,7 +423,7 @@ export default {
       }).then(() => {
         //删除
         this.$axios.post("/admin/manage/resetStudentPassword.do", {
-          id:row.id
+          id: row.id
         }).then(resp => {
           this.$message({
             message: resp.data.message,
@@ -438,50 +439,50 @@ export default {
         });
       });
     },
-    delOrResetSelection(val){
+    delOrResetSelection(val) {
       this.multipleSelection = val;
       for (let i = 0; i < this.multipleSelection.length; i++) {
         this.idArray[i] = this.multipleSelection[i].id;
       }
     },
-    claimStu(index, row){
+    claimStu(index, row) {
       this.$axios.post("/tutor/claimStu.do", {
         stuId: row.id
-      }).then(resp=>{
+      }).then(resp => {
         this.getStudentList();
         this.$message({
           message: resp.data.message,
           type: 'success'
         });
-      }, err=>{
+      }, err => {
         console.log(err)
       })
     },
-    stuDorm(index, row){
+    stuDorm(index, row) {
       this.dialogStuDormVisible = true;
       this.dormForm = row;
       // console.log(row);
     },
-    loadDormOptions(){
+    loadDormOptions() {
       this.$axios.post("/dorm/getDormOptions.do")
-          .then(resp=>{
+          .then(resp => {
             this.dormOptions = resp.data.data;
-          }, err=>{
+          }, err => {
             console.log(err);
           });
     },
-    setStuDorm(){
+    setStuDorm() {
       this.$axios.post("/admin/manage/editStudentDorm.do", {
-        id:this.dormForm.id,
-        dormId:this.dormForm.dorm[1]
-      }).then(resp=>{
+        id: this.dormForm.id,
+        dormId: this.dormForm.dorm[1]
+      }).then(resp => {
         this.dialogStuDormVisible = false;
         this.$message({
           message: resp.data.message,
           type: 'success'
         });
         this.getStudentList();
-      }, err=>{
+      }, err => {
         console.log(err);
       });
     }
@@ -495,7 +496,7 @@ export default {
 </script>
 
 <style scoped>
-.my-pagination{
+.my-pagination {
   margin: 20px;
 }
 

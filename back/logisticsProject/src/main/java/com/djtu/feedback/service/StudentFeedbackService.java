@@ -1,6 +1,7 @@
 package com.djtu.feedback.service;
 
 import com.djtu.exception.FeedbackException;
+import com.djtu.exception.NothingException;
 import com.djtu.feedback.pojo.Feedback;
 import com.djtu.settings.pojo.User;
 
@@ -22,7 +23,7 @@ public interface StudentFeedbackService {
      * @param user 用户实例
      * @return 学生反馈列表
      */
-    List<Feedback> studentFeedbackList(User user) throws FeedbackException;
+    List<Feedback> studentFeedbackList(User user) throws NothingException;
 
     /**
      * 获取总记录数

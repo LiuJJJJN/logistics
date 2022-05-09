@@ -53,6 +53,25 @@ public class PermissionController {
     }
 
     /**
+     * 根据userId获取当前角色的所有功能列表, 静默无提示
+     *
+     * @param map 前端发过来的 suerId
+     * @return 功能列表
+     */
+    @RequiresRoles(value = {"学生", "导员", "管理员"}, logical = Logical.OR)
+    @RequestMapping("/getPermissionWelcomeList.do")
+    @ResponseBody
+    public Result getPermissionWelcomeList(@RequestBody Map<String, String> map) {
+        String userId = map.get("userId");
+        List<Role> roleList = roleService.getRoleListByUserId(userId);
+        List<Object> permList = permissionService.getPermissionListByRoleList(roleList);
+        if (permList.isEmpty()) {
+            return new Result().setCode(403).setMessage("获取权限列表失败, 请重新登录");
+        }
+        return new Result().setCode(200).setMessage("获取权限列表成功").setData(permList);
+    }
+
+    /**
      * 获取所有学生以及相对应的角色列表
      *
      * @return 所有学生以及相对应的角色列表

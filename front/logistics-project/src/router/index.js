@@ -3,27 +3,27 @@ import VueRouter from 'vue-router'
 
 import login from "@/views/login";
 import index from "@/views/index";
-import tutorClass from "@/views/tutorClass";
 import tutorFeedback from "@/views/tutorFeedback";
-import feedback from "@/views/feedback";
+import feedback from "@/views/stuFeedback";
 import register from "@/views/register";
 import stuRegister from "@/views/stuRegister";
 import tutorRegister from "@/views/tutorRegister";
 import notFoundPage from "@/views/notFoundPage";
 import welcomePage from "@/views/welcomePage";
-import stuRole from "@/views/stuRole";
-import tutorRole from "@/views/tutorRole";
-import dicType from "@/views/dicType";
-import dicValue from "@/views/dicValue";
+import stuRole from "@/views/tutorAndAdminStuRole";
+import tutorRole from "@/views/adminTutorRole";
+import dicType from "@/views/adminDicType";
+import dicValue from "@/views/adminDicValue";
 import userInfo from "@/views/userInfo";
-import stuManage from "@/views/stuManage";
-import tutorManage from "@/views/tutorManage";
+import stuManage from "@/views/tutorAndAdminStuManage";
+import tutorManage from "@/views/adminTutorManage";
 import adminCarousel from "@/views/adminCarousel";
 import tutorMyStudent from "@/views/tutorMyStudent";
-import buildingManage from "@/views/buildingManage";
-import dormManage from "@/views/dormManage";
+import buildingManage from "@/views/adminBuildingManage";
+import dormManage from "@/views/adminDormManage";
 import stuDorm from "@/views/stuDorm";
-import changeDorm from "@/views/changeDorm";
+import changeDorm from "@/views/stuDormChange";
+import tutorAndAdminDormChangeApply from "@/views/tutorAndAdminDormChangeApply";
 
 Vue.use(VueRouter)
 
@@ -71,14 +71,9 @@ const routes = [
         component: userInfo
       },
       {
-        path:"/user/feedback",
+        path:"/stu/feedback",
         name:"feedback",
         component: feedback
-      },
-      {
-        path:"/tutor/class",
-        name:"tutorClass",
-        component: tutorClass
       },
       {
         path:"/tutor/feedback",
@@ -141,14 +136,19 @@ const routes = [
         component: dormManage
       },
       {
-        path:"/user/myDorm",
+        path:"/stu/myDorm",
         name:"myDorm",
         component: stuDorm
       },
       {
-        path:"/user/changeDorm",
+        path:"/stu/changeDorm",
         name:"changeDorm",
         component: changeDorm
+      },
+      {
+        path:"/admin/dormChange",
+        name:"tutor&AdminDormChangeApply",
+        component: tutorAndAdminDormChangeApply
       },
       {
         path: "/*",

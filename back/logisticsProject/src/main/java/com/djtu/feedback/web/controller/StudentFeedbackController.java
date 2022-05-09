@@ -1,6 +1,7 @@
 package com.djtu.feedback.web.controller;
 
 import com.djtu.exception.FeedbackException;
+import com.djtu.exception.NothingException;
 import com.djtu.response.Result;
 import com.djtu.feedback.pojo.Feedback;
 import com.djtu.settings.pojo.User;
@@ -48,7 +49,7 @@ public class StudentFeedbackController {
     @RequiresRoles("学生")
     @RequestMapping("/stuFdList.do")
     @ResponseBody
-    public Result studentFeedbackList(@RequestBody User user) throws FeedbackException {
+    public Result studentFeedbackList(@RequestBody User user) throws NothingException, FeedbackException {
         List<Feedback> list = userFeedbackService.studentFeedbackList(user);
         Integer total = userFeedbackService.getListNum(user.getId());
         Map<String, Object> map = new HashMap<>();

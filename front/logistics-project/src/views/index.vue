@@ -11,11 +11,14 @@
           <div class="grid-content bg-purple">
             <el-dropdown style="top: 10px; left: 20px;">
               <span class="el-dropdown-link">
-                <el-avatar :size="size" :src="'http://47.113.216.124/images/'+avatarPath" style="top: 10px; left: 20px; float: left;">暂无</el-avatar>
+                <el-avatar :size="size" :src="'http://47.113.216.124/images/'+avatarPath"
+                           style="top: 10px; left: 20px; float: left;">暂无</el-avatar>
               </span>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item disabled>{{ role }} : {{ name }}</el-dropdown-item>
-                <router-link :to="'/userInfo'"><el-dropdown-item>个人信息</el-dropdown-item></router-link>
+                <router-link :to="'/userInfo'">
+                  <el-dropdown-item>个人信息</el-dropdown-item>
+                </router-link>
                 <el-dropdown-item @click.native="exitLogin">退出登录</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
@@ -33,7 +36,10 @@
                 <el-menu-item-group :title="item.fatherMenu[y].name">
                   <div v-for="a in x.subMenu" :key="a">
                     <router-link :to="a.path">
-                      <el-menu-item :index="a.path" :class="$route.path==a.path?'is-active':''">{{ a.name }}</el-menu-item>
+                      <el-menu-item :index="a.path" :class="$route.path==a.path?'is-active':''">{{
+                          a.name
+                        }}
+                      </el-menu-item>
                     </router-link>
                   </div>
                 </el-menu-item-group>
@@ -88,7 +94,7 @@ export default {
             console.log(err)
           })
     },
-    toIndex:function (){
+    toIndex: function () {
       this.$router.replace("/index");
     }
   },
@@ -161,7 +167,7 @@ a {
   text-decoration: none;
 }
 
-.grid-content:hover{
+.grid-content:hover {
   color: #606266;
 }
 

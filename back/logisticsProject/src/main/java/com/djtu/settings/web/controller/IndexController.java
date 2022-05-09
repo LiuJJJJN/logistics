@@ -15,7 +15,7 @@ public class IndexController {
     @RequestMapping("/")
     @ResponseBody
     public String index() {
-        return "this is SpringMVC see Vue at localhost:8081";
+        return "this is SpringMVC running success";
     }
 
 }
