@@ -23,6 +23,7 @@ import tutorMyStudent from "@/views/tutorMyStudent";
 import buildingManage from "@/views/buildingManage";
 import dormManage from "@/views/dormManage";
 import stuDorm from "@/views/stuDorm";
+import changeDorm from "@/views/changeDorm";
 
 Vue.use(VueRouter)
 
@@ -145,6 +146,11 @@ const routes = [
         component: stuDorm
       },
       {
+        path:"/user/changeDorm",
+        name:"changeDorm",
+        component: changeDorm
+      },
+      {
         path: "/*",
         name: "notFoundPage",
         component: notFoundPage
@@ -156,7 +162,7 @@ const routes = [
 const router = new VueRouter({
   mode: 'history',
   // base: process.env.BASE_URL,
-  base: 'DJTULogistics',
+  base: 'logistics',
   routes
 })
 

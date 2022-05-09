@@ -199,19 +199,7 @@ export default {
         remark:'loading',
         perms: ['学生'],
       },
-      tableData: [{
-        id:'',
-        username:'loading',
-        name: 'loading',
-        perms: [],
-        sex: 'loading',
-        sno:'loading',
-        enterDate: '',
-        college:'',
-        stuClass:'',
-        schoolSys:'',
-        remark: 'loading',
-      }],
+      tableData: [],
       perms: permOptions,
       dialogFormVisible: false,
       pickerOptions: {
@@ -276,7 +264,13 @@ export default {
       this.submitForm.username = row.username;
     },
     getUserRoleList(){
-      this.$axios.post("/permission/getStudentListTotal.do",
+      var listUrl = "/permission/getStudentRoleList.do";
+      var totalUrl = "/permission/getStudentListTotal.do";
+      if (this.$store.getters.getUser.primaryRole === "导员") {
+        listUrl = "/permission/getStudentRoleListByTutor.do";
+        totalUrl = "/permission/getStudentListByTutorTotal.do";
+      }
+      this.$axios.post(totalUrl,
           {
             name:this.searchForm.name,
             sno:this.searchForm.sno,
@@ -290,7 +284,7 @@ export default {
           },err=>{
             console.log(err);
           });
-      this.$axios.post("/permission/getStudentRoleList.do",
+      this.$axios.post(listUrl,
           {
             name:this.searchForm.name,
             sno:this.searchForm.sno,

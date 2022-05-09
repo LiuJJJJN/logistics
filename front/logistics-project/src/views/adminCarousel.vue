@@ -9,7 +9,7 @@
   <h3 style="display: inline-block;">当前走马灯图片</h3>
   <div class="el-icon-info" style="display: inline-block; margin-left: 20px"> 此处不做格式限制, 但推荐上传png/jpg文件, 且不超过500KB</div>
   <el-upload
-      action="http://47.111.84.87:8080/logisticsProject/addCarousel.do"
+      action="http://47.113.216.124:8080/logisticsProject/addCarousel.do"
       list-type="picture-card"
       :on-preview="handlePictureCardPreview"
       :on-remove="handleRemove"

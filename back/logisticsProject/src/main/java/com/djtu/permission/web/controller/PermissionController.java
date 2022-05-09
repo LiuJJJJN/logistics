@@ -39,6 +39,7 @@ public class PermissionController {
      * @param map 前端发过来的 suerId
      * @return 功能列表
      */
+    @RequiresRoles(value = {"学生", "导员", "管理员"}, logical = Logical.OR)
     @RequestMapping("/getPermissionList.do")
     @ResponseBody
     public Result getPermissionList(@RequestBody Map<String, String> map) {
@@ -56,7 +57,7 @@ public class PermissionController {
      *
      * @return 所有学生以及相对应的角色列表
      */
-    @RequiresRoles(value = {"导员", "管理员"}, logical = Logical.OR)
+    @RequiresRoles("管理员")
     @RequestMapping("/getStudentRoleList.do")
     @ResponseBody
     public Result getUserPermissionList(@RequestBody Map map) {
@@ -75,7 +76,42 @@ public class PermissionController {
         }
         StudentSearchVo studentSearchVo = new StudentSearchVo(name, sno, college, stuClass, startDate, endDate);
 
-        List<StudentRoleVo> studentRoleVoList = roleService.getStudentUserRoleVoList(studentSearchVo, pageNo, pageSize);
+        List<StudentRoleVo> studentRoleVoList = roleService.getStudentUserRoleVoList(studentSearchVo, pageNo, pageSize, "");
+
+        if (studentRoleVoList == null) {
+            return new Result().setCode(402).setMessage("获取学生角色列表失败");
+        }
+        return new Result().setCode(200).setMessage("获取学生角色列表成功").setData(studentRoleVoList);
+    }
+
+    /**
+     * 获取导员所管理的学生以及相对应的角色列表
+     *
+     * @return 所有学生以及相对应的角色列表
+     */
+    @RequiresRoles("导员")
+    @RequestMapping("/getStudentRoleListByTutor.do")
+    @ResponseBody
+    public Result getStudentRoleListByTutor(@RequestBody Map map) {
+        UserVo userVo = (UserVo) SecurityUtils.getSubject().getSession().getAttribute("userVo");
+        String userId = userVo.getUserId();
+        String tutorId = userService.getTutorIdByUserId(userId);
+        Integer pageNo = (Integer) map.get("pageNo");
+        Integer pageSize = (Integer) map.get("pageSize");
+        String name = (String) map.get("name");
+        String sno = (String) map.get("sno");
+        String college = (String) map.get("college");
+        String stuClass = (String) map.get("stuClass");
+        List<String> date = (List) map.get("date");
+        String startDate = null;
+        String endDate = null;
+        if (date != null && !date.isEmpty()) {
+            startDate = date.get(0).substring(0, 10);
+            endDate = date.get(1).substring(0, 10);
+        }
+        StudentSearchVo studentSearchVo = new StudentSearchVo(name, sno, college, stuClass, startDate, endDate);
+
+        List<StudentRoleVo> studentRoleVoList = roleService.getStudentUserRoleVoList(studentSearchVo, pageNo, pageSize, tutorId);
 
         if (studentRoleVoList == null) {
             return new Result().setCode(402).setMessage("获取学生角色列表失败");
@@ -116,6 +152,36 @@ public class PermissionController {
     @RequestMapping("/getStudentListTotal.do")
     @ResponseBody
     public Result getStudentRoleListTotal(@RequestBody Map map) {
+        String name = (String) map.get("name");
+        String sno = (String) map.get("sno");
+        String college = (String) map.get("college");
+        String stuClass = (String) map.get("stuClass");
+        List<String> date = (List) map.get("date");
+        String startDate = null;
+        String endDate = null;
+        if (date != null && !date.isEmpty()) {
+            startDate = date.get(0).substring(0, 10);
+            endDate = date.get(1).substring(0, 10);
+        }
+        StudentSearchVo studentSearchVo = new StudentSearchVo(name, sno, college, stuClass, startDate, endDate);
+
+        Integer total = roleService.getStudentRoleListTotal(studentSearchVo);
+
+        if (total == null) {
+            return new Result().setCode(402).setMessage("获取学生列表总数失败");
+        }
+        return new Result().setCode(200).setMessage("获取学生列表总数成功").setData(total);
+    }
+
+    /**
+     * 根据导员id获取所有学生列表的总数
+     *
+     * @return 所有学生列表的总数
+     */
+    @RequiresRoles(value = {"导员", "管理员"}, logical = Logical.OR)
+    @RequestMapping("/getStudentListTotalByTutor.do")
+    @ResponseBody
+    public Result getStudentListTotalByTutor(@RequestBody Map map) {
         String name = (String) map.get("name");
         String sno = (String) map.get("sno");
         String college = (String) map.get("college");
