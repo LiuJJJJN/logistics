@@ -15,7 +15,7 @@ public class IndexController {
     @RequestMapping("/")
     @ResponseBody
     public String index() {
-        return "this is SpringMVC running success";
+        return "this is SpringMVC running success dev it <a href='http://localhost:8081'>localhost:8081</a>";
     }
 
 }

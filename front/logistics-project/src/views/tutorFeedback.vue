@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h1 style="font-size: 20px; display: inline-block; width: 200px">历史回复:</h1>
-    <div style="float: right">
+    <h1 style="font-size: 20px; width: 200px; float: left;">历史回复:</h1>
+    <div style="float: right; width: 100px; margin-top: 20px">
       <el-badge :value="this.unNum" :max="100" class="item1" v-show="this.unNum==0?false:true">
         <el-button size="large" @click="unReply">未回复</el-button>
       </el-badge>
@@ -396,10 +396,6 @@ export default {
 </script>
 
 <style scoped>
-.item1 {
-  margin-top: 10px;
-  margin-left: 1200px;
-}
 
 .feedbackInfCss {
   width: 400px;

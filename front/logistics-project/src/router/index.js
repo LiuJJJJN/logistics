@@ -4,25 +4,25 @@ import VueRouter from 'vue-router'
 import login from "@/views/login";
 import index from "@/views/index";
 import tutorFeedback from "@/views/tutorFeedback";
-import feedback from "@/views/stuFeedback";
+import stuFeedback from "@/views/stuFeedback";
 import register from "@/views/register";
 import stuRegister from "@/views/stuRegister";
 import tutorRegister from "@/views/tutorRegister";
 import notFoundPage from "@/views/notFoundPage";
 import welcomePage from "@/views/welcomePage";
-import stuRole from "@/views/tutorAndAdminStuRole";
-import tutorRole from "@/views/adminTutorRole";
-import dicType from "@/views/adminDicType";
-import dicValue from "@/views/adminDicValue";
+import tutorAndAdminStuRole from "@/views/tutorAndAdminStuRole";
+import adminTutorRole from "@/views/adminTutorRole";
+import adminDicType from "@/views/adminDicType";
+import adminDicValue from "@/views/adminDicValue";
 import userInfo from "@/views/userInfo";
-import stuManage from "@/views/tutorAndAdminStuManage";
-import tutorManage from "@/views/adminTutorManage";
+import tutorAndAdminStuManage from "@/views/tutorAndAdminStuManage";
+import adminTutorManage from "@/views/adminTutorManage";
 import adminCarousel from "@/views/adminCarousel";
 import tutorMyStudent from "@/views/tutorMyStudent";
-import buildingManage from "@/views/adminBuildingManage";
-import dormManage from "@/views/adminDormManage";
+import adminBuildingManage from "@/views/adminBuildingManage";
+import adminDormManage from "@/views/adminDormManage";
 import stuDorm from "@/views/stuDorm";
-import changeDorm from "@/views/stuDormChange";
+import stuDormChange from "@/views/stuDormChange";
 import tutorAndAdminDormChangeApply from "@/views/tutorAndAdminDormChangeApply";
 
 Vue.use(VueRouter)
@@ -73,7 +73,7 @@ const routes = [
       {
         path:"/stu/feedback",
         name:"feedback",
-        component: feedback
+        component: stuFeedback
       },
       {
         path:"/tutor/feedback",
@@ -83,7 +83,7 @@ const routes = [
       {
         path:"/tutor/studentManage",
         name:"stuManage",
-        component: stuManage
+        component: tutorAndAdminStuManage
       },
       {
         path:"/tutor/myStudent",
@@ -93,37 +93,37 @@ const routes = [
       {
         path:"/admin/studentRole",
         name:"studentRole",
-        component: stuRole
+        component: tutorAndAdminStuRole
       },
       {
         path:"/admin/tutorRole",
         name:"tutorRole",
-        component: tutorRole
+        component: adminTutorRole
       },
       {
         path:"/admin/dicType",
         name:"dicType",
-        component: dicType
+        component: adminDicType
       },
       {
         path:"/admin/dicValue",
         name:"dicValue",
-        component: dicValue
+        component: adminDicValue
       },
       {
         path:"/admin/studentManage",
         name:"stuManage",
-        component: stuManage
+        component: tutorAndAdminStuManage
       },
       {
         path:"/admin/tutorManage",
         name:"tutorManage",
-        component: tutorManage
+        component: adminTutorManage
       },
       {
         path:"/admin/buildingManage",
         name:"buildingManage",
-        component: buildingManage
+        component: adminBuildingManage
       },
       {
         path:"/admin/carousel",
@@ -133,7 +133,7 @@ const routes = [
       {
         path:"/admin/dormManage",
         name:"dormManage",
-        component: dormManage
+        component: adminDormManage
       },
       {
         path:"/stu/myDorm",
@@ -143,7 +143,7 @@ const routes = [
       {
         path:"/stu/changeDorm",
         name:"changeDorm",
-        component: changeDorm
+        component: stuDormChange
       },
       {
         path:"/admin/dormChange",

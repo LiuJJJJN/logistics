@@ -75,11 +75,11 @@ export default {
         ],
         username: [
           {required: true, message: "账号必填", trigger: 'blur'},
-          {min: 3, max: 18, message: "账号长度不能小于 3 位或超过 18 位"}
+          {min: 6, max: 18, message: "账号长度不能小于 6 位或超过 18 位"}
         ],
         password: [
           {required: true, message: "密码必填", trigger: 'blur'},
-          {min: 3, max: 18, message: "密码长度不能小于 3 位或超过 18 位"}
+          {min: 6, max: 18, message: "密码长度不能小于 6 位或超过 18 位"}
         ],
         code: [{required: true, message: "请输入验证码", trigger: "blur"}]
       }
