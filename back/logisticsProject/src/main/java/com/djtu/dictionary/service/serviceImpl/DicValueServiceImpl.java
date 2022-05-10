@@ -5,6 +5,7 @@ import com.djtu.dictionary.dao.DicValueDao;
 import com.djtu.dictionary.pojo.DicValue;
 import com.djtu.dictionary.pojo.vo.DicValueVo;
 import com.djtu.dictionary.service.DicValueService;
+import com.djtu.exception.NothingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,19 +25,19 @@ public class DicValueServiceImpl implements DicValueService {
     }
 
     @Override
-    public List<DicValue> getDicValuesList() throws DictionaryException {
+    public List<DicValue> getDicValuesList() throws NothingException {
         List<DicValue> list = dicValueDao.getDicValueList();
         if (list.isEmpty()) {
-            throw new DictionaryException("获取失败");
+            throw new NothingException("获取失败");
         }
         return list;
     }
 
     @Override
-    public List<DicValue> getDicValuesByCodeOrValue(DicValueVo dicValueVo) throws DictionaryException {
+    public List<DicValue> getDicValuesByCodeOrValue(DicValueVo dicValueVo) throws NothingException {
         List<DicValue> list = dicValueDao.getDicValuesByCodeOrName(dicValueVo);
         if (list.isEmpty()) {
-            throw new DictionaryException("获取失败");
+            throw new NothingException("获取失败");
         }
         return list;
     }
@@ -72,10 +73,10 @@ public class DicValueServiceImpl implements DicValueService {
     }
 
     @Override
-    public List<DicValue> getBuildingTypeList() throws DictionaryException {
+    public List<DicValue> getBuildingTypeList() throws NothingException {
         List<DicValue> buildingTypeList = dicValueDao.getBuildingTypeList();
         if (buildingTypeList.isEmpty()) {
-            throw new DictionaryException("获取楼宇类型列表失败");
+            throw new NothingException("获取楼宇类型列表失败");
         }
         return buildingTypeList;
     }

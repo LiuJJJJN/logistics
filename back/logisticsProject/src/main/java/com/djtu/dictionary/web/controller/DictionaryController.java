@@ -7,6 +7,7 @@ import com.djtu.dictionary.pojo.DicValue;
 import com.djtu.dictionary.pojo.vo.DicTypeVo;
 import com.djtu.dictionary.pojo.vo.DicValueVo;
 import com.djtu.exception.DictionaryException;
+import com.djtu.exception.NothingException;
 import com.djtu.response.Result;
 import com.djtu.utils.StringUtil;
 import org.apache.shiro.authz.annotation.Logical;
@@ -51,7 +52,7 @@ public class DictionaryController {
     @RequiresRoles("管理员")
     @RequestMapping("/getBuildingTypeList.do")
     @ResponseBody
-    public Result getBuildingList() throws DictionaryException {
+    public Result getBuildingList() throws NothingException {
         List<DicValue> list = dicValueService.getBuildingTypeList();
         return new Result().setCode(200).setMessage("获取成功").setData(list);
     }
@@ -64,7 +65,7 @@ public class DictionaryController {
     @RequiresRoles("管理员")
     @RequestMapping("/getDicVL.do")
     @ResponseBody
-    public Result getDicValuesList() throws DictionaryException {
+    public Result getDicValuesList() throws NothingException {
         List<DicValue> list = dicValueService.getDicValuesList();
         return new Result().setCode(200).setMessage("获取成功").setData(list);
     }
@@ -79,7 +80,7 @@ public class DictionaryController {
     @RequiresRoles("管理员")
     @RequestMapping("/getDicVByCV.do")
     @ResponseBody
-    public Result getDicValuesAndTotal(@RequestBody DicValueVo dicValueVo) throws DictionaryException {
+    public Result getDicValuesAndTotal(@RequestBody DicValueVo dicValueVo) throws NothingException {
         List<DicValue> list = dicValueService.getDicValuesByCodeOrValue(dicValueVo);
         Integer total = dicValueService.getDicValuesListNum();
         Map<String, Object> map = new Hashtable<>();
@@ -139,7 +140,7 @@ public class DictionaryController {
     @RequiresRoles("管理员")
     @RequestMapping("/getDicTL.do")
     @ResponseBody
-    public Result getDicTypeList() throws DictionaryException {
+    public Result getDicTypeList() throws NothingException {
         List<DicType> list = dicTypeService.getDicTypeList();
         return new Result().setCode(200).setMessage("查询成功").setData(list);
     }
@@ -152,7 +153,7 @@ public class DictionaryController {
     @RequiresRoles("管理员")
     @RequestMapping("/getDicTByCN.do")
     @ResponseBody
-    public Result getDicTypeListByCodeOrName(@RequestBody DicTypeVo dicTypeVo) throws DictionaryException {
+    public Result getDicTypeListByCodeOrName(@RequestBody DicTypeVo dicTypeVo) throws NothingException {
         List<DicType> list = dicTypeService.getDicTypeListByCodeOrName(dicTypeVo);
         Integer total = dicTypeService.getDicTypeListNum();
         Map<String, Object> map = new Hashtable<>();

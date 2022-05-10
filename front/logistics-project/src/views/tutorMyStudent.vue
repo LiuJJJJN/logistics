@@ -104,7 +104,7 @@
       </el-table-column>
       <el-table-column
           label="姓名"
-          width="100">
+          width="80">
         <template slot-scope="scope">
           <span>{{ scope.row.name }}</span>
         </template>
