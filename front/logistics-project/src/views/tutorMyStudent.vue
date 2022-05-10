@@ -45,26 +45,31 @@
       </el-col>
     </el-row>
     <el-row :gutter="20">
-      <el-col :span="1.5"><div class="grid-content bg-purple">
-        <el-button
-            size="mini"
-            type="danger"
-            icon="el-icon-delete"
-            slot="reference"
-            @click="delBtn"
-            class="functionBtn"></el-button>
-      </div></el-col>
-      <el-col :span="2"><div class="grid-content bg-purple">
-        <!--学生下载信息-->
-        <el-form :action="actionURL" method="post" type="primary">
-          <el-input type="submit" value="导出" style="width: 80px;"/>
-        </el-form>
-      </div></el-col>
+      <el-col :span="1.5">
+        <div class="grid-content bg-purple">
+          <el-button
+              size="mini"
+              type="danger"
+              icon="el-icon-delete"
+              slot="reference"
+              @click="delBtn"
+              class="functionBtn"></el-button>
+        </div>
+      </el-col>
       <!--学生下载信息-->
-      <el-col :span="2"><div class="grid-content bg-purple">
-        <el-button @click="openDownload" type="primary" plain>上传</el-button>
-      </div></el-col>
+      <el-col :span="2">
+          <el-form :action="actionURL" method="post">
+            <el-input type="submit" value="导出" style="width: 70px;"/>
+          </el-form>
+      </el-col>
+      <!--上传学生信息-->
+      <el-col :span="2">
+        <div class="grid-content bg-purple">
+          <el-button @click="openDownload" type="primary" plain>上传</el-button>
+        </div>
+      </el-col>
     </el-row>
+
     <!--上传模态窗口-->
     <el-dialog title="上传文件" :visible.sync="dialogFormVisible">
       <el-form action='http://localhost:8080/logisticsProject/permission/downloadM.do' method="post" type="primary">
@@ -80,6 +85,7 @@
         <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
       </el-upload>
     </el-dialog>
+
     <!--表格-->
     <el-table
         :data="tableData"
@@ -216,22 +222,22 @@
 <script>
 export default {
   name: "tutorMyStudent",
-  data(){
-    return{
-      dialogFormVisible : false,
-      actionURL: 'http://localhost:8080/logisticsProject/permission/downloadStu.do?id='+this.$store.getters.getUser.userId,
-      uploadURL:'http://localhost:8080/logisticsProject/permission/uploadMyStu.do?id='+this.$store.getters.getUser.userId,
-      collegeEnum:[],
-      searchForm:{
-        name:'',
-        sno:'',
-        college:'',
-        stuClass:'',
-        date:[]
+  data() {
+    return {
+      dialogFormVisible: false,
+      actionURL: 'http://localhost:8080/logisticsProject/permission/downloadStu.do?id=' + this.$store.getters.getUser.userId,
+      uploadURL: 'http://localhost:8080/logisticsProject/permission/uploadMyStu.do?id=' + this.$store.getters.getUser.userId,
+      collegeEnum: [],
+      searchForm: {
+        name: '',
+        sno: '',
+        college: '',
+        stuClass: '',
+        date: []
       },
-      submitForm:{
-        id:'loading',
-        remark:'loading',
+      submitForm: {
+        id: 'loading',
+        remark: 'loading',
 
       },
       tableData: [],
@@ -287,17 +293,17 @@ export default {
       total: 0, //总条数
       multipleSelection: [],
 
-      idArray:[],
-      isTutor:this.$store.getters.getUser.primaryRole == '导员',
+      idArray: [],
+      isTutor: this.$store.getters.getUser.primaryRole == '导员',
       downloadUrl: '',
     }
   },
-  methods:{
+  methods: {
     //上传模态窗口打开
-    openDownload(){
-      this.dialogFormVisible=true;
+    openDownload() {
+      this.dialogFormVisible = true;
     },
-    showRemarkDialog (index, row) {
+    showRemarkDialog(index, row) {
       this.dialogRemarkFormVisible = true
       this.submitForm.id = row.id;
       this.submitForm.name = row.name;
