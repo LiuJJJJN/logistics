@@ -4,6 +4,7 @@ import com.djtu.building.dao.BuildingDao;
 import com.djtu.building.pojo.Building;
 import com.djtu.dorm.dao.DormDao;
 import com.djtu.dorm.pojo.Dorm;
+import com.djtu.dorm.pojo.vo.DormApplyPageConditionVo;
 import com.djtu.dorm.pojo.vo.DormApplyVo;
 import com.djtu.dorm.pojo.vo.DormVo;
 import com.djtu.dorm.service.DormService;
@@ -145,8 +146,8 @@ public class DormServiceImpl implements DormService {
     }
 
     @Override
-    public List<DormApplyVo> getDormChangeApplyList(String tutorId) throws NothingException {
-        List<DormApplyVo> dormApplyVoList = dormDao.getDormChangeApplyList(tutorId);
+    public List<DormApplyVo> getDormChangeApplyList(DormApplyPageConditionVo vo) throws NothingException {
+        List<DormApplyVo> dormApplyVoList = dormDao.getDormChangeApplyList(vo);
         if (dormApplyVoList.isEmpty()) {
             throw new NothingException("当前暂无申请");
         }
@@ -166,6 +167,11 @@ public class DormServiceImpl implements DormService {
         if (res != 1) {
             throw new DormException("完成换寝失败: 换寝申请状态修改失败");
         }
+    }
+
+    @Override
+    public int getDormChangeApplyTotal(DormApplyPageConditionVo vo) {
+        return dormDao.getDormChangeApplyTotal(vo);
     }
 
     @Override

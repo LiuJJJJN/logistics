@@ -1,6 +1,7 @@
 package com.djtu.dorm.web.controller;
 
 import com.djtu.dorm.pojo.Dorm;
+import com.djtu.dorm.pojo.vo.DormApplyPageConditionVo;
 import com.djtu.dorm.pojo.vo.DormApplyVo;
 import com.djtu.dorm.pojo.vo.DormVo;
 import com.djtu.dorm.service.DormService;
@@ -182,17 +183,30 @@ public class DormController {
 
     /**
      * 获取换寝申请列表
-     * @param map 导员的用户id
+     * @param vo 用户id加分页数据
      * @return 换寝申请列表
      */
     @RequiresRoles(value = {"导员", "管理员"}, logical = Logical.OR)
     @RequestMapping("/getDormChangeApplyList.do")
     @ResponseBody
-    public Result getDormChangeApplyList(@RequestBody Map map) throws NothingException {
-        String userId = (String) map.get("userId");
-        String tutorId = userService.getTutorIdByUserId(userId);
-        List<DormApplyVo> dormApplyVoList = dormService.getDormChangeApplyList(tutorId);
+    public Result getDormChangeApplyList(@RequestBody DormApplyPageConditionVo vo) throws NothingException {
+        vo.setUserId(userService.getTutorIdByUserId(vo.getUserId()));
+        List<DormApplyVo> dormApplyVoList = dormService.getDormChangeApplyList(vo);
         return new Result().setCode(200).setMessage("查询换寝申请列表成功").setData(dormApplyVoList);
+    }
+
+    /**
+     * 获取换寝申请数据总量
+     * @param vo userId
+     * @return 换寝申请数据总量
+     */
+    @RequiresRoles(value = {"导员", "管理员"}, logical = Logical.OR)
+    @RequestMapping("/getDormChangeApplyTotal.do")
+    @ResponseBody
+    public Result getDormChangeApplyTotal(@RequestBody DormApplyPageConditionVo vo) {
+        vo.setUserId(userService.getTutorIdByUserId(vo.getUserId()));
+        int total = dormService.getDormChangeApplyTotal(vo);
+        return new Result().setCode(200).setMessage("查询换寝申请列表成功").setData(total);
     }
 
     /**
