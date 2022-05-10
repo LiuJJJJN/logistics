@@ -110,4 +110,11 @@ public interface DormDao {
      * @return 状态
      */
     Integer getStatusByStuId(String stuId);
+
+    /**
+     * 根据寝室号查询寝室id
+     * @param doorNo
+     * @return
+     */
+    String getIdbyDoorNo(String doorNo);
 }

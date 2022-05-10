@@ -60,21 +60,24 @@
           <el-input type="submit" value="导出" style="width: 80px;"/>
         </el-form>
       </div></el-col>
-      <el-col :span="1"><div class="grid-content bg-purple">
-        <el-button type="primary" plain>主要按钮</el-button>
+      <!--学生下载信息-->
+      <el-col :span="2"><div class="grid-content bg-purple">
+        <el-button @click="openDownload" type="primary" plain>上传</el-button>
       </div></el-col>
     </el-row>
-
-
-
-    <!--上传-->
-<!--    <input
-        class="file"
-        name="file"
-        type="file"
-        accept=""
-        @change="downloadFile"/>-->
-
+    <!--上传模态窗口-->
+    <el-dialog title="上传文件" :visible.sync="dialogFormVisible">
+      <el-upload
+          class="upload-demo"
+          drag
+          :action="uploadURL"
+          multiple>
+        <i class="el-icon-upload"></i>
+        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+        <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+      </el-upload>
+    </el-dialog>
+    <!--表格-->
     <el-table
         :data="tableData"
         style="width: 100%"
@@ -212,7 +215,9 @@ export default {
   name: "tutorMyStudent",
   data(){
     return{
+      dialogFormVisible : false,
       actionURL: 'http://localhost:8080/logisticsProject/permission/downloadStu.do?id='+this.$store.getters.getUser.userId,
+      uploadURL:'http://localhost:8080/logisticsProject/permission/uploadMyStu.do?id='+this.$store.getters.getUser.userId,
       collegeEnum:[],
       searchForm:{
         name:'',
@@ -285,6 +290,10 @@ export default {
     }
   },
   methods:{
+    //上传模态窗口打开
+    openDownload(){
+      this.dialogFormVisible=true;
+    },
     showRemarkDialog (index, row) {
       this.dialogRemarkFormVisible = true
       this.submitForm.id = row.id;

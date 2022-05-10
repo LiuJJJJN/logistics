@@ -8,20 +8,31 @@ import com.alibaba.excel.util.MapUtils;
 
 import com.djtu.dorm.dao.DormDao;
 import com.djtu.exception.RegisterException;
+import com.djtu.exception.UploadException;
 import com.djtu.exception.UserManagerException;
 import com.djtu.permission.pojo.vo.StudentDormVo;
 import com.djtu.response.Result;
 import com.djtu.settings.dao.StudentDao;
 import com.djtu.settings.dao.UserDao;
 import com.djtu.settings.pojo.Student;
-import com.djtu.settings.pojo.User;
 import com.djtu.settings.service.StudentService;
+import com.djtu.utils.StringUtil;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -30,9 +41,10 @@ public class StudentServiceImpl implements StudentService {
     @Autowired
     private StudentDao studentDao;
     @Autowired
-    UserDao userDao;
+    private UserDao userDao;
+    @Autowired
     private DormDao dormDao;
-
+    private static final Integer SUCCESS_INTO=1;
     @Override
     public void registerStudentUserNameVerify(String username) throws RegisterException {
         Student student = studentDao.getStudentByUsername(username);
@@ -103,6 +115,100 @@ public class StudentServiceImpl implements StudentService {
         //EasyExcel.write(response.getOutputStream()).sheet("学生表").doWrite(FileUtils.data());
         EasyExcel.write(response.getOutputStream(), StudentDormVo.class).sheet("模板").doWrite(list);
     }
+
+    @Override
+    @Transactional(rollbackFor = {UploadException.class})
+    public void uploadMyStudent(String userId, MultipartFile file, HttpServletRequest request) throws IOException, UploadException {
+        //获取前端传递过来的文件对象，存储在“inputStream”中
+        InputStream inputStream =file.getInputStream();
+        //获取文件名
+        String fileName = file.getOriginalFilename();
+        //用于存储解析后的Excel文件
+        Workbook workbook =null;
+        //判断文件扩展名为“.xls还是xlsx的Excel文件”,因为不同扩展名的Excel所用到的解析方法不同
+        String fileType = fileName.substring(fileName.lastIndexOf("."));
+        if(".xls".equals(fileType)){
+            workbook= new HSSFWorkbook(inputStream);//HSSFWorkbook专门解析.xls文件
+        }else if(".xlsx".equals(fileType)){
+            workbook = new XSSFWorkbook(inputStream);//XSSFWorkbook专门解析.xlsx文件
+        }
+        /**
+         * 以 上 摘 自 C S D N
+         */
+        List<StudentDormVo> list=new ArrayList<>();
+        //获取工作表
+        Sheet sheet=workbook.getSheetAt(0);
+        Row headRow=sheet.getRow(0);
+        //验证表头是否符合格式
+        if("姓名".equals(headRow.getCell(0).getStringCellValue())
+                && "性别".equals(headRow.getCell(1).getStringCellValue()) && "入学时间".equals(headRow.getCell(2).getStringCellValue())
+                && "学制".equals(headRow.getCell(3).getStringCellValue()) && "学院".equals(headRow.getCell(4).getStringCellValue())
+                && "班级".equals(headRow.getCell(5).getStringCellValue()) && "备注".equals(headRow.getCell(6).getStringCellValue())
+                && "学号".equals(headRow.getCell(7).getStringCellValue()) && "寝室号".equals(headRow.getCell(8).getStringCellValue())){
+            System.out.println("行数："+sheet.getPhysicalNumberOfRows());
+            for(int i=1;i<sheet.getPhysicalNumberOfRows();i++){
+                Row row=sheet.getRow(i);
+                if(row!=null || row.toString().isEmpty()){
+                    String name=row.getCell(0).getStringCellValue();
+                    String sex=row.getCell(1).getStringCellValue();
+                    String enterDate=row.getCell(2).getStringCellValue();
+                    String schoolSys=row.getCell(3).getStringCellValue();
+                    String college=row.getCell(4).getStringCellValue();
+                    String stuClass=row.getCell(5).getStringCellValue();;
+                    String remark=row.getCell(6).getStringCellValue();
+                    String sno=row.getCell(7).getStringCellValue();
+                    String doorNo=row.getCell(8).getStringCellValue();
+                    String salt = StringUtil.rand4Str();
+                    String password=StringUtil.md5("000000",salt);
+                    String username=sno;
+
+                    StudentDormVo studentDormVo=new StudentDormVo();
+                    studentDormVo.setName(name);
+                    studentDormVo.setSex(sex);
+                    studentDormVo.setEnterDate(enterDate);
+                    studentDormVo.setSchoolSys(schoolSys);
+                    studentDormVo.setCollege(college);
+                    studentDormVo.setStuClass(stuClass);
+                    studentDormVo.setRemark(remark);
+                    studentDormVo.setSno(sno);
+                    studentDormVo.setDoorNo(doorNo);
+                    studentDormVo.setId(StringUtil.generateUUID());
+                    studentDormVo.setSalt(salt);
+                    studentDormVo.setPassword(password);
+                    studentDormVo.setUsername(username);
+                    list.add(studentDormVo);
+                }
+            }
+            //根据用户id获取导员id
+            String tutorId=userDao.getTutorIdByUserId(userId);
+            //查寝室号对应的寝室id
+            for(int i=0;i<list.size();i++){
+                String doorNo=list.get(i).getDoorNo();
+                //设置导员id
+                list.get(i).setTutorId(tutorId);
+                if(doorNo!=null && doorNo!=""){//如果doorNo不为空那么就进行查
+                    //查寝室表-寝室号对应的寝室id
+                    String doorId=dormDao.getIdbyDoorNo(doorNo);
+                    list.get(i).setDoorNo(doorId);
+                }
+                else{
+                    continue;
+                }
+            }
+            System.out.println("!!!"+list);
+            //学生插入记录
+            for(StudentDormVo sv:list){
+                Integer i=studentDao.setStudentBringDoorId(sv);
+                if(i<SUCCESS_INTO){
+                    throw new UploadException("未知异常，导入失败");
+                }
+            }
+        }
+        else{
+            throw new UploadException("上传的【文件内容】格式不符合，请检测表头");
+        }
+    }
+
 
     public synchronized void editStudentDormById(String id, String dormId) throws UserManagerException {
         int size = dormDao.getDormSizeByDormId(dormId);
