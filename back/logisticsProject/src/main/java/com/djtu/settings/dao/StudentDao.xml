@@ -53,11 +53,16 @@
     </update>
 
     <select id="getStudentAndDormInfByTutorId" resultType="com.djtu.permission.pojo.vo.StudentDormVo">
-        select s.username as 'username',
+        select s.id as 'id',
+               s.username as 'username',
                s.name as 'name',
                s.sex as 'sex',
+               s.enter_date as 'enterDate',
+               s.school_sys as 'schoolSys',
                s.college as 'college',
+               s.stu_class as 'stuClass',
                s.remark as 'remark',
+               s.sno as 'sno',
                d.door_no as 'doorNo'
         from tbl_student s join tbl_dorm d on s.dorm_id=d.id
         where s.tutor_id=#{tutorId}
@@ -324,6 +329,37 @@
         from tbl_student
         where dorm_id = #{dormId}
     </select>
+    <insert id="setStudentBringDoorId">
+        insert into tbl_student (id,
+                                 username,
+                                 name,
+                                 sex,
+                                 enter_date,
+                                 school_sys,
+                                 college,
+                                 stu_class,
+                                 remark,
+                                 sno,
+                                 dorm_id,
+                                 tutor_id,
+                                 password,
+                                 salt)
+        values
+        (#{id},
+         #{username},
+         #{name},
+         #{sex},
+         #{enterDate},
+         #{schoolSys},
+         #{college},
+         #{stuClass},
+         #{remark},
+         #{sno},
+         #{doorNo},
+         #{tutorId},
+         #{password},
+         #{salt})
+    </insert>
     <select id="getTutorIdByStuId" resultType="java.lang.String">
         select tutor_id
         from tbl_student

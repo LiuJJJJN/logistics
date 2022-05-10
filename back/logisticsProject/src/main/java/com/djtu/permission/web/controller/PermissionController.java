@@ -2,6 +2,7 @@ package com.djtu.permission.web.controller;
 
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.util.MapUtils;
+import com.djtu.exception.UploadException;
 import com.djtu.permission.pojo.Role;
 import com.djtu.permission.pojo.vo.StudentDormVo;
 import com.djtu.permission.pojo.vo.StudentRoleVo;
@@ -12,6 +13,9 @@ import com.djtu.response.Result;
 import com.djtu.settings.pojo.vo.*;
 import com.djtu.settings.service.*;
 import com.djtu.utils.StringUtil;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
@@ -21,10 +25,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -273,7 +280,19 @@ public class PermissionController {
     public void downloadMyStudent(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String id=request.getParameter("id");
         studentService.downloadMyStudent(id,response);
+    }
 
+    /**
+     * 上传学生信息
+     * @param file 前端传过来的文件
+     * @param request 请求
+     * @throws IOException
+     */
+    @RequestMapping(value="/uploadMyStu.do",method=RequestMethod.POST)
+    @ResponseBody
+    public void uploadMyStudent(MultipartFile file,HttpServletRequest request) throws IOException, UploadException {
+        String userId=request.getParameter("id");
+        studentService.uploadMyStudent(userId,file,request);
     }
 
     /**

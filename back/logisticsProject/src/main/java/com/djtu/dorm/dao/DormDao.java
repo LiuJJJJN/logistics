@@ -115,6 +115,13 @@ public interface DormDao {
     Integer getStatusByStuId(String stuId);
 
     /**
+     * 根据寝室号查询寝室id
+     * @param doorNo
+     * @return
+     */
+    String getIdbyDoorNo(String doorNo);
+    
+    /**
      * 根据状态码获取申请换寝的列表
      *
      * @return 申请换寝的列表

@@ -182,6 +182,13 @@ public interface StudentDao {
     int countDormByDormId(String dormId);
 
     /**
+     * Excel-插入学生记录
+     * @param studentDormVo
+     * @return
+     */
+    Integer setStudentBringDoorId(StudentDormVo studentDormVo);
+
+    /**
      * 完成换寝：设置寝室为换寝目标寝室
      *
      * @param stuId 学生id

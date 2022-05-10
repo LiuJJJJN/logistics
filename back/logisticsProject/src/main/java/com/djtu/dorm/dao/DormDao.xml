@@ -193,5 +193,10 @@
         from tbl_dorm
         where id = #{id}
     </select>
+    <select id="getIdbyDoorNo" resultType="String">
+        select id
+        from tbl_dorm
+        where door_no=#{doorNo}
+    </select>
 
 </mapper>

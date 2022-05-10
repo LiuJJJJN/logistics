@@ -83,6 +83,13 @@ public class GlobalExceptionHandler {
         return new Result().setCode(402).setMessage(e.getMessage());
     }
 
+    @ExceptionHandler(value = UploadException.class)
+    public Result handler(UploadException e){
+        log.error("运行时异常----------------{}", e.getMessage());
+        return new Result().setCode(402).setMessage(e.getMessage());
+    }
+
+
     /*==================== 403 不需要处理的错误, 前端不会提示=======================*/
 
     @ExceptionHandler(value = NothingException.class)
