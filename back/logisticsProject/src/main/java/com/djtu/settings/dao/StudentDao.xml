@@ -72,6 +72,13 @@
         set dorm_id = #{dormId}
         where id = #{id}
     </update>
+    <update id="setNewDorm">
+        update tbl_student
+        set dorm_id = (select to_dorm_id
+                       from tbl_dorm_change
+                       where stu_id = #{stuId} and status = 3)
+        where id = #{stuId}
+    </update>
     <delete id="deleteStudentByStuList">
         delete from tbl_student
         where id in
@@ -101,8 +108,6 @@
     <select id="getTutor" resultType="Tutor">
         select id,
                username,
-               password,
-               salt,
                name,
                sex,
                college,
@@ -354,8 +359,10 @@
          #{tutorId},
          #{password},
          #{salt})
-
-
-
     </insert>
+    <select id="getTutorIdByStuId" resultType="java.lang.String">
+        select tutor_id
+        from tbl_student
+        where id = #{stuId}
+    </select>
 </mapper>

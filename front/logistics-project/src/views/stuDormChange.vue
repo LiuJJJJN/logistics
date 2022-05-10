@@ -6,12 +6,12 @@
       <el-step title="管理员审批"></el-step>
       <el-step title="完成"></el-step>
     </el-steps>
-    <el-row type="flex" class="row-bg" justify="center" v-show="status === 0">
-      <el-col :span="8" style="margin: 150px 0">
+    <el-row type="flex" class="row-bg" style="padding: 150px 0;" justify="center" v-show="status === 0">
+      <el-col :span="8">
         <el-result icon="info" title="信息提示" subTitle="尚未拥有寝室, 请等待管理员分配"
                    v-show="JSON.stringify(dorm) == '{}'"></el-result>
-        <el-descriptions class="margin-top" title="当前寝室" :column="1" border
-                         style="width: 400px; margin: 0 auto;"
+        <el-descriptions title="当前寝室" :column="1" border
+                         style="width: 400px; margin: 0;"
                          v-if="JSON.stringify(dorm) != '{}'">
           <el-descriptions-item>
             <template slot="label">
@@ -80,7 +80,11 @@
     </el-row>
     <el-row type="flex" class="row-bg" justify="center" v-show="status === 3">
       <el-col :span="6" style="margin: 150px 0">
-        <el-result icon="success" title="审批通过" subTitle="请尽快完成换寝"></el-result>
+        <el-result icon="success" title="审批通过" subTitle="请尽快完成换寝">
+          <template slot="extra">
+            <el-button type="primary" size="medium" @click="finishChange">我已完成</el-button>
+          </template>
+        </el-result>
       </el-col>
     </el-row>
   </div>
@@ -115,15 +119,15 @@ export default {
           this.$axios.post("/dorm/changeDorm.do", {
             fromDorm: this.dorm.id,
             toDorm: this.toForm.dorm[1]
-          })
-              .then(resp => {
-                this.$message({
-                  message: resp.data.message,
-                  type: 'success'
-                });
-              }, err => {
-                console.log(err);
-              });
+          }).then(resp => {
+            this.loadStatus();
+            this.$message({
+              message: resp.data.message,
+              type: 'success'
+            });
+          }, err => {
+            console.log(err);
+          });
         } else {
           console.log('error submit!!');
           return false;
@@ -141,7 +145,31 @@ export default {
     loadStatus() {
       this.$axios.post("/dorm/getChangeStatus.do")
           .then(resp => {
-            this.status = resp.data.data;
+            if (resp.data.data === 5) {
+              this.status = 0;
+            } else if (resp.data.data === 4){
+              this.$notify({
+                title: '警告',
+                message: '你的换寝申请被驳回, 请谨慎申请',
+                type: 'warning'
+              });
+              this.status = 0;
+            } else {
+              this.status = resp.data.data;
+            }
+          }, err => {
+            console.log(err);
+          });
+    },
+    finishChange() {
+      this.$axios.post("/dorm/finishChange.do")
+          .then(resp => {
+            this.status = 0;
+            this.loadDorm();
+            this.$message({
+              message: resp.data.message,
+              type: 'success'
+            });
           }, err => {
             console.log(err);
           });
@@ -150,7 +178,7 @@ export default {
   mounted() {
     this.loadDorm();
     this.loadDormOptions();
-    this.loadStatus()
+    this.loadStatus();
   }
 }
 </script>
