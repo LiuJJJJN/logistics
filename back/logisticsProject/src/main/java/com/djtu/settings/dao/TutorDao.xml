@@ -9,9 +9,6 @@
            size="512"
            readOnly="true"/>
 
-    <resultMap id="tutorMap" type="Tutor">
-        <association javaType="Dorm" property="dorm" select="getDorm" column="dorm_id" />
-    </resultMap>
     <update id="editTutor">
         update tbl_tutor
         set username = #{username},
@@ -21,7 +18,7 @@
             college = #{college}
         where id = #{id}
     </update>
-    <select id="getTutorByUsername" resultType="com.djtu.settings.pojo.Tutor" resultMap="tutorMap">
+    <select id="getTutorByUsername" resultType="com.djtu.settings.pojo.Tutor">
         select
             id,
             username,
@@ -30,22 +27,10 @@
             name,
             sex,
             college,
-            dorm_id,
             remark,
             avatar_path
             from tbl_tutor
             where username=#{username}
-    </select>
-    <select id="getDorm" resultType="Dorm">
-        select  id,
-                door_no,
-                water,
-                power,
-                size,
-                have_wc,
-                remark
-        from tbl_dorm
-        where id = #{id}
     </select>
     <select id="getTutorSaltById" resultType="java.lang.String">
         select salt
@@ -109,7 +94,6 @@
                name,
                sex,
                college,
-               dorm_id,
                remark,
                avatar_path
         from tbl_tutor

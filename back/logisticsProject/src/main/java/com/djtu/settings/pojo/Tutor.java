@@ -18,7 +18,6 @@ public class Tutor implements Serializable {
   private String name;
   private String sex;
   private String college;
-  private Dorm dorm;
   private String remark;
   private String avatarPath;
 
