@@ -1,6 +1,7 @@
 package com.djtu.dorm.service;
 
 import com.djtu.dorm.pojo.Dorm;
+import com.djtu.dorm.pojo.vo.DormApplyVo;
 import com.djtu.dorm.pojo.vo.DormVo;
 import com.djtu.exception.DormException;
 import com.djtu.exception.NothingException;
@@ -76,4 +77,26 @@ public interface DormService {
      * @return 当前状态
      */
     Integer getStatusByStuId(String stuId) throws NothingException;
+
+    /**
+     * 修改学生的换寝申请状态
+     *
+     * @param id 换寝申请表id
+     * @param status 更改后的状态
+     */
+    void setDormStatusById(String id, String status) throws DormException;
+
+    /**
+     * 根据状态码获取换寝申请列表
+     *
+     * @return 申请列表
+     */
+    List<DormApplyVo> getDormChangeApplyList(String tutorId) throws NothingException;
+
+    /**
+     * 完成换寝
+     *
+     * @param stuId 学生id
+     */
+    void finishChangeByStuId(String stuId) throws DormException;
 }

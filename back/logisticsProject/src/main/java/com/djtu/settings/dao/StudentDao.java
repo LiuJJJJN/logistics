@@ -173,4 +173,20 @@ public interface StudentDao {
      * @return 现有人数
      */
     int countDormByDormId(String dormId);
+
+    /**
+     * 完成换寝：设置寝室为换寝目标寝室
+     *
+     * @param stuId 学生id
+     * @return 影响条数
+     */
+    int setNewDorm(String stuId);
+
+    /**
+     * 根据学生id获取导员id(是否有导员)
+     *
+     * @param stuId 学生id
+     * @return 导员id
+     */
+    String getTutorIdByStuId(String stuId);
 }
