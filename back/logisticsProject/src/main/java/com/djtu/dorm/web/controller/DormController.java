@@ -1,6 +1,7 @@
 package com.djtu.dorm.web.controller;
 
 import com.djtu.dorm.pojo.Dorm;
+import com.djtu.dorm.pojo.vo.DormApplyVo;
 import com.djtu.dorm.pojo.vo.DormVo;
 import com.djtu.dorm.service.DormService;
 import com.djtu.exception.DormException;
@@ -162,6 +163,51 @@ public class DormController {
         String stuId = userService.getStudentIdByUserId(userId);
         Integer status = dormService.getStatusByStuId(stuId);
         return new Result().setCode(200).setMessage("查询状态码成功").setData(status);
+    }
+
+    /**
+     * 完成换寝
+     *
+     * @return 状态码
+     */
+    @RequiresRoles("学生")
+    @RequestMapping("/finishChange.do")
+    @ResponseBody
+    public Result finishChange() throws DormException {
+        String userId = ((UserVo) SecurityUtils.getSubject().getSession().getAttribute("userVo")).getUserId();
+        String stuId = userService.getStudentIdByUserId(userId);
+        dormService.finishChangeByStuId(stuId);
+        return new Result().setCode(200).setMessage("成功完成换寝");
+    }
+
+    /**
+     * 获取换寝申请列表
+     * @param map 导员的用户id
+     * @return 换寝申请列表
+     */
+    @RequiresRoles(value = {"导员", "管理员"}, logical = Logical.OR)
+    @RequestMapping("/getDormChangeApplyList.do")
+    @ResponseBody
+    public Result getDormChangeApplyList(@RequestBody Map map) throws NothingException {
+        String userId = (String) map.get("userId");
+        String tutorId = userService.getTutorIdByUserId(userId);
+        List<DormApplyVo> dormApplyVoList = dormService.getDormChangeApplyList(tutorId);
+        return new Result().setCode(200).setMessage("查询换寝申请列表成功").setData(dormApplyVoList);
+    }
+
+    /**
+     * 修改学生的换寝申请状态
+     *
+     * @param id 换寝申请表id
+     * @param status 要更改的状态
+     * @return 成功提示
+     */
+    @RequiresRoles(value = {"导员", "管理员"}, logical = Logical.OR)
+    @RequestMapping("/setDormChangeApplyStatus.do")
+    @ResponseBody
+    public Result passDormChangeApply(String id, String status) throws DormException {
+        dormService.setDormStatusById(id, status);
+        return new Result().setCode(200).setMessage("修改换寝申请状态成功");
     }
 
 }

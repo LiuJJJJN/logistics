@@ -24,7 +24,7 @@
     </insert>
     <insert id="addChangeDormApply">
         insert into tbl_dorm_change
-        value(#{id}, #{stuId}, #{fromDorm}, #{toDorm}, #{status})
+        value(#{id}, #{stuId}, #{fromDorm}, #{toDorm}, #{status}, #{time})
     </insert>
     <update id="editDormByDormVo">
         update tbl_dorm set
@@ -36,6 +36,16 @@
                     remark = #{remark},
                     building_id = #{buildingId}
         where id = #{id}
+    </update>
+    <update id="setDormStatusById">
+        update tbl_dorm_change
+        set status = #{status}
+        where id = #{id}
+    </update>
+    <update id="finishChangeByStuId">
+        update tbl_dorm_change
+        set status = 5
+        where stu_id = #{stuId} and status != 5 and status != 4
     </update>
     <delete id="deleteDormByDormId">
         delete from tbl_dorm
@@ -76,6 +86,7 @@
                 remark
         from tbl_dorm
         where building_id = #{id}
+        order by door_no
     </select>
     <select id="getDormSizeByDormId" resultType="java.lang.Integer">
         select size from tbl_dorm where id = #{dormId}
@@ -125,12 +136,62 @@
     <select id="getApplyCountByStudentId" resultType="java.lang.Integer">
         select count(*)
         from tbl_dorm_change
-        where stu_id = #{stuId}
+        where stu_id = #{stuId} and status != 5 and status != 4
     </select>
     <select id="getStatusByStuId" resultType="java.lang.Integer">
         select status
         from tbl_dorm_change
         where stu_id = #{stuId}
+        order by time desc
+        limit 1
+    </select>
+    <resultMap id="dormApplyMap" type="DormApplyVo">
+        <association javaType="Student" property="student" select="getStudent" column="stu_id"/>
+        <association javaType="Dorm" property="toDorm" select="getDorm" column="to_dorm_id"/>
+    </resultMap>
+    <select id="getDormChangeApplyList" resultType="com.djtu.dorm.pojo.vo.DormApplyVo" resultMap="dormApplyMap">
+        select
+            dc.id,
+            dc.stu_id,
+            dc.to_dorm_id,
+            dc.status,
+            dc.time
+        from tbl_dorm_change dc
+        <if test="tutorId != null" >
+            join tbl_student s on s.id = dc.stu_id
+            where s.tutor_id = #{tutorId}
+        </if>
+        order by time desc
+    </select>
+    <select id="getStudent" resultType="student" resultMap="com.djtu.settings.dao.StudentDao.studentMap">
+        select
+            id,
+            name,
+            username,
+            sex,
+            sno,
+            enter_date,
+            college,
+            stu_class,
+            school_sys,
+            dorm_id,
+            tutor_id,
+            remark
+        from tbl_student
+        where id = #{stu_id}
+    </select>
+    <select id="getDorm" resultType="Dorm" resultMap="dormMap">
+        select
+            id,
+            door_no,
+            water,
+            power,
+            size,
+            have_wc,
+            remark,
+            building_id
+        from tbl_dorm
+        where id = #{id}
     </select>
 
 </mapper>
