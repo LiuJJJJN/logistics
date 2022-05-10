@@ -67,10 +67,13 @@
     </el-row>
     <!--上传模态窗口-->
     <el-dialog title="上传文件" :visible.sync="dialogFormVisible">
+      <el-form action='http://localhost:8080/logisticsProject/permission/downloadM.do' method="post" type="primary">
+        <el-input type="submit" value="下载模板" style="width: 80px;"/>
+      </el-form>
       <el-upload
           class="upload-demo"
           drag
-          :action="uploadURL"
+          :action="uploadURL" style="margin-left: 200px"
           multiple>
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>

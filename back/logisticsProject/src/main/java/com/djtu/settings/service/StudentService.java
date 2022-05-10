@@ -75,11 +75,18 @@ public interface StudentService {
     void uploadMyStudent(String userId, MultipartFile file, HttpServletRequest request) throws IOException, UploadException;
 
     /**
+     * 下载模板
+     * @param response 响应
+     */
+    void downloadModel(HttpServletResponse response) throws IOException;
+
+    /**
      * 修改学生寝室
      * @param id 学生id
      * @param dormId 寝室id
      */
     void editStudentDormById(String id, String dormId) throws UserManagerException;
+
 
 
 }

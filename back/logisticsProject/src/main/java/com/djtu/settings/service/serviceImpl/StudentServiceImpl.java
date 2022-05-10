@@ -145,7 +145,6 @@ public class StudentServiceImpl implements StudentService {
                 && "学制".equals(headRow.getCell(3).getStringCellValue()) && "学院".equals(headRow.getCell(4).getStringCellValue())
                 && "班级".equals(headRow.getCell(5).getStringCellValue()) && "备注".equals(headRow.getCell(6).getStringCellValue())
                 && "学号".equals(headRow.getCell(7).getStringCellValue()) && "寝室号".equals(headRow.getCell(8).getStringCellValue())){
-            System.out.println("行数："+sheet.getPhysicalNumberOfRows());
             for(int i=1;i<sheet.getPhysicalNumberOfRows();i++){
                 Row row=sheet.getRow(i);
                 if(row!=null || row.toString().isEmpty()){
@@ -195,12 +194,12 @@ public class StudentServiceImpl implements StudentService {
                     continue;
                 }
             }
-            System.out.println("!!!"+list);
             //学生插入记录
             for(StudentDormVo sv:list){
                 Integer i=studentDao.setStudentBringDoorId(sv);
                 if(i<SUCCESS_INTO){
                     throw new UploadException("未知异常，导入失败");
+
                 }
             }
         }
@@ -209,6 +208,32 @@ public class StudentServiceImpl implements StudentService {
         }
     }
 
+    @Override
+    public void downloadModel( HttpServletResponse response) throws IOException {
+        // 这里注意 有同学反应使用swagger 会导致各种问题，请直接用浏览器或者用postman
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setCharacterEncoding("utf-8");
+        // 这里URLEncoder.encode可以防止中文乱码 当然和easyexcel没有关系
+        String fileName = URLEncoder.encode("学生", "UTF-8").replaceAll("\\+", "%20");
+        response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + fileName + ".xlsx");
+        //EasyExcel.write(response.getOutputStream()).sheet("学生表").doWrite(FileUtils.data());
+        List<StudentDormVo> list = ListUtils.newArrayList();
+        for (int i = 0; i < 1; i++) {
+            StudentDormVo data = new StudentDormVo();
+            data.setName("张三");
+            data.setSex("男");
+            data.setEnterDate("yyy-m-d");
+            data.setSchoolSys("4");
+            data.setCollege("xx学院");
+            data.setStuClass("191");
+            data.setRemark("所有单元格格式均要设置为文本");
+            data.setSno("xxxxxx");
+            data.setDoorNo("***");
+            list.add(data);
+        }
+        EasyExcel.write(response.getOutputStream(), StudentDormVo.class).sheet("模板").doWrite(list);
+
+    }
 
     public synchronized void editStudentDormById(String id, String dormId) throws UserManagerException {
         int size = dormDao.getDormSizeByDormId(dormId);
