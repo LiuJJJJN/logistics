@@ -6,8 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 
 @Data
 @NoArgsConstructor
@@ -15,6 +13,7 @@ import java.util.Date;
 public class DormApplyVo {
     private String id;
     private Student student;
+    private Dorm fromDorm;
     private Dorm toDorm;
     private Integer status;
     private String time;

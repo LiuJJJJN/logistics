@@ -175,7 +175,7 @@
     </div>
 
 
-    <!--  修改备注模态窗口-->
+    <!--  修改备注对话框-->
     <el-dialog title="修改备注信息" :visible.sync="dialogRemarkFormVisible">
       <el-form :model="form">
         <el-form-item label="用户名" :label-width="formLabelWidth">

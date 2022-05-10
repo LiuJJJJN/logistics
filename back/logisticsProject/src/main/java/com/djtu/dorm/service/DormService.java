@@ -1,6 +1,7 @@
 package com.djtu.dorm.service;
 
 import com.djtu.dorm.pojo.Dorm;
+import com.djtu.dorm.pojo.vo.DormApplyPageConditionVo;
 import com.djtu.dorm.pojo.vo.DormApplyVo;
 import com.djtu.dorm.pojo.vo.DormVo;
 import com.djtu.exception.DormException;
@@ -91,7 +92,7 @@ public interface DormService {
      *
      * @return 申请列表
      */
-    List<DormApplyVo> getDormChangeApplyList(String tutorId) throws NothingException;
+    List<DormApplyVo> getDormChangeApplyList(DormApplyPageConditionVo tutorId) throws NothingException;
 
     /**
      * 完成换寝
@@ -99,4 +100,12 @@ public interface DormService {
      * @param stuId 学生id
      */
     void finishChangeByStuId(String stuId) throws DormException;
+
+    /**
+     * 获取学生换寝申请记录总数
+     *
+     * @param vo tutorId
+     * @return 数据总数
+     */
+    int getDormChangeApplyTotal(DormApplyPageConditionVo vo);
 }
