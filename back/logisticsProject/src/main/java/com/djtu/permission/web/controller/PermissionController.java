@@ -290,9 +290,22 @@ public class PermissionController {
      */
     @RequestMapping(value="/uploadMyStu.do",method=RequestMethod.POST)
     @ResponseBody
-    public void uploadMyStudent(MultipartFile file,HttpServletRequest request) throws IOException, UploadException {
+    public Result uploadMyStudent(MultipartFile file,HttpServletRequest request) throws IOException, UploadException {
         String userId=request.getParameter("id");
         studentService.uploadMyStudent(userId,file,request);
+        return new Result().setCode(200).setMessage("上传成功");
+    }
+
+    /**
+     * 下载模板
+     * @param response 响应
+     * @return
+     */
+    @RequestMapping(value = "/downloadM.do",method = RequestMethod.POST)
+    @ResponseBody
+    public Result downloadModel(HttpServletResponse response) throws IOException {
+        studentService.downloadModel(response);
+        return new Result().setCode(200).setMessage("下载成功");
     }
 
     /**

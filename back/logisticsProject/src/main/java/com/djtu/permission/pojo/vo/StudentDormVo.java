@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class StudentDormVo {
 
-    @ExcelProperty("用户名")
+    @ExcelIgnore
     private String username;
     @ExcelIgnore
     private String password;
