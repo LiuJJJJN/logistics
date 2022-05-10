@@ -3,6 +3,7 @@ package com.djtu.dictionary.service;
 import com.djtu.exception.DictionaryException;
 import com.djtu.dictionary.pojo.DicValue;
 import com.djtu.dictionary.pojo.vo.DicValueVo;
+import com.djtu.exception.NothingException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public interface DicValueService {
      *
      * @return 数据字典列表
      */
-    List<DicValue> getDicValuesList() throws DictionaryException;
+    List<DicValue> getDicValuesList() throws NothingException;
 
     /**
      * 查询所有数据字典值，可根据value或type_code查询也可查询所有
@@ -30,7 +31,7 @@ public interface DicValueService {
      * @param dicValueVo dicValueVo实例
      * @return 数据字典值列表
      */
-    List<DicValue> getDicValuesByCodeOrValue(DicValueVo dicValueVo) throws DictionaryException;
+    List<DicValue> getDicValuesByCodeOrValue(DicValueVo dicValueVo) throws NothingException;
 
     /**
      * 查询所有数据字典值个数
@@ -65,5 +66,5 @@ public interface DicValueService {
      *
      * @return 楼宇类型列表
      */
-    List<DicValue> getBuildingTypeList() throws DictionaryException;
+    List<DicValue> getBuildingTypeList() throws NothingException;
 }

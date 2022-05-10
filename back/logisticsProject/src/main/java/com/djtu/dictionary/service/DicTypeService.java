@@ -3,6 +3,7 @@ package com.djtu.dictionary.service;
 import com.djtu.exception.DictionaryException;
 import com.djtu.dictionary.pojo.DicType;
 import com.djtu.dictionary.pojo.vo.DicTypeVo;
+import com.djtu.exception.NothingException;
 
 import java.util.List;
 
@@ -12,13 +13,13 @@ public interface DicTypeService {
      * 查询所有数据字典类型的总数
      * @return 数据字典类型列表
      */
-    Integer getDicTypeListNum() throws DictionaryException;
+    Integer getDicTypeListNum() throws NothingException;
 
     /**
      * 查询所有数据字典类型
      * @return 数据字典类型列表
      */
-    List<DicType> getDicTypeList() throws DictionaryException;
+    List<DicType> getDicTypeList() throws NothingException;
 
     /**
      * 根据code或name分页查询数据字典类型

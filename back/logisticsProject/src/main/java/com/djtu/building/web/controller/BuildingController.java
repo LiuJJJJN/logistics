@@ -4,6 +4,7 @@ import com.djtu.building.pojo.Building;
 import com.djtu.building.pojo.vo.BuildingValueVo;
 import com.djtu.building.service.BuildingService;
 import com.djtu.exception.BuildingException;
+import com.djtu.exception.NothingException;
 import com.djtu.response.Result;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
@@ -77,7 +78,7 @@ public class BuildingController {
     @RequiresRoles(value = {"学生", "导员", "管理员"}, logical = Logical.OR)
     @RequestMapping("/getBuildingList.do")
     @ResponseBody
-    public Result getBuildingList() throws BuildingException {
+    public Result getBuildingList() throws NothingException {
         List<Building> buildingList = buildingService.getBuildingList();
         return new Result().setCode(200).setMessage("获取楼宇列表成功").setData(buildingList);
     }
@@ -91,7 +92,7 @@ public class BuildingController {
     @RequiresRoles("管理员")
     @RequestMapping("/getDormBuildingValueList.do")
     @ResponseBody
-    public Result getBuildingValueList() throws BuildingException {
+    public Result getBuildingValueList() throws NothingException {
         List<BuildingValueVo> buildingList = buildingService.getBuildingValueListByType("公寓楼");
         return new Result().setCode(200).setMessage("获取楼宇列表成功").setData(buildingList);
     }
