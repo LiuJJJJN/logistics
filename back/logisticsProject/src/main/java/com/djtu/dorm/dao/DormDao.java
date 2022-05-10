@@ -1,6 +1,7 @@
 package com.djtu.dorm.dao;
 
 import com.djtu.dorm.pojo.Dorm;
+import com.djtu.dorm.pojo.vo.DormApplyPageConditionVo;
 import com.djtu.dorm.pojo.vo.DormApplyVo;
 import com.djtu.dorm.pojo.vo.DormVo;
 import com.djtu.settings.pojo.Student;
@@ -126,7 +127,7 @@ public interface DormDao {
      *
      * @return 申请换寝的列表
      */
-    List<DormApplyVo> getDormChangeApplyList(@Param("tutorId") String tutorId);
+    List<DormApplyVo> getDormChangeApplyList(@Param("vo") DormApplyPageConditionVo vo);
 
     /**
      * 设置学生的换寝申请状态码
@@ -145,4 +146,11 @@ public interface DormDao {
      */
     int finishChangeByStuId(String stuId);
 
+    /**
+     * 获取学生换寝申请表记录总数
+     *
+     * @param vo tutorId
+     * @return 记录总数
+     */
+    int getDormChangeApplyTotal(@Param("vo") DormApplyPageConditionVo vo);
 }

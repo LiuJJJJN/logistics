@@ -69,14 +69,14 @@
           width="180">
         <template slot-scope="scope">
           <el-popover trigger="hover" placement="top">
-            <p>寝室大小: {{ scope.row.student.dorm.size }}</p>
-            <p>是否独卫: {{ scope.row.student.dorm.haveWc }}</p>
-            <p>水费余额: {{ scope.row.student.dorm.water }}</p>
-            <p>电费余额: {{ scope.row.student.dorm.power }}</p>
-            <p>备注: {{ scope.row.student.dorm.remark }}</p>
+            <p>寝室大小: {{ scope.row.fromDorm.size }}</p>
+            <p>是否独卫: {{ scope.row.fromDorm.haveWc }}</p>
+            <p>水费余额: {{ scope.row.fromDorm.water }}</p>
+            <p>电费余额: {{ scope.row.fromDorm.power }}</p>
+            <p>备注: {{ scope.row.fromDorm.remark }}</p>
             <div slot="reference" class="name-wrapper">
               <el-tag size="medium">{{
-                  scope.row.student.dorm.building.name + " / " + scope.row.student.dorm.doorNo
+                  scope.row.fromDorm.building.name + " / " + scope.row.fromDorm.doorNo
                 }}
               </el-tag>
             </div>
@@ -140,6 +140,18 @@
         </template>
       </el-table-column>
     </el-table>
+    <div class="my-pagination">
+      <el-pagination
+          background
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="pageNo"
+          :page-sizes="[5, 10, 50, 100]"
+          :page-size="10"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total">
+      </el-pagination>
+    </div>
   </div>
 </template>
 
@@ -148,7 +160,10 @@ export default {
   name: "tutorAndAdminDormChangeApply",
   data() {
     return {
-      tableData: []
+      tableData: [],
+      pageNo: 1,
+      pageSize: 10,
+      total: 0
     }
   },
   methods: {
@@ -194,12 +209,29 @@ export default {
         userId = "";
       }
       this.$axios.post("/dorm/getDormChangeApplyList.do", {
-        userId: userId
+        userId: userId,
+        pageNo: (this.pageNo - 1) * this.pageSize,
+        pageSize: this.pageSize
       }).then(resp => {
         this.tableData = resp.data.data;
       }, err => {
         console.log(err);
       });
+      this.$axios.post("/dorm/getDormChangeApplyTotal.do", {
+        userId: userId
+      }).then(resp => {
+        this.total = resp.data.data;
+      }, err => {
+        console.log(err);
+      });
+    },
+    handleSizeChange(val) {
+      this.pageSize = val;
+      this.loadApplyList();
+    },
+    handleCurrentChange(val) {
+      this.pageNo = val;
+      this.loadApplyList();
     }
   },
   mounted() {
@@ -209,5 +241,7 @@ export default {
 </script>
 
 <style scoped>
-
+.my-pagination {
+  margin: 20px;
+}
 </style>

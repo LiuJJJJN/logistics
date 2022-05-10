@@ -166,6 +166,7 @@ export default {
           .then(resp => {
             this.status = 0;
             this.loadDorm();
+            this.loadDormOptions();
             this.$message({
               message: resp.data.message,
               type: 'success'

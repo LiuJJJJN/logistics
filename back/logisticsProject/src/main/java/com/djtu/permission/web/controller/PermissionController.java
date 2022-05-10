@@ -271,28 +271,30 @@ public class PermissionController {
     }
 
     /**
-     *下载学生Excel
+     * 下载学生Excel
+     *
      * @return 是否下载成功
      */
     //@RequiresRoles(value = {"导员"})
-    @RequestMapping(value = "/downloadStu.do",method = RequestMethod.POST)
+    @RequestMapping(value = "/downloadStu.do", method = RequestMethod.POST)
     @ResponseBody
     public void downloadMyStudent(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String id=request.getParameter("id");
-        studentService.downloadMyStudent(id,response);
+        String id = request.getParameter("id");
+        studentService.downloadMyStudent(id, response);
     }
 
     /**
      * 上传学生信息
-     * @param file 前端传过来的文件
+     *
+     * @param file    前端传过来的文件
      * @param request 请求
      * @throws IOException
      */
-    @RequestMapping(value="/uploadMyStu.do",method=RequestMethod.POST)
+    @RequestMapping(value = "/uploadMyStu.do", method = RequestMethod.POST)
     @ResponseBody
-    public void uploadMyStudent(MultipartFile file,HttpServletRequest request) throws IOException, UploadException {
-        String userId=request.getParameter("id");
-        studentService.uploadMyStudent(userId,file,request);
+    public void uploadMyStudent(MultipartFile file, HttpServletRequest request) throws IOException, UploadException {
+        String userId = request.getParameter("id");
+        studentService.uploadMyStudent(userId, file, request);
     }
 
     /**

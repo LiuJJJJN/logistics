@@ -1,10 +1,7 @@
 <template>
   <div class="mainDiv">
-    <h2>反馈:
-    </h2>
-    <el-checkbox-group v-model="checkboxGroup1" style="float: left">
-    </el-checkbox-group>
-    <el-button :plain="true" @click="historyButton" style="float: right">历史记录</el-button>
+    <h2 style="width: 200px; display: inline-block; float: left">反馈:</h2>
+    <el-button :plain="true" @click="historyButton" style="float: right; margin-top: 20px">历史记录</el-button>
     <el-input
         type="text"
         class="titleCss"
@@ -16,7 +13,7 @@
     <el-input
         type="textarea"
         :autosize="{ minRows: 10, maxRows: 90}"
-        placeholder="请输入内容(最多100个字)"
+        placeholder="请输入内容(最多100字)"
         maxlength="100"
         v-model="textarea"
         style="display: inline-block; padding-top: 7px; padding-bottom: 20px; line-height: 500px;">
