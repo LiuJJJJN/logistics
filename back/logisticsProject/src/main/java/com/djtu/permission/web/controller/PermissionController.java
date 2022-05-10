@@ -1,6 +1,9 @@
 package com.djtu.permission.web.controller;
 
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.util.MapUtils;
 import com.djtu.permission.pojo.Role;
+import com.djtu.permission.pojo.vo.StudentDormVo;
 import com.djtu.permission.pojo.vo.StudentRoleVo;
 import com.djtu.permission.pojo.vo.TutorRoleVo;
 import com.djtu.permission.service.PermissionService;
@@ -16,8 +19,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +39,8 @@ public class PermissionController {
     private RoleService roleService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private StudentService studentService;
 
     /**
      * 根据userId获取当前角色的所有功能列表
@@ -252,6 +261,19 @@ public class PermissionController {
             return new Result().setCode(402).setMessage("获取学生列表总数失败");
         }
         return new Result().setCode(200).setMessage("获取学生列表总数成功").setData(total);
+    }
+
+    /**
+     *下载学生Excel
+     * @return 是否下载成功
+     */
+    //@RequiresRoles(value = {"导员"})
+    @RequestMapping(value = "/downloadStu.do",method = RequestMethod.POST)
+    @ResponseBody
+    public void downloadMyStudent(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String id=request.getParameter("id");
+        studentService.downloadMyStudent(id,response);
+
     }
 
     /**
