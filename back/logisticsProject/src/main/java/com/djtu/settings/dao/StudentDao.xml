@@ -106,7 +106,6 @@
                name,
                sex,
                college,
-               dorm_id,
                remark,
                avatar_path
         from tbl_tutor
