@@ -9,63 +9,122 @@
            size="512"
            readOnly="true"/>
 
-    <resultMap id="studentMap" type="Student" >
+    <resultMap id="studentMap" type="Student">
         <association property="tutor" javaType="Tutor" select="getTutor" column="tutor_id"/>
-        <association property="dorm" javaType="Dorm" select="getDorm" column="dorm_id" />
+        <association property="dorm" javaType="Dorm" select="getDorm" column="dorm_id"/>
     </resultMap>
     <update id="editStudent">
         update tbl_student
-        set username = #{username},
-            password = #{password},
-            name = #{name},
-            sex = #{sex},
-            sno = #{sno},
-            college = #{college},
-            stu_class = #{stuClass},
+        set username   = #{username},
+            password   = #{password},
+            name       = #{name},
+            sex        = #{sex},
+            sno        = #{sno},
+            college    = #{college},
+            stu_class  = #{stuClass},
             enter_date = #{enterDate}
         where id = #{id}
     </update>
+    <update id="editStudentRemarkById">
+        update tbl_student
+        set remark = #{remark}
+        where id = #{id}
+    </update>
+    <update id="editStudentPwdById">
+        update tbl_student
+        set password = #{pwd},
+            salt     = #{salt}
+        where id = #{id}
+    </update>
+    <update id="setStudentAvatarPathByUsername">
+        update tbl_student
+        set avatar_path = #{avatarPath}
+        where username = #{username}
+    </update>
+    <update id="editStudentTutorIdById">
+        update tbl_student
+        set tutor_id = #{tutorId}
+        where id = #{stuId}
+    </update>
+    <update id="setStudentTutorId2Null">
+        update tbl_student
+        set tutor_id = null
+        where id = #{stuId}
+    </update>
+
+    <select id="getStudentAndDormInfByTutorId" resultType="com.djtu.permission.pojo.vo.StudentDormVo">
+        select s.id as 'id',
+               s.username as 'username',
+               s.name as 'name',
+               s.sex as 'sex',
+               s.enter_date as 'enterDate',
+               s.school_sys as 'schoolSys',
+               s.college as 'college',
+               s.stu_class as 'stuClass',
+               s.remark as 'remark',
+               s.sno as 'sno',
+               d.door_no as 'doorNo'
+        from tbl_student s join tbl_dorm d on s.dorm_id=d.id
+        where s.tutor_id=#{tutorId}
+    </select>
+    <update id="editStudentDormById">
+        update tbl_student
+        set dorm_id = #{dormId}
+        where id = #{id}
+    </update>
+    <update id="setNewDorm">
+        update tbl_student
+        set dorm_id = (select to_dorm_id
+                       from tbl_dorm_change
+                       where stu_id = #{stuId} and status = 3)
+        where id = #{stuId}
+    </update>
+    <delete id="deleteStudentByStuList">
+        delete from tbl_student
+        where id in
+        <foreach collection="list" item="stuId" open="(" separator="," close=")">
+            #{stuId}
+        </foreach>
+    </delete>
     <select id="getStudentByUsername" resultMap="studentMap">
-        select  id,
-                username,
-                password,
-                school_sys,
-                salt,
-                name,
-                sex,
-                enter_date,
-                college,
-                stu_class,
-                remark,
-                sno,
-                dorm_id,
-                tutor_id,
-                avatar_path
+        select id,
+               username,
+               password,
+               school_sys,
+               salt,
+               name,
+               sex,
+               enter_date,
+               college,
+               stu_class,
+               remark,
+               sno,
+               dorm_id,
+               tutor_id,
+               avatar_path
         from tbl_student s
         where s.username = #{username}
     </select>
     <select id="getTutor" resultType="Tutor">
-        select  id,
-                username,
-                password,
-                salt,
-                name,
-                sex,
-                college,
-                dorm_id,
-                remark,
-                avatar_path
+        select id,
+               username,
+               name,
+               sex,
+               college,
+               remark,
+               avatar_path
         from tbl_tutor
         where id = #{id}
     </select>
-    <select id="getDorm" resultType="Dorm">
-        select  id,
-                door_no,
-                water,
-                power,
-                size,
-                have_wc,
-                remark
+    <select id="getDorm" resultType="Dorm" resultMap="com.djtu.dorm.dao.DormDao.dormMap">
+        select id,
+               door_no,
+               water,
+               power,
+               size,
+               have_wc,
+               remark,
+               building_id
         from tbl_dorm
         where id = #{id}
     </select>
@@ -86,10 +145,11 @@
                tutor_id,
                avatar_path
         from tbl_student
-        where sno=#{sno}
+        where sno = #{sno}
     </select>
     <select id="getStudentTotal" resultType="java.lang.Integer">
-        select count(*) from tbl_student;
+        select count(*)
+        from tbl_student;
     </select>
     <select id="getStudentById" resultType="com.djtu.settings.pojo.Student">
         select id,
@@ -108,7 +168,7 @@
                tutor_id,
                avatar_path
         from tbl_student
-        where id=#{id}
+        where id = #{id}
     </select>
     <select id="getUsernameCountByUsername" resultType="java.lang.Integer">
         select count(*)
@@ -125,9 +185,108 @@
         from tbl_student
         where id = #{id}
     </select>
+    <select id="getStudentListByPageCondition" resultType="com.djtu.settings.pojo.Student" resultMap="studentMap">
+        select
+            id,
+            name,
+            username,
+            sex,
+            sno,
+            enter_date,
+            college,
+            stu_class,
+            school_sys,
+            dorm_id,
+            tutor_id,
+            remark
+        from tbl_student
+        <where>
+            <if test="vo.name != null">
+                and name like '%' #{vo.name} '%'
+            </if>
+            <if test="vo.sno != null">
+                and sno like '%' #{vo.sno} '%'
+            </if>
+            <if test="vo.college != null">
+                and college like '%' #{vo.college} '%'
+            </if>
+            <if test="vo.stuClass != null">
+                and stu_class like '%' #{vo.stuClass} '%'
+            </if>
+            <if test="vo.startDate != null">
+                and enter_date &gt; #{vo.startDate}
+            </if>
+            <if test="vo.endDate != null">
+                and enter_date &lt; #{vo.endDate}
+            </if>
+        </where>
+        limit #{pageNo}, #{pageSize}
+    </select>
+    <select id="getStudentListByPageConditionAndTutorId" resultType="com.djtu.settings.pojo.Student">
+        select
+            id,
+            name,
+            username,
+            sex,
+            sno,
+            enter_date,
+            college,
+            stu_class,
+            school_sys,
+            dorm_id,
+            tutor_id,
+            remark
+        from tbl_student
+        <where>
+            tutor_id = #{tutorId}
+            <if test="vo.name != null">
+                and name like '%' #{vo.name} '%'
+            </if>
+            <if test="vo.sno != null">
+                and sno like '%' #{vo.sno} '%'
+            </if>
+            <if test="vo.college != null">
+                and college like '%' #{vo.college} '%'
+            </if>
+            <if test="vo.stuClass != null">
+                and stu_class like '%' #{vo.stuClass} '%'
+            </if>
+            <if test="vo.startDate != null">
+                and enter_date &gt; #{vo.startDate}
+            </if>
+            <if test="vo.endDate != null">
+                and enter_date &lt; #{vo.endDate}
+            </if>
+        </where>
+        limit #{pageNo}, #{pageSize}
+    </select>
+    <select id="getStudentByTutorTotal" resultType="java.lang.Integer">
+        select count(*)
+        from tbl_student
+        <where>
+            tutor_id = #{tutorId}
+            <if test="vo.name != null">
+                and name like '%' #{vo.name} '%'
+            </if>
+            <if test="vo.sno != null">
+                and sno like '%' #{vo.sno} '%'
+            </if>
+            <if test="vo.college != null">
+                and college like '%' #{vo.college} '%'
+            </if>
+            <if test="vo.stuClass != null">
+                and stu_class like '%' #{vo.stuClass} '%'
+            </if>
+            <if test="vo.startDate != null">
+                and enter_date &gt; #{vo.startDate}
+            </if>
+            <if test="vo.endDate != null">
+                and enter_date &lt; #{vo.endDate}
+            </if>
+        </where>
+    </select>
     <insert id="setStudent">
-        insert into tbl_student(
-                                id,
+        insert into tbl_student(id,
                                 username,
                                 password,
                                 salt,
@@ -139,18 +298,70 @@
                                 stu_class,
                                 remark,
                                 sno)
-        values(
-               #{id},
-               #{username},
-               #{password},
-               #{salt},
-               #{name},
-               #{sex},
-               #{enterDate},
-               #{schoolSys},
-               #{college},
-               #{stuClass},
-               #{remark},
-               #{sno})
+        values (#{id},
+                #{username},
+                #{password},
+                #{salt},
+                #{name},
+                #{sex},
+                #{enterDate},
+                #{schoolSys},
+                #{college},
+                #{stuClass},
+                #{remark},
+                #{sno})
     </insert>
+
+    <select id="getStudentListByTutorId" resultType="com.djtu.settings.pojo.Student">
+        select id,
+               name,
+               sex,
+               college,
+               stu_class,
+               sno,
+               avatar_path
+        from tbl_student
+        where tutor_id=#{tutorId}
+    </select>
+    <select id="countDormByDormId" resultType="java.lang.Integer">
+        select count(*)
+        from tbl_student
+        where dorm_id = #{dormId}
+    </select>
+    <insert id="setStudentBringDoorId">
+        insert into tbl_student (id,
+                                 username,
+                                 name,
+                                 sex,
+                                 enter_date,
+                                 school_sys,
+                                 college,
+                                 stu_class,
+                                 remark,
+                                 sno,
+                                 dorm_id,
+                                 tutor_id,
+                                 password,
+                                 salt)
+        values
+        (#{id},
+         #{username},
+         #{name},
+         #{sex},
+         #{enterDate},
+         #{schoolSys},
+         #{college},
+         #{stuClass},
+         #{remark},
+         #{sno},
+         #{doorNo},
+         #{tutorId},
+         #{password},
+         #{salt})
+    </insert>
+    <select id="getTutorIdByStuId" resultType="java.lang.String">
+        select tutor_id
+        from tbl_student
+        where id = #{stuId}
+    </select>
 </mapper>

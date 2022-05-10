@@ -1,12 +1,13 @@
 <template>
   <div>
     <el-carousel :interval="4000" type="card" height="300px">
-      <el-carousel-item v-for="item in 6" :key="item">
-        <h3 class="medium">{{ item }}</h3>
+      <el-carousel-item v-for="item in fileList" :key="item">
+        <img :src="item.url" alt=""/>
       </el-carousel-item>
     </el-carousel>
     <el-col :span="5" class="el-col">
-      <el-card shadow="hover" class="el-card" v-for="item in itemList" :key="item" style="cursor: pointer" @click.native="toPath(item.path)">
+      <el-card shadow="hover" class="el-card" v-for="item in itemList" :key="item" style="cursor: pointer"
+               @click.native="toPath(item.path)">
         {{ item.name }}
       </el-card>
     </el-col>
@@ -16,23 +17,24 @@
 <script>
 export default {
   name: "welcomePage",
-  data(){
-    return{
-      itemPic:[],
-      itemList:[]
+  data() {
+    return {
+      itemPic: [],
+      itemList: [],
+      fileList: []
     }
   },
-  methods:{
+  methods: {
     getMenuList: function () {
       //获取功能列表
-      this.$axios.post("/permission/getPermissionList.do", {
+      this.$axios.post("/permission/getPermissionWelcomeList.do", {
         userId: this.$store.getters.getUser.userId
       })
           .then(resp => {
             //加载功能按钮列表
             var itemList = [];
             for (let i = 0; i < resp.data.data.length; i++) {
-              for (let j = 0; j <resp.data.data[i].fatherMenu.length; j++) {
+              for (let j = 0; j < resp.data.data[i].fatherMenu.length; j++) {
                 for (let k = 0; k < resp.data.data[i].fatherMenu[j].subMenu.length; k++) {
                   itemList.push(resp.data.data[i].fatherMenu[j].subMenu[k]);
                 }
@@ -43,12 +45,25 @@ export default {
             console.log(err)
           })
     },
-    toPath:function (path){
+    toPath: function (path) {
       this.$router.replace(path);
-    }
+    },
+    loadFileList() {
+      this.$axios.post("/getFileList.do")
+          .then(resp => {
+            this.fileList = resp.data.data;
+            // this.$message({
+            //   message: resp.data.message,
+            //   type: 'success'
+            // });
+          }, err => {
+            console.log(err);
+          })
+    },
   },
   created() {
     this.getMenuList();
+    this.loadFileList();
   }
 }
 </script>
@@ -70,12 +85,12 @@ export default {
   background-color: #d3dce6;
 }
 
-.el-col{
+.el-col {
   margin-top: 30px;
   width: 99%;
 }
 
-.el-card{
+.el-card {
   margin-right: 1%;
   margin-left: 2%;
   margin-bottom: 2%;
@@ -88,7 +103,7 @@ export default {
   display: inline-block;
 }
 
-.el-card:hover{
+.el-card:hover {
   background: rgba(64, 158, 255, 15);
   border-radius: 10px
 }

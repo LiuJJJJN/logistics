@@ -1,7 +1,14 @@
 package com.djtu.settings.service;
 
 import com.djtu.exception.RegisterException;
+import com.djtu.exception.UploadException;
+import com.djtu.exception.UserManagerException;
 import com.djtu.settings.pojo.Student;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 public interface StudentService {
 
@@ -38,4 +45,48 @@ public interface StudentService {
      * @return 盐
      */
     String getStudentSaltById(String id);
+
+    /**
+     * 根据学生id修改备注
+     * @param id 学生id
+     * @param remark 备注
+     */
+    void editStudentRemarkById(String id, String remark) throws UserManagerException;
+
+    /**
+     * 为指定username的学生设置头像路径
+     * @param username 用户名
+     * @param avatarPath 头像路径
+     */
+    void setAvatarPath(String username, String avatarPath) throws UserManagerException;
+
+    /**
+     * 下载我的学生Excel
+     * @param id userId
+     */
+    void downloadMyStudent(String id, HttpServletResponse response) throws IOException;
+
+    /**
+     * 上传学生信息
+     * @param userId 导员的用户id
+     * @param file 文件
+     * @param request 请求
+     */
+    void uploadMyStudent(String userId, MultipartFile file, HttpServletRequest request) throws IOException, UploadException;
+
+    /**
+     * 下载模板
+     * @param response 响应
+     */
+    void downloadModel(HttpServletResponse response) throws IOException;
+
+    /**
+     * 修改学生寝室
+     * @param id 学生id
+     * @param dormId 寝室id
+     */
+    void editStudentDormById(String id, String dormId) throws UserManagerException;
+
+
+
 }

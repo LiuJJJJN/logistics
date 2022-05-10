@@ -1,5 +1,7 @@
 package com.djtu.shiro.realms;
 
+import com.djtu.permission.service.PermissionService;
+import com.djtu.permission.service.RoleService;
 import com.djtu.settings.service.*;
 import com.djtu.settings.pojo.vo.UserVo;
 import com.djtu.token.JwtToken;
@@ -18,7 +20,6 @@ import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @Component

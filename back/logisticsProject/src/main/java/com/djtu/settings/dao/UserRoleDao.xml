@@ -20,4 +20,13 @@
                 #{id})
 
     </insert>
+
+    <delete id="delByUserId">
+        delete from tbl_user_role
+        where
+        user_id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item.id}
+        </foreach>
+    </delete>
 </mapper>

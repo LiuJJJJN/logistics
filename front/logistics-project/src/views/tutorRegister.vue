@@ -19,7 +19,7 @@
       </el-radio-group>
     </el-form-item>
     <el-form-item label="所属学院" prop="college">
-      <el-select v-model="submitForm.college" placeholder="请选择所属学院" >
+      <el-select v-model="submitForm.college" placeholder="请选择所属学院">
         <div v-for="item in collegeEnum" :key="item">
           <el-option :label="item" :value="item"></el-option>
         </div>
@@ -27,7 +27,7 @@
     </el-form-item>
     <br>
     <el-form class="sub-res-button">
-      <el-button type="primary" @click="toRegister('ruleForm')">立即创建</el-button>
+      <el-button type="primary" @click="toRegister('ruleForm')">立即注册</el-button>
       <el-button @click="resetForm('ruleForm')">重置</el-button>
     </el-form>
   </el-form>
@@ -38,20 +38,20 @@ import ElementUI from "element-ui";
 
 export default {
   name: "tutorRegister",
-  data (){
-    return{
+  data() {
+    return {
       collegeEnum: [],
-      submitForm:{
-        id:'',
-        username:'',
-        password:'',
-        salt:'',
-        name:'',
-        sex:'男',
-        college:'',
-        dormId:'',
-        remark:'',
-        avatarPath:''
+      submitForm: {
+        id: '',
+        username: '',
+        password: '',
+        salt: '',
+        name: '',
+        sex: '男',
+        college: '',
+        dormId: '',
+        remark: '',
+        avatarPath: ''
       },
       ruleForm: {
         restaurants: [],
@@ -111,17 +111,22 @@ export default {
     }
   },
   methods: {
-    blurUserName(){//验证用户名是否重复
-      if(this.submitForm.username=='' || this.submitForm.username.length<6 || this.submitForm.username.length>18){//如果用户名为空不进行axios
+    blurUserName() {//验证用户名是否重复
+      if (this.submitForm.username == '' || this.submitForm.username.length < 6 || this.submitForm.username.length > 18) {//如果用户名为空不进行axios
         return false;
       }
       console.log("事件触发");
-      this.$axios.get("/user/registerTutorUV.do",{ params: { username:this.submitForm.username} }).then(resp=>{
+      this.$axios.get("/user/registerTutorUV.do", {
+        params: {
+          username: this.submitForm.username.trim()
+        }
+      }).then(resp => {
+        this.submitForm.username = this.submitForm.username.trim();
         this.$message({
           message: resp.data.message,
           type: 'success'
         });
-      }, err=>{
+      }, err => {
         this.submitForm.username = '';//用户名设置空
         console.log(err)
       })
@@ -155,15 +160,15 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
-    loadCollege:function (){
-      this.$axios.get("/getCollegeList.do").then(resp=>{
+    loadCollege: function () {
+      this.$axios.get("/dic/getCollegeList.do").then(resp => {
         var list = [];
-        for(let i=0; i<resp.data.data.length;i++){
+        for (let i = 0; i < resp.data.data.length; i++) {
           list[i] = resp.data.data[i].value;
         }
         this.collegeEnum = list;
         // console.log(this.collegeEnum);
-      }, err=>{
+      }, err => {
         console.log(err)
       })
     }
@@ -175,7 +180,7 @@ export default {
 </script>
 
 <style scoped>
-.sub-res-button{
+.sub-res-button {
   width: 200px;
   margin: 0 auto;
 }

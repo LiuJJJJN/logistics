@@ -1,6 +1,7 @@
 package com.djtu.settings.service.serviceImpl;
 
 import com.djtu.exception.RegisterException;
+import com.djtu.exception.UserManagerException;
 import com.djtu.settings.dao.TutorDao;
 import com.djtu.settings.pojo.Tutor;
 import com.djtu.settings.service.TutorService;
@@ -41,6 +42,14 @@ public class TutorServiceImpl implements TutorService {
             return tutorDao.editTutor(tutor);
         }
         return 0;
+    }
+
+    @Override
+    public void setAvatarPath(String username, String avatarPath) throws UserManagerException {
+        int res = tutorDao.setTutorAvatarPathByUsername(username, avatarPath);
+        if (res != 1) {
+            throw new UserManagerException("导员头像设置失败");
+        }
     }
 
 }

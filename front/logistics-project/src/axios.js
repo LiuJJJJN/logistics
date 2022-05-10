@@ -4,8 +4,8 @@ import router from './router';
 import ElementUI from 'element-ui';
 
 //配置 axios 每个链接的公共字符
-// axios.defaults.baseURL = "http://47.111.84.87:8080/logisticsProject";
-axios.defaults.baseURL = "http://127.0.0.1:8080/logisticsProject";
+axios.defaults.baseURL = "http://47.113.216.124:8080/logisticsProject";
+// axios.defaults.baseURL = "http://127.0.0.1:8080/logisticsProject";
 
 //配置 axios 可以带 cookie 存储到浏览器
 axios.defaults.withCredentials = true;
@@ -36,6 +36,9 @@ axios.interceptors.response.use(resp =>{
         return Promise.reject(res.message);
     }else if(res.code == 402){ //402 无权限访问 或 后端抛出的异常
         ElementUI.Message.error(res.message, {duration:3*1000});
+        return Promise.reject(res.message);
+    }else if(res.code == 403){ //403 不重要的异常
+        console.log("NothingException: "+res.message);
         return Promise.reject(res.message);
     }else { // 后抛出的运行时异常: 500 系列异常等
         ElementUI.Message.error("其他错误，后端响应内容:"+res.message, {duration:3*1000});

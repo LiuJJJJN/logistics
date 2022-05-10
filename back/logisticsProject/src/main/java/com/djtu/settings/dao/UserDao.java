@@ -1,11 +1,6 @@
 package com.djtu.settings.dao;
 
 import com.djtu.settings.pojo.User;
-import com.djtu.settings.pojo.vo.StudentRoleVo;
-import com.djtu.settings.pojo.vo.StudentSearchVo;
-import com.djtu.settings.pojo.vo.TutorRoleVo;
-import com.djtu.settings.pojo.vo.TutorSearchVo;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -45,32 +40,44 @@ public interface UserDao {
     Integer setTutorUser(User user);
 
     /**
-     * 分页查询学生用户角色相关信息
-     * @param pageCount 起始页
-     * @param pageSize 数据量
-     * @return 学生用户角色信息列表
+     * 根据tutorId获取user表里的id
+     * @param data
+     * @return
      */
-    List<StudentRoleVo> getStudentUserRoleVoList(@Param("vo") StudentSearchVo studentSearchVo, @Param("pageNo") int pageCount, @Param("pageSize") int pageSize);
+    List<User> getIdByTutorId(List<String> data);
 
     /**
-     * 获取学生角色列表总数
-     * @return 总数
+     * 根据totorId删除user表记录
+     * @param data
+     * @return
      */
-    Integer getStudentUserRoleVoListTotal(@Param("vo") StudentSearchVo vo);
+    Integer delByTutorId(List<String> data);
 
     /**
-     * 分页查询导员相关角色信息列表 + 模糊查询
-     * @param tutorSearchVo 导员模糊查询数据
-     * @param pageNo 起始页
-     * @param pageSize 数据量
-     * @return 相关数据列表
+     * 根据学生id列表获取对应的User列表
+     * @param stuList 学生id列表
+     * @return User列表
      */
-    List<TutorRoleVo> getTutorUserRoleVoList(@Param("vo") TutorSearchVo tutorSearchVo,@Param("pageNo") Integer pageNo, @Param("pageSize") Integer pageSize);
+    List<User> getUserIdListByStudentIdList(List<String> stuList);
 
     /**
-     * 获取导员相关用户角色总数
-     * @param tutorSearchVo 模糊条件
-     * @return 总数
+     * 根据User id列表删除User对应字段
+     * @param userList User id列表
+     * @return 影响条数
      */
-    Integer getTutorUserRoleVoListTotal(@Param("vo") TutorSearchVo tutorSearchVo);
+    int delUserByStudentId(List<User> userList);
+
+    /**
+     * 根据userId查询对应学生id
+     * @param userId userId
+     * @return 学生Id
+     */
+    String getStudentIdByUserId(String userId);
+
+    /**
+     * 根据userId查询对应导员id
+     * @param userId userId
+     * @return 导员Id
+     */
+    String getTutorIdByUserId(String userId);
 }

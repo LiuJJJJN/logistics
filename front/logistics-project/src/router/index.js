@@ -3,22 +3,27 @@ import VueRouter from 'vue-router'
 
 import login from "@/views/login";
 import index from "@/views/index";
-import tutorClass from "@/views/tutorClass";
 import tutorFeedback from "@/views/tutorFeedback";
-import userFeedback from "@/views/userFeedback";
-import tutorStudent from "@/views/tutorStudent";
+import stuFeedback from "@/views/stuFeedback";
 import register from "@/views/register";
 import stuRegister from "@/views/stuRegister";
 import tutorRegister from "@/views/tutorRegister";
 import notFoundPage from "@/views/notFoundPage";
 import welcomePage from "@/views/welcomePage";
-import stuRole from "@/views/stuRole";
-import tutorRole from "@/views/tutorRole";
-import dicType from "@/views/dicType";
-import dicValue from "@/views/dicValue";
+import tutorAndAdminStuRole from "@/views/tutorAndAdminStuRole";
+import adminTutorRole from "@/views/adminTutorRole";
+import adminDicType from "@/views/adminDicType";
+import adminDicValue from "@/views/adminDicValue";
 import userInfo from "@/views/userInfo";
-import studentManage from "@/views/studentManage";
-import tutorManage from "@/views/tutorManage";
+import tutorAndAdminStuManage from "@/views/tutorAndAdminStuManage";
+import adminTutorManage from "@/views/adminTutorManage";
+import adminCarousel from "@/views/adminCarousel";
+import tutorMyStudent from "@/views/tutorMyStudent";
+import adminBuildingManage from "@/views/adminBuildingManage";
+import adminDormManage from "@/views/adminDormManage";
+import stuDorm from "@/views/stuDorm";
+import stuDormChange from "@/views/stuDormChange";
+import tutorAndAdminDormChangeApply from "@/views/tutorAndAdminDormChangeApply";
 
 Vue.use(VueRouter)
 
@@ -66,14 +71,9 @@ const routes = [
         component: userInfo
       },
       {
-        path:"/user/feedback",
-        name:"userFeedback",
-        component: userFeedback
-      },
-      {
-        path:"/tutor/class",
-        name:"tutorClass",
-        component: tutorClass
+        path:"/stu/feedback",
+        name:"feedback",
+        component: stuFeedback
       },
       {
         path:"/tutor/feedback",
@@ -82,38 +82,73 @@ const routes = [
       },
       {
         path:"/tutor/studentManage",
-        name:"tutorStudent",
-        component: tutorStudent
+        name:"stuManage",
+        component: tutorAndAdminStuManage
+      },
+      {
+        path:"/tutor/myStudent",
+        name:"tutorMyStudent",
+        component: tutorMyStudent
       },
       {
         path:"/admin/studentRole",
         name:"studentRole",
-        component: stuRole
+        component: tutorAndAdminStuRole
       },
       {
         path:"/admin/tutorRole",
         name:"tutorRole",
-        component: tutorRole
+        component: adminTutorRole
       },
       {
         path:"/admin/dicType",
         name:"dicType",
-        component: dicType
+        component: adminDicType
       },
       {
         path:"/admin/dicValue",
         name:"dicValue",
-        component: dicValue
+        component: adminDicValue
       },
       {
         path:"/admin/studentManage",
-        name:"studentManage",
-        component: studentManage
+        name:"stuManage",
+        component: tutorAndAdminStuManage
       },
       {
         path:"/admin/tutorManage",
         name:"tutorManage",
-        component: tutorManage
+        component: adminTutorManage
+      },
+      {
+        path:"/admin/buildingManage",
+        name:"buildingManage",
+        component: adminBuildingManage
+      },
+      {
+        path:"/admin/carousel",
+        name:"adminCarousel",
+        component: adminCarousel
+      },
+      {
+        path:"/admin/dormManage",
+        name:"dormManage",
+        component: adminDormManage
+      },
+      {
+        path:"/stu/myDorm",
+        name:"myDorm",
+        component: stuDorm
+      },
+      {
+        path:"/stu/changeDorm",
+        name:"changeDorm",
+        component: stuDormChange
+      },
+      {
+        path:"/admin/dormChange",
+        name:"tutor&AdminDormChangeApply",
+        component: tutorAndAdminDormChangeApply
       },
       {
         path: "/*",
@@ -127,7 +162,7 @@ const routes = [
 const router = new VueRouter({
   mode: 'history',
   // base: process.env.BASE_URL,
-  base: 'DJTULogistics',
+  base: 'logistics',
   routes
 })
 

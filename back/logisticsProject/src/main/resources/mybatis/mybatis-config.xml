@@ -13,6 +13,11 @@
 
     <typeAliases>
         <package name="com.djtu.settings.pojo"/>
+        <package name="com.djtu.dorm.pojo"/>
+        <package name="com.djtu.permission.pojo"/>
+        <package name="com.djtu.dictionary.pojo"/>
+        <package name="com.djtu.feedback.pojo"/>
+        <package name="com.djtu.building.pojo"/>
     </typeAliases>
 
 </configuration>

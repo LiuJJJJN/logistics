@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
     private UserRoleDao userRoleDao;
 
     @Override
-    @Transactional(rollbackFor={RegisterException.class,Exception.class})
+    @Transactional(rollbackFor = {RegisterException.class, Exception.class})
     public void registerStudent(Student student) throws RegisterException {
         //先进行重名检测
         Student stu = studentDao.getStudentByUsername(student.getUsername());
@@ -110,12 +110,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<StudentRoleVo> getStudentUserRoleVoList(StudentSearchVo studentSearchVo, int pageCount, int pageSize) {
-
-        return userDao.getStudentUserRoleVoList(studentSearchVo, pageCount, pageSize);
-    }
-
-    @Override
     public String getUserIdByAdminId(String id) {
         return userDao.getUserIdByAdminId(id);
     }
@@ -123,7 +117,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserVo getUserVoByAdminUsername(String username) {
         Admin admin = adminDao.getAdminByUsername(username);
-        if (admin == null){
+        if (admin == null) {
             return null;
         }
         String userId = userDao.getUserIdByAdminId(admin.getId());
@@ -132,18 +126,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Integer getStudentRoleListTotal(StudentSearchVo studentSearchVo) {
-        return userDao.getStudentUserRoleVoListTotal(studentSearchVo);
+    public String getStudentIdByUserId(String userId) {
+        return userDao.getStudentIdByUserId(userId);
     }
 
     @Override
-    public List<TutorRoleVo> getTutorUserRoleVoList(TutorSearchVo tutorSearchVo, Integer pageNo, Integer pageSize) {
-        return userDao.getTutorUserRoleVoList(tutorSearchVo, pageNo, pageSize);
-    }
-
-    @Override
-    public Integer getTutorRoleListTotal(TutorSearchVo tutorSearchVo) {
-        return userDao.getTutorUserRoleVoListTotal(tutorSearchVo);
+    public String getTutorIdByUserId(String userId) {
+        return userDao.getTutorIdByUserId(userId);
     }
 
     @Override

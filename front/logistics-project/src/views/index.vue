@@ -3,18 +3,22 @@
     <el-header>
       <el-row type="flex" class="row-bg" justify="space-between">
         <el-col :span="4" @click.native="toIndex" style="cursor: pointer">
-          <div class="grid-content bg-purple"><span style="font-size: 25px;font-weight: bolder">DJTU后勤管理系统</span>
+          <div class="grid-content bg-purple">
+            <span style="font-size: 25px;font-weight: bolder">校园智慧后勤管理系统</span>
           </div>
         </el-col>
         <el-col :span="2">
           <div class="grid-content bg-purple">
             <el-dropdown style="top: 10px; left: 20px;">
               <span class="el-dropdown-link">
-                <el-avatar :size="size" :src="circleUrl" style="top: 10px; left: 20px; float: left;">img</el-avatar>
+                <el-avatar :size="size" :src="'http://47.113.216.124/images'+avatarPath"
+                           style="top: 10px; left: 20px; float: left;">暂无</el-avatar>
               </span>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item disabled>{{ role }} : {{ name }}</el-dropdown-item>
-                <router-link :to="'/userInfo'"><el-dropdown-item>个人信息</el-dropdown-item></router-link>
+                <router-link :to="'/userInfo'">
+                  <el-dropdown-item>个人信息</el-dropdown-item>
+                </router-link>
                 <el-dropdown-item @click.native="exitLogin">退出登录</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
@@ -23,7 +27,6 @@
       </el-row>
     </el-header>
     <el-container>
-
       <el-aside width="200px">
         <el-menu :default-openeds="items" :default-active="$route.path"> <!--哪个功能不折叠-->
           <div v-for="(item, index) in itemList" :key="index">
@@ -33,7 +36,10 @@
                 <el-menu-item-group :title="item.fatherMenu[y].name">
                   <div v-for="a in x.subMenu" :key="a">
                     <router-link :to="a.path">
-                      <el-menu-item :index="a.path" :class="$route.path==a.path?'is-active':''">{{ a.name }}</el-menu-item>
+                      <el-menu-item :index="a.path" :class="$route.path==a.path?'is-active':''">{{
+                          a.name
+                        }}
+                      </el-menu-item>
                     </router-link>
                   </div>
                 </el-menu-item-group>
@@ -61,7 +67,7 @@ export default {
       role: this.$store.getters.getUser.primaryRole,
       name: this.$store.getters.getUser.name,
       size: "large",
-      circleUrl: "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
+      avatarPath: this.$store.getters.getUser.avatarPath,
       items: [],
       itemList: []
     }
@@ -88,7 +94,7 @@ export default {
             console.log(err)
           })
     },
-    toIndex:function (){
+    toIndex: function () {
       this.$router.replace("/index");
     }
   },
@@ -161,7 +167,7 @@ a {
   text-decoration: none;
 }
 
-.grid-content:hover{
+.grid-content:hover {
   color: #606266;
 }
 
@@ -170,10 +176,13 @@ a {
 <!--
 
 this.$axios.post("")
-      .then(resp=>{
-        console.log(resp);
-      }, err=>{
-        console.log(err);
+    .then(resp=>{
+      this.$message({
+        message: resp.data.message,
+        type: 'success'
       });
+    }, err=>{
+      console.log(err);
+    });
 
 -->

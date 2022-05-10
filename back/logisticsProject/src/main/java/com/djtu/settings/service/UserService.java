@@ -31,14 +31,6 @@ public interface UserService {
     UserVo getUserVoByStudentUsername(String username);
 
     /**
-     * 分页查询学生用户角色相关信息
-     * @param pageCount 起始页
-     * @param pageSize 数据量
-     * @return 学生用户角色信息列表
-     */
-    List<StudentRoleVo> getStudentUserRoleVoList(StudentSearchVo studentSearchVo, int pageCount, int pageSize);
-
-    /**
      * 根据管理员 id 获取 user id
      * @param id 管理员 id
      * @return user id
@@ -60,25 +52,17 @@ public interface UserService {
     UserVo getUserVoByAdminUsername(String username);
 
     /**
-     * 学生用户角色相关信息列表总数
-     * @return 学生用户角色信息列表数量
+     * 根据userId查询对应学生id
+     * @param userId userId
+     * @return 学生Id
      */
-    Integer getStudentRoleListTotal(StudentSearchVo studentSearchVo);
+    String getStudentIdByUserId(String userId);
 
     /**
-     * 分页查询导员用户角色相关信息
-     * @param tutorSearchVo 导员搜索信息
-     * @param pageNo 起始页
-     * @param pageSize 数据量
-     * @return 数据导员及对应角色列表
+     * 根据userId查询对应导员id
+     * @param userId userId
+     * @return 导员Id
      */
-    List<TutorRoleVo> getTutorUserRoleVoList(TutorSearchVo tutorSearchVo, Integer pageNo, Integer pageSize);
-
-    /**
-     * 导员用户角色相关信息总数
-     * @param tutorSearchVo 导员查询条件
-     * @return 总数量
-     */
-    Integer getTutorRoleListTotal(TutorSearchVo tutorSearchVo);
+    String getTutorIdByUserId(String userId);
 
 }
