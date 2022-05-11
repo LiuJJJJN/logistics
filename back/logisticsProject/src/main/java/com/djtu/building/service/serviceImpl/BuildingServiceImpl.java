@@ -5,6 +5,7 @@ import com.djtu.building.pojo.Building;
 import com.djtu.building.pojo.vo.BuildingValueVo;
 import com.djtu.building.service.BuildingService;
 import com.djtu.exception.BuildingException;
+import com.djtu.exception.NothingException;
 import com.djtu.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,10 +28,10 @@ public class BuildingServiceImpl implements BuildingService {
     }
 
     @Override
-    public List<Building> getBuildingList() throws BuildingException {
+    public List<Building> getBuildingList() throws NothingException {
         List<Building> buildingList = buildingDao.getBuildingList();
         if (buildingList.isEmpty()) {
-            throw new BuildingException("获取楼宇列表失败或暂无楼宇信息");
+            throw new NothingException("获取楼宇列表失败或暂无楼宇信息");
         }
         return buildingList;
     }
@@ -52,10 +53,10 @@ public class BuildingServiceImpl implements BuildingService {
     }
 
     @Override
-    public List<BuildingValueVo> getBuildingValueListByType(String type) throws BuildingException {
+    public List<BuildingValueVo> getBuildingValueListByType(String type) throws NothingException {
         List<BuildingValueVo> buildingValueList = buildingDao.getBuildingValueListByType(type);
         if (buildingValueList.isEmpty()) {
-            throw new BuildingException("获取楼宇Value列表失败或暂无楼宇信息");
+            throw new NothingException("获取楼宇Value列表失败或暂无楼宇信息");
         }
         return buildingValueList;
     }

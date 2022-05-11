@@ -3,6 +3,7 @@ package com.djtu.building.service;
 import com.djtu.building.pojo.Building;
 import com.djtu.building.pojo.vo.BuildingValueVo;
 import com.djtu.exception.BuildingException;
+import com.djtu.exception.NothingException;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ public interface BuildingService {
      *
      * @return 楼宇列表
      */
-    List<Building> getBuildingList() throws BuildingException;
+    List<Building> getBuildingList() throws NothingException;
 
     /**
      * 修改楼宇
@@ -41,5 +42,5 @@ public interface BuildingService {
      *
      * @return 楼宇value列表
      */
-    List<BuildingValueVo> getBuildingValueListByType(String type) throws BuildingException;
+    List<BuildingValueVo> getBuildingValueListByType(String type) throws NothingException;
 }

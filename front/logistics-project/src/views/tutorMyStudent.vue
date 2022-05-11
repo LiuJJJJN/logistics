@@ -65,6 +65,7 @@
         <el-button @click="openUpload" type="primary" plain>上传</el-button>
       </div></el-col>
     </el-row>
+
     <!--上传模态窗口-->
     <el-dialog title="上传文件" :visible.sync="dialogFormVisible">
       <el-form action='http://localhost:8080/logisticsProject/permission/downloadM.do' method="post" type="primary">
@@ -80,6 +81,7 @@
         <div class="el-upload__tip" slot="tip">只能上传Excel文件</div>
       </el-upload>
     </el-dialog>
+
     <!--表格-->
     <el-table
         :data="tableData"
@@ -98,7 +100,7 @@
       </el-table-column>
       <el-table-column
           label="姓名"
-          width="100">
+          width="80">
         <template slot-scope="scope">
           <span>{{ scope.row.name }}</span>
         </template>
@@ -216,22 +218,22 @@
 <script>
 export default {
   name: "tutorMyStudent",
-  data(){
-    return{
-      dialogFormVisible : false,
-      actionURL: 'http://localhost:8080/logisticsProject/permission/downloadStu.do?id='+this.$store.getters.getUser.userId,
-      uploadURL:'http://localhost:8080/logisticsProject/permission/uploadMyStu.do?id='+this.$store.getters.getUser.userId,
-      collegeEnum:[],
-      searchForm:{
-        name:'',
-        sno:'',
-        college:'',
-        stuClass:'',
-        date:[]
+  data() {
+    return {
+      dialogFormVisible: false,
+      actionURL: 'http://localhost:8080/logisticsProject/permission/downloadStu.do?id=' + this.$store.getters.getUser.userId,
+      uploadURL: 'http://localhost:8080/logisticsProject/permission/uploadMyStu.do?id=' + this.$store.getters.getUser.userId,
+      collegeEnum: [],
+      searchForm: {
+        name: '',
+        sno: '',
+        college: '',
+        stuClass: '',
+        date: []
       },
-      submitForm:{
-        id:'loading',
-        remark:'loading',
+      submitForm: {
+        id: 'loading',
+        remark: 'loading',
 
       },
       tableData: [],
@@ -287,17 +289,17 @@ export default {
       total: 0, //总条数
       multipleSelection: [],
 
-      idArray:[],
-      isTutor:this.$store.getters.getUser.primaryRole == '导员',
+      idArray: [],
+      isTutor: this.$store.getters.getUser.primaryRole == '导员',
       downloadUrl: '',
     }
   },
-  methods:{
+  methods: {
     //上传模态窗口打开
     openUpload(){
       this.dialogFormVisible=true;
     },
-    showRemarkDialog (index, row) {
+    showRemarkDialog(index, row) {
       this.dialogRemarkFormVisible = true
       this.submitForm.id = row.id;
       this.submitForm.name = row.name;
