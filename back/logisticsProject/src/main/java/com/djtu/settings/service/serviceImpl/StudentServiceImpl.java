@@ -2,9 +2,7 @@ package com.djtu.settings.service.serviceImpl;
 
 
 import com.alibaba.excel.EasyExcel;
-import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.util.ListUtils;
-import com.alibaba.excel.util.MapUtils;
 
 import com.djtu.dorm.dao.DormDao;
 import com.djtu.exception.RegisterException;
@@ -12,7 +10,6 @@ import com.djtu.exception.UploadException;
 import com.djtu.exception.UserManagerException;
 import com.djtu.permission.pojo.vo.StudentDormTutorVo;
 import com.djtu.permission.pojo.vo.StudentDormVo;
-import com.djtu.response.Result;
 import com.djtu.settings.dao.StudentDao;
 import com.djtu.settings.dao.UserDao;
 import com.djtu.settings.pojo.Student;
@@ -197,6 +194,11 @@ public class StudentServiceImpl implements StudentService {
             }
             //学生插入记录
             for(StudentDormVo sv:list){
+                //查询学生表里面有没有重复的学号
+                Student stu=studentDao.getStudentBySno(sv.getSno());
+                if(stu!=null){
+                    continue;
+                }
                 Integer i=studentDao.setStudentBringDoorId(sv);
                 if(i<SUCCESS_INTO){
                     throw new UploadException("未知异常，导入失败");
