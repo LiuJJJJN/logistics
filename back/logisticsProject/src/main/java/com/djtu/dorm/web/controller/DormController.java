@@ -71,7 +71,7 @@ public class DormController {
     @RequiresRoles("管理员")
     @RequestMapping("/getDormList.do")
     @ResponseBody
-    public Result getDormList() throws DormException {
+    public Result getDormList() throws NothingException {
         List<Dorm> dormList = dormService.getDormList();
         return new Result().setCode(200).setMessage("获取寝室列表成功").setData(dormList);
     }

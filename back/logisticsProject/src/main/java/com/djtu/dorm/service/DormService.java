@@ -24,7 +24,7 @@ public interface DormService {
      *
      * @return 寝室列表
      */
-    List<Dorm> getDormList() throws DormException;
+    List<Dorm> getDormList() throws NothingException;
 
     /**
      * 根据寝室id删除寝室

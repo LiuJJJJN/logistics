@@ -71,7 +71,6 @@
                                name,
                                sex,
                                college,
-                               dorm_id,
                                remark)
         values(
                #{id},
@@ -81,7 +80,6 @@
                #{name},
                #{sex},
                #{college},
-               #{dorm},
                #{remark})
 
     </insert>

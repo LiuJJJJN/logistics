@@ -42,10 +42,10 @@ public class DormServiceImpl implements DormService {
     }
 
     @Override
-    public List<Dorm> getDormList() throws DormException {
+    public List<Dorm> getDormList() throws NothingException {
         List<Dorm> dormList = dormDao.getDormList();
         if (dormList.isEmpty()) {
-            throw new DormException("获取寝室列表失败或寝室表空");
+            throw new NothingException("获取寝室列表失败或寝室表空");
         }
         return dormList;
     }

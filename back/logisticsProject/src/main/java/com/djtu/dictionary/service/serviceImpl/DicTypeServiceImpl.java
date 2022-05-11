@@ -6,6 +6,7 @@ import com.djtu.dictionary.dao.DicValueDao;
 import com.djtu.dictionary.pojo.DicType;
 import com.djtu.dictionary.pojo.vo.DicTypeVo;
 import com.djtu.dictionary.service.DicTypeService;
+import com.djtu.exception.NothingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,19 +23,19 @@ public class DicTypeServiceImpl implements DicTypeService {
     private static final int Flag_NUM = 1;
 
     @Override
-    public Integer getDicTypeListNum() throws DictionaryException {
+    public Integer getDicTypeListNum() throws NothingException {
         List<DicType> list = dicTypeDao.getDicTypeList();
         if (list.isEmpty()) {
-            throw new DictionaryException("获取数据字典类型总数失败");
+            throw new NothingException("获取数据字典类型总数失败");
         }
         return list.size();
     }
 
     @Override
-    public List<DicType> getDicTypeList() throws DictionaryException {
+    public List<DicType> getDicTypeList() throws NothingException {
         List<DicType> list = dicTypeDao.getDicTypeList();
         if (list.isEmpty()) {
-            throw new DictionaryException("获取数据字典类型列表失败");
+            throw new NothingException("获取数据字典类型列表失败");
         }
         return list;
     }
