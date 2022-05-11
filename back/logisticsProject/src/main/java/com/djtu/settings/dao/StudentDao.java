@@ -1,5 +1,6 @@
 package com.djtu.settings.dao;
 
+import com.djtu.permission.pojo.vo.StudentDormTutorVo;
 import com.djtu.permission.pojo.vo.StudentDormVo;
 import com.djtu.settings.pojo.Student;
 import com.djtu.settings.pojo.vo.StudentSearchVo;
@@ -189,6 +190,12 @@ public interface StudentDao {
     Integer setStudentBringDoorId(StudentDormVo studentDormVo);
 
     /**
+     * 查询学生所有信息包括寝室号以及导员名字
+     * @return 学生、寝室以及导员信息列表
+     */
+    List<StudentDormTutorVo> adminDownLoadStudent();
+
+    /**
      * 完成换寝：设置寝室为换寝目标寝室
      *
      * @param stuId 学生id
@@ -203,4 +210,6 @@ public interface StudentDao {
      * @return 导员id
      */
     String getTutorIdByStuId(String stuId);
+
+
 }

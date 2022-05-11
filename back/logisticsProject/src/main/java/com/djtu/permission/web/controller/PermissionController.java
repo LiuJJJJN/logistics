@@ -1,10 +1,7 @@
 package com.djtu.permission.web.controller;
 
-import com.alibaba.excel.EasyExcel;
-import com.alibaba.excel.util.MapUtils;
 import com.djtu.exception.UploadException;
 import com.djtu.permission.pojo.Role;
-import com.djtu.permission.pojo.vo.StudentDormVo;
 import com.djtu.permission.pojo.vo.StudentRoleVo;
 import com.djtu.permission.pojo.vo.TutorRoleVo;
 import com.djtu.permission.service.PermissionService;
@@ -13,9 +10,6 @@ import com.djtu.response.Result;
 import com.djtu.settings.pojo.vo.*;
 import com.djtu.settings.service.*;
 import com.djtu.utils.StringUtil;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
@@ -29,9 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -277,7 +269,7 @@ public class PermissionController {
      */
     //@RequiresRoles(value = {"导员"})
     @RequestMapping(value = "/downloadStu.do", method = RequestMethod.POST)
-    @ResponseBody
+    //@ResponseBody
     public void downloadMyStudent(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String id = request.getParameter("id");
         studentService.downloadMyStudent(id, response);
@@ -304,10 +296,47 @@ public class PermissionController {
      * @return
      */
     @RequestMapping(value = "/downloadM.do",method = RequestMethod.POST)
-    @ResponseBody
-    public Result downloadModel(HttpServletResponse response) throws IOException {
+    public void downloadModel(HttpServletResponse response) throws IOException {
         studentService.downloadModel(response);
-        return new Result().setCode(200).setMessage("下载成功");
+    }
+
+    /**
+     * 管理员下载学生Excel
+     * @param response
+     */
+    @RequestMapping(value = "/adminDownLoadStu.do", method = RequestMethod.POST)
+    //@ResponseBody
+    public void adminDownLoadStudent(HttpServletResponse response){
+        try {
+            studentService.adminDownLoadStudent(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 管理员上传文件（学生表）
+     * @param file 文件对象
+     */
+    @RequestMapping(value = "/adminUpLoadStu.do", method = RequestMethod.POST)
+    @ResponseBody
+    public Result adminUpLoadStudent(MultipartFile file) throws UploadException{
+        try {
+            studentService.adminUpLoadStudent(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new Result().setCode(200).setMessage("上传成功");
+    }
+
+    /**
+     * 管理员-下载模板
+     * @param response 响应
+     * @return
+     */
+    @RequestMapping(value = "/adminDownLoadM.do",method = RequestMethod.POST)
+    public void adminDownLoadModel(HttpServletResponse response) throws IOException {
+        studentService.adminDownLoadModel(response);
     }
 
     /**

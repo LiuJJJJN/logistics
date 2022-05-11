@@ -60,9 +60,9 @@
           <el-input type="submit" value="导出" style="width: 80px;"/>
         </el-form>
       </div></el-col>
-      <!--学生下载信息-->
+      <!--学生上传信息-->
       <el-col :span="2"><div class="grid-content bg-purple">
-        <el-button @click="openDownload" type="primary" plain>上传</el-button>
+        <el-button @click="openUpload" type="primary" plain>上传</el-button>
       </div></el-col>
     </el-row>
     <!--上传模态窗口-->
@@ -77,7 +77,7 @@
           multiple>
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-        <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+        <div class="el-upload__tip" slot="tip">只能上传Excel文件</div>
       </el-upload>
     </el-dialog>
     <!--表格-->
@@ -294,7 +294,7 @@ export default {
   },
   methods:{
     //上传模态窗口打开
-    openDownload(){
+    openUpload(){
       this.dialogFormVisible=true;
     },
     showRemarkDialog (index, row) {
