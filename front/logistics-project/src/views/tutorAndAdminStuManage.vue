@@ -45,13 +45,42 @@
       </el-col>
     </el-row>
 
-    <el-button
-        size="mini"
-        type="danger"
-        icon="el-icon-delete"
-        slot="reference"
-        @click="delBtn"
-        class="functionBtn"></el-button>
+    <el-row :gutter="20">
+      <el-col :span="2"><div class="grid-content bg-purple">
+        <el-button
+            size="mini"
+            type="danger"
+            icon="el-icon-delete"
+            slot="reference"
+            @click="delBtn"
+            class="functionBtn"></el-button>
+      </div></el-col>
+      <el-col :span="2"><div class="grid-content bg-purple">
+        <!--学生下载信息-->
+        <el-form :action="stuActionURL" method="post" type="primary">
+          <el-input type="submit" value="导出" style="width: 80px;"/>
+        </el-form>
+      </div></el-col>
+      <el-col :span="1"><div class="grid-content bg-purple">
+        <!--上传-->
+        <el-button @click="openUpload" type="primary" plain>上传</el-button>
+      </div></el-col>
+    </el-row>
+    <!--上传模态窗口-->
+    <el-dialog title="上传文件" :visible.sync="dialogFormVisible">
+      <el-form :action="adminDownLoadModel" method="post" type="primary">
+        <el-input type="submit" value="下载模板" style="width: 80px;"/>
+      </el-form>
+      <el-upload
+          class="upload-demo"
+          drag
+          :action="adminOpenDownload" style="margin-left: 200px"
+          multiple>
+        <i class="el-icon-upload"></i>
+        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+        <div class="el-upload__tip" slot="tip">只能上传Excel文件</div>
+      </el-upload>
+    </el-dialog>
 
     <el-table
         :data="tableData"
@@ -233,7 +262,11 @@ export default {
   name: "stuManage",
   data() {
     return {
+      stuActionURL : 'http://localhost:8080/logisticsProject/permission/adminDownLoadStu.do',
+      adminOpenDownload : 'http://localhost:8080/logisticsProject/permission/adminUpLoadStu.do',
+      adminDownLoadModel :'http://localhost:8080/logisticsProject/permission/adminDownLoadM.do',
       collegeEnum: [],
+      dialogFormVisible : false,
       searchForm: {
         name: '',
         sno: '',
@@ -302,6 +335,9 @@ export default {
     }
   },
   methods: {
+    openUpload(){
+      this.dialogFormVisible=true;
+    },
     showRemarkDialog(index, row) {
       this.dialogRemarkFormVisible = true
       this.submitForm.id = row.id;
@@ -508,4 +544,5 @@ export default {
   margin-bottom: 13px;
   margin-right: 10px;
 }
+
 </style>
