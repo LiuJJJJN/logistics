@@ -78,7 +78,7 @@
           multiple>
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-        <div class="el-upload__tip" slot="tip">只能上传Excel文件</div>
+        <div class="el-upload__tip" slot="tip"><font style="color:red;">只能上传Excel文件，并且所有单元格格式设置为文本格式！</font></div>
       </el-upload>
     </el-dialog>
 
