@@ -359,9 +359,24 @@
          #{password},
          #{salt})
     </insert>
+    <select id="adminDownLoadStudent" resultType="com.djtu.permission.pojo.vo.StudentDormTutorVo">
+        SELECT 	s.username as 'username',
+                s.name as 'name',
+                s.sex as 'sex',
+                s.enter_date as 'enterDate',
+                s.school_sys as 'schoolSys',
+                s.college as 'college',
+                s.stu_class as 'stuClass',
+                s.remark as 'remark',
+                s.sno as 'sno',
+                d.door_no as 'doorNo',
+                t.name as 'tutorName'
+        FROM tbl_student s JOIN tbl_tutor t ON s.tutor_id=t.id JOIN tbl_dorm d ON s.dorm_id=d.id
+    </select>
     <select id="getTutorIdByStuId" resultType="java.lang.String">
         select tutor_id
         from tbl_student
         where id = #{stuId}
     </select>
+
 </mapper>
