@@ -185,7 +185,7 @@ public class StudentServiceImpl implements StudentService {
                 list.get(i).setTutorId(tutorId);
                 if(doorNo!=null && doorNo!=""){//如果doorNo不为空那么就进行查
                     //查寝室表-寝室号对应的寝室id
-                    String doorId=dormDao.getIdbyDoorNo(doorNo);
+                    String doorId=dormDao.getIdByDoorNo(doorNo);
                     list.get(i).setDoorNo(doorId);
                 }
                 else{

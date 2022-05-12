@@ -1,7 +1,7 @@
 <template>
   <el-container class="index">
     <el-header>
-      <span style="font-size: 25px;font-weight: bolder; display: inline-block; float: left">校园智慧后勤管理系统</span>
+      <span style="font-size: 25px;font-weight: bolder; display: inline-block; float: left;cursor: pointer" @click="toIndex">校园智慧后勤管理系统</span>
       <div style="display: inline-block; float: right; margin-right: 50px">
         <el-dropdown style="top: 10px; left: 20px;">
           <span class="el-dropdown-link">
