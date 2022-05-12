@@ -127,7 +127,7 @@
       </el-table-column>
       <el-table-column
           label="学院"
-          width="120">
+          width="90">
         <template slot-scope="scope">
           <span>{{ scope.row.college }}</span>
         </template>
@@ -158,7 +158,7 @@
       </el-table-column>
       <el-table-column
           label="备注"
-          width="150">
+          width="130">
         <template slot-scope="scope">
           <span>{{ scope.row.remark }}</span>
         </template>
