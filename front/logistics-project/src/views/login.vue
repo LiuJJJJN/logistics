@@ -18,20 +18,20 @@
         <el-input @keyup.enter.native="onSubmit('form')" v-model="form.password" placeholder="请输入密码"
                   show-password></el-input>
       </el-form-item>
-            <el-form-item label="验证码" prop="code">
-              <el-row :span="24">
-                <el-col :span="13">
-                  <el-input @keyup.enter.native="onSubmit('form')" v-model="form.code" auto-complete="off"
-                            placeholder="请输入验证码" size=""></el-input>
-                </el-col>
-                <el-col :span="11">
-                  <div class="login-code" width="100%" @click="refreshCode">
-                    <!--验证码组件-->
-                    <CAPTCHA :identifyCode="identifyCode" style="line-height: 10px"></CAPTCHA>
-                  </div>
-                </el-col>
-              </el-row>
-            </el-form-item>
+<!--      <el-form-item label="验证码" prop="code">-->
+<!--        <el-row :span="24">-->
+<!--          <el-col :span="13">-->
+<!--            <el-input @keyup.enter.native="onSubmit('form')" v-model="form.code" auto-complete="off"-->
+<!--                      placeholder="请输入验证码" size=""></el-input>-->
+<!--          </el-col>-->
+<!--          <el-col :span="11">-->
+<!--            <div class="login-code" width="100%" @click="refreshCode">-->
+<!--              &lt;!&ndash;验证码组件&ndash;&gt;-->
+<!--              <CAPTCHA :identifyCode="identifyCode" style="line-height: 10px"></CAPTCHA>-->
+<!--            </div>-->
+<!--          </el-col>-->
+<!--        </el-row>-->
+<!--      </el-form-item>-->
       <el-form-item label="" prop="rememberMe" class="rememberMe">
         <el-checkbox v-model="form.rememberMe">七天免登录</el-checkbox>
       </el-form-item>
@@ -87,12 +87,12 @@ export default {
   },
   methods: {
     onSubmit(formName) {
-      if (this.form.code && this.form.code.toLowerCase() !== this.identifyCode.toLowerCase()) {
-        this.$message.error('请填写正确验证码');
-        this.form.code = '';
-        this.refreshCode();
-        return
-      }
+      // if (this.form.code && this.form.code.toLowerCase() !== this.identifyCode.toLowerCase()) {
+      //   this.$message.error('请填写正确验证码');
+      //   this.form.code = '';
+      //   this.refreshCode();
+      //   return
+      // }
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.form.username = this.form.username.trim();
