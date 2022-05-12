@@ -1,5 +1,7 @@
 package com.djtu.settings.dao;
 
+import com.djtu.dorm.pojo.vo.DormApplyPageConditionVo;
+import com.djtu.dorm.pojo.vo.DormApplyVo;
 import com.djtu.permission.pojo.vo.StudentDormTutorVo;
 import com.djtu.permission.pojo.vo.StudentDormVo;
 import com.djtu.settings.pojo.Student;
@@ -210,6 +212,5 @@ public interface StudentDao {
      * @return 导员id
      */
     String getTutorIdByStuId(String stuId);
-
 
 }

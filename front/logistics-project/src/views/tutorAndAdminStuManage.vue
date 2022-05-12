@@ -274,7 +274,9 @@ export default {
         stuClass: '',
         date: []
       },
-      submitForm: {},
+      submitForm: {
+        remark: ''
+      },
       tableData: [],
       dialogRemarkFormVisible: false,
       pickerOptions: {

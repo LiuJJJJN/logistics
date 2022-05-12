@@ -84,7 +84,7 @@ public class PermissionController {
      *
      * @return 所有学生以及相对应的角色列表
      */
-    @RequiresRoles("管理员")
+    @RequiresRoles(value = {"管理员", "导员"}, logical = Logical.OR)
     @RequestMapping("/getStudentRoleList.do")
     @ResponseBody
     public Result getUserPermissionList(@RequestBody Map map) {
