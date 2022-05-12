@@ -12,7 +12,10 @@ import com.djtu.permission.pojo.vo.StudentDormTutorVo;
 import com.djtu.permission.pojo.vo.StudentDormVo;
 import com.djtu.settings.dao.StudentDao;
 import com.djtu.settings.dao.UserDao;
+import com.djtu.settings.dao.UserRoleDao;
 import com.djtu.settings.pojo.Student;
+import com.djtu.settings.pojo.User;
+import com.djtu.settings.pojo.UserRole;
 import com.djtu.settings.service.StudentService;
 import com.djtu.utils.StringUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -42,6 +45,8 @@ public class StudentServiceImpl implements StudentService {
     private UserDao userDao;
     @Autowired
     private DormDao dormDao;
+    @Autowired
+    private UserRoleDao userRoleDao;
     private static final Integer SUCCESS_INTO=1;
     @Override
     public void registerStudentUserNameVerify(String username) throws RegisterException {
@@ -134,6 +139,7 @@ public class StudentServiceImpl implements StudentService {
          * 以 上 摘 自 C S D N
          */
         List<StudentDormVo> list=new ArrayList<>();
+        String idStudent=StringUtil.generateUUID();
         //获取工作表
         Sheet sheet=workbook.getSheetAt(0);
         Row headRow=sheet.getRow(0);
@@ -169,7 +175,7 @@ public class StudentServiceImpl implements StudentService {
                     studentDormVo.setRemark(remark);
                     studentDormVo.setSno(sno);
                     studentDormVo.setDoorNo(doorNo);
-                    studentDormVo.setId(StringUtil.generateUUID());
+                    studentDormVo.setId(idStudent);
                     studentDormVo.setSalt(salt);
                     studentDormVo.setPassword(password);
                     studentDormVo.setUsername(username);
@@ -199,10 +205,22 @@ public class StudentServiceImpl implements StudentService {
                 if(stu!=null){
                     continue;
                 }
-                Integer i=studentDao.setStudentBringDoorId(sv);
-                if(i<SUCCESS_INTO){
+                //插入学生记录
+                Integer stuI=studentDao.setStudentBringDoorId(sv);
+                //用户表插入记录
+                User user=new User();
+                String idUser=StringUtil.generateUUID();
+                user.setId(idUser);
+                user.setStudentId(idStudent);
+                Integer userI=userDao.setStudentUser(user);
+                //插入tbl_user_role
+                UserRole userRole=new UserRole();
+                userRole.setRoleId("1");
+                userRole.setUserId(idUser);
+                userRole.setId(StringUtil.generateUUID());
+                Integer userRoleI=userRoleDao.setUserRole(userRole);
+                if(stuI<SUCCESS_INTO && userI<SUCCESS_INTO && userRoleI<SUCCESS_INTO){
                     throw new UploadException("未知异常，导入失败");
-
                 }
             }
         }
@@ -297,7 +315,9 @@ public class StudentServiceImpl implements StudentService {
                     }
                     //封装学生
                     Student student=new Student();
-                    student.setId(StringUtil.generateUUID());
+                    String studentId=StringUtil.generateUUID();
+                    student.setId(studentId);
+                    student.setUsername(row.getCell(7).getStringCellValue());
                     String salt = StringUtil.rand4Str();
                     student.setPassword(StringUtil.md5("000000",salt));
                     student.setSalt(salt);
@@ -309,10 +329,21 @@ public class StudentServiceImpl implements StudentService {
                     student.setStuClass(row.getCell(5).getStringCellValue());
                     student.setRemark(row.getCell(6).getStringCellValue());
                     student.setSno(row.getCell(7).getStringCellValue());
-                    System.out.println("!!!!!!+"+student);
-                    //插入数据库
-                    Integer num=studentDao.setStudent(student);
-                    if(num<SUCCESS_INTO){
+                    //插入学生表
+                    Integer stuI=studentDao.setStudent(student);
+                    //插入user表
+                    User user=new User();
+                    String userId=StringUtil.generateUUID();
+                    user.setId(userId);
+                    user.setStudentId(studentId);
+                    Integer userI=userDao.setStudentUser(user);
+                    //插入tbl_user_role表
+                    UserRole userRole=new UserRole();
+                    userRole.setId(StringUtil.generateUUID());
+                    userRole.setRoleId("1");
+                    userRole.setUserId(userId);
+                    Integer userRoleI=userRoleDao.setUserRole(userRole);
+                    if(stuI<SUCCESS_INTO && userI<SUCCESS_INTO && userRoleI<SUCCESS_INTO){
                         throw new UploadException("导入学生失败");
                     }
                 }
