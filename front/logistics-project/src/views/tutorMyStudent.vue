@@ -62,7 +62,7 @@
       </div></el-col>
       <!--学生上传信息-->
       <el-col :span="2"><div class="grid-content bg-purple">
-        <el-button @click="openUpload" type="primary" plain>上传</el-button>
+        <el-button @click="openUpload" type="primary" plain>导入我的学生</el-button>
       </div></el-col>
     </el-row>
 
