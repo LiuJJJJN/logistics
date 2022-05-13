@@ -4,7 +4,10 @@ package com.djtu.settings.service.serviceImpl;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.util.ListUtils;
 
+import com.djtu.building.dao.BuildingDao;
+import com.djtu.building.pojo.Building;
 import com.djtu.dorm.dao.DormDao;
+import com.djtu.dorm.pojo.Dorm;
 import com.djtu.exception.RegisterException;
 import com.djtu.exception.UploadException;
 import com.djtu.exception.UserManagerException;
@@ -35,6 +38,7 @@ import java.io.InputStream;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -47,6 +51,8 @@ public class StudentServiceImpl implements StudentService {
     private DormDao dormDao;
     @Autowired
     private UserRoleDao userRoleDao;
+    @Autowired
+    private BuildingDao buildingDao;
     private static final Integer SUCCESS_INTO=1;
     @Override
     public void registerStudentUserNameVerify(String username) throws RegisterException {
@@ -272,7 +278,12 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     @Transactional(rollbackFor = {UploadException.class})
-    public void adminUpLoadStudent(MultipartFile file) throws IOException,UploadException{
+    public void adminUpLoadStudent(MultipartFile file,HttpServletRequest request) throws IOException,UploadException{
+        //获取前端是否选中了分配寝室
+        String selectState=request.getParameter("selectState");
+        /**
+         * 以 下 摘 自 C S D N
+         */
         //获取前端传递过来的文件对象，存储在“inputStream”中
         InputStream inputStream =file.getInputStream();
         //获取文件名
@@ -289,7 +300,8 @@ public class StudentServiceImpl implements StudentService {
         /**
          * 以 上 摘 自 C S D N
          */
-        List<StudentDormVo> list=new ArrayList<>();
+        //插入的学生列表
+        List<Student> stuList=new ArrayList<>();
         //获取工作表
         Sheet sheet=workbook.getSheetAt(0);
         Row headRow=sheet.getRow(0);
@@ -329,6 +341,8 @@ public class StudentServiceImpl implements StudentService {
                     student.setStuClass(row.getCell(5).getStringCellValue());
                     student.setRemark(row.getCell(6).getStringCellValue());
                     student.setSno(row.getCell(7).getStringCellValue());
+                    //学生列表里插入
+                    stuList.add(student);
                     //插入学生表
                     Integer stuI=studentDao.setStudent(student);
                     //插入user表
@@ -346,6 +360,31 @@ public class StudentServiceImpl implements StudentService {
                     if(stuI<SUCCESS_INTO && userI<SUCCESS_INTO && userRoleI<SUCCESS_INTO){
                         throw new UploadException("导入学生失败");
                     }
+                }
+
+            }
+            //如果选择了为学生分配寝室
+            if("true".equals(selectState)){
+                System.out.println("执行了");
+                //先查出导入的学生有哪些学院和班级分类
+                List<Student> typeStudent=studentDao.getStudentCollegeAndClassType(stuList);
+                for(Student s:typeStudent){
+                    //找出同学院同班级的学生
+                    List<Student> satisfyStudent=studentDao.getstudentByCollegeAndClass(s.getCollege(),s.getStuClass());
+                    //查出楼为公寓楼类型的公寓楼列表
+                    List<Building> buildList=buildingDao.getBuildingByType("公寓楼");
+                    //随机抽取一个公寓楼并得到它的id
+                    String buildingId=buildList.get(new Random().nextInt(buildList.size())).getId();
+                    //通过buildingId查找寝室表里的寝室号
+                    Dorm dorm=dormDao.getDormByBuildingId(buildingId);
+                    String dormId=dorm.getId();
+                    //判断该寝室是否满人
+                    Integer i=studentDao.getStudentNumByDormId(dormId);
+                    //如果没有满人
+                    if(i<dorm.getSize()){
+
+                    }
+
                 }
 
             }

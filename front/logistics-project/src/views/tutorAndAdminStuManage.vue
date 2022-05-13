@@ -71,10 +71,14 @@
       <el-form :action="adminDownLoadModel" method="post" type="primary">
         <el-input type="submit" value="下载模板" style="width: 80px;"/>
       </el-form>
+        <el-checkbox-group v-model="dormDistributeSelect.type" style="margin-left: 200px">
+          <el-checkbox label="是否导入同时给学生分配寝室" name="type"></el-checkbox>
+        </el-checkbox-group>
+      <el-button type="primary" @click="test">主要按钮</el-button>
       <el-upload
           class="upload-demo"
           drag
-          :action="adminOpenDownload" style="margin-left: 200px"
+          :action="adminOpenUpload+'?selectState='+this.dormDistributeSelect.type" style="margin-left: 200px;margin-top:20px"
           multiple>
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
@@ -264,10 +268,11 @@ export default {
   data() {
     return {
       stuActionURL : 'http://localhost:8080/logisticsProject/permission/adminDownLoadStu.do',
-      adminOpenDownload : 'http://localhost:8080/logisticsProject/permission/adminUpLoadStu.do',
+      adminOpenUpload : 'http://localhost:8080/logisticsProject/permission/adminUpLoadStu.do',
       adminDownLoadModel :'http://localhost:8080/logisticsProject/permission/adminDownLoadM.do',
       collegeEnum: [],
       dialogFormVisible : false,
+      dormDistributeSelect: {type:''},
       searchForm: {
         name: '',
         sno: '',
@@ -338,6 +343,9 @@ export default {
     }
   },
   methods: {
+    test(){
+      alert(this.dormDistributeSelect.type);
+    },
     openUpload(){
       this.dialogFormVisible=true;
     },

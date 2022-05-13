@@ -317,12 +317,15 @@ public class PermissionController {
     /**
      * 管理员上传文件（学生表）
      * @param file 文件对象
+     * @param request 请求对象
+     * @return
+     * @throws UploadException
      */
     @RequestMapping(value = "/adminUpLoadStu.do", method = RequestMethod.POST)
     @ResponseBody
-    public Result adminUpLoadStudent(MultipartFile file) throws UploadException{
+    public Result adminUpLoadStudent(MultipartFile file,HttpServletRequest request) throws UploadException{
         try {
-            studentService.adminUpLoadStudent(file);
+            studentService.adminUpLoadStudent(file,request);
         } catch (IOException e) {
             e.printStackTrace();
         }
