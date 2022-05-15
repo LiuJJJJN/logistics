@@ -4,10 +4,10 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.djtu.dorm.dao.DormDao">
 
-<!--    <cache eviction="FIFO"-->
-<!--           flushInterval="60000"-->
-<!--           size="512"-->
-<!--           readOnly="true"/>-->
+    <cache eviction="FIFO"
+           flushInterval="60000"
+           size="512"
+           readOnly="true"/>
 
     <insert id="addDormByDormVo">
         insert into tbl_dorm
@@ -185,7 +185,10 @@
         from tbl_dorm
         where door_no=#{doorNo}
     </select>
-    <select id="getDormChangeApplyList" resultType="com.djtu.dorm.pojo.vo.DormApplyVo" resultMap="com.djtu.dorm.dao.DormDao.dormApplyMap">
+    <select id="getDormChangeApplyList" resultType="com.djtu.dorm.pojo.vo.DormApplyVo"
+            resultMap="com.djtu.dorm.dao.DormDao.dormApplyMap"
+            useCache="false">
+
         select
         dc.id,
         dc.stu_id,
@@ -201,7 +204,7 @@
         order by time desc
         limit #{vo.pageNo}, #{vo.pageSize}
     </select>
-    <select id="getDormChangeApplyTotal" resultType="java.lang.Integer">
+    <select id="getDormChangeApplyTotal" resultType="java.lang.Integer" useCache="false">
         select count(*)
         from tbl_dorm_change dc
         <if test="vo.userId != null" >

@@ -23,6 +23,13 @@ public interface BuildingDao {
     List<Building> getBuildingList();
 
     /**
+     * 获取所有寝室楼宇列表
+     *
+     * @return 所有寝室楼宇列表
+     */
+    List<Building> getDormBuildingList();
+
+    /**
      * 修改了楼宇信息
      *
      * @param building 楼宇实例

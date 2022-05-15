@@ -6,6 +6,7 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.ExpiredCredentialsException;
 import org.apache.shiro.authz.UnauthenticatedException;
 import org.apache.shiro.authz.UnauthorizedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -87,6 +88,12 @@ public class GlobalExceptionHandler {
     public Result handler(UploadException e){
         log.error("运行时异常----------------{}", e.getMessage());
         return new Result().setCode(402).setMessage(e.getMessage());
+    }
+
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    public Result handler(MethodArgumentNotValidException e){
+        log.error("运行时异常----------------{}", e.getBindingResult().getAllErrors().get(0).getDefaultMessage());
+        return new Result().setCode(402).setMessage(e.getBindingResult().getAllErrors().get(0).getDefaultMessage());
     }
 
 
