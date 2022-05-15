@@ -4,6 +4,7 @@ import com.djtu.exception.RegisterException;
 import com.djtu.exception.UserManagerException;
 import com.djtu.response.Result;
 import com.djtu.settings.pojo.Admin;
+import com.djtu.settings.pojo.vo.LoginVo;
 import com.djtu.settings.pojo.Student;
 import com.djtu.settings.pojo.Tutor;
 import com.djtu.settings.service.*;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -53,23 +55,19 @@ public class UserController {
     /**
      * 登录功能
      *
-     * @param map 前端传来的用户信息、角色信息、是否七天免登录
+     * @param loginVo 前端传来的用户信息、角色信息、是否七天免登录
      * @return 登录成功时返回token、时间戳、免登录标记、用户信息
      */
     @RequestMapping(value = "/login.do")
     @ResponseBody
-    public Result<Map> login(@RequestBody Map<String, Object> map) {
-        String username = (String) map.get("username");
-        String password = (String) map.get("password");
-        String ident = (String) map.get("ident");
-        Boolean rememberMe = (Boolean) map.get("rememberMe");
+    public Result<Map> login(@RequestBody @Valid LoginVo loginVo) {
 
         //使用安全管理器创建 subject 对象
         Subject subject = SecurityUtils.getSubject();
         //创建 token                     用户名           公司     身份        过期时间 30分钟
-        String jwt = JwtUtil.createJWT(username, "back", ident, 1000 * 60 * 30);
+        String jwt = JwtUtil.createJWT(loginVo.getUsername(), "back", loginVo.getIdent(), 1000 * 60 * 30);
         //封装 token 为自定义 UsernamePasswordToken 类
-        JwtToken jwtToken = new JwtToken(jwt, password);
+        JwtToken jwtToken = new JwtToken(jwt, loginVo.getPassword());
 
         //执行 Shiro 的认证
         try {
@@ -82,16 +80,16 @@ public class UserController {
 
         //配置返回用户信息内容
         UserVo backUser = null;
-        if ("学生".equals(ident)) {
-            backUser = userService.getUserVoByStudentUsername(username);
-        } else if ("导员".equals(ident)) {
-            backUser = userService.getUserVoByTutorUsername(username);
-        } else if ("管理员".equals(ident)) {
-            backUser = userService.getUserVoByAdminUsername(username);
+        if ("学生".equals(loginVo.getIdent())) {
+            backUser = userService.getUserVoByStudentUsername(loginVo.getUsername());
+        } else if ("导员".equals(loginVo.getIdent())) {
+            backUser = userService.getUserVoByTutorUsername(loginVo.getUsername());
+        } else if ("管理员".equals(loginVo.getIdent())) {
+            backUser = userService.getUserVoByAdminUsername(loginVo.getUsername());
         }
         backUser.setPassword("");
         backUser.setSalt("");
-        backUser.setPrimaryRole(ident);
+        backUser.setPrimaryRole(loginVo.getIdent());
 
         //创建返回数据集合
         Map<String, Object> resultMap = new HashMap<>();
@@ -99,9 +97,9 @@ public class UserController {
         resultMap.put("token", jwt); // 2.传递 token
         String sessionId = (String) subject.getSession().getId();
         resultMap.put("sessionId", sessionId); // 3.传递 sessionId
-        resultMap.put("rememberMe", rememberMe); // 4.传递是否七天免登录的标记
+        resultMap.put("rememberMe", loginVo.getRememberMe()); // 4.传递是否七天免登录的标记
         long timeStamp = System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 7; //设置过期时间为 7 天
-        if (!rememberMe) {
+        if (!loginVo.getRememberMe()) {
             timeStamp = System.currentTimeMillis() + 1000 * 60 * 30; //如果没选七天免登录的话, 过期时间为 30 分钟
         }
         resultMap.put("timestamp", timeStamp); // 5.传递过期时间戳

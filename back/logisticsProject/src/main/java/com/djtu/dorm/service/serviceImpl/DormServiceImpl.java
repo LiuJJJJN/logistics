@@ -72,7 +72,7 @@ public class DormServiceImpl implements DormService {
         String dormId = dormDao.getDormIdByUserId(userVo.getUserId());
         List<Object> fatherList = new ArrayList<>();
 
-        List<Building> buildingList = buildingDao.getBuildingList();
+        List<Building> buildingList = buildingDao.getDormBuildingList();
         for (Building building : buildingList) {
             Map<String, Object> fatherMap = new HashMap<>();
             fatherMap.put("value", building.getId());

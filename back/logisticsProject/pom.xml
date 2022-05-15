@@ -61,8 +61,6 @@
             <version>1.9.0</version>
         </dependency>
 
-
-
         <!-- jackson -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -123,6 +121,15 @@
             <artifactId>log4j-api</artifactId>
             <version>2.17.2</version>
         </dependency>
+
+        <!-- validator 用于实现注解数据校验 -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>5.4.3.Final</version>
+        </dependency>
+
+
 
 
         <!--littleHan-->
