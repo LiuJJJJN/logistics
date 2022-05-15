@@ -20,7 +20,9 @@
                      allow-credentials="true"/>
     </mvc:cors>
 
-    <!--导入spring配置文件-->
+    <!--引入server配置文件-->
     <import resource="applicationContext-server.xml"/>
+    <!--引入redis配置文件-->
+    <import resource="applicationContext-redis.xml"/>
 
 </beans>
