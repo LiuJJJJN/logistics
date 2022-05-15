@@ -88,9 +88,12 @@ public interface StudentService {
 
     /**
      * 管理员上传文件（学生表）
-     * @param file 文件
+     * @param file 文件对象
+     * @param request 请求对象
+     * @throws IOException
+     * @throws UploadException
      */
-    void adminUpLoadStudent(MultipartFile file) throws IOException,UploadException;
+    void adminUpLoadStudent(MultipartFile file,HttpServletRequest request) throws IOException,UploadException;
 
     /**
      * 管理员-下载模板

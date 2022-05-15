@@ -79,6 +79,7 @@
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
         <div class="el-upload__tip" slot="tip"><font style="color:red;">只能上传Excel文件，并且所有单元格格式设置为文本格式！</font></div>
+        <div class="el-upload__tip" slot="tip"><font style="color:red">注：上传后的学生，账号用户名默认为学号，密码为6个0</font></div>
       </el-upload>
     </el-dialog>
 
