@@ -74,7 +74,6 @@
         <el-checkbox-group v-model="dormDistributeSelect.type" style="margin-left: 200px">
           <el-checkbox label="是否导入同时给学生分配寝室" name="type"></el-checkbox>
         </el-checkbox-group>
-      <el-button type="primary" @click="test">主要按钮</el-button>
       <el-upload
           class="upload-demo"
           drag

@@ -364,7 +364,7 @@ public class StudentServiceImpl implements StudentService {
 
             }
             //如果选择了为学生分配寝室
-            if("true".equals(selectState)){
+         /*   if("true".equals(selectState)){
                 System.out.println("执行了");
                 //先查出导入的学生有哪些学院和班级分类
                 List<Student> typeStudent=studentDao.getStudentCollegeAndClassType(stuList);
@@ -387,7 +387,7 @@ public class StudentServiceImpl implements StudentService {
 
                 }
 
-            }
+            }*/
         }
 
     }
