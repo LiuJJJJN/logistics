@@ -48,8 +48,6 @@ public class UserController {
     private TutorService tutorService;
     @Autowired
     private AdminService adminService;
-    @Autowired
-    private RedisService redisService;
 
     //文件绝对路径前置目录
     @Value("${AVATAR_ABSOLUTE_PATH}")
@@ -312,13 +310,6 @@ public class UserController {
         }
 
         return null;
-    }
-
-    @RequestMapping("/redis.do")
-    @ResponseBody
-    public Result redis() {
-        Long add = redisService.add("key1", "value1");
-        return new Result().setCode(200).setMessage("添加成功").setData(add);
     }
 
 }
