@@ -146,6 +146,13 @@
             <artifactId>jedis</artifactId>
             <version>3.8.0</version>
         </dependency>
+        <!-- shiro-redis -->
+        <dependency>
+            <groupId>org.crazycake</groupId>
+            <artifactId>shiro-redis</artifactId>
+            <version>3.3.1</version>
+        </dependency>
+
 
 
 

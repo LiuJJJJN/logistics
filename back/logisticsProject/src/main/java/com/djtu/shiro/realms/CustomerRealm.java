@@ -29,8 +29,6 @@ public class CustomerRealm extends AuthorizingRealm {
     private UserService userService;
     @Autowired
     private RoleService roleService;
-    @Autowired
-    private PermissionService permissionService;
 
     //验证是否使用的是自定义 token
     @Override

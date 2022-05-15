@@ -8,8 +8,12 @@ import com.djtu.dictionary.pojo.vo.DicTypeVo;
 import com.djtu.dictionary.pojo.vo.DicValueVo;
 import com.djtu.exception.DictionaryException;
 import com.djtu.exception.NothingException;
+import com.djtu.redis.RedisService;
 import com.djtu.response.Result;
 import com.djtu.utils.StringUtil;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jdk.internal.org.objectweb.asm.TypeReference;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +35,8 @@ public class DictionaryController {
     private DicValueService dicValueService;
     @Autowired
     private DicTypeService dicTypeService;
+    @Autowired
+    private RedisService redisService;
 
     /**
      * 获取学院列表
@@ -39,8 +45,14 @@ public class DictionaryController {
      */
     @RequestMapping("/getCollegeList.do")
     @ResponseBody
-    public Result getCollegeList() {
+    public Result getCollegeList() throws JsonProcessingException {
+        String collegeList = redisService.get("collegeList");
+        if (collegeList != null) {
+            return new Result().setCode(200).setMessage("从缓存服务器获取列表成功").setData(new ObjectMapper().readValue(collegeList, List.class));
+        }
+
         List<DicValue> list = dicValueService.getCollegeList();
+        redisService.set("collegeList", new ObjectMapper().writeValueAsString(list));
         return new Result().setCode(200).setMessage("获取成功").setData(list);
     }
 
@@ -52,8 +64,14 @@ public class DictionaryController {
     @RequiresRoles("管理员")
     @RequestMapping("/getBuildingTypeList.do")
     @ResponseBody
-    public Result getBuildingList() throws NothingException {
+    public Result getBuildingList() throws NothingException, JsonProcessingException {
+        String buildingTypeList = redisService.get("buildingTypeList");
+        if (buildingTypeList != null) {
+            return new Result().setCode(200).setMessage("从缓存服务器获取列表成功").setData(new ObjectMapper().readValue(buildingTypeList, List.class));
+        }
+
         List<DicValue> list = dicValueService.getBuildingTypeList();
+        redisService.set("buildingTypeList", new ObjectMapper().writeValueAsString(list));
         return new Result().setCode(200).setMessage("获取成功").setData(list);
     }
 
@@ -101,6 +119,8 @@ public class DictionaryController {
     public Result setDicValues(@RequestBody DicValue dicValue) throws DictionaryException {
         dicValue.setId(StringUtil.generateUUID());
         dicValueService.setDicValues(dicValue);
+        redisService.delete("buildingTypeList");
+        redisService.delete("collegeList");
         return new Result().setCode(200).setMessage("添加成功");
     }
 
@@ -115,6 +135,8 @@ public class DictionaryController {
     @ResponseBody
     public Result delDicValues(@RequestBody List<String> data) throws DictionaryException {
         dicValueService.delDicValues(data);
+        redisService.delete("buildingTypeList");
+        redisService.delete("collegeList");
         return new Result().setCode(200).setMessage("删除成功");
     }
 
@@ -129,6 +151,8 @@ public class DictionaryController {
     @ResponseBody
     public Result updateDicValues(@RequestBody DicValue dicValue) throws DictionaryException {
         dicValueService.updateDicValues(dicValue);
+        redisService.delete("buildingTypeList");
+        redisService.delete("collegeList");
         return new Result().setCode(200).setMessage("修改成功");
     }
 
