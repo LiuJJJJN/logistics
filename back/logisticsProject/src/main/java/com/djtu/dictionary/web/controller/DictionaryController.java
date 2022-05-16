@@ -47,13 +47,16 @@ public class DictionaryController {
     @ResponseBody
     public Result getCollegeList() throws JsonProcessingException {
         String collegeList = redisService.get("collegeList");
-        if (collegeList != null) {
-            return new Result().setCode(200).setMessage("从缓存服务器获取列表成功").setData(new ObjectMapper().readValue(collegeList, List.class));
+        if (collegeList == null) {
+            synchronized (this) {
+                if (collegeList == null) {
+                    List<DicValue> list = dicValueService.getCollegeList();
+                    redisService.set("collegeList", new ObjectMapper().writeValueAsString(list));
+                    return new Result().setCode(200).setMessage("获取成功").setData(list);
+                }
+            }
         }
-
-        List<DicValue> list = dicValueService.getCollegeList();
-        redisService.set("collegeList", new ObjectMapper().writeValueAsString(list));
-        return new Result().setCode(200).setMessage("获取成功").setData(list);
+        return new Result().setCode(200).setMessage("从缓存服务器获取列表成功").setData(new ObjectMapper().readValue(collegeList, List.class));
     }
 
     /**
@@ -66,13 +69,16 @@ public class DictionaryController {
     @ResponseBody
     public Result getBuildingList() throws NothingException, JsonProcessingException {
         String buildingTypeList = redisService.get("buildingTypeList");
-        if (buildingTypeList != null) {
-            return new Result().setCode(200).setMessage("从缓存服务器获取列表成功").setData(new ObjectMapper().readValue(buildingTypeList, List.class));
+        if (buildingTypeList == null) {
+            synchronized (this) {
+                if (buildingTypeList == null) {
+                    List<DicValue> list = dicValueService.getBuildingTypeList();
+                    redisService.set("buildingTypeList", new ObjectMapper().writeValueAsString(list));
+                    return new Result().setCode(200).setMessage("获取成功").setData(list);
+                }
+            }
         }
-
-        List<DicValue> list = dicValueService.getBuildingTypeList();
-        redisService.set("buildingTypeList", new ObjectMapper().writeValueAsString(list));
-        return new Result().setCode(200).setMessage("获取成功").setData(list);
+        return new Result().setCode(200).setMessage("从缓存服务器获取列表成功").setData(new ObjectMapper().readValue(buildingTypeList, List.class));
     }
 
     /**
