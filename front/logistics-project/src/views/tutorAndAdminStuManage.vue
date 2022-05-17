@@ -331,9 +331,9 @@ export default {
       },
       dormForm: {},
       formLabelWidth: '120px',
-      pageNo: 1, //当前页数
-      pageSize: 10, //显示条数
-      total: 0, //总条数
+      pageNo: 1, //分页数据: 当前页数
+      pageSize: 10, //分页数据: 显示条数
+      total: 0, //分页数据: 总条数
       multipleSelection: [],
       idArray: [],
       isTutor: this.$store.getters.getUser.primaryRole == '导员',
@@ -392,12 +392,10 @@ export default {
     handleSizeChange(val) {
       this.pageSize = val;
       this.getStudentList();
-      // console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
       this.pageNo = val;
       this.getStudentList();
-      // console.log(`当前页: ${val}`);
     },
     loadCollege: function () {
       this.$axios.get("/dic/getCollegeList.do").then(resp => {

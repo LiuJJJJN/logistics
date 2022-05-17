@@ -18,6 +18,7 @@
         <package name="com.djtu.dictionary.pojo"/>
         <package name="com.djtu.feedback.pojo"/>
         <package name="com.djtu.building.pojo"/>
+        <package name="com.djtu.library.pojo"/>
     </typeAliases>
 
 </configuration>

@@ -46,7 +46,7 @@ public interface BuildingDao {
     int deleteBuildingById(String id);
 
     /**
-     * 获取楼宇value列表
+     * 根据type获取楼宇value列表
      *
      * @return 楼宇value列表
      */

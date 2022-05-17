@@ -38,7 +38,7 @@ public interface BuildingService {
     void deleteBuildingById(String id) throws BuildingException;
 
     /**
-     * 获取寝室楼宇value列表
+     * 根据type获取楼宇value列表
      *
      * @return 楼宇value列表
      */

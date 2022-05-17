@@ -31,7 +31,8 @@
                                             com.djtu.dictionary.dao,
                                             com.djtu.feedback.dao,
                                             com.djtu.permission.dao,
-                                            com.djtu.building.dao"></property>
+                                            com.djtu.building.dao,
+                                            com.djtu.library.dao"></property>
     </bean>
 
     <!--事务管理器-->
