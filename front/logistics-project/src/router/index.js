@@ -24,6 +24,7 @@ import adminDormManage from "@/views/adminDormManage";
 import stuDorm from "@/views/stuDorm";
 import stuDormChange from "@/views/stuDormChange";
 import tutorAndAdminDormChangeApply from "@/views/tutorAndAdminDormChangeApply";
+import adminLibraryManage from "@/views/adminLibraryManage";
 
 Vue.use(VueRouter)
 
@@ -149,6 +150,11 @@ const routes = [
         path:"/admin/dormChange",
         name:"tutor&AdminDormChangeApply",
         component: tutorAndAdminDormChangeApply
+      },
+      {
+        path:"/admin/library",
+        name:"adminLibraryManage",
+        component: adminLibraryManage
       },
       {
         path: "/*",

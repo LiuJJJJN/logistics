@@ -66,13 +66,4 @@ public class JwtUtil {
         return expiration.before(new Date());
     }
 
-    public static void main(String[] args) {
-
-        //加密
-        String jwt = createJWT("zhangsan", "13dsdda", "afrefsa", 1000 * 60 * 60 * 24 * 7);
-        System.out.println(jwt);
-
-        //解密
-        parseJWT(jwt);
-    }
 }

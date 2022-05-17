@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.djtu.library.dao.LibraryDao">
+
+    <cache eviction="FIFO"
+           flushInterval="60000"
+           size="512"
+           readOnly="true"/>
+
+    <insert id="addLibrary">
+        insert into tbl_library value (#{id}, #{name}, #{openTime}, #{closeTime}, #{isOpen}, #{buildingId})
+    </insert>
+    <update id="editLibrary">
+        update tbl_library
+        set name = #{name},
+            open_time = #{openTime},
+            close_time = #{closeTime},
+            is_open = #{isOpen},
+            building_id = #{buildingId}
+        where id = #{id}
+    </update>
+    <delete id="deleteLibraryById">
+        delete from tbl_library
+        where id = #{id}
+    </delete>
+    <resultMap id="libraryMap" type="com.djtu.library.pojo.vo.LibraryVo">
+        <association property="building" javaType="Building" select="getBuilding" column="building_id" />
+    </resultMap>
+    <select id="getLibraryList" resultType="com.djtu.library.pojo.vo.LibraryVo" resultMap="libraryMap">
+        select id,
+               name,
+               open_time,
+               close_time,
+               is_open,
+               building_id
+        from tbl_library
+    </select>
+    <select id="getBuilding" resultType="com.djtu.building.pojo.Building">
+        select id,
+               name,
+               floor,
+               order_no,
+               type,
+               rooms
+        from tbl_building
+        where id = #{building_id}
+        order by order_no
+    </select>
+    <select id="getLibraryByBuildingId" resultType="java.lang.Integer">
+        select count(*)
+        from tbl_library
+        where building_id = #{buildingId}
+    </select>
+    <select id="getLibraryById" resultType="com.djtu.library.pojo.Library">
+        select id,
+               name,
+               open_time,
+               close_time,
+               is_open,
+               building_id
+        from tbl_library
+        where id = #{id}
+    </select>
+
+</mapper>

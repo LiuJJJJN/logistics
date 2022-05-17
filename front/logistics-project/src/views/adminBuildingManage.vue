@@ -156,7 +156,7 @@ export default {
   methods: {
     handleEdit(index, row) {
       this.editDialogFormVisible = true;
-      this.editForm = row;
+      this.editForm = JSON.parse(JSON.stringify(row));
     },
     handleDelete(index, row) {
       this.$confirm('此操作将永久删除该楼宇, 是否继续?', '提示', {
