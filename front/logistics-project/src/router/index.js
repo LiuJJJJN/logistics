@@ -25,6 +25,8 @@ import stuDorm from "@/views/stuDorm";
 import stuDormChange from "@/views/stuDormChange";
 import tutorAndAdminDormChangeApply from "@/views/tutorAndAdminDormChangeApply";
 import adminLibraryManage from "@/views/adminLibraryManage";
+import stuGrabLibrary from "@/views/stuGrabLibrary";
+import stuLibraryFloor from "@/views/stuLibraryFloor";
 
 Vue.use(VueRouter)
 
@@ -67,6 +69,16 @@ const routes = [
         component: welcomePage
       },
       {
+        path:"/stu/myDorm",
+        name:"myDorm",
+        component: stuDorm
+      },
+      {
+        path:"/stu/changeDorm",
+        name:"changeDorm",
+        component: stuDormChange
+      },
+      {
         path:"/userInfo",
         name:"userInfo",
         component: userInfo
@@ -75,6 +87,18 @@ const routes = [
         path:"/stu/feedback",
         name:"feedback",
         component: stuFeedback
+      },
+      {
+        path:"/stu/grabLibrary",
+        name:"grabLibrary",
+        component: stuGrabLibrary,
+        children: [
+          {
+            path:"floor/:floor",
+            name:"floor",
+            component: stuLibraryFloor
+          }
+        ]
       },
       {
         path:"/tutor/feedback",
@@ -135,16 +159,6 @@ const routes = [
         path:"/admin/dormManage",
         name:"dormManage",
         component: adminDormManage
-      },
-      {
-        path:"/stu/myDorm",
-        name:"myDorm",
-        component: stuDorm
-      },
-      {
-        path:"/stu/changeDorm",
-        name:"changeDorm",
-        component: stuDormChange
       },
       {
         path:"/admin/dormChange",

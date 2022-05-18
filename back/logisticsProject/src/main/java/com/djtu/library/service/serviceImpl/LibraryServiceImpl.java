@@ -1,9 +1,13 @@
 package com.djtu.library.service.serviceImpl;
 
 import com.djtu.exception.LibraryException;
+import com.djtu.exception.NothingException;
 import com.djtu.library.dao.LibraryDao;
 import com.djtu.library.pojo.Library;
+import com.djtu.library.pojo.LibTable;
+import com.djtu.library.pojo.vo.AddTableVo;
 import com.djtu.library.pojo.vo.LibraryVo;
+import com.djtu.library.pojo.vo.TablePageConditionVo;
 import com.djtu.library.service.LibraryService;
 import com.djtu.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +62,49 @@ public class LibraryServiceImpl implements LibraryService {
         int res = libraryDao.editLibrary(library);
         if (res != 1) {
             throw new LibraryException("图书馆修改失败");
+        }
+    }
+
+    @Override
+    public List<LibTable> getTableListByLibraryId(TablePageConditionVo vo) {
+        return libraryDao.getTableListByLibraryId(vo);
+    }
+
+    @Override
+    public int getTableTotalByLibraryId(TablePageConditionVo vo) {
+        return libraryDao.getTableTotalByLibraryId(vo);
+    }
+
+    @Override
+    public void addLibraryTable(AddTableVo vo) throws LibraryException {
+        LibTable table = libraryDao.getTableByName(vo.getName());
+        if (table != null) {
+            throw new LibraryException("添加失败, 桌子编号不能重复");
+        }
+        vo.setId(StringUtil.generateUUID());
+        int res = libraryDao.addTable(vo);
+        if (res != 1) {
+            throw new LibraryException("添加失败");
+        }
+    }
+
+    @Override
+    public void deleteLibraryTable(String id) throws LibraryException {
+        int res = libraryDao.deleteTableById(id);
+        if (res != 1) {
+            throw new LibraryException("输出桌位失败");
+        }
+    }
+
+    @Override
+    public void editLibraryTable(AddTableVo vo) throws LibraryException {
+        LibTable table = libraryDao.getTableByName(vo.getName());
+        if (table != null) {
+            throw new LibraryException("修改失败, 桌子编号不能重复");
+        }
+        int res = libraryDao.editTable(vo);
+        if (res != 1) {
+            throw new LibraryException("修改失败");
         }
     }
 
