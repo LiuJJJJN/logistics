@@ -96,6 +96,12 @@ public class GlobalExceptionHandler {
         return new Result().setCode(402).setMessage(e.getMessage());
     }
 
+    @ExceptionHandler(value = ClassroomException.class)
+    public Result handler(ClassroomException e){
+        log.error("教室相关异常----------------{}", e.getMessage());
+        return new Result().setCode(402).setMessage(e.getMessage());
+    }
+
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public Result handler(MethodArgumentNotValidException e){
         log.error("Valid 相关异常----------------{}", e.getBindingResult().getAllErrors().get(0).getDefaultMessage());
