@@ -27,6 +27,7 @@ import tutorAndAdminDormChangeApply from "@/views/tutorAndAdminDormChangeApply";
 import adminLibraryManage from "@/views/adminLibraryManage";
 import stuGrabLibrary from "@/views/stuGrabLibrary";
 import stuLibraryFloor from "@/views/stuLibraryFloor";
+import adminClassroomManage from "@/views/adminClassroomManage";
 
 Vue.use(VueRouter)
 
@@ -164,6 +165,11 @@ const routes = [
         path:"/admin/dormChange",
         name:"tutor&AdminDormChangeApply",
         component: tutorAndAdminDormChangeApply
+      },
+      {
+        path:"/admin/classroom",
+        name:"adminClassroomManage",
+        component: adminClassroomManage,
       },
       {
         path:"/admin/library",
