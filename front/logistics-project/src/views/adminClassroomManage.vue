@@ -53,7 +53,7 @@
       </el-form>
         <el-form :inline="true" model="" class="demo-form-inline">
           <el-form-item label="门牌号">
-            <el-input v-model="addClassroomNo" style="width: 100px"></el-input>
+            <el-input v-model="addClassroomNo" style="width: 100px" maxlength="10"></el-input>
           </el-form-item>
         </el-form>
         <el-button type="primary" @click="addSure" style="margin-left: 120px">确 定</el-button>
@@ -289,23 +289,76 @@ export default {
     },
     //添加确定按钮
     addSure(){
-      alert(this.selectBuilding.id);
-      this.$axios.post("/classroom/addClassroomInf.do",
-          {
-            buildingId:this.selectBuilding.id,
-            electInf:this.addFormElect.region,
-            isUse:this.addFormUse.region,
-            isOpen:this.addFormOpen.region,
-            isClean:this.addFormClean.region,
-            roomNo:this.addClassroomNo
-          })
-          .then(resp => {
-            console.log(resp);
-            this.editDialogFormVisible=false;
-            this.getClassroomList();
-          }, err => {
-            console.log(err);
+      if(this.selectBuilding.id=='' || this.selectBuilding.id==null){
+        this.$message({
+          message: '请选择所在的楼宇',
+          type: 'warning'
+        });
+      }else if(this.addFormElect.region=='' || this.addFormElect.region==null){
+        this.$message({
+          message: '请选择用电情况',
+          type: 'warning'
+        });
+      }else if(this.addFormUse.region=='' || this.addFormUse.region==null){
+        this.$message({
+          message: '请选择使用情况',
+          type: 'warning'
+        });
+      }else if(this.addFormOpen.region=='' || this.addFormOpen.region==null){
+        this.$message({
+          message: '请选择开门情况',
+          type: 'warning'
+        });
+      }else if(this.addFormClean.region=='' || this.addFormClean.region==null){
+        this.$message({
+          message: '请选择打扫情况',
+          type: 'warning'
+        });
+      }else if(this.addClassroomNo=='' || this.addClassroomNo==null){
+        this.$message({
+          message: '请选择门牌号',
+          type: 'warning'
+        });
+      }else{
+        this.$confirm('是否添加?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$axios.post("/classroom/addClassroomInf.do",
+            {
+              buildingId:this.selectBuilding.id,
+              electInf:this.addFormElect.region,
+              isUse:this.addFormUse.region,
+              isOpen:this.addFormOpen.region,
+              isClean:this.addFormClean.region,
+              roomNo:this.addClassroomNo
+            })
+            .then(resp => {
+              console.log(resp);
+              this.selectBuilding.id='';
+              this.addFormElect.region='';
+              this.addFormUse.region='';
+              this.addFormOpen.region='';
+              this.addFormClean.region='';
+              this.addClassroomNo='';
+              this.getClassroomList();
+            }, err => {
+              console.log(err);
+            });
+          this.$message({
+            type: 'success',
+            message: '添加成功!'
           });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消添加'
+          });
+        });
+      }
+
+
     },
 
 
@@ -342,7 +395,7 @@ export default {
             })
             .then(resp => {
               console.log(resp);
-
+              this.editDialogFormVisible=false;
               this.getClassroomList();
             }, err => {
               console.log(err);
