@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.djtu.classroom.dao.ClassroomDao">
+
+    <cache eviction="FIFO"
+           flushInterval="60000"
+           size="512"
+           readOnly="true"/>
+
+    <select id="getClassroomAllList" resultType="com.djtu.classroom.pojo.vo.BuildingClassroomVo">
+        select c.id as 'classroomId',
+               c.room_no as 'classroomRoomNo',
+               c.elect_inf as 'classroomElectInf',
+               c.is_use as 'classroomIsUse',
+               c.is_open as 'classroomIsOpen',
+               c.is_clean as 'classroomIsClean',
+               b.name as 'buildingName',
+               b.type as 'buildingType'
+        from tbl_classroom c join tbl_building b on c.building_id=b.id
+        limit #{pageNo},#{pageSize}
+    </select>
+
+    <select id="getClassroomAllTotal" resultType="Integer">
+        select count(id)
+        from tbl_classroom
+    </select>
+    <update id="editClassroomInfById">
+        update tbl_classroom
+        set elect_inf=#{electInf},
+            is_use=#{isUse},
+            is_open=#{isOpen},
+            is_clean=#{isClean}
+        where id=#{id}
+    </update>
+    <delete id="deleteClassroomById">
+        delete from tbl_classroom
+        where id=#{id};
+    </delete>
+    <insert id="addClassroomInf">
+        insert into tbl_classroom (id,
+                                   room_no,
+                                   building_id,
+                                   elect_inf,
+                                   is_use,
+                                   is_open,
+                                   is_clean)
+        values(#{id},
+               #{roomNo},
+               #{buildingId},
+               #{electInf},
+               #{isUse},
+               #{isOpen},
+               #{isClean})
+
+    </insert>
+</mapper>
