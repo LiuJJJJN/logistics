@@ -12,6 +12,10 @@
     <insert id="addLibrary">
         insert into tbl_library value (#{id}, #{name}, #{openTime}, #{closeTime}, #{isOpen}, #{buildingId})
     </insert>
+    <insert id="addTable">
+        insert into tbl_lib_table
+        value (#{vo.id}, #{vo.floor}, #{vo.area}, #{vo.seat}, #{vo.name}, #{vo.status}, #{vo.libraryId})
+    </insert>
     <update id="editLibrary">
         update tbl_library
         set name = #{name},
@@ -21,8 +25,21 @@
             building_id = #{buildingId}
         where id = #{id}
     </update>
+    <update id="editTable">
+        update tbl_lib_table
+        set floor = #{vo.floor},
+            area = #{vo.area},
+            seat = #{vo.seat},
+            name = #{vo.name},
+            status = #{vo.status}
+        where id = #{vo.id}
+    </update>
     <delete id="deleteLibraryById">
         delete from tbl_library
+        where id = #{id}
+    </delete>
+    <delete id="deleteTableById">
+        delete from tbl_lib_table
         where id = #{id}
     </delete>
     <resultMap id="libraryMap" type="com.djtu.library.pojo.vo.LibraryVo">
@@ -63,5 +80,65 @@
         from tbl_library
         where id = #{id}
     </select>
+    <select id="getLibraryVoById" resultType="com.djtu.library.pojo.vo.LibraryVo" resultMap="libraryMap">
+        select id,
+               name,
+               open_time,
+               close_time,
+               is_open,
+               building_id
+        from tbl_library
+        where id = #{id}
+    </select>
+    <resultMap id="libTableMap" type="LibTable">
+        <association property="library" javaType="Library" select="getLibraryVoById" column="library_id"/>
+    </resultMap>
+    <select id="getTableListByLibraryId" resultType="com.djtu.library.pojo.LibTable" resultMap="libTableMap">
+        select id,
+               floor,
+               area,
+               seat,
+               name,
+               status,
+               library_id
+        from tbl_lib_table
+        where library_id = #{vo.libraryId}
+        <if test="vo.floor != ''">
+            and floor like '%' #{vo.floor} '%'
+        </if>
+        <if test="vo.area != ''">
+            and area like '%' #{vo.area} '%'
+        </if>
+        <if test="vo.status != ''">
+            and status like '%' #{vo.status} '%'
+        </if>
+        limit #{vo.pageNo}, #{vo.pageSize}
+    </select>
+    <select id="getTableTotalByLibraryId" resultType="java.lang.Integer">
+        select count(*)
+        from tbl_lib_table
+        where library_id = #{vo.libraryId}
+        <if test="vo.floor != ''">
+            and floor like '%' #{vo.floor} '%'
+        </if>
+        <if test="vo.area != ''">
+            and area like '%' #{vo.area} '%'
+        </if>
+        <if test="vo.status != ''">
+            and status like '%' #{vo.status} '%'
+        </if>
+    </select>
+    <select id="getTableByName" resultType="com.djtu.library.pojo.LibTable">
+        select id,
+               floor,
+               area,
+               seat,
+               name,
+               status,
+               library_id
+        from tbl_lib_table
+        where name = #{name}
+    </select>
+
 
 </mapper>
