@@ -247,7 +247,7 @@ export default {
     loadAll() {
       // 加载楼宇列表值
       this.$axios.post("/building/getBuildingValueListByType.do", {
-        type: "寝室楼"
+        type: "公寓楼"
       }).then(resp => {
         // 设置楼宇下拉列表项
         this.restaurants = resp.data.data;

@@ -1,12 +1,9 @@
 package com.djtu.library.service;
 
 import com.djtu.exception.LibraryException;
-import com.djtu.exception.NothingException;
 import com.djtu.library.pojo.Library;
 import com.djtu.library.pojo.LibTable;
-import com.djtu.library.pojo.vo.AddTableVo;
-import com.djtu.library.pojo.vo.LibraryVo;
-import com.djtu.library.pojo.vo.TablePageConditionVo;
+import com.djtu.library.pojo.vo.*;
 
 import java.util.List;
 
@@ -76,4 +73,36 @@ public interface LibraryService {
      * @param vo 新桌位信息
      */
     void editLibraryTable(AddTableVo vo) throws LibraryException;
+
+    /**
+     * 根据图书馆名获取图书馆id
+     *
+     * @param name 图书馆名
+     * @return 图书馆id
+     */
+    String getLibraryIdByName(String name);
+
+    /**
+     * 根据图书馆、楼层、区域、日期，查找当前桌位状态列表
+     *
+     * @param vo 图书馆、楼层、区域、日期
+     * @return 当前桌位状态列表
+     */
+    List<TableOrderInfoVo> getTableListByArea(GetTableVo vo) throws LibraryException;
+
+    /**
+     * 获取桌位总数
+     *
+     * @param vo 查询条件: 楼宇名、楼层数
+     * @return 桌位总数
+     */
+    Integer getTableTotal(GetTableVo vo);
+
+    /**
+     * 获取可用桌位总数
+     *
+     * @param vo 查询条件: 楼宇名、楼层数、日期
+     * @return 桌位总数
+     */
+    Integer getFreeTableTotal(GetTableVo vo);
 }

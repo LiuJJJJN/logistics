@@ -112,6 +112,7 @@
         <if test="vo.status != ''">
             and status like '%' #{vo.status} '%'
         </if>
+        order by floor, name
         limit #{vo.pageNo}, #{vo.pageSize}
     </select>
     <select id="getTableTotalByLibraryId" resultType="java.lang.Integer">
@@ -139,6 +140,67 @@
         from tbl_lib_table
         where name = #{name}
     </select>
-
+    <select id="getLibraryIdByName" resultType="java.lang.String">
+        select id
+        from tbl_library
+        where name = #{name}
+    </select>
+    <resultMap id="getTableOrderInfo" type="TableOrderInfoVo">
+        <result column="id" property="id" />
+        <result column="floor" property="floor" />
+        <result column="area" property="area" />
+        <result column="seat" property="seat" />
+        <result column="status" property="status" />
+        <result column="name" property="name" />
+        <collection ofType="LibOrder" property="orderList" >
+            <result column="loId" property="id" />
+            <result column="loStuId" property="stuId" />
+            <result column="loTableId" property="tableId" />
+            <result column="loCreateTime" property="createTime" />
+            <result column="loStartTime" property="startTime" />
+            <result column="loEndTime" property="endTime" />
+        </collection>
+    </resultMap>
+    <select id="getTableListByArea" resultType="com.djtu.library.pojo.vo.TableOrderInfoVo" resultMap="getTableOrderInfo">
+        select lt.id,
+               lt.floor,
+               lt.area,
+               lt.seat,
+               lt.name,
+               lt.status,
+               lo.id loId,
+               lo.stu_id loStuId,
+               lo.table_id loTableId,
+               lo.create_time loCreateTime,
+               lo.start_time loStartTime,
+               lo.end_time loEndTime
+        from tbl_lib_table lt
+                 left join tbl_lib_order lo
+                           on lo.table_id = lt.id
+                               and substr(lo.start_time, 1, 10) = #{vo.date}
+        where lt.library_id = #{vo.library}
+          and floor = #{vo.floor}
+          and area = #{vo.area}
+        order by lt.name
+    </select>
+    <select id="getTableTotal" resultType="java.lang.Integer">
+        select sum(seat) - (select ifnull(sum(seat), 0) from tbl_lib_table where status = 1 and floor = #{floor})
+        from tbl_lib_table
+        where library_id = #{library}
+            and floor = #{floor}
+    </select>
+    <select id="getFreeTableTotal" resultType="java.lang.Integer">
+        select (select sum(seat) from tbl_lib_table where library_id = #{library} and floor = #{floor})
+                   -
+               (select ifnull(sum(seat), 0) from tbl_lib_table where status = 1 and floor = #{floor})
+                   -
+               count(*)
+        from tbl_lib_table lt
+        left join tbl_lib_order lo
+            on lt.id = lo.table_id
+        where lt.library_id = #{library}
+          and lt.floor = #{floor}
+          and substr(lo.start_time, 1, 10) = #{date}
+    </select>
 
 </mapper>
