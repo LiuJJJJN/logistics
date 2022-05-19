@@ -158,6 +158,7 @@
             <result column="loTableId" property="tableId" />
             <result column="loCreateTime" property="createTime" />
             <result column="loStartTime" property="startTime" />
+            <result column="loStatus" property="status" />
             <result column="loEndTime" property="endTime" />
         </collection>
     </resultMap>
@@ -173,11 +174,13 @@
                lo.table_id loTableId,
                lo.create_time loCreateTime,
                lo.start_time loStartTime,
+               lo.status loStatus,
                lo.end_time loEndTime
         from tbl_lib_table lt
                  left join tbl_lib_order lo
                            on lo.table_id = lt.id
                                and substr(lo.start_time, 1, 10) = #{vo.date}
+                               and lo.status = 0 or lo.status = 1
         where lt.library_id = #{vo.library}
           and floor = #{vo.floor}
           and area = #{vo.area}
@@ -198,6 +201,7 @@
         from tbl_lib_table lt
         left join tbl_lib_order lo
             on lt.id = lo.table_id
+                and lo.status = 0 or lo.status = 1
         where lt.library_id = #{library}
           and lt.floor = #{floor}
           and substr(lo.start_time, 1, 10) = #{date}
