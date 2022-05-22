@@ -7,6 +7,10 @@ import com.djtu.library.pojo.LibTable;
 import com.djtu.library.pojo.vo.*;
 import com.djtu.library.service.LibraryService;
 import com.djtu.response.Result;
+import com.djtu.settings.pojo.vo.UserVo;
+import com.djtu.settings.service.StudentService;
+import com.djtu.settings.service.UserService;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +29,8 @@ public class LibraryController {
 
     @Autowired
     private LibraryService libraryService;
+    @Autowired
+    private UserService userService;
 
     /**
      * 添加图书馆
@@ -194,6 +200,9 @@ public class LibraryController {
         if (vo.getFloor().equals("1")) {
             throw new NothingException("当前楼层 1 层无座位");
         }
+        String userId = ((UserVo) SecurityUtils.getSubject().getSession().getAttribute("userVo")).getUserId();
+        String stuId = userService.getStudentIdByUserId(userId);
+        vo.setStuId(stuId);
         List<TableOrderInfoVo> tableOrderInfoVoList = libraryService.getTableListByArea(vo);
         return new Result().setCode(200).setMessage("获取桌位区域信息成功").setData(tableOrderInfoVoList);
     }
@@ -232,6 +241,26 @@ public class LibraryController {
         }
         Integer total = libraryService.getFreeTableTotal(vo);
         return new Result().setCode(200).setMessage("获取可用桌位总数成功").setData(total);
+    }
+
+    /**
+     * 占用座位：订单为已预定状态
+     *
+     * @param map 占用作为信息
+     * @return 成功提示
+     * @throws LibraryException 占用失败
+     */
+    @RequestMapping("/toGrabSeat.do")
+    @ResponseBody
+    @RequiresRoles("学生")
+    public Result toGrabSeat(@RequestBody Map map) throws LibraryException {
+        String tableId = (String) map.get("tableId");
+        String date = (String) map.get("date");
+        String userId = ((UserVo) SecurityUtils.getSubject().getSession().getAttribute("userVo")).getUserId();
+        String stuId = userService.getStudentIdByUserId(userId);
+        libraryService.toGrabSeat(tableId, stuId, date);
+
+        return new Result().setCode(200).setMessage("座位预定成功");
     }
 
 }

@@ -1,5 +1,6 @@
 package com.djtu.library.dao;
 
+import com.djtu.library.pojo.LibOrder;
 import com.djtu.library.pojo.Library;
 import com.djtu.library.pojo.LibTable;
 import com.djtu.library.pojo.vo.*;
@@ -136,4 +137,39 @@ public interface LibraryDao {
      * @return 可用桌位总数
      */
     Integer getFreeTableTotal(GetTableVo vo);
+
+    /**
+     * 根据桌位 id 查询桌位信息
+     *
+     * @param id 桌位id
+     * @return 桌位实例
+     */
+    LibTable getTableById(String id);
+
+    /**
+     * 根据桌位 id 和日期，查询对应订单列表
+     *
+     * @param id 桌位id
+     * @param date 日期
+     * @return 订单列表
+     */
+    List<LibOrder> getOrderListByIdDate(@Param("id") String id, @Param("date") String date);
+
+    /**
+     * 预约座位，添加订单
+     *
+     * @param order 订单
+     * @return 影响条数
+     */
+    int toGrabSeat(LibOrder order);
+
+    /**
+     * 根据学生id、日期 查询订单数量
+     *
+     * @param stuId 学生id
+     * @param date 日期
+     * @return 订单数量
+     */
+    Integer getOrderCountByStuIdDate(@Param("stuId") String stuId, @Param("date") String date);
+
 }

@@ -18,5 +18,6 @@ public class TableOrderInfoVo {
     private String name;
     private String status;
     private List<LibOrder> orderList;
+    private String isMy;
 
 }

@@ -12,5 +12,6 @@ public class GetTableVo {
     private String floor;
     private String date;
     private String area;
+    private String stuId;
 
 }

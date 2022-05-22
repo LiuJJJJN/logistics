@@ -105,4 +105,13 @@ public interface LibraryService {
      * @return 桌位总数
      */
     Integer getFreeTableTotal(GetTableVo vo);
+
+    /**
+     * 根据桌位id、日期预约座位
+     *
+     * @param tableId 桌位id
+     * @param stuId 学生id
+     * @param date    日期
+     */
+    void toGrabSeat(String tableId, String stuId, String date) throws LibraryException;
 }

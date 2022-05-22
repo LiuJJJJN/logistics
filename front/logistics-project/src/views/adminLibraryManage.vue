@@ -49,7 +49,7 @@
         <template slot-scope="scope">
           <el-button
               size="small"
-              @click="handleTable(scope.$index, scope.row)">座位管理
+              @click="handleTable(scope.$index, scope.row)">桌位管理
           </el-button>
           <el-button
               size="small"
@@ -153,7 +153,7 @@
 
     <!--图书馆座位管理抽屉-->
     <el-drawer
-        title="管理图书馆座位"
+        title="管理图书馆桌位"
         :visible.sync="drawer"
         size="50%">
       <div style="margin: 20px">

@@ -42,7 +42,7 @@
           </div>
 
           <div @click="toGrabTable(item)"
-               v-bind:class="item.orderList.length===item.seat?'used-table':item.status==0?'usable-table':'disabled-table'"
+               v-bind:class="item.isMy !== '0'?'my-table':item.orderList.length===item.seat?'used-table':item.status==0?'usable-table':'disabled-table'"
                v-for="item in tableListAreaA" :key="item">
             <span class="my-center">{{ item.orderList.length }}/{{ item.seat }}</span>
           </div>
@@ -54,7 +54,7 @@
           </div>
 
           <div @click="toGrabTable(item)"
-               v-bind:class="item.orderList.length===item.seat?'used-table':item.status==0?'usable-table':'disabled-table'"
+               v-bind:class="item.isMy !== '0'?'my-table':item.orderList.length===item.seat?'used-table':item.status==0?'usable-table':'disabled-table'"
                v-for="item in tableListAreaB" :key="item">
             <span class="my-center">{{ item.orderList.length }}/{{ item.seat }}</span>
           </div>
@@ -69,7 +69,7 @@
           </div>
 
           <div @click="toGrabTable(item)"
-               v-bind:class="item.orderList.length===item.seat?'used-table':item.status==0?'usable-table':'disabled-table'"
+               v-bind:class="item.isMy !== '0'?'my-table':item.orderList.length===item.seat?'used-table':item.status==0?'usable-table':'disabled-table'"
                v-for="item in tableListAreaC" :key="item">
             <span class="my-center">{{ item.orderList.length }}/{{ item.seat }}</span>
           </div>
@@ -83,7 +83,7 @@
           </div>
 
           <div @click="toGrabTable(item)"
-               v-bind:class="item.orderList.length===item.seat?'used-table':item.status==0?'usable-table':'disabled-table'"
+               v-bind:class="item.isMy !== '0'?'my-table':item.orderList.length===item.seat?'used-table':item.status==0?'usable-table':'disabled-table'"
                v-for="item in tableListAreaD" :key="item">
             <span class="my-center">{{ item.orderList.length }}/{{ item.seat }}</span>
           </div>
@@ -144,7 +144,7 @@
         <el-descriptions-item>
           <template slot="label">
             <i class="el-icon-collection-tag"></i>
-            当前状态
+            是否停用
           </template>
           <span v-if="tableForm.status == 1">已停用 ! ! !</span>
           <span v-if="tableForm.status == 0">未停用</span>
@@ -152,7 +152,7 @@
         <el-descriptions-item>
           <template slot="label">
             <i class="el-icon-office-building"></i>
-            当前空余
+            空余座位
           </template>
           <span v-if="tableForm.orderList">{{ tableForm.seat - tableForm.orderList.length }}/{{ tableForm.seat }}</span>
           <span v-if="!tableForm.orderList">4/4</span>
@@ -167,7 +167,7 @@
       </el-descriptions>
       <div slot="footer" class="dialog-footer">
         <el-button @click="checkDialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" v-bind:disabled="tableForm.status==1 || tableForm.orderList.length==tableForm.seat?true:false" @click="grabTable()">确 定</el-button>
+        <el-button type="primary" v-bind:disabled="tableForm.status==1 || tableForm.orderList.length==tableForm.seat?true:false" @click="grabSeat()">确 定</el-button>
       </div>
     </el-dialog>
 
@@ -190,9 +190,8 @@ export default {
       tableForm: {
         orderList: []
       },
-      libraryId: '',
       floor: '',
-      date: '123',
+      date: '',
       freeTable: 0,
       tableTotal: 0
     }
@@ -200,10 +199,36 @@ export default {
   methods: {
     toGrabTable(item) {
       this.checkDialogFormVisible = true;
+      this.$axios.post("/library/toGrabSeat.do", {
+        tableId: item.id,
+        date: this.date
+      }).then(resp => {
+        this.$message({
+          message: resp.data.message,
+          type: 'success'
+        });
+        this.loadTableListInfo();
+      }, err => {
+        console.log(err);
+      });
       this.tableForm = JSON.parse(JSON.stringify(item));
     },
-    grabTable() {
-      this.checkDialogFormVisible = false;
+    grabSeat() {
+      // this.$axios.post("/library/grabSeat.do", {
+      //   library: libraryName,
+      //   floor: this.floor,
+      //   date: this.date
+      // }).then(resp => {
+      //   this.$message({
+      //     message: resp.data.message,
+      //     type: 'success'
+      //   });
+      // }, err => {
+      //   console.log(err);
+      // });
+      // this.checkDialogFormVisible = false;
+
+      // console.log(this.tableForm)
     },
     handlerToday() {
       var date = new Date();
