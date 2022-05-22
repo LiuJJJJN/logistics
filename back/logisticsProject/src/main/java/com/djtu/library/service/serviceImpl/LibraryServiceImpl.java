@@ -1,13 +1,11 @@
 package com.djtu.library.service.serviceImpl;
 
 import com.djtu.exception.LibraryException;
-import com.djtu.exception.NothingException;
 import com.djtu.library.dao.LibraryDao;
+import com.djtu.library.pojo.LibOrder;
 import com.djtu.library.pojo.Library;
 import com.djtu.library.pojo.LibTable;
-import com.djtu.library.pojo.vo.AddTableVo;
-import com.djtu.library.pojo.vo.LibraryVo;
-import com.djtu.library.pojo.vo.TablePageConditionVo;
+import com.djtu.library.pojo.vo.*;
 import com.djtu.library.service.LibraryService;
 import com.djtu.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,9 +74,9 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
-    public void addLibraryTable(AddTableVo vo) throws LibraryException {
-        LibTable table = libraryDao.getTableByName(vo.getName());
-        if (table != null) {
+    public synchronized void addLibraryTable(AddTableVo vo) throws LibraryException {
+        List<LibTable> libTableList = libraryDao.getTableByName(vo.getName());
+        if (!libTableList.isEmpty()) {
             throw new LibraryException("添加失败, 桌子编号不能重复");
         }
         vo.setId(StringUtil.generateUUID());
@@ -97,14 +95,77 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
-    public void editLibraryTable(AddTableVo vo) throws LibraryException {
-        LibTable table = libraryDao.getTableByName(vo.getName());
-        if (table != null) {
-            throw new LibraryException("修改失败, 桌子编号不能重复");
+    public synchronized void editLibraryTable(AddTableVo vo) throws LibraryException {
+        List<LibTable> libTableList = libraryDao.getTableByName(vo.getName());
+        if (libTableList.size() > 1) {
+            throw new LibraryException("修改失败, 桌子编号重复过多, 请练习管理员");
+        }
+        if (libTableList.size() == 1 && !libTableList.get(0).getId().equals(vo.getId())) {
+            throw new LibraryException("修改失败, 桌子编号不允许重复");
         }
         int res = libraryDao.editTable(vo);
         if (res != 1) {
             throw new LibraryException("修改失败");
+        }
+    }
+
+    @Override
+    public String getLibraryIdByName(String name) {
+        return libraryDao.getLibraryIdByName(name);
+    }
+
+    @Override
+    public List<TableOrderInfoVo> getTableListByArea(GetTableVo vo) throws LibraryException {
+        vo.setLibrary(libraryDao.getLibraryIdByName(vo.getLibrary()));
+        List<TableOrderInfoVo> tableListByArea = libraryDao.getTableListByArea(vo);
+        if (tableListByArea.isEmpty()) {
+            throw new LibraryException("未查询到桌位信息, 请联系管理员");
+        }
+        return tableListByArea;
+    }
+
+    @Override
+    public Integer getTableTotal(GetTableVo vo) {
+        vo.setLibrary(libraryDao.getLibraryIdByName(vo.getLibrary()));
+        return libraryDao.getTableTotal(vo);
+    }
+
+    @Override
+    public Integer getFreeTableTotal(GetTableVo vo) {
+        vo.setLibrary(libraryDao.getLibraryIdByName(vo.getLibrary()));
+        return libraryDao.getFreeTableTotal(vo);
+    }
+
+    @Override
+    public synchronized void toGrabSeat(String tableId, String stuId, String date) throws LibraryException {
+        // 验证桌位是否是 可用 状态
+        LibTable libTable = libraryDao.getTableById(tableId);
+        if (libTable != null && "1".equals(libTable.getStatus())) {
+            throw new LibraryException("座位预约失败: 当前桌位不可用");
+        }
+        // 验证是否已有date日期的订单
+        Integer orderCount = libraryDao.getOrderCountByStuIdDate(stuId, date);
+        if (orderCount >= 1) {
+            throw new LibraryException("座位预约失败: 在" + date + "已有订单, 请勿重复预约");
+        }
+        // 验证桌位是否已预约满
+        List<LibOrder> libOrderList = libraryDao.getOrderListByIdDate(tableId, date);
+        if (libOrderList.size() == 4) {
+            throw new LibraryException("座位预约失败: 当前桌位已满");
+        }
+        // 创建预约订单
+        LibOrder libOrder = new LibOrder();
+        libOrder.setId(StringUtil.generateUUID());
+        libOrder.setStuId(stuId);
+        libOrder.setStartTime(date + " " + StringUtil.getNowDate().substring(11, 19));
+        libOrder.setEndTime(date + " " + libTable.getLibrary().getCloseTime());
+        libOrder.setCreateTime(StringUtil.getNowDate());
+        libOrder.setStatus("0");
+        libOrder.setTableId(tableId);
+
+        int res = libraryDao.toGrabSeat(libOrder);
+        if (res != 1) {
+            throw new LibraryException("座位预约失败");
         }
     }
 

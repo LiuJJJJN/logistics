@@ -4,11 +4,13 @@ import com.djtu.exception.LibraryException;
 import com.djtu.exception.NothingException;
 import com.djtu.library.pojo.Library;
 import com.djtu.library.pojo.LibTable;
-import com.djtu.library.pojo.vo.AddTableVo;
-import com.djtu.library.pojo.vo.LibraryVo;
-import com.djtu.library.pojo.vo.TablePageConditionVo;
+import com.djtu.library.pojo.vo.*;
 import com.djtu.library.service.LibraryService;
 import com.djtu.response.Result;
+import com.djtu.settings.pojo.vo.UserVo;
+import com.djtu.settings.service.StudentService;
+import com.djtu.settings.service.UserService;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,8 @@ public class LibraryController {
 
     @Autowired
     private LibraryService libraryService;
+    @Autowired
+    private UserService userService;
 
     /**
      * 添加图书馆
@@ -54,6 +58,21 @@ public class LibraryController {
     public Result getLibraryList() {
         List<LibraryVo> libraryVoList = libraryService.getLibraryList();
         return new Result().setCode(200).setMessage("查询图书馆列表成功").setData(libraryVoList);
+    }
+
+    /**
+     * 根据图书馆名获取图书馆Id
+     *
+     * @param map 图书馆名
+     * @return 图书馆id
+     */
+    @RequestMapping("/getLibraryIdByName.do")
+    @ResponseBody
+    @RequiresRoles(value = {"学生"}, logical = Logical.OR)
+    public Result getLibraryIdByName(@RequestBody Map map) {
+        String name = (String) map.get("name");
+        String id = libraryService.getLibraryIdByName(name);
+        return new Result().setCode(200).setMessage("查询图书馆Id成功").setData(id);
     }
 
     /**
@@ -165,6 +184,83 @@ public class LibraryController {
         libraryService.editLibraryTable(vo);
 
         return new Result().setCode(200).setMessage("修改桌位成功");
+    }
+
+    /**
+     * 获取桌位区域信息
+     *
+     * @param vo 桌位查询信息
+     * @return 成功提示
+     * @throws LibraryException 查询失败
+     */
+    @RequestMapping("/getTableListByArea.do")
+    @ResponseBody
+    @RequiresRoles("学生")
+    public Result getTableListByArea(@RequestBody GetTableVo vo) throws LibraryException, NothingException {
+        if (vo.getFloor().equals("1")) {
+            throw new NothingException("当前楼层 1 层无座位");
+        }
+        String userId = ((UserVo) SecurityUtils.getSubject().getSession().getAttribute("userVo")).getUserId();
+        String stuId = userService.getStudentIdByUserId(userId);
+        vo.setStuId(stuId);
+        List<TableOrderInfoVo> tableOrderInfoVoList = libraryService.getTableListByArea(vo);
+        return new Result().setCode(200).setMessage("获取桌位区域信息成功").setData(tableOrderInfoVoList);
+    }
+
+    /**
+     * 获取桌位总数
+     *
+     * @param vo 桌位查询信息
+     * @return 成功提示
+     * @throws LibraryException 查询失败
+     */
+    @RequestMapping("/getTableTotal.do")
+    @ResponseBody
+    @RequiresRoles("学生")
+    public Result getTableTotal(@RequestBody GetTableVo vo) throws LibraryException, NothingException {
+        if (vo.getFloor().equals("1")) {
+            throw new NothingException("当前楼层 1 层无座位");
+        }
+        Integer total = libraryService.getTableTotal(vo);
+        return new Result().setCode(200).setMessage("获取桌位总数成功").setData(total);
+    }
+
+    /**
+     * 获取可用桌位总数
+     *
+     * @param vo 桌位查询信息
+     * @return 成功提示
+     * @throws LibraryException 查询失败
+     */
+    @RequestMapping("/getFreeTableTotal.do")
+    @ResponseBody
+    @RequiresRoles("学生")
+    public Result getFreeTableTotal(@RequestBody GetTableVo vo) throws LibraryException, NothingException {
+        if (vo.getFloor().equals("1")) {
+            throw new NothingException("当前楼层 1 层无座位");
+        }
+        Integer total = libraryService.getFreeTableTotal(vo);
+        return new Result().setCode(200).setMessage("获取可用桌位总数成功").setData(total);
+    }
+
+    /**
+     * 占用座位：订单为已预定状态
+     *
+     * @param map 占用作为信息
+     * @return 成功提示
+     * @throws LibraryException 占用失败
+     */
+    @RequestMapping("/toGrabSeat.do")
+    @ResponseBody
+    @RequiresRoles("学生")
+    public Result toGrabSeat(@RequestBody Map map) throws LibraryException {
+        String tableId = (String) map.get("tableId");
+        String date = (String) map.get("date");
+        String userId = ((UserVo) SecurityUtils.getSubject().getSession().getAttribute("userVo")).getUserId();
+        String stuId = userService.getStudentIdByUserId(userId);
+        libraryService.toGrabSeat(tableId, stuId, date);
+
+        return new Result().setCode(200).setMessage("座位预定成功");
     }
 
 }

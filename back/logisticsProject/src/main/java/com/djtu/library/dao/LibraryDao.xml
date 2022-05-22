@@ -14,36 +14,54 @@
     </insert>
     <insert id="addTable">
         insert into tbl_lib_table
-        value (#{vo.id}, #{vo.floor}, #{vo.area}, #{vo.seat}, #{vo.name}, #{vo.status}, #{vo.libraryId})
+            value (#{vo.id}, #{vo.floor}, #{vo.area}, #{vo.seat}, #{vo.name}, #{vo.status}, #{vo.libraryId})
+    </insert>
+    <insert id="toGrabSeat">
+        insert into tbl_lib_order(id,
+                                  stu_id,
+                                  start_time,
+                                  end_time,
+                                  create_time,
+                                  status,
+                                  table_id)
+            value (#{id},
+                   #{stuId},
+                   #{startTime},
+                   #{endTime},
+                   #{createTime},
+                   #{status},
+                   #{tableId})
     </insert>
     <update id="editLibrary">
         update tbl_library
-        set name = #{name},
-            open_time = #{openTime},
-            close_time = #{closeTime},
-            is_open = #{isOpen},
+        set name        = #{name},
+            open_time   = #{openTime},
+            close_time  = #{closeTime},
+            is_open     = #{isOpen},
             building_id = #{buildingId}
         where id = #{id}
     </update>
     <update id="editTable">
         update tbl_lib_table
-        set floor = #{vo.floor},
-            area = #{vo.area},
-            seat = #{vo.seat},
-            name = #{vo.name},
+        set floor  = #{vo.floor},
+            area   = #{vo.area},
+            seat   = #{vo.seat},
+            name   = #{vo.name},
             status = #{vo.status}
         where id = #{vo.id}
     </update>
     <delete id="deleteLibraryById">
-        delete from tbl_library
+        delete
+        from tbl_library
         where id = #{id}
     </delete>
     <delete id="deleteTableById">
-        delete from tbl_lib_table
+        delete
+        from tbl_lib_table
         where id = #{id}
     </delete>
     <resultMap id="libraryMap" type="com.djtu.library.pojo.vo.LibraryVo">
-        <association property="building" javaType="Building" select="getBuilding" column="building_id" />
+        <association property="building" javaType="Building" select="getBuilding" column="building_id"/>
     </resultMap>
     <select id="getLibraryList" resultType="com.djtu.library.pojo.vo.LibraryVo" resultMap="libraryMap">
         select id,
@@ -95,12 +113,12 @@
     </resultMap>
     <select id="getTableListByLibraryId" resultType="com.djtu.library.pojo.LibTable" resultMap="libTableMap">
         select id,
-               floor,
-               area,
-               seat,
-               name,
-               status,
-               library_id
+        floor,
+        area,
+        seat,
+        name,
+        status,
+        library_id
         from tbl_lib_table
         where library_id = #{vo.libraryId}
         <if test="vo.floor != ''">
@@ -112,6 +130,7 @@
         <if test="vo.status != ''">
             and status like '%' #{vo.status} '%'
         </if>
+        order by floor, name
         limit #{vo.pageNo}, #{vo.pageSize}
     </select>
     <select id="getTableTotalByLibraryId" resultType="java.lang.Integer">
@@ -139,6 +158,108 @@
         from tbl_lib_table
         where name = #{name}
     </select>
-
+    <select id="getLibraryIdByName" resultType="java.lang.String">
+        select id
+        from tbl_library
+        where name = #{name}
+    </select>
+    <resultMap id="getTableOrderInfo" type="TableOrderInfoVo">
+        <result column="id" property="id"/>
+        <result column="floor" property="floor"/>
+        <result column="area" property="area"/>
+        <result column="seat" property="seat"/>
+        <result column="status" property="status"/>
+        <result column="name" property="name"/>
+        <result column="isMy" property="isMy" />
+        <collection ofType="LibOrder" property="orderList">
+            <result column="loId" property="id"/>
+            <result column="loStuId" property="stuId"/>
+            <result column="loTableId" property="tableId"/>
+            <result column="loCreateTime" property="createTime"/>
+            <result column="loStartTime" property="startTime"/>
+            <result column="loStatus" property="status"/>
+            <result column="loEndTime" property="endTime"/>
+        </collection>
+    </resultMap>
+    <select id="getTableListByArea" resultType="com.djtu.library.pojo.vo.TableOrderInfoVo"
+            resultMap="getTableOrderInfo">
+        select lt.id,
+               lt.floor,
+               lt.area,
+               lt.seat,
+               lt.name,
+               lt.status,
+               lo.id          loId,
+               lo.stu_id      loStuId,
+               lo.table_id    loTableId,
+               lo.create_time loCreateTime,
+               lo.start_time  loStartTime,
+               lo.status      loStatus,
+               lo.end_time    loEndTime,
+               (select count(*)
+                from tbl_lib_order
+                where stu_id = #{vo.stuId}
+                    and substr(lo.start_time, 1, 10) = #{vo.date}
+                    and (status = 0 or status = 1)) isMy
+        from tbl_lib_table lt
+                 left join tbl_lib_order lo
+                           on lo.table_id = lt.id
+                                  and substr(lo.start_time, 1, 10) = #{vo.date}
+                                  and (lo.status = 0 or lo.status = 1)
+        where lt.library_id = #{vo.library}
+          and floor = #{vo.floor}
+          and area = #{vo.area}
+        order by lt.name
+    </select>
+    <select id="getTableTotal" resultType="java.lang.Integer">
+        select sum(seat) - (select ifnull(sum(seat), 0) from tbl_lib_table where status = 1 and floor = #{floor})
+        from tbl_lib_table
+        where library_id = #{library}
+          and floor = #{floor}
+    </select>
+    <select id="getFreeTableTotal" resultType="java.lang.Integer">
+        select (select sum(seat) from tbl_lib_table where library_id = #{library} and floor = #{floor})
+                   -
+               (select ifnull(sum(seat), 0) from tbl_lib_table where status = 1 and floor = #{floor})
+                   -
+               count(*)
+        from tbl_lib_table lt
+                 left join tbl_lib_order lo
+                           on lt.id = lo.table_id
+                                  and (lo.status = 0 or lo.status = 1)
+        where lt.library_id = #{library}
+          and lt.floor = #{floor}
+          and substr(lo.start_time, 1, 10) = #{date}
+    </select>
+    <select id="getTableById" resultType="com.djtu.library.pojo.LibTable" resultMap="libTableMap">
+        select id,
+               floor,
+               area,
+               seat,
+               name,
+               status,
+               library_id
+        from tbl_lib_table
+        where id = #{id}
+    </select>
+    <select id="getOrderListByIdDate" resultType="com.djtu.library.pojo.LibOrder">
+        select id,
+               stu_id,
+               start_time,
+               end_time,
+               create_time,
+               status,
+               table_id
+        from tbl_lib_order
+        where table_id = #{id}
+          and substr(start_time, 1, 10) = #{date}
+    </select>
+    <select id="getOrderCountByStuIdDate" resultType="java.lang.Integer">
+        select count(*)
+        from tbl_lib_order
+        where stu_id = #{stuId}
+            and substr(start_time, 1, 10) = #{date}
+            and status = '0' or status = '1'
+    </select>
 
 </mapper>
