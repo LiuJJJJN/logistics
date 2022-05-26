@@ -42,7 +42,7 @@
           </div>
 
           <div @click="toGrabTable(item)"
-               v-bind:class="item.isMy !== '0'?'my-table':item.orderList.length===item.seat?'used-table':item.status==0?'usable-table':'disabled-table'"
+               v-bind:class="item.isMy && item.isMy !== '0'?'my-table':item.orderList.length===item.seat?'used-table':item.status==0?'usable-table':'disabled-table'"
                v-for="item in tableListAreaA" :key="item">
             <span class="my-center">{{ item.orderList.length }}/{{ item.seat }}</span>
           </div>
@@ -54,7 +54,7 @@
           </div>
 
           <div @click="toGrabTable(item)"
-               v-bind:class="item.isMy !== '0'?'my-table':item.orderList.length===item.seat?'used-table':item.status==0?'usable-table':'disabled-table'"
+               v-bind:class="item.isMy && item.isMy !== '0'?'my-table':item.orderList.length===item.seat?'used-table':item.status==0?'usable-table':'disabled-table'"
                v-for="item in tableListAreaB" :key="item">
             <span class="my-center">{{ item.orderList.length }}/{{ item.seat }}</span>
           </div>
@@ -69,7 +69,7 @@
           </div>
 
           <div @click="toGrabTable(item)"
-               v-bind:class="item.isMy !== '0'?'my-table':item.orderList.length===item.seat?'used-table':item.status==0?'usable-table':'disabled-table'"
+               v-bind:class="item.isMy && item.isMy !== '0'?'my-table':item.orderList.length===item.seat?'used-table':item.status==0?'usable-table':'disabled-table'"
                v-for="item in tableListAreaC" :key="item">
             <span class="my-center">{{ item.orderList.length }}/{{ item.seat }}</span>
           </div>
@@ -83,7 +83,7 @@
           </div>
 
           <div @click="toGrabTable(item)"
-               v-bind:class="item.isMy !== '0'?'my-table':item.orderList.length===item.seat?'used-table':item.status==0?'usable-table':'disabled-table'"
+               v-bind:class="item.isMy && item.isMy !== '0'?'my-table':item.orderList.length===item.seat?'used-table':item.status==0?'usable-table':'disabled-table'"
                v-for="item in tableListAreaD" :key="item">
             <span class="my-center">{{ item.orderList.length }}/{{ item.seat }}</span>
           </div>
@@ -111,14 +111,20 @@
         <div class="mini-used-table"></div>
         被占用
         <div class="mini-usable-table"></div>
-        可用
+        可预约
         <div class="mini-my-table"></div>
         已预约
       </div>
     </div>
 
     <!-- 确认订单对话框 -->
-    <el-dialog title="确认图书馆座位订单" :visible.sync="checkDialogFormVisible" width="30%">
+    <el-dialog
+        title="确认图书馆座位订单"
+        :visible.sync="checkDialogFormVisible"
+        width="30%"
+        :close-on-click-modal="false"
+        :close-on-press-escape="false"
+        :show-close="false">
       <el-descriptions class="margin-top" :title="'当前座位: ' + tableForm.name" :column="1" border>
         <el-descriptions-item>
           <template slot="label">
@@ -166,8 +172,9 @@
         </el-descriptions-item>
       </el-descriptions>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="checkDialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" v-bind:disabled="tableForm.status==1 || tableForm.orderList.length==tableForm.seat?true:false" @click="grabSeat()">确 定</el-button>
+        <el-button @click="cancelGrab()">取消占座</el-button>
+        <el-button type="primary" v-bind:disabled="tableForm.status==1 || tableForm.orderList.length==tableForm.seat?true:false"
+                   @click="grabSeat()">确认订单</el-button>
       </div>
     </el-dialog>
 
@@ -214,21 +221,17 @@ export default {
       this.tableForm = JSON.parse(JSON.stringify(item));
     },
     grabSeat() {
-      // this.$axios.post("/library/grabSeat.do", {
-      //   library: libraryName,
-      //   floor: this.floor,
-      //   date: this.date
-      // }).then(resp => {
-      //   this.$message({
-      //     message: resp.data.message,
-      //     type: 'success'
-      //   });
-      // }, err => {
-      //   console.log(err);
-      // });
-      // this.checkDialogFormVisible = false;
-
-      // console.log(this.tableForm)
+      this.$axios.post("/library/grabSeat.do", {
+        date: this.date
+      }).then(resp => {
+        this.$message({
+          message: resp.data.message,
+          type: 'success'
+        });
+      }, err => {
+        console.log(err);
+      });
+      this.checkDialogFormVisible = false;
     },
     handlerToday() {
       var date = new Date();
@@ -306,10 +309,24 @@ export default {
       }, err => {
         console.log(err);
       });
+    },
+    cancelGrab() {
+      this.checkDialogFormVisible = false;
+      this.$axios.post("/library/cancelGrab.do", {
+        date: this.date
+      }).then(resp => {
+        this.$message({
+          message: resp.data.message,
+          type: 'success'
+        });
+        this.loadTableListInfo();
+      }, err => {
+        console.log(err);
+      });
     }
   },
   mounted() {
-    this.loadTableListInfo();
+    // this.loadTableListInfo();
     this.handlerToday();
   },
   watch: {

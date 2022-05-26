@@ -246,14 +246,14 @@ public class LibraryController {
     /**
      * 占用座位：订单为已预定状态
      *
-     * @param map 占用作为信息
+     * @param map 占用桌位信息
      * @return 成功提示
      * @throws LibraryException 占用失败
      */
     @RequestMapping("/toGrabSeat.do")
     @ResponseBody
     @RequiresRoles("学生")
-    public Result toGrabSeat(@RequestBody Map map) throws LibraryException {
+    public Result toGrabSeat(@RequestBody Map map) throws LibraryException, NothingException {
         String tableId = (String) map.get("tableId");
         String date = (String) map.get("date");
         String userId = ((UserVo) SecurityUtils.getSubject().getSession().getAttribute("userVo")).getUserId();
@@ -261,6 +261,42 @@ public class LibraryController {
         libraryService.toGrabSeat(tableId, stuId, date);
 
         return new Result().setCode(200).setMessage("座位预定成功");
+    }
+
+    /**
+     * 取消占用座位：设置订单为已取消状态
+     *
+     * @param vo 占用座位信息
+     * @return 成功提示
+     * @throws LibraryException 取消失败
+     */
+    @RequestMapping("/cancelGrab.do")
+    @ResponseBody
+    @RequiresRoles("学生")
+    public Result cancelGrab(@RequestBody GetTableVo vo) throws LibraryException {
+        String userId = ((UserVo) SecurityUtils.getSubject().getSession().getAttribute("userVo")).getUserId();
+        String stuId = userService.getStudentIdByUserId(userId);
+        libraryService.cancelGrab(stuId, vo.getDate());
+
+        return new Result().setCode(200).setMessage("取消预定成功");
+    }
+
+    /**
+     * 确认占用座位：设置订单为已占用状态
+     *
+     * @param vo 占用座位信息
+     * @return 成功提示
+     * @throws LibraryException 取消失败
+     */
+    @RequestMapping("/grabSeat.do")
+    @ResponseBody
+    @RequiresRoles("学生")
+    public Result grabSeat(@RequestBody GetTableVo vo) throws LibraryException {
+        String userId = ((UserVo) SecurityUtils.getSubject().getSession().getAttribute("userVo")).getUserId();
+        String stuId = userService.getStudentIdByUserId(userId);
+        libraryService.grabSeat(stuId, vo.getDate());
+
+        return new Result().setCode(200).setMessage("座位占用成功");
     }
 
 }

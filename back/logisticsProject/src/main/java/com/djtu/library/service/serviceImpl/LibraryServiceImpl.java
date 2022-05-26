@@ -1,6 +1,7 @@
 package com.djtu.library.service.serviceImpl;
 
 import com.djtu.exception.LibraryException;
+import com.djtu.exception.NothingException;
 import com.djtu.library.dao.LibraryDao;
 import com.djtu.library.pojo.LibOrder;
 import com.djtu.library.pojo.Library;
@@ -10,6 +11,7 @@ import com.djtu.library.service.LibraryService;
 import com.djtu.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -137,15 +139,18 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
-    public synchronized void toGrabSeat(String tableId, String stuId, String date) throws LibraryException {
+    public synchronized void toGrabSeat(String tableId, String stuId, String date) throws LibraryException, NothingException {
         // 验证桌位是否是 可用 状态
         LibTable libTable = libraryDao.getTableById(tableId);
         if (libTable != null && "1".equals(libTable.getStatus())) {
             throw new LibraryException("座位预约失败: 当前桌位不可用");
         }
         // 验证是否已有date日期的订单
-        Integer orderCount = libraryDao.getOrderCountByStuIdDate(stuId, date);
-        if (orderCount >= 1) {
+        List<LibOrder> orders = libraryDao.getOrderListByStuIdDate(tableId, stuId, date);
+        if (orders.size() == 1 && orders.get(0).getTableId().equals(tableId)) {
+            throw new NothingException("座位预约提示: 在" + date + "已有订单, 但此订单为当前座位不提示");
+        }
+        if (orders.size() != 0) {
             throw new LibraryException("座位预约失败: 在" + date + "已有订单, 请勿重复预约");
         }
         // 验证桌位是否已预约满
@@ -166,6 +171,22 @@ public class LibraryServiceImpl implements LibraryService {
         int res = libraryDao.toGrabSeat(libOrder);
         if (res != 1) {
             throw new LibraryException("座位预约失败");
+        }
+    }
+
+    @Override
+    public void cancelGrab(String stuId, String date) throws LibraryException {
+        int res = libraryDao.cancelGrab(stuId, date);
+        if (res != 1) {
+            throw new LibraryException("取消预约订单失败");
+        }
+    }
+
+    @Override
+    public void grabSeat(String stuId, String date) throws LibraryException {
+        int res = libraryDao.grabSeat(stuId, date);
+        if (res != 1) {
+            throw new LibraryException("座位占用失败");
         }
     }
 
