@@ -1,6 +1,7 @@
 package com.djtu.library.service;
 
 import com.djtu.exception.LibraryException;
+import com.djtu.exception.NothingException;
 import com.djtu.library.pojo.Library;
 import com.djtu.library.pojo.LibTable;
 import com.djtu.library.pojo.vo.*;
@@ -113,5 +114,21 @@ public interface LibraryService {
      * @param stuId 学生id
      * @param date    日期
      */
-    void toGrabSeat(String tableId, String stuId, String date) throws LibraryException;
+    void toGrabSeat(String tableId, String stuId, String date) throws LibraryException, NothingException;
+
+    /**
+     * 取消占用座位订单: 设置占用订单为已取消状态
+     *
+     * @param stuId 学生id
+     * @param date 日期
+     */
+    void cancelGrab(String stuId, String date) throws LibraryException;
+
+    /**
+     * 占用座位
+     *
+     * @param stuId　学生id
+     * @param date 日期
+     */
+    void grabSeat(String stuId, String date) throws LibraryException;
 }

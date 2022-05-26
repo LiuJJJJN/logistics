@@ -166,10 +166,28 @@ public interface LibraryDao {
     /**
      * 根据学生id、日期 查询订单数量
      *
-     * @param stuId 学生id
-     * @param date 日期
+     * @param tableId
+     * @param stuId   学生id
+     * @param date    日期
      * @return 订单数量
      */
-    Integer getOrderCountByStuIdDate(@Param("stuId") String stuId, @Param("date") String date);
+    List<LibOrder> getOrderListByStuIdDate(@Param("tableId") String tableId, @Param("stuId") String stuId, @Param("date") String date);
 
+    /**
+     * 取消预约订单: 设置订单状态为 0 已取消
+     *
+     * @param stuId 学生id
+     * @param date 日期
+     * @return 影响条数
+     */
+    int cancelGrab(@Param("stuId") String stuId, @Param("date") String date);
+
+    /**
+     * 占用座位
+     *
+     * @param stuId 学生id
+     * @param date 日期
+     * @return 影响条数
+     */
+    int grabSeat(@Param("stuId") String stuId, @Param("date") String date);
 }
