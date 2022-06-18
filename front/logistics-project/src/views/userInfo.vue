@@ -22,7 +22,7 @@
           <i class="el-icon-picture-outline-round"></i>
           头像
         </template>
-        <el-avatar :src="'http://47.113.216.124/images'+avatarPath"
+        <el-avatar :src="'http://49.232.2.175/images'+avatarPath"
                    style="display: inline-block; width: 100px; height: 100px"
                    v-show="!showEditBtn && userInfo.college"></el-avatar>
         <el-upload
@@ -32,7 +32,7 @@
             :on-remove="handleRemove"
             :auto-upload="false"
             :headers="{authToken: this.$store.getters.getSessionId}"
-            action="http://47.113.216.124:8080/logisticsProject/user/uploadAvatar.do"
+            action="http://49.232.2.175:8080/logisticsProject/user/uploadAvatar.do"
             multiple
             :limit="1"
             :on-exceed="handleExceed"

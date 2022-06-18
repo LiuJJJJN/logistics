@@ -11,7 +11,7 @@
       此处不做格式限制, 但推荐上传png/jpg文件, 且不超过500KB
     </div>
     <el-upload
-        action="http://47.113.216.124:8080/logisticsProject/addCarousel.do"
+        action="http://49.232.2.175:8080/logisticsProject/addCarousel.do"
         list-type="picture-card"
         :on-preview="handlePictureCardPreview"
         :on-remove="handleRemove"

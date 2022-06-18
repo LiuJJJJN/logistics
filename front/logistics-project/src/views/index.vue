@@ -6,7 +6,7 @@
       <div style="display: inline-block; float: right; margin-right: 50px">
         <el-dropdown style="top: 10px; left: 20px;">
           <span class="el-dropdown-link">
-            <el-avatar :size="size" :src="'http://47.113.216.124/images'+avatarPath"
+            <el-avatar :size="size" :src="'http://49.232.2.175/images'+avatarPath"
                        style="top: 10px; left: 20px; float: left;">暂无</el-avatar>
           </span>
           <el-dropdown-menu slot="dropdown">
