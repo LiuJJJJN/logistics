@@ -141,11 +141,12 @@
       <el-form label-width="150px">
         <!--学生的内容-->
         <el-card class="box-card">
-          <div class="text item"><font color="#d2691e">{{ this.whoHistoryInf }}：&nbsp;&nbsp;</font>
-            <font color="#deb887" style="font-family: 幼圆">{{ this.textarea3 }}</font>
+          <div class="text item">
+            <span style="font-weight: bolder">{{ this.whoHistoryInf }}：&nbsp;&nbsp;</span>
+            <span>{{ this.textarea3 }}</span>
           </div>
           <div v-for="o in this.replyList" :key="o" class="text item">
-            <font style="font-weight: bold">我：</font><font style="font-weight: lighter;font-family: 幼圆">{{
+            <font style="font-weight: bolder">我：</font><font style="font-weight: lighter;font-family: 幼圆">{{
               o.reply
             }}</font>
           </div>
@@ -439,6 +440,5 @@ export default {
 .box-card {
   margin-left: 150px;
   width: 480px;
-  background-color: azure;
 }
 </style>

@@ -84,16 +84,17 @@ public class BuildingController {
     }
 
     /**
-     * 获取寝室楼宇列表接口, name改为value
+     * 根据楼宇类型获取楼宇列表接口, name改为value
      *
      * @return 楼宇列表
      * @throws BuildingException 获取楼宇列表异常
      */
     @RequiresRoles("管理员")
-    @RequestMapping("/getDormBuildingValueList.do")
+    @RequestMapping("/getBuildingValueListByType.do")
     @ResponseBody
-    public Result getBuildingValueList() throws NothingException {
-        List<BuildingValueVo> buildingList = buildingService.getBuildingValueListByType("公寓楼");
+    public Result getBuildingValueList(@RequestBody Map map) throws NothingException {
+        String buildingType = (String) map.get("type");
+        List<BuildingValueVo> buildingList = buildingService.getBuildingValueListByType(buildingType);
         return new Result().setCode(200).setMessage("获取楼宇列表成功").setData(buildingList);
     }
 

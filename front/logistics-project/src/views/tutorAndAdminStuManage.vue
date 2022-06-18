@@ -45,13 +45,46 @@
       </el-col>
     </el-row>
 
-    <el-button
-        size="mini"
-        type="danger"
-        icon="el-icon-delete"
-        slot="reference"
-        @click="delBtn"
-        class="functionBtn"></el-button>
+    <el-row :gutter="20">
+      <el-col :span="2"><div class="grid-content bg-purple">
+        <el-button
+            size="mini"
+            type="danger"
+            icon="el-icon-delete"
+            slot="reference"
+            @click="delBtn"
+            class="functionBtn"></el-button>
+      </div></el-col>
+      <el-col :span="2"><div class="grid-content bg-purple">
+        <!--学生下载信息-->
+        <el-form :action="stuActionURL" method="post" type="primary">
+          <el-input type="submit" value="导出" style="width: 80px;"/>
+        </el-form>
+      </div></el-col>
+      <el-col :span="1"><div class="grid-content bg-purple">
+        <!--上传-->
+        <el-button @click="openUpload" type="primary" plain>上传</el-button>
+      </div></el-col>
+    </el-row>
+    <!--上传模态窗口-->
+    <el-dialog title="上传文件" :visible.sync="dialogFormVisible">
+      <el-form :action="adminDownLoadModel" method="post" type="primary">
+        <el-input type="submit" value="下载模板" style="width: 80px;"/>
+      </el-form>
+        <el-checkbox-group v-model="dormDistributeSelect.type" style="margin-left: 200px">
+          <el-checkbox label="是否导入同时给学生分配寝室" name="type"></el-checkbox>
+        </el-checkbox-group>
+      <el-upload
+          class="upload-demo"
+          drag
+          :action="adminOpenUpload+'?selectState='+this.dormDistributeSelect.type" style="margin-left: 200px;margin-top:20px"
+          multiple>
+        <i class="el-icon-upload"></i>
+        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+        <div class="el-upload__tip" slot="tip"><font style="color:red">只能上传Excel文件，并且所有单元格格式设置为文本格式！</font></div>
+        <div class="el-upload__tip" slot="tip"><font style="color:red">注：上传后的学生，账号用户名默认为学号，密码为6个0</font></div>
+      </el-upload>
+    </el-dialog>
 
     <el-table
         :data="tableData"
@@ -98,7 +131,7 @@
       </el-table-column>
       <el-table-column
           label="学院"
-          width="120">
+          width="90">
         <template slot-scope="scope">
           <span>{{ scope.row.college }}</span>
         </template>
@@ -129,7 +162,7 @@
       </el-table-column>
       <el-table-column
           label="备注"
-          width="150">
+          width="130">
         <template slot-scope="scope">
           <span>{{ scope.row.remark }}</span>
         </template>
@@ -233,7 +266,12 @@ export default {
   name: "stuManage",
   data() {
     return {
+      stuActionURL : 'http://localhost:8080/logisticsProject/permission/adminDownLoadStu.do',
+      adminOpenUpload : 'http://localhost:8080/logisticsProject/permission/adminUpLoadStu.do',
+      adminDownLoadModel :'http://localhost:8080/logisticsProject/permission/adminDownLoadM.do',
       collegeEnum: [],
+      dialogFormVisible : false,
+      dormDistributeSelect: {type:''},
       searchForm: {
         name: '',
         sno: '',
@@ -241,7 +279,9 @@ export default {
         stuClass: '',
         date: []
       },
-      submitForm: {},
+      submitForm: {
+        remark: ''
+      },
       tableData: [],
       dialogRemarkFormVisible: false,
       pickerOptions: {
@@ -291,9 +331,9 @@ export default {
       },
       dormForm: {},
       formLabelWidth: '120px',
-      pageNo: 1, //当前页数
-      pageSize: 10, //显示条数
-      total: 0, //总条数
+      pageNo: 1, //分页数据: 当前页数
+      pageSize: 10, //分页数据: 显示条数
+      total: 0, //分页数据: 总条数
       multipleSelection: [],
       idArray: [],
       isTutor: this.$store.getters.getUser.primaryRole == '导员',
@@ -302,6 +342,12 @@ export default {
     }
   },
   methods: {
+    test(){
+      alert(this.dormDistributeSelect.type);
+    },
+    openUpload(){
+      this.dialogFormVisible=true;
+    },
     showRemarkDialog(index, row) {
       this.dialogRemarkFormVisible = true
       this.submitForm.id = row.id;
@@ -346,12 +392,10 @@ export default {
     handleSizeChange(val) {
       this.pageSize = val;
       this.getStudentList();
-      // console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
       this.pageNo = val;
       this.getStudentList();
-      // console.log(`当前页: ${val}`);
     },
     loadCollege: function () {
       this.$axios.get("/dic/getCollegeList.do").then(resp => {
@@ -508,4 +552,5 @@ export default {
   margin-bottom: 13px;
   margin-right: 10px;
 }
+
 </style>

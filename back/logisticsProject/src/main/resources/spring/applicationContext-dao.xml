@@ -6,7 +6,7 @@
     <!--Spring配置文件-->
 
     <!--指定数据库属性配置文件-->
-    <context:property-placeholder location="classpath:/mybatis/jdbc.properties"/>
+    <context:property-placeholder location="classpath:/mybatis/jdbc.properties" ignore-unresolvable="true"/>
 
     <!--德鲁伊连接池-->
     <!--声明DataSource-->
@@ -31,7 +31,9 @@
                                             com.djtu.dictionary.dao,
                                             com.djtu.feedback.dao,
                                             com.djtu.permission.dao,
-                                            com.djtu.building.dao"></property>
+                                            com.djtu.building.dao,
+                                            com.djtu.library.dao,
+                                            com.djtu.classroom.dao"></property>
     </bean>
 
     <!--事务管理器-->
@@ -41,4 +43,5 @@
 
     <!--开启事务-->
     <tx:annotation-driven transaction-manager="transactionManager"/>
+
 </beans>

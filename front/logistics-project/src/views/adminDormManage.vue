@@ -246,20 +246,21 @@ export default {
     },
     loadAll() {
       // 加载楼宇列表值
-      this.$axios.post("/building/getDormBuildingValueList.do")
-          .then(resp => {
-            // 设置楼宇下拉列表项
-            this.restaurants = resp.data.data;
-            // 设置楼宇rules验证枚举
-            var rulesEnum = [];
-            for (let temp in resp.data.data) {
-              rulesEnum.push(resp.data.data[temp].value);
-            }
-            var t = {type: 'enum', enum: rulesEnum, message: '楼宇必须为楼宇列表中的值'};
-            this.rules.building.push(t);
-          }, err => {
-            console.log(err);
-          })
+      this.$axios.post("/building/getBuildingValueListByType.do", {
+        type: "公寓楼"
+      }).then(resp => {
+        // 设置楼宇下拉列表项
+        this.restaurants = resp.data.data;
+        // 设置楼宇rules验证枚举
+        var rulesEnum = [];
+        for (let temp in resp.data.data) {
+          rulesEnum.push(resp.data.data[temp].value);
+        }
+        var t = {type: 'enum', enum: rulesEnum, message: '楼宇必须为楼宇列表中的值'};
+        this.rules.building.push(t);
+      }, err => {
+        console.log(err);
+      })
     },
     handleSelect(item) {
       //设置对应楼宇id

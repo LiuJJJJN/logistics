@@ -150,22 +150,6 @@
         <association javaType="Dorm" property="fromDorm" select="getDorm" column="from_dorm_id"/>
         <association javaType="Dorm" property="toDorm" select="getDorm" column="to_dorm_id"/>
     </resultMap>
-    <select id="getDormChangeApplyList" resultType="com.djtu.dorm.pojo.vo.DormApplyVo" resultMap="dormApplyMap">
-        select
-            dc.id,
-            dc.stu_id,
-            dc.from_dorm_id,
-            dc.to_dorm_id,
-            dc.status,
-            dc.time
-        from tbl_dorm_change dc
-        <if test="vo.userId != null" >
-            join tbl_student s on s.id = dc.stu_id
-            where s.tutor_id = #{vo.userId}
-        </if>
-        order by time desc
-        limit #{vo.pageNo}, #{vo.pageSize}
-    </select>
     <select id="getStudent" resultType="student" resultMap="com.djtu.settings.dao.StudentDao.studentMap">
         select
             id,
@@ -196,12 +180,31 @@
         from tbl_dorm
         where id = #{id}
     </select>
-    <select id="getIdbyDoorNo" resultType="String">
+    <select id="getIdByDoorNo" resultType="String">
         select id
         from tbl_dorm
         where door_no=#{doorNo}
     </select>
-    <select id="getDormChangeApplyTotal" resultType="java.lang.Integer">
+    <select id="getDormChangeApplyList" resultType="com.djtu.dorm.pojo.vo.DormApplyVo"
+            resultMap="com.djtu.dorm.dao.DormDao.dormApplyMap"
+            useCache="false">
+
+        select
+        dc.id,
+        dc.stu_id,
+        dc.from_dorm_id,
+        dc.to_dorm_id,
+        dc.status,
+        dc.time
+        from tbl_dorm_change dc
+        <if test="vo.userId != null" >
+            join tbl_student s on s.id = dc.stu_id
+            where s.tutor_id = #{vo.userId}
+        </if>
+        order by time desc
+        limit #{vo.pageNo}, #{vo.pageSize}
+    </select>
+    <select id="getDormChangeApplyTotal" resultType="java.lang.Integer" useCache="false">
         select count(*)
         from tbl_dorm_change dc
         <if test="vo.userId != null" >

@@ -9,7 +9,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DormVo implements Serializable{
+public class DormVo implements Serializable {
     private String id;
     private String doorNo;
     private long water;

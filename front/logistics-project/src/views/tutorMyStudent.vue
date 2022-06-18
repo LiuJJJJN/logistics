@@ -45,29 +45,25 @@
       </el-col>
     </el-row>
     <el-row :gutter="20">
-      <el-col :span="1.5">
-        <div class="grid-content bg-purple">
-          <el-button
-              size="mini"
-              type="danger"
-              icon="el-icon-delete"
-              slot="reference"
-              @click="delBtn"
-              class="functionBtn"></el-button>
-        </div>
-      </el-col>
-      <!--学生下载信息-->
-      <el-col :span="2">
-          <el-form :action="actionURL" method="post">
-            <el-input type="submit" value="导出" style="width: 70px;"/>
-          </el-form>
-      </el-col>
-      <!--上传学生信息-->
-      <el-col :span="2">
-        <div class="grid-content bg-purple">
-          <el-button @click="openDownload" type="primary" plain>上传</el-button>
-        </div>
-      </el-col>
+      <el-col :span="1.5"><div class="grid-content bg-purple">
+        <el-button
+            size="mini"
+            type="danger"
+            icon="el-icon-delete"
+            slot="reference"
+            @click="delBtn"
+            class="functionBtn"></el-button>
+      </div></el-col>
+      <el-col :span="2"><div class="grid-content bg-purple">
+        <!--学生下载信息-->
+        <el-form :action="actionURL" method="post" type="primary">
+          <el-input type="submit" value="导出" style="width: 80px;"/>
+        </el-form>
+      </div></el-col>
+      <!--学生上传信息-->
+      <el-col :span="2"><div class="grid-content bg-purple">
+        <el-button @click="openUpload" type="primary" plain>导入我的学生</el-button>
+      </div></el-col>
     </el-row>
 
     <!--上传模态窗口-->
@@ -82,7 +78,8 @@
           multiple>
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-        <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+        <div class="el-upload__tip" slot="tip"><font style="color:red;">只能上传Excel文件，并且所有单元格格式设置为文本格式！</font></div>
+        <div class="el-upload__tip" slot="tip"><font style="color:red">注：上传后的学生，账号用户名默认为学号，密码为6个0</font></div>
       </el-upload>
     </el-dialog>
 
@@ -153,7 +150,7 @@
       </el-table-column>
       <el-table-column
           label="备注"
-          width="250">
+          width="190">
         <template slot-scope="scope">
           <span>{{ scope.row.remark }}</span>
         </template>
@@ -300,8 +297,8 @@ export default {
   },
   methods: {
     //上传模态窗口打开
-    openDownload() {
-      this.dialogFormVisible = true;
+    openUpload(){
+      this.dialogFormVisible=true;
     },
     showRemarkDialog(index, row) {
       this.dialogRemarkFormVisible = true

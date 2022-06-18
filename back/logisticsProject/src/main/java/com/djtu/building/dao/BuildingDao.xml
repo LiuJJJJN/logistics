@@ -56,5 +56,16 @@
         where type = #{type}
         order by order_no
     </select>
+    <select id="getDormBuildingList" resultType="com.djtu.building.pojo.Building">
+        select id,
+               name,
+               floor,
+               order_no,
+               type,
+               rooms
+        from tbl_building
+        where type = '公寓楼'
+        order by order_no
+    </select>
 
 </mapper>

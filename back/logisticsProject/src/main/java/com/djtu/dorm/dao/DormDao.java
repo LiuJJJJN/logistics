@@ -120,14 +120,7 @@ public interface DormDao {
      * @param doorNo
      * @return
      */
-    String getIdbyDoorNo(String doorNo);
-    
-    /**
-     * 根据状态码获取申请换寝的列表
-     *
-     * @return 申请换寝的列表
-     */
-    List<DormApplyVo> getDormChangeApplyList(@Param("vo") DormApplyPageConditionVo vo);
+    String getIdByDoorNo(String doorNo);
 
     /**
      * 设置学生的换寝申请状态码
@@ -145,6 +138,13 @@ public interface DormDao {
      * @return 影响条数
      */
     int finishChangeByStuId(String stuId);
+
+    /**
+     * 根据状态码获取申请换寝的列表
+     *
+     * @return 申请换寝的列表
+     */
+    List<DormApplyVo> getDormChangeApplyList(@Param("vo") DormApplyPageConditionVo vo);
 
     /**
      * 获取学生换寝申请表记录总数

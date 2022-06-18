@@ -81,12 +81,32 @@ public interface StudentService {
     void downloadModel(HttpServletResponse response) throws IOException;
 
     /**
+     * 管理员下载学生Excel
+     * @param response 响应对象
+     */
+    void adminDownLoadStudent(HttpServletResponse response) throws IOException;
+
+    /**
+     * 管理员上传文件（学生表）
+     * @param file 文件对象
+     * @param request 请求对象
+     * @throws IOException
+     * @throws UploadException
+     */
+    void adminUpLoadStudent(MultipartFile file,HttpServletRequest request) throws IOException,UploadException;
+
+    /**
+     * 管理员-下载模板
+     * @param response 响应对象
+     */
+    void adminDownLoadModel(HttpServletResponse response) throws IOException;
+
+    /**
      * 修改学生寝室
      * @param id 学生id
      * @param dormId 寝室id
      */
     void editStudentDormById(String id, String dormId) throws UserManagerException;
-
 
 
 }
